@@ -97,33 +97,57 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
 <template>
   <div data-hse-project v-project-panels class="hse-project-root hse-wizard-basic">
     <section class="hse-wizard-section">
-      <h3 class="hse-wizard-section-title">Project identity</h3>
+      <h3 class="hse-wizard-section-title">{{ $t('Project identity') }}</h3>
       <div class="form-grid">
-
         <!-- serial number -->
         <div class="hse-project-field input-wrapper">
-          <SwitchInput :fields="serialFields" :switch-title="$t('auto')" :is-auto="true" :switch-reverse="true"
-            help-text="Enter a unique project serial number, or enable automatic generation to let the system create it."
-            @update:value="updateSerial" />
+          <SwitchInput
+            :fields="serialFields"
+            :switch-title="$t('auto')"
+            :is-auto="true"
+            :switch-reverse="true"
+            :help-text="
+              $t(
+                'Enter a unique project serial number, or enable automatic generation to let the system create it.',
+              )
+            "
+            @update:value="updateSerial"
+          />
         </div>
 
-
         <!-- project name -->
-        <div class="hse-project-field input-wrapper" :class="{ 'field-has-error': props.validationErrors.projectName }">
-          <LangTitleInput label="Project Name" :langs="langDefault" :model-value="langs"
-            help-text="Enter the project name in each available language." @update:model-value="setLangTitles" />
+        <div
+          class="hse-project-field input-wrapper"
+          :class="{ 'field-has-error': props.validationErrors.projectName }"
+        >
+          <LangTitleInput
+            :label="$t('Project Name')"
+            :langs="langDefault"
+            :model-value="langs"
+            :help-text="$t('Enter the project name in each available language.')"
+            @update:model-value="setLangTitles"
+          />
           <small v-if="props.validationErrors.projectName" class="hse-project-field field-error">
             {{ props.validationErrors.projectName }}
           </small>
         </div>
 
-
-
         <!-- contractors -->
-        <div class="hse-project-field input-wrapper" :class="{ 'field-has-error': props.validationErrors.contractors }">
-          <UpdatedCustomInputSelect :model-value="contractorIds" :type="2" :controller="contractorController"
-            :params="contractorParams" label="sub contractors" placeholder="Select sub contractors" :is-dialog="true"
-            v-model:dialog-visible="contractorDialog" @update:model-value="setContractors">
+        <div
+          class="hse-project-field input-wrapper"
+          :class="{ 'field-has-error': props.validationErrors.contractors }"
+        >
+          <UpdatedCustomInputSelect
+            :model-value="contractorIds"
+            :type="2"
+            :controller="contractorController"
+            :params="contractorParams"
+            :label="$t('sub contractors')"
+            :placeholder="$t('Select sub contractors')"
+            :is-dialog="true"
+            v-model:dialog-visible="contractorDialog"
+            @update:model-value="setContractors"
+          >
             <template #LabelHeader>
               <span class="add-dialog" @click="contractorDialog = true">{{ $t('New') }}</span>
             </template>
@@ -139,10 +163,20 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
         <!-- Cost -->
         <label class="hse-project-field-label hse-project-field input-wrapper">
           <!--  <span aria-hidden="true">*</span> -->
-          <span class="required-label"> Cost</span>
-          <input class="hse-project-input" v-model="basic.cost" type="number" inputmode="decimal" min="0" step="0.01"
-            required placeholder="0.00" :class="{ 'field-invalid': props.validationErrors.cost }"
-            @input="emit('clearValidationError', 'cost')" />
+          <span class="required-label"> {{ $t('Cost') }}</span>
+          <input
+            dir="ltr"
+            class="hse-project-input"
+            v-model="basic.cost"
+            type="number"
+            inputmode="decimal"
+            min="0"
+            step="0.01"
+            required
+            placeholder="0.00"
+            :class="{ 'field-invalid': props.validationErrors.cost }"
+            @input="emit('clearValidationError', 'cost')"
+          />
           <small v-if="props.validationErrors.cost" class="hse-project-field field-error">
             {{ props.validationErrors.cost }}
           </small>
@@ -150,10 +184,18 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
 
         <!-- Start Date -->
         <label class="hse-project-field-label hse-project-field input-wrapper">
-          <span class="required-label"> Start date <span aria-hidden="true">*</span> </span>
-          <DatePicker panel-class="hse-project-overlay" v-model="basic.startDate" date-format="yy-mm-dd"
-            placeholder="Select start date" required :invalid="Boolean(props.validationErrors.startDate)"
-            @update:model-value="emit('clearValidationError', 'startDate')" />
+          <span class="required-label">
+            {{ $t('Start date') }} <span aria-hidden="true">*</span>
+          </span>
+          <DatePicker
+            panel-class="hse-project-overlay"
+            v-model="basic.startDate"
+            date-format="yy-mm-dd"
+            :placeholder="$t('Select start date')"
+            required
+            :invalid="Boolean(props.validationErrors.startDate)"
+            @update:model-value="emit('clearValidationError', 'startDate')"
+          />
           <small v-if="props.validationErrors.startDate" class="hse-project-field field-error">
             {{ props.validationErrors.startDate }}
           </small>
@@ -161,22 +203,40 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
 
         <!-- End Date -->
         <label class="hse-project-field-label hse-project-field input-wrapper">
-          <span class="required-label">End date <span aria-hidden="true">*</span> </span>
-          <DatePicker panel-class="hse-project-overlay" v-model="basic.endDate" date-format="yy-mm-dd"
-            placeholder="Select end date" :min-date="basic.startDate ?? undefined" required
+          <span class="required-label"
+            >{{ $t('End date') }} <span aria-hidden="true">*</span>
+          </span>
+          <DatePicker
+            panel-class="hse-project-overlay"
+            v-model="basic.endDate"
+            date-format="yy-mm-dd"
+            :placeholder="$t('Select end date')"
+            :min-date="basic.startDate ?? undefined"
+            required
             :invalid="Boolean(props.validationErrors.endDate)"
-            @update:model-value="emit('clearValidationError', 'endDate')" />
+            @update:model-value="emit('clearValidationError', 'endDate')"
+          />
           <small v-if="props.validationErrors.endDate" class="hse-project-field field-error">
             {{ props.validationErrors.endDate }}
           </small>
         </label>
 
-
         <!-- Locations -->
-        <div class="hse-project-field input-wrapper" :class="{ 'field-has-error': props.validationErrors.locations }">
-          <UpdatedCustomInputSelect :required="true" :model-value="locations" :controller="locationController"
-            :params="locationParams" label="location" placeholder="Select locations" :type="2"
-            :onclick="() => (locationVisible = true)" @update:model-value="setLocations" />
+        <div
+          class="hse-project-field input-wrapper"
+          :class="{ 'field-has-error': props.validationErrors.locations }"
+        >
+          <UpdatedCustomInputSelect
+            :required="true"
+            :model-value="locations"
+            :controller="locationController"
+            :params="locationParams"
+            :label="$t('location')"
+            :placeholder="$t('Select locations')"
+            :type="2"
+            :onclick="() => (locationVisible = true)"
+            @update:model-value="setLocations"
+          />
           <small v-if="props.validationErrors.locations" class="hse-project-field field-error">
             {{ props.validationErrors.locations }}
           </small>
@@ -185,17 +245,16 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
             {{
               $t(
                 'Removing this Location will also remove all employees and equipment and teams assigned to this Location from the project.',
-            )
+              )
             }}
           </small>
         </div>
 
-
         <!-- Zones -->
         <div class="switch-row zone-switch">
           <span>
-            <strong>Project has zones</strong>
-            <small>Turn this on to select zones for the chosen locations.</small>
+            <strong>{{ $t('Project has zones') }}</strong>
+            <small>{{ $t('Turn this on to select zones for the chosen locations.') }}</small>
           </span>
           <ToggleSwitch v-model="basic.hasZoon" />
         </div>
@@ -204,43 +263,69 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
             <span>{{ $t('zones') }} <span class="required-star" aria-hidden="true">*</span></span>
             <AddProjectZoneDialog @update:data="setZones" />
           </label>
-          <AddZoneDialog :locations="locations" :selected-zones="props.selectedZones" @update:data="setZones" />
+          <AddZoneDialog
+            :locations="locations"
+            :selected-zones="props.selectedZones"
+            @update:data="setZones"
+          />
           <small v-if="props.validationErrors.zones" class="hse-project-field field-error">
             {{ props.validationErrors.zones }}
           </small>
         </div>
-
-
       </div>
     </section>
     <section class="hse-wizard-section">
-      <h3 class="hse-wizard-section-title">Operating structure</h3>
+      <h3 class="hse-wizard-section-title">{{ $t('Operating structure') }}</h3>
       <div class="form-grid">
         <!-- Image -->
         <div class="hse-project-field input-wrapper full">
-          <HandleFIlesUpload label="Project image (optional)" accept="image/*" :max-files="1" :multiple="false"
-            :required="false" :file="basic.image ?? undefined" @change="updateImage" />
+          <HandleFIlesUpload
+            :label="$t('Project image (optional)')"
+            accept="image/*"
+            :max-files="1"
+            :multiple="false"
+            :required="false"
+            :file="basic.image ?? undefined"
+            @change="updateImage"
+          />
         </div>
         <!-- Scope of Work -->
         <div class="hse-project-field input-wrapper full">
-          <LangTitleInput label="project_scope_of_work" :langs="langDefault" :model-value="langsDescription"
-            field-type="description" type="textarea" placeholder="What is the project scope of work?" :required="false"
-            help-text="Describe the scope, main activities, and work boundaries in each language."
-            @update:model-value="setLangDescriptions" />
+          <LangTitleInput
+            :label="$t('project_scope_of_work')"
+            :langs="langDefault"
+            :model-value="langsDescription"
+            field-type="description"
+            type="textarea"
+            :placeholder="$t('What is the project scope of work?')"
+            :required="false"
+            :help-text="
+              $t('Describe the scope, main activities, and work boundaries in each language.')
+            "
+            @update:model-value="setLangDescriptions"
+          />
         </div>
-
 
         <label class="hse-project-field-label hse-project-field input-wrapper">
           <!--  <span aria-hidden="true">*</span> -->
-          <span class="required-label"> Number Of Drills </span>
-          <input class="hse-project-input" v-model.number="basic.drill_count" type="number" inputmode="numeric" min="0"
-            step="1" required placeholder="1" :class="{ 'field-invalid': props.validationErrors.drill_count }"
-            @input="emit('clearValidationError', 'drill_count')" />
+          <span class="required-label"> {{ $t('Number Of Drills') }} </span>
+          <input
+            dir="ltr"
+            class="hse-project-input"
+            v-model.number="basic.drill_count"
+            type="number"
+            inputmode="numeric"
+            min="0"
+            step="1"
+            required
+            placeholder="1"
+            :class="{ 'field-invalid': props.validationErrors.drill_count }"
+            @input="emit('clearValidationError', 'drill_count')"
+          />
           <small v-if="props.validationErrors.drill_count" class="hse-project-field field-error">
             {{ props.validationErrors.drill_count }}
           </small>
         </label>
-
       </div>
     </section>
     <LocationSelectDialog v-model:visible="locationVisible" @location-added="reloadLocations" />
@@ -271,7 +356,7 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
   }
 }
 
-.required-label>span {
+.required-label > span {
   color: #ef4444;
 }
 

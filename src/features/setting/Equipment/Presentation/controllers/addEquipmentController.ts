@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
@@ -31,7 +32,7 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
     // useLoaderStore().setLoadingWithDialog();
     if (Array.isArray(params.data)) {
       if (params.data.length === 0) {
-        new OpenWarningDilaog('Excel file contains no data').openDialog()
+        new OpenWarningDilaog(localizeUi('Excel file contains no data')).openDialog()
         // console.log('emptyyyy')
         return
       }
@@ -39,17 +40,17 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
       for (const el of params.data) {
         console.log(params.data, ' params.data')
         if (!el.name) {
-          new OpenWarningDilaog('Name Is Required').openDialog()
+          new OpenWarningDilaog(localizeUi('Name Is Required')).openDialog()
           return
         }
 
         if (!el.equipment_type_id) {
-          new OpenWarningDilaog('Equipment Type Is Required').openDialog()
+          new OpenWarningDilaog(localizeUi('Equipment Type Is Required')).openDialog()
           return
         }
 
         if (!el.status) {
-          new OpenWarningDilaog('Status Is Required').openDialog()
+          new OpenWarningDilaog(localizeUi('Status Is Required')).openDialog()
           return
         }
 
@@ -59,17 +60,17 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
         // }
 
         if (el.status == EquipmentStatus.RENT && !el.period) {
-          new OpenWarningDilaog('Rent Period Is Required').openDialog()
+          new OpenWarningDilaog(localizeUi('Rent Period Is Required')).openDialog()
           return
         }
 
         if (el.status == EquipmentStatus.RENT && !el.checkin_date) {
-          new OpenWarningDilaog('Rent Start Date Is Required').openDialog()
+          new OpenWarningDilaog(localizeUi('Rent Start Date Is Required')).openDialog()
           return
         }
 
         if (el.status == EquipmentStatus.RENT && !el.checkout_date) {
-          new OpenWarningDilaog('Rent End Date Is Required').openDialog()
+          new OpenWarningDilaog(localizeUi('Rent End Date Is Required')).openDialog()
           return
         }
       }
@@ -77,15 +78,15 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
       const vehicleKm = String(params.VehicleKm ?? '').trim()
 
       if (params.VehicleKm && params.VehicleKm.length > 0 && !/^\d+$/.test(vehicleKm)) {
-        new OpenWarningDilaog('Kilometers should contain numbers only').openDialog()
+        new OpenWarningDilaog(localizeUi('Kilometers should contain numbers only')).openDialog()
         return
       }
       if (params?.status == EquipmentStatus.RENT && Number(params?.equipmentRentTime) < 1) {
-        new OpenWarningDilaog('Rent Time Should Be More Than One').openDialog()
+        new OpenWarningDilaog(localizeUi('Rent Time Should Be More Than One')).openDialog()
         return
       }
       if (params?.status == EquipmentStatus.RENT && !params?.equipmentRentStartDate) {
-        new OpenWarningDilaog('Rent Start Date Is Required').openDialog()
+        new OpenWarningDilaog(localizeUi('Rent Start Date Is Required')).openDialog()
         return
       }
     }
@@ -95,7 +96,7 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })

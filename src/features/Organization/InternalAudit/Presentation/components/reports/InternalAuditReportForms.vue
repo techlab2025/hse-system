@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { ncrStatusLabel as GetNcrStatus } from '../../utils/labels'
 import type InternalAuditNcrModel from '../../../Data/models/ncrs/InternalAuditNcrModel'
 import InternalAuditPlanTab from '../plan/InternalAuditPlanTab.vue'
 import InternalAuditAttendanceTab from '../attendance/InternalAuditAttendanceTab.vue'
 import InternalAuditNcrForm from '../ncrs/InternalAuditNcrForm.vue'
-import { StatusEnum } from '../../../Core/enums/ncrs/StatusEnum.ts'
 
 defineProps<{
   auditId: number
@@ -11,43 +11,28 @@ defineProps<{
   ncrs: InternalAuditNcrModel[]
   ncrError: string
 }>()
-
-const GetNcrStatus = (status: StatusEnum) => {
-  switch (status) {
-    case StatusEnum.CLOSED:
-      return 'closed'
-    case StatusEnum.OPEN:
-      return 'open'
-    case StatusEnum.IN_PROGRESS:
-      return 'in progress'
-    case StatusEnum.PENDING:
-      return 'pending'
-    default:
-      return 'unknown'
-  }
-}
 </script>
 
 <template>
   <div class="report-step-forms">
-    <section aria-label="Audit plan">
-      <h2>1. Audit plan</h2>
+    <section :aria-label="$t('Audit plan')">
+      <h2>{{ $t('1. Audit plan') }}</h2>
       <InternalAuditPlanTab :key="`plan-${auditId}`" :internal-audit-plan-id="auditId" readonly />
     </section>
-    <section aria-label="Audit attendance">
-      <h2>2. Attendance</h2>
+    <section :aria-label="$t('Audit attendance')">
+      <h2>{{ $t('2. Attendance') }}</h2>
       <InternalAuditAttendanceTab
         :key="`attendance-${auditId}`"
         :internal-audit-plan-id="auditId"
         readonly
       />
     </section>
-    <section aria-label="All non-conformance reports">
+    <section :aria-label="$t('All non-conformance reports')">
       <h2>
-        3. NCRs <span>({{ ncrs.length }})</span>
+        {{ $t('3. NCRs') }} <span>({{ ncrs.length }})</span>
       </h2>
       <p v-if="ncrError" class="error" role="alert">{{ ncrError }}</p>
-      <p v-else-if="!ncrs.length">No NCRs recorded for this audit.</p>
+      <p v-else-if="!ncrs.length">{{ $t('No NCRs recorded for this audit.') }}</p>
       <article v-for="(ncr, index) in ncrs" :key="ncr.id" class="report-ncr">
         <div class="report-ncr-header">
           <h3>{{ index + 1 }}. {{ ncr.serial_name || ncr.ncr || `NCR-${ncr.id}` }}</h3>
@@ -68,7 +53,7 @@ const GetNcrStatus = (status: StatusEnum) => {
           readonly
           embedded
         />
-        <p v-else class="error" role="alert">Details are unavailable for this NCR.</p>
+        <p v-else class="error" role="alert">{{ $t('Details are unavailable for this NCR.') }}</p>
       </article>
     </section>
   </div>

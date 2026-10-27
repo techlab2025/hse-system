@@ -24,7 +24,8 @@ import type VisitActivityDetailsModel from '../../Data/models/VisitActivityDetai
 type LanguageOption = { locale: string; title: string; icon?: Component | string }
 type LocalizedTitle = { locale: string; title: string }
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('VisitActivityForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('VisitActivityForm')
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddVisitActivityParams | EditVisitActivityParams): void
@@ -96,11 +97,12 @@ watch(
     allIndustries.value = data?.allIndustries ?? false
     industry.value = data?.industries ?? []
     if (!availableLanguages.length) return
-    titles.value = availableLanguages.map((language) =>
-      data?.titles?.find((item) => item.locale === language.locale) ?? {
-        locale: language.locale,
-        title: '',
-      },
+    titles.value = availableLanguages.map(
+      (language) =>
+        data?.titles?.find((item) => item.locale === language.locale) ?? {
+          locale: language.locale,
+          title: '',
+        },
     )
     updateData()
   },
@@ -113,11 +115,21 @@ const requiredFields = computed(() => [
     message: 'Visit Activity Title Is Required',
     isMissing: () => !titles.value.some((item) => String(item.title ?? '').trim().length > 0),
   },
-  { key: 'industry', message: '', isMissing: () => user.user?.type === OrganizationTypeEnum.ADMIN && !allIndustries.value && !industry.value?.length },
+  {
+    key: 'industry',
+    message: '',
+    isMissing: () =>
+      user.user?.type === OrganizationTypeEnum.ADMIN &&
+      !allIndustries.value &&
+      !industry.value?.length,
+  },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const validateRequiredFields = async () => {
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = Object.fromEntries(
     missedFields.map((field) => [field.key, field.message]),
   )
@@ -148,14 +160,35 @@ onMounted(fetchLanguages)
       {{ requiredFieldErrors.title }}
     </p>
   </div>
-  <div v-if="user.user?.type === OrganizationTypeEnum.ADMIN" class="input-wrapper col-span-4 md:col-span-2">
-    <CustomCheckbox :index="3" title="all_industries" :checked="allIndustries" @update:checked="updateAllIndustries" />
+  <div
+    v-if="user.user?.type === OrganizationTypeEnum.ADMIN"
+    class="input-wrapper col-span-4 md:col-span-2"
+  >
+    <CustomCheckbox
+      :index="3"
+      :title="$t('all_industries')"
+      :checked="allIndustries"
+      @update:checked="updateAllIndustries"
+    />
   </div>
-  <div data-required-field="industry" v-if="!allIndustries && user.user?.type === OrganizationTypeEnum.ADMIN" class="col-span-4 md:col-span-2">
-    <CustomSelectInput :model-value="industry" :controller="industryController" :params="industryParams"
-      label="industry" id="visitactivity-industry" placeholder="Select industry" :type="2"
-      @update:model-value="setIndustry" />
-    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">{{ requiredFieldErrors.industry }}</p>
+  <div
+    data-required-field="industry"
+    v-if="!allIndustries && user.user?.type === OrganizationTypeEnum.ADMIN"
+    class="col-span-4 md:col-span-2"
+  >
+    <CustomSelectInput
+      :model-value="industry"
+      :controller="industryController"
+      :params="industryParams"
+      :label="$t('industry')"
+      id="visitactivity-industry"
+      :placeholder="$t('Select industry')"
+      :type="2"
+      @update:model-value="setIndustry"
+    />
+    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">
+      {{ requiredFieldErrors.industry }}
+    </p>
   </div>
 </template>
 

@@ -180,22 +180,16 @@ watch(
   <!--  </div>-->
   <div class="col-span-4 md:col-span-2 input-wrapper check-box">
     <label>{{ $t('all_industries') }}</label>
-    <input
-      type="checkbox"
-      :value="true"
-      v-model="allIndustries"
-
-      @change="updateData"
-    />
+    <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
   </div>
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
     <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
-      label="industry"
+      :label="$t('industry')"
       id="ProjectType"
-      placeholder="Select industry"
+      :placeholder="$t('Select industry')"
       :type="2"
       @update:modelValue="setIndustry"
     />

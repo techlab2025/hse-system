@@ -134,7 +134,14 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchFaq())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchFaq" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchFaq"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
@@ -147,14 +154,16 @@ watch(
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.WEBSITE,
-    PermissionsEnum.EQUIPMENT_TYPE_ALL,
-    PermissionsEnum.EQUIPMENT_TYPE_DELETE,
-    PermissionsEnum.EQUIPMENT_TYPE_FETCH,
-    PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-    PermissionsEnum.EQUIPMENT_TYPE_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.WEBSITE,
+      PermissionsEnum.EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
+      PermissionsEnum.EQUIPMENT_TYPE_FETCH,
+      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -177,34 +186,46 @@ watch(
                 <td data-label="#">
                   <router-link :to="`/admin/Faq/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
-                <td data-label="Name" v-html="wordSlice(item.question)"></td>
-                <td data-label="Name" v-html="wordSlice(item.answer)"></td>
+                <td :data-label="$t('Name')" v-html="wordSlice(item.question)"></td>
+                <td :data-label="$t('Name')" v-html="wordSlice(item.answer)"></td>
 
-                <td data-label="status">
-                  <PermissionBuilder :code="[
-                    PermissionsEnum.WEBSITE,
-                    PermissionsEnum.FAQ_ALL,
-                    PermissionsEnum.FAQ_CHANGE_STATUS,
-                  ]">
-                    <ToggleSwitch :modelValue="item.is_active === 1" binary
-                      @update:model-value="changeStatusFaq(item.id)" />
+                <td :data-label="$t('status')">
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.WEBSITE,
+                      PermissionsEnum.FAQ_ALL,
+                      PermissionsEnum.FAQ_CHANGE_STATUS,
+                    ]"
+                  >
+                    <ToggleSwitch
+                      :modelValue="item.is_active === 1"
+                      binary
+                      @update:model-value="changeStatusFaq(item.id)"
+                    />
                   </PermissionBuilder>
                 </td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusFaq-->
                   <!--                  v-if="item.FaqStatus === FaqStatusEnum.Draft"-->
                   <!--                  :FaqId="item.id"-->
                   <!--                  @FaqChangeStatus="fetchFaq"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteFaq)" @delete="deleteFaq(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteFaq)"
+                    @delete="deleteFaq(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -213,20 +234,40 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/admin/faq/add`" addText="Add faq"
-          description="You have no Faq .. All your joined customers will appear here when you add your customer data"
-          title="You have No Faq" />
+        <DataEmpty
+          :link="`/admin/faq/add`"
+          :addText="$t('Add_Faq')"
+          :description="
+            $t(
+              'You have no Faq .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Faq')"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/admin/faq/add`" addText="Add Faq"
-          description="You have no Faq .. All your joined customers will appear here when you add your customer data"
-          title="You have No Faq" />
+        <DataFailed
+          :link="`/admin/faq/add`"
+          :addText="$t('Add_Faq')"
+          :description="
+            $t(
+              'You have no Faq .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Faq')"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no Faq .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Faq .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+      />
     </template>
   </PermissionBuilder>
 </template>

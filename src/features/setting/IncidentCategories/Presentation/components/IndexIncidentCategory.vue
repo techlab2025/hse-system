@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -81,7 +82,9 @@ const searchIncidentCategory = debounce(() => {
 
 const deleteIncidentCategory = async (id: number) => {
   const deleteIncidentCategoryParams = new DeleteIncidentCategoryParams(id)
-  await DeleteIncidentCategoryController.getInstance().deleteIncidentCategory(deleteIncidentCategoryParams)
+  await DeleteIncidentCategoryController.getInstance().deleteIncidentCategory(
+    deleteIncidentCategoryParams,
+  )
   await fetchIncidentCategory()
 }
 
@@ -142,7 +145,7 @@ const actionList = (id: number, deleteIncidentCategoryItem: (id: number) => void
 
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert('No data available to export')
+    alert(localizeUi('No data available to export'))
     return
   }
   const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
@@ -160,7 +163,10 @@ const exportExcel = () => {
 }
 
 const DownloadExample = () => {
-  const worksheetData = [{ title: 'Example Incident Category' }, { title: 'Example Incident Category 2' }]
+  const worksheetData = [
+    { title: 'Example Incident Category' },
+    { title: 'Example Incident Category 2' },
+  ]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'IncidentCategories')
@@ -211,8 +217,9 @@ const IndexIncidentCategoryactionList = () => [
         <Search />
       </span>
       <input
+        dir="auto"
         v-model="word"
-        :placeholder="'search'"
+        :placeholder="$t('search')"
         class="input"
         type="text"
         @input="searchIncidentCategory"
@@ -291,10 +298,10 @@ const IndexIncidentCategoryactionList = () => [
                     >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="Incident Type">{{ item.incidentType?.title ?? '---' }}</td>
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('Incident Type')">{{ item.incidentType?.title ?? '---' }}</td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <DropList
                     :actionList="actionList(item.id, deleteIncidentCategory)"
                     @delete="deleteIncidentCategory(item.id)"
@@ -324,9 +331,13 @@ const IndexIncidentCategoryactionList = () => [
             :link="`/${
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/incident-category/add`"
-            addText="Add Incident Category"
-            description="You have no Incident Category .. All your joined customers will appear here when you add your customer data"
-            title="You have No Incident Category"
+            :addText="$t('Add Incident Category')"
+            :description="
+              $t(
+                'You have no Incident Category .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Incident Category')"
           />
         </PermissionBuilder>
       </template>
@@ -338,9 +349,13 @@ const IndexIncidentCategoryactionList = () => [
             :link="`/${
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/incident-category/add`"
-            addText="Add Incident Category"
-            description="You have no Incident Category .. All your joined customers will appear here when you add your customer data"
-            title="You have No Incident Category"
+            :addText="$t('Add Incident Category')"
+            :description="
+              $t(
+                'You have no Incident Category .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Incident Category')"
           />
         </PermissionBuilder>
       </template>
@@ -348,8 +363,12 @@ const IndexIncidentCategoryactionList = () => [
 
     <template #notPermitted>
       <DataFailed
-        addText="Have not  Permission"
-        description="You have no Permission .. All your joined customers will appear here when you add your customer data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Permission .. All your joined customers will appear here when you add your customer data',
+          )
+        "
       />
     </template>
   </PermissionBuilder>
@@ -364,9 +383,11 @@ const IndexIncidentCategoryactionList = () => [
     <UploadIncidentCategoryExeclSheet
       :initial-file="pendingFile"
       @uploaded="
-        showUploadDialog = false;
-        pendingFile = null;
-        fetchIncidentCategory();
+        () => {
+          showUploadDialog = false
+          pendingFile = null
+          fetchIncidentCategory()
+        }
       "
     />
   </Dialog>

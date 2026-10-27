@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import { CertificateStatusEnum } from '../../Core/Enum/CertificateStatusEnum'
 
 export default class CertificateItemsModel {
@@ -22,12 +23,15 @@ export default class CertificateItemsModel {
   }
 
   static fromMap(data: any): CertificateItemsModel {
-    return new CertificateItemsModel(
-      data.id,
-      data.title,
-      data.status,
-      data.expired_at,
-      data?.certificate_id,
+    return localizedRecord(
+      new CertificateItemsModel(
+        data.id,
+        data.title,
+        data.status,
+        data.expired_at,
+        data?.certificate_id,
+      ),
+      data,
     )
   }
 

@@ -23,7 +23,6 @@ const fetchPrivacyDetails = async () => {
 onMounted(() => {
   fetchPrivacyDetails()
   // console.log('fetchPrivacyDetails');
-
 })
 
 const EditPrivacy = async (draft: boolean) => {
@@ -59,7 +58,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditPrivacy">
         <PrivacyForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">Edit</button>
+          <button type="submit" class="btn btn-primary">{{ $t('Edit') }}</button>
         </div>
       </form>
     </template>

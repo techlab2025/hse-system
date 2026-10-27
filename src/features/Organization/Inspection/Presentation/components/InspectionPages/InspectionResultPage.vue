@@ -216,10 +216,10 @@ const getEmployeeInitial = (name?: string) => name?.trim().charAt(0).toUpperCase
               </thead>
               <tbody>
                 <tr v-for="info in state.data" :key="info.id">
-                  <td data-label="Serial">
+                  <td :data-label="$t('Serial')">
                     <span class="result-serial">#{{ info.id }}</span>
                   </td>
-                  <td data-label="Employee">
+                  <td :data-label="$t('Employee')">
                     <div class="result-employee">
                       <span class="result-employee__avatar">
                         {{ getEmployeeInitial(info.employee?.name) }}
@@ -227,10 +227,10 @@ const getEmployeeInitial = (name?: string) => name?.trim().charAt(0).toUpperCase
                       <span class="result-employee__name">{{ info.employee?.name || '—' }}</span>
                     </div>
                   </td>
-                  <td data-label="Date">
+                  <td :data-label="$t('Date')">
                     <span class="result-date">{{ info.date || '—' }}</span>
                   </td>
-                  <td data-label="Time">
+                  <td :data-label="$t('Time')">
                     <span class="result-time">
                       <span class="result-time__dot"></span>
                       {{ info.time || '—' }}
@@ -255,17 +255,25 @@ const getEmployeeInitial = (name?: string) => name?.trim().charAt(0).toUpperCase
     <template #empty>
       <DataEmpty
         :link="`/organization/equipment-mangement/inspection/add`"
-        addText="Add Inspection"
-        description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
-        title="You have No Inspection"
+        :addText="$t('add_inspection')"
+        :description="
+          $t(
+            'You have no Inspection .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+        :title="$t('You have No Inspection')"
       />
     </template>
     <template #failed>
       <DataFailed
         :link="`/organization/equipment-mangement/inspection/add`"
-        addText="Add Inspection"
-        description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
-        title="You have No Inspection"
+        :addText="$t('add_inspection')"
+        :description="
+          $t(
+            'You have no Inspection .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+        :title="$t('You have No Inspection')"
       />
     </template>
   </DataStatus>
@@ -929,10 +937,4 @@ const getEmployeeInitial = (name?: string) => name?.trim().charAt(0).toUpperCase
     min-height: 92px;
   }
 }
-
-
-
-
-
-
 </style>

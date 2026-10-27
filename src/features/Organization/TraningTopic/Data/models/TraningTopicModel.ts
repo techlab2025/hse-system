@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class TraningTopicModel extends TitleInterface {
@@ -6,7 +7,10 @@ export default class TraningTopicModel extends TitleInterface {
   }
 
   static fromMap(data: Record<string, unknown>): TraningTopicModel {
-    return new TraningTopicModel(Number(data.id ?? 0), String(data.title ?? ''))
+    return localizedRecord(
+      new TraningTopicModel(Number(data.id ?? 0), String(data.title ?? '')),
+      data,
+    )
   }
 
   static example(): TraningTopicModel {

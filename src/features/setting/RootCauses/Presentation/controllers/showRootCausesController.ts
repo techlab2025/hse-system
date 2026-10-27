@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type RootCausesModel from '../../Data/models/RootCausesModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
@@ -31,7 +32,7 @@ export default class ShowRootCausesController extends ControllerInterface<RootCa
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

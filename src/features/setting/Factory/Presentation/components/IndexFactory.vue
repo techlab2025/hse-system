@@ -184,7 +184,13 @@ const headerActions = () => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <span class="icon-remove" @click="((word = ''), searchFactory())"><Search /></span>
-      <input v-model="word" :placeholder="$t('search')" class="input" @input="searchFactory" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        @input="searchFactory"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ActionsList
@@ -244,11 +250,17 @@ const headerActions = () => [
                     >{{ (currentPage - 1) * countPerPage + index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                <td
+                  :data-label="$t('all_industries')"
+                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                >
                   {{ item.allIndustries ? $t('yes') : $t('no') }}
                 </td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                <td
+                  :data-label="$t('all_industries')"
+                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                >
                   {{
                     item.industries.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')
@@ -259,7 +271,7 @@ const headerActions = () => [
                 <!--                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />-->
                 <!--                </td>-->
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusFactory-->
                   <!--                  v-if="item.FactoryStatus === FactoryStatusEnum.Draft"-->
                   <!--                  :FactoryId="item.id"-->
@@ -295,9 +307,13 @@ const headerActions = () => [
         >
           <DataEmpty
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
-            addText="add_hazard_factor"
-            description="You have no Factor .. All your joined customers will appear here when you add your customer data"
-            title="You have No Factor"
+            :addText="$t('add_hazard_factor')"
+            :description="
+              $t(
+                'You have no Factor .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Factor')"
           />
         </PermissionBuilder>
       </template>
@@ -312,9 +328,13 @@ const headerActions = () => [
         >
           <DataFailed
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
-            addText="add_hazard_factor"
-            description="You have no Factor .. All your joined customers will appear here when you add your customer data"
-            title="You have No Factor"
+            :addText="$t('add_hazard_factor')"
+            :description="
+              $t(
+                'You have no Factor .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Factor')"
           />
         </PermissionBuilder>
       </template>
@@ -322,8 +342,12 @@ const headerActions = () => [
 
     <template #notPermitted>
       <DataFailed
-        addText="Have not  Permission"
-        description="You have no Factor .. All your joined customers will appear here when you add your customer data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Factor .. All your joined customers will appear here when you add your customer data',
+          )
+        "
       />
     </template>
   </PermissionBuilder>

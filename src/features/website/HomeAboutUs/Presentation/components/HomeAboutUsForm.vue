@@ -263,16 +263,16 @@ watch(
     <label for="alt_image">
       {{ $t('alt_image') }}
     </label>
-    <input type="text" v-model="alt_image" />
+    <input dir="auto" type="text" v-model="alt_image" />
   </div>
 
   <div class="col-span-4">
     <SingleFileUpload
       v-model="image"
       @update:modelValue="setImage"
-      label="Image"
+      :label="$t('image')"
       id="image"
-      placeholder="Select image"
+      :placeholder="$t('Select image')"
       :isCrop="true"
       :aspectRatio="1280 / 513"
       :index="0"
@@ -314,7 +314,7 @@ watch(
         <label for="alt_image">
           {{ $t('alt_image') }}
         </label>
-        <input type="text" v-model="item.alt_image" @input="updateData" />
+        <input dir="auto" type="text" v-model="item.alt_image" @input="updateData" />
       </div>
 
       <div class="col-span-4">
@@ -323,7 +323,7 @@ watch(
           @update:modelValue="(val) => setItemImage(index, val)"
           :label="`Image-${index + 1}`"
           :id="`image-${index + 1}`"
-          placeholder="Select image"
+          :placeholder="$t('Select image')"
           :index="index + 1"
           :isCrop="true"
           :aspectRatio="1 / 1"

@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -31,14 +32,14 @@ export default class DeleteEquipmentController extends ControllerInterface<Equip
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'deleted was successful',
+          titleContent: localizeUi('deleted was successful'),
           imageElement: successImage,
           messageContent: null,
         })
 
         // useLoaderStore().endLoadingWithDialog();
       } else {
-        throw new Error('Error while addServices')
+        throw new Error(localizeUi('Error while addServices'))
       }
     } catch (error: any) {
       console.log(error)

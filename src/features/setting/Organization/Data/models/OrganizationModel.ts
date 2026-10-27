@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
 
@@ -33,15 +34,18 @@ export default class OrganizationModel extends TitleInterface {
   }
 
   static fromMap(data: any): OrganizationModel {
-    return new OrganizationModel(
-      data.id,
-      data.name,
-      data.phone,
-      data.email,
-      data.image,
-      data.website_link,
-      data.industry,
-      data.languages,
+    return localizedRecord(
+      new OrganizationModel(
+        data.id,
+        data.name,
+        data.phone,
+        data.email,
+        data.image,
+        data.website_link,
+        data.industry,
+        data.languages,
+      ),
+      data,
     )
   }
 }

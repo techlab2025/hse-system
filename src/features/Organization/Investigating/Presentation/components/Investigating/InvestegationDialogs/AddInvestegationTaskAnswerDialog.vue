@@ -43,23 +43,23 @@ const CreateInvestegationTaskResult = async () => {
 </script>
 
 <template>
-  <button class="answer-trigger" @click="visible = true">Answer</button>
+  <button class="answer-trigger" @click="visible = true">{{ $t('Answer') }}</button>
   <Dialog v-model:visible="visible" modal :style="{ width: '40rem', maxWidth: '92vw' }">
     <template #header>
       <div class="investigation-answer-header flex justify-start items-center gap-2">
-        <img :src="ChatForward" alt="chat" width="40" height="40" />
-        <h3 class="title">Add your answer</h3>
+        <img :src="ChatForward" alt="" aria-hidden="true" width="40" height="40" />
+        <h3 class="title">{{ $t('Add your answer') }}</h3>
       </div>
     </template>
 
     <div class="answer-content">
       <p class="questions-title">{{ task }}</p>
       <div class="input-wrapper">
-        <label class="answer-label" for="answer">your answer</label>
-        <textarea name="answer" id="answer" class="input" v-model="answer"></textarea>
+        <label class="answer-label" for="answer">{{ $t('your answer') }}</label>
+        <textarea dir="auto" name="answer" id="answer" class="input" v-model="answer"></textarea>
       </div>
       <button @click="CreateInvestegationTaskResult" class="confirm-answer" :disabled="!canSubmit">
-        {{ isSubmitting ? 'Saving...' : 'Confirm' }}
+        {{ isSubmitting ? $t('Saving...') : $t('Confirm') }}
       </button>
     </div>
   </Dialog>

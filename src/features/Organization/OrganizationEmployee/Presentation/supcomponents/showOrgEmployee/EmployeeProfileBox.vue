@@ -78,7 +78,7 @@ const deleteOrganizatoinEmployee = async (id: number) => {
 <template>
   <div class="employee-profile-box">
     <div class="employee-img">
-      <img :src="state?.image || employeeFallback" :alt="state?.name || 'Employee'" />
+      <img :src="state?.image || employeeFallback" :alt="state?.name || $t('Employee')" />
     </div>
 
     <div class="all-info">
@@ -89,14 +89,14 @@ const deleteOrganizatoinEmployee = async (id: number) => {
             state?.serialName || state?.serial_number
           }}</span>
 
-          <div class="employee-name">{{ state?.name || 'Not Selectes' }}</div>
+          <div class="employee-name">{{ state?.name || $t('Not Selectes') }}</div>
           <div class="employee-position">
             {{ state?.showHierarchy?.map((el) => el.title).join(' - ') }}
           </div>
           <div class="employee-badges">
-            <span v-if="state?.is_leader">Team leader</span>
-            <span v-if="state?.canAccessDashboard">Dashboard access</span>
-            <span v-if="state?.allPermissions">Full permissions</span>
+            <span v-if="state?.is_leader">{{ $t('Team Leader') }}</span>
+            <span v-if="state?.canAccessDashboard">{{ $t('Dashboard access') }}</span>
+            <span v-if="state?.allPermissions">{{ $t('Full permissions') }}</span>
           </div>
         </div>
         <DropList
@@ -112,11 +112,13 @@ const deleteOrganizatoinEmployee = async (id: number) => {
         </div>
         <div class="all-info-row-item">
           <h4 class="all-info-row-item-label">{{ $t('Email') }} :</h4>
-          <span class="all-info-row-item-value">{{ state?.email || 'not-select@mail.com' }}</span>
+          <span class="all-info-row-item-value">{{
+            state?.email || $t('No email available')
+          }}</span>
         </div>
         <div class="all-info-row-item" v-if="state?.startDate">
           <h4 class="all-info-row-item-label">{{ $t('Start Date') }} :</h4>
-          <span class="all-info-row-item-value">{{ state?.startDate || 'not-start-date' }}</span>
+          <span class="all-info-row-item-value">{{ state?.startDate || $t('No date') }}</span>
         </div>
       </div>
     </div>
@@ -136,7 +138,11 @@ const deleteOrganizatoinEmployee = async (id: number) => {
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 76%, transparent);
   border-radius: 26px;
   background:
-    radial-gradient(circle at 0 0, color-mix(in srgb, var(--brand-primary-500) 14%, transparent), transparent 32%),
+    radial-gradient(
+      circle at 0 0,
+      color-mix(in srgb, var(--brand-primary-500) 14%, transparent),
+      transparent 32%
+    ),
     linear-gradient(135deg, var(--surface-1), var(--brand-primary-50));
   box-shadow: 0 22px 48px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
 }

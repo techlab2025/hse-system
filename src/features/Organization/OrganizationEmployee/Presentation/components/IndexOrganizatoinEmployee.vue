@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -70,7 +72,13 @@ const id = route?.query?.heirarchy_id
 const filterHierarchyId = ref<number | null>(id ? Number(id) : null)
 const hierarchyOptions = ref<TitleInterface[]>([])
 const filterFields = computed(() => [
-  { key: 'hierarchyId', label: 'position', options: hierarchyOptions.value },
+  {
+    key: 'hierarchyId',
+    get label() {
+      return localizeUi('position')
+    },
+    options: hierarchyOptions.value,
+  },
 ])
 
 // const type = ref<OrganizatoinEmployeeStatusEnum>(OrganizatoinEmployeeStatusEnum[route.params.type as keyof typeof OrganizatoinEmployeeStatusEnum])
@@ -229,7 +237,7 @@ watch(
 
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert('No data available to export')
+    alert(localizeUi('No data available to export'))
     return
   }
   const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
@@ -412,7 +420,7 @@ const IndexOrganizationEmployeectionList = () => [
         style="width: 20%; height: fit-content; padding: 12px; margin-top: 35px"
         @click="AddEmployees"
       >
-        Add Employees
+        {{ $t('Add Employees') }}
       </button>
     </div>
     <div
@@ -424,8 +432,9 @@ const IndexOrganizationEmployeectionList = () => [
         <Search />
       </span>
       <input
+        dir="auto"
         v-model="word"
-        :placeholder="'search'"
+        :placeholder="$t('search')"
         class="input"
         type="text"
         @input="searchOrganizatoinEmployee"
@@ -520,14 +529,14 @@ const IndexOrganizationEmployeectionList = () => [
                     @error="handleEmployeeImageError"
                   />
                 </td>
-                <td data-label="Name">{{ item.name }}</td>
-                <td data-label="Hierarchy" class="table-Hierarchy">
+                <td :data-label="$t('Name')">{{ item.name }}</td>
+                <td :data-label="$t('Hierarchy')" class="table-Hierarchy">
                   {{ item.hierarchy.map((el) => el.title).join(' - ') || 'N/A' }}
                 </td>
-                <td data-label="Email">{{ item.email }}</td>
-                <td data-label="Phone">{{ item.phone }}</td>
+                <td :data-label="$t('Email')">{{ item.email }}</td>
+                <td :data-label="$t('Phone')">{{ item.phone }}</td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <DropList
                     :actionList="
                       actionList(item.id, deleteOrganizatoinEmployee, item.hasAllPermission)
@@ -555,9 +564,13 @@ const IndexOrganizationEmployeectionList = () => [
         <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
           <DataEmpty
             :link="`/organization/organization-employee/add`"
-            addText="Add Employee"
-            description="You have no Employee .. All your joined customers will appear here when you add your customer data"
-            title="You have No Employee"
+            :addText="$t('Add Employee')"
+            :description="
+              $t(
+                'You have no Employee .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Employee')"
           />
         </PermissionBuilder>
       </template>
@@ -565,9 +578,13 @@ const IndexOrganizationEmployeectionList = () => [
         <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
           <DataFailed
             :link="`/organization/organization-employee/add`"
-            addText="Add Employee"
-            description="You have no Employee .. All your joined customers will appear here when you add your customer data"
-            title="You have No Employee"
+            :addText="$t('Add Employee')"
+            :description="
+              $t(
+                'You have no Employee .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Employee')"
           />
         </PermissionBuilder>
       </template>
@@ -576,8 +593,12 @@ const IndexOrganizationEmployeectionList = () => [
     <template #notPermitted>
       <DataFailed
         link="/organization"
-        addText="Have not  Permission"
-        description="You have no Employee .. All your joined customers will appear here when you add your customer data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Employee .. All your joined customers will appear here when you add your customer data',
+          )
+        "
       />
     </template>
   </PermissionBuilder>

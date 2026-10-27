@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { useRequiredFields, hasSelectedValue } from '@/composables/useRequiredFields'
 
 import { markRaw, onMounted, ref, watch } from 'vue'
@@ -218,18 +220,38 @@ const SerialNumber = ref()
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
 ])
 
-const { requiredFieldErrors, validateRequiredFields: validateFields } = useRequiredFields('HazardForm', () => [
-  { key: 'langs', message: '', isMissing: () => !langs.value.some((item) => String(item.title ?? '').trim().length > 0) },
-  { key: 'industry', message: '', isMissing: () => user.user?.type === OrganizationTypeEnum.ADMIN && !allIndustries.value && !hasSelectedValue(industry.value) },
-  { key: 'HazardType', message: '', isMissing: () => !props.hazardTypeId && !route.params.parent_id && !HazardType.value?.id },
-])
+const { requiredFieldErrors, validateRequiredFields: validateFields } = useRequiredFields(
+  'HazardForm',
+  () => [
+    {
+      key: 'langs',
+      message: '',
+      isMissing: () => !langs.value.some((item) => String(item.title ?? '').trim().length > 0),
+    },
+    {
+      key: 'industry',
+      message: '',
+      isMissing: () =>
+        user.user?.type === OrganizationTypeEnum.ADMIN &&
+        !allIndustries.value &&
+        !hasSelectedValue(industry.value),
+    },
+    {
+      key: 'HazardType',
+      message: '',
+      isMissing: () => !props.hazardTypeId && !route.params.parent_id && !HazardType.value?.id,
+    },
+  ],
+)
 const validateRequiredFields = async () => {
   updateData()
   return validateFields()
@@ -255,7 +277,9 @@ defineExpose({ validateRequiredFields })
       @update:modelValue="setLangs"
       :label="$t('risk')"
     />
-    <p v-if="requiredFieldErrors.langs" class="required-field-message" role="alert">{{ requiredFieldErrors.langs }}</p>
+    <p v-if="requiredFieldErrors.langs" class="required-field-message" role="alert">
+      {{ requiredFieldErrors.langs }}
+    </p>
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">
@@ -268,12 +292,13 @@ defineExpose({ validateRequiredFields })
   >
     <CustomCheckbox
       :index="3"
-      :title="`all_industries`"
+      :title="$t('all_industries')"
       :checked="allIndustries"
       @update:checked="allIndustries = $event"
     />
   </div>
-  <div data-required-field="industry"
+  <div
+    data-required-field="industry"
     class="input-wrapper col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
   >
@@ -281,13 +306,15 @@ defineExpose({ validateRequiredFields })
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
-      label="industry"
+      :label="$t('industry')"
       id="HazardType"
-      placeholder="Select industry"
+      :placeholder="$t('Select industry')"
       :type="2"
       @update:modelValue="setIndustry"
     />
-    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">{{ requiredFieldErrors.industry }}</p>
+    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">
+      {{ requiredFieldErrors.industry }}
+    </p>
   </div>
 
   <!-- <div class="input-wrapper col-span-4 md:col-span-2">
@@ -302,7 +329,8 @@ defineExpose({ validateRequiredFields })
       @update:modelValue="setFactor"
     />
   </div> -->
-  <div data-required-field="HazardType"
+  <div
+    data-required-field="HazardType"
     class="input-wrapper col-span-4 md:col-span-2"
     v-if="!route.params.parent_id && !props.hazardTypeId"
   >
@@ -311,15 +339,22 @@ defineExpose({ validateRequiredFields })
       :controller="indexHazardTypeController"
       :params="indexHazardTypeParams"
       :required="true"
-      label="Hazard Classification"
+      :label="$t('Hazard Classification')"
       id="hazard type"
-      placeholder="Select Hazard Classification"
+      :placeholder="$t('Select Hazard Classification')"
       @update:modelValue="setHazrdType"
     />
-    <p v-if="requiredFieldErrors.HazardType" class="required-field-message" role="alert">{{ requiredFieldErrors.HazardType }}</p>
+    <p v-if="requiredFieldErrors.HazardType" class="required-field-message" role="alert">
+      {{ requiredFieldErrors.HazardType }}
+    </p>
   </div>
 </template>
 
 <style scoped>
-.required-field-message { margin-top: .35rem; color: var(--status-danger); font-size: .82rem; font-weight: 700; }
+.required-field-message {
+  margin-top: 0.35rem;
+  color: var(--status-danger);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
 </style>

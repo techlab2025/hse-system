@@ -66,9 +66,7 @@ const searchPermission = debounce(() => {
 
 const deletePermission = async (id: number) => {
   const deletePermissionParams = new DeletePermissionParams(id)
-  await DeletePermissionController.getInstance().deletePermission(
-    deletePermissionParams,
-  )
+  await DeletePermissionController.getInstance().deletePermission(deletePermissionParams)
   await fetchPermission()
 }
 
@@ -136,12 +134,21 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchPermission())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchPermission" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchPermission"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-      <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.ORG_LOCATION_CREATE]">
+      <PermissionBuilder
+        :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.ORG_LOCATION_CREATE]"
+      >
         <router-link to="/organization/organization-location/add" class="btn btn-primary">
           {{ $t('Add_organization_location') }}
         </router-link>
@@ -149,14 +156,16 @@ watch(
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.ORG_LOCATION_ALL,
-    PermissionsEnum.ORG_LOCATION_DELETE,
-    PermissionsEnum.ORG_LOCATION_FETCH,
-    PermissionsEnum.ORG_LOCATION_UPDATE,
-    PermissionsEnum.ORG_LOCATION_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_LOCATION_ALL,
+      PermissionsEnum.ORG_LOCATION_DELETE,
+      PermissionsEnum.ORG_LOCATION_FETCH,
+      PermissionsEnum.ORG_LOCATION_UPDATE,
+      PermissionsEnum.ORG_LOCATION_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -177,36 +186,44 @@ watch(
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/organization/organization-location/${item.id}`">{{ index + 1 }}
+                  <router-link :to="`/organization/organization-location/${item.id}`"
+                    >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
 
-                <td data-label="lat">
+                <td :data-label="$t('lat')">
                   {{ item.lat }}
                 </td>
 
-                <td data-label="lng">
+                <td :data-label="$t('lng')">
                   {{ item.lng }}
                 </td>
-                <td data-label="location">
+                <td :data-label="$t('location')">
                   {{ item.location?.title }}
                 </td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusPermission-->
                   <!--                  v-if="item.PermissionStatus === PermissionStatusEnum.Draft"-->
                   <!--                  :PermissionId="item.id"-->
                   <!--                  @PermissionChangeStatus="fetchPermission"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deletePermission)" @delete="deletePermission(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deletePermission)"
+                    @delete="deletePermission(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -215,20 +232,40 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/organization/organization-location/add`" addText="Add Permission"
-          description="You have no Permission .. All your joined customers will appear here when you add your customer data"
-          title="You have No Permission" />
+        <DataEmpty
+          :link="`/organization/organization-location/add`"
+          :addText="$t('add_permission')"
+          :description="
+            $t(
+              'You have no Permission .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Permission')"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/organization/organization-location/add`" addText="Add Permission"
-          description="You have no Permission .. All your joined customers will appear here when you add your customer data"
-          title="You have No Permission" />
+        <DataFailed
+          :link="`/organization/organization-location/add`"
+          :addText="$t('add_permission')"
+          :description="
+            $t(
+              'You have no Permission .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Permission')"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no Permission .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Permission .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+      />
     </template>
   </PermissionBuilder>
 </template>

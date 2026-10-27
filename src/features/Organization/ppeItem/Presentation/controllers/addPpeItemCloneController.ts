@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
@@ -31,21 +32,18 @@ export default class AddPpeItemCloneController extends ControllerInterface<PpeIt
         params.validateOrThrow()
         return
       }
-      const dataState: DataState<PpeItemModel> =
-        await this.addPpeItemCloneUseCase.call(params)
+      const dataState: DataState<PpeItemModel> = await this.addPpeItemCloneUseCase.call(params)
       this.setLoading()
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })
         // useLoaderStore().endLoadingWithDialog();
-        await IndexPpeItemController.getInstance().getData(
-          new IndexPpeItemParams('', 1, 10, 1),
-        )
+        await IndexPpeItemController.getInstance().getData(new IndexPpeItemParams('', 1, 10, 1))
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',

@@ -47,6 +47,7 @@ const updateValue = (event: Event) => {
 
     <div class="answer-text-field__input-shell">
       <textarea
+        dir="auto"
         :value="modelValue"
         class="answer-text-field__input"
         :style="{ minHeight }"

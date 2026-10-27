@@ -191,13 +191,13 @@ const ChangeCertificatioRequired = async (
   <section class="hierarchy-matrix-page">
     <div class="hierarchy-matrix-toolbar">
       <div>
-        <span class="matrix-kicker">Requirement matrix</span>
+        <span class="matrix-kicker">{{ $t('Requirement matrix') }}</span>
         <h1>{{ $t('hierarchy_training_board') }}</h1>
         <p>{{ $t('choose_required_training') }}</p>
       </div>
 
       <div class="matrix-stats">
-        <span>{{ hierarchyCount }} positions</span>
+        <span>{{ hierarchyCount }} {{ $t('positions') }}</span>
         <span>{{ certificateCount }} {{ $t('certificates') }}</span>
       </div>
     </div>
@@ -209,8 +209,9 @@ const ChangeCertificatioRequired = async (
         </span>
 
         <input
+          dir="auto"
           v-model="word"
-          placeholder="Search position"
+          :placeholder="$t('Search position')"
           class="input"
           type="text"
           @input="searchHierarchyCertificate"
@@ -301,23 +302,31 @@ const ChangeCertificatioRequired = async (
 
         <template #empty>
           <DataEmpty
-            title="You have No Employee in this heirarchy"
+            :title="$t('You have No Employee in this heirarchy')"
             link="/organization"
-            description="You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
+            :description="
+              $t(
+                'You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data',
+              )
+            "
           />
         </template>
 
         <template #failed>
           <DataFailed
-            title="You have No Employee in this heirarchy"
+            :title="$t('You have No Employee in this heirarchy')"
             link="/organization"
-            description="You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
+            :description="
+              $t(
+                'You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data',
+              )
+            "
           />
         </template>
       </DataStatus>
 
       <template #notPermitted>
-        <DataFailed addText="Have not Permission" />
+        <DataFailed :addText="$t('auditUi.you_do_not_have_permission')" />
       </template>
     </PermissionBuilder>
   </section>

@@ -219,7 +219,7 @@ onMounted(() => {
             <button
               type="button"
               class="drawer cursor-pointer flex items-center justify-center p-1"
-              :aria-label="$t('open menu') || 'Open menu'"
+              :aria-label="$t('open menu')"
               @click="emit('open')"
             >
               <IconMenu />

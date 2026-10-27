@@ -146,8 +146,9 @@ watch(
         <Search />
       </span>
       <input
+        dir="auto"
         v-model="word"
-        :placeholder="'search'"
+        :placeholder="$t('search')"
         class="input"
         type="text"
         @input="searchCatalogItemsType"
@@ -202,9 +203,9 @@ watch(
                 <td data-label="#">
                   <span>{{ index + 1 }} </span>
                 </td>
-                <td data-label="Name" v-html="item.description || item.title"></td>
+                <td :data-label="$t('Name')" v-html="item.description || item.title"></td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusTeamType-->
                   <!--                  v-if="item.TeamTypeStatus === TeamTypeStatusEnum.Draft"-->
                   <!--                  :TeamTypeId="item.id"-->
@@ -242,9 +243,13 @@ watch(
         >
           <DataEmpty
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-details/add`"
-            addText="Add Catalog Details"
-            description="You have no Catalog Details .. All your joined customers will appear here when you add your customer data"
-            title="You have No Catalog Details"
+            :addText="$t('auditUi.add_catalog_details')"
+            :description="
+              $t(
+                'You have no Catalog Details .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Catalog Details')"
           />
         </permission-builder>
       </template>
@@ -258,9 +263,13 @@ watch(
         >
           <DataFailed
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-details/add`"
-            addText="Add Catalog Details"
-            description="You have no Catalog Details .. All your joined customers will appear here when you add your customer data"
-            title="You have No Catalog Details"
+            :addText="$t('auditUi.add_catalog_details')"
+            :description="
+              $t(
+                'You have no Catalog Details .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Catalog Details')"
           />
         </permission-builder>
       </template>
@@ -275,8 +284,12 @@ watch(
         ]"
       >
         <DataFailed
-          addText="Have not  Permission"
-          description="You have no Catalog Details .. All your joined customers will appear here when you add your customer data"
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no Catalog Details .. All your joined customers will appear here when you add your customer data',
+            )
+          "
         />
       </permission-builder>
     </template>

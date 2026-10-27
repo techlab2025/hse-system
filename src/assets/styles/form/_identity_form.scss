@@ -32,7 +32,11 @@
       color-mix(in srgb, var(--identity-accent) 10%, transparent),
       transparent 28%
     ),
-    linear-gradient(145deg, var(--surface-1), color-mix(in srgb, var(--form-soft-bg) 58%, var(--surface-1)));
+    linear-gradient(
+      145deg,
+      var(--surface-1),
+      color-mix(in srgb, var(--form-soft-bg) 58%, var(--surface-1))
+    );
   box-shadow: var(--form-shadow);
 }
 
@@ -61,7 +65,11 @@
   padding: 22px 24px;
   border-radius: 20px;
   background:
-    radial-gradient(circle at 88% 0%, color-mix(in srgb, var(--identity-accent) 42%, transparent), transparent 38%),
+    radial-gradient(
+      circle at 88% 0%,
+      color-mix(in srgb, var(--identity-accent) 42%, transparent),
+      transparent 38%
+    ),
     linear-gradient(125deg, var(--identity-secondary), var(--identity-primary));
   color: var(--text-on-brand);
   font-size: clamp(1.2rem, 2vw, 1.65rem);
@@ -71,7 +79,12 @@
 }
 
 /* Field groups read as purposeful modules while keeping the form airy. */
-:where(.identity-form-shell > .identity-form:not(:has(.employee-header)):not(.employee-header):not(.button-wrapper):not(.btns)) {
+:where(
+  .identity-form-shell
+    > .identity-form:not(:has(.employee-header)):not(.employee-header):not(.button-wrapper):not(
+      .btns
+    )
+) {
   position: relative;
   min-width: 0;
   padding: 16px;
@@ -85,13 +98,23 @@
     transform 180ms ease;
 }
 
-:where(.identity-form-shell > .identity-form:not(:has(.employee-header)):not(.employee-header):not(.button-wrapper):not(.btns)):hover {
+:where(
+  .identity-form-shell
+    > .identity-form:not(:has(.employee-header)):not(.employee-header):not(.button-wrapper):not(
+      .btns
+    )
+):hover {
   border-color: var(--form-border-hover);
   box-shadow: 0 8px 22px color-mix(in srgb, var(--shadow-color) 30%, transparent);
   transform: translateY(-1px);
 }
 
-:where(.identity-form-shell > .identity-form:not(:has(.employee-header)):not(.employee-header):not(.button-wrapper):not(.btns)):focus-within {
+:where(
+  .identity-form-shell
+    > .identity-form:not(:has(.employee-header)):not(.employee-header):not(.button-wrapper):not(
+      .btns
+    )
+):focus-within {
   border-color: color-mix(in srgb, var(--identity-primary) 48%, var(--main-border));
   box-shadow: 0 0 0 4px var(--form-focus-ring);
 }
@@ -109,7 +132,11 @@
   border: 0;
   border-radius: 20px;
   background:
-    radial-gradient(circle at 85% 10%, color-mix(in srgb, var(--identity-accent) 45%, transparent), transparent 34%),
+    radial-gradient(
+      circle at 85% 10%,
+      color-mix(in srgb, var(--identity-accent) 45%, transparent),
+      transparent 34%
+    ),
     linear-gradient(125deg, var(--brand-primary-900), var(--identity-primary));
   box-shadow: 0 16px 34px color-mix(in srgb, var(--identity-primary) 22%, transparent);
 }
@@ -153,7 +180,10 @@
   transition: color 180ms ease;
 }
 
-:where(.identity-form .input-wrapper:focus-within > label, .identity-form.input-wrapper:focus-within > label) {
+:where(
+  .identity-form .input-wrapper:focus-within > label,
+  .identity-form.input-wrapper:focus-within > label
+) {
   color: var(--form-brand);
 }
 
@@ -181,11 +211,11 @@
 }
 
 :where(
-  .identity-form input:not([type='checkbox']):not([type='radio']):not([type='range']),
-  .identity-form textarea,
-  .identity-form select,
-  .identity-form .p-inputtext
-):hover:not(:disabled) {
+    .identity-form input:not([type='checkbox']):not([type='radio']):not([type='range']),
+    .identity-form textarea,
+    .identity-form select,
+    .identity-form .p-inputtext
+  ):hover:not(:disabled) {
   border-color: var(--form-border-hover) !important;
 }
 
@@ -218,7 +248,12 @@
   opacity: 0.72;
 }
 
-:where(.identity-form input:disabled, .identity-form textarea:disabled, .identity-form select:disabled, .identity-form .p-disabled) {
+:where(
+  .identity-form input:disabled,
+  .identity-form textarea:disabled,
+  .identity-form select:disabled,
+  .identity-form .p-disabled
+) {
   cursor: not-allowed;
   background: var(--surface-3) !important;
   color: var(--text-muted) !important;
@@ -243,7 +278,12 @@
   accent-color: var(--form-brand);
 }
 
-:where(.identity-form .error, .identity-form .error-message, .identity-form .invalid-feedback, .identity-form .p-error) {
+:where(
+  .identity-form .error,
+  .identity-form .error-message,
+  .identity-form .invalid-feedback,
+  .identity-form .p-error
+) {
   color: var(--status-danger) !important;
   font-size: 0.78rem;
   font-weight: 600;
@@ -285,27 +325,41 @@
 }
 
 :where(
-  .identity-form button,
-  .identity-form [type='submit'],
-  .identity-form .primary-btn,
-  .identity-form-shell button,
-  .identity-form-shell [type='submit'],
-  .identity-form-shell .primary-btn
-):hover:not(:disabled) {
+    .identity-form button,
+    .identity-form [type='submit'],
+    .identity-form .primary-btn,
+    .identity-form-shell button,
+    .identity-form-shell [type='submit'],
+    .identity-form-shell .primary-btn
+  ):hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: 0 10px 24px color-mix(in srgb, var(--identity-primary) 18%, transparent);
 }
 
-:where(.identity-form button, .identity-form [type='submit'], .identity-form .primary-btn, .identity-form-shell button):active:not(:disabled) {
+:where(
+    .identity-form button,
+    .identity-form [type='submit'],
+    .identity-form .primary-btn,
+    .identity-form-shell button
+  ):active:not(:disabled) {
   transform: translateY(0);
 }
 
-:where(.identity-form button, .identity-form [type='submit'], .identity-form .primary-btn, .identity-form-shell button):focus-visible {
+:where(
+  .identity-form button,
+  .identity-form [type='submit'],
+  .identity-form .primary-btn,
+  .identity-form-shell button
+):focus-visible {
   outline: 3px solid var(--form-focus-ring);
   outline-offset: 3px;
 }
 
-:where(.identity-form .file-upload, .identity-form .upload-container, .identity-form [class*='upload']) {
+:where(
+  .identity-form .file-upload,
+  .identity-form .upload-container,
+  .identity-form [class*='upload']
+) {
   border-color: var(--form-border);
   border-radius: 18px;
 }
@@ -316,7 +370,7 @@
 }
 
 html[dir='rtl'] :where(.identity-form input, .identity-form textarea, .identity-form select) {
-  text-align: right;
+  text-align: start;
 }
 
 @media (max-width: 640px) {

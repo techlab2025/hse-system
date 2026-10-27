@@ -210,6 +210,7 @@ onMounted(fetchDocuments)
     <div class="input-search">
       <span class="icon-remove" @click="((word = ''), searchDocuments())"><Search /></span>
       <input
+        dir="auto"
         v-model="word"
         class="input"
         :placeholder="$t('search_organization_documents')"

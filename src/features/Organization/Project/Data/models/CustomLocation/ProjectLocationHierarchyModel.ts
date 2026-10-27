@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleModel from '@/base/core/Models/title_model'
 import ProjectLocationEmployeeModel from './ProjectLocationEmployeeModel'
 
@@ -17,14 +18,17 @@ export default class ProjectLocationHierarchyModel extends TitleModel {
   }
 
   static fromMap(data: any): ProjectLocationHierarchyModel {
-    return new ProjectLocationHierarchyModel(
-      data.title,
-      data.hierarchy_id,
-      data.project_location_hierarchy_id,
-      data.project_location_hierarchy_employees?.map((item) =>
-        ProjectLocationEmployeeModel.fromMap(item),
+    return localizedRecord(
+      new ProjectLocationHierarchyModel(
+        data.title,
+        data.hierarchy_id,
+        data.project_location_hierarchy_id,
+        data.project_location_hierarchy_employees?.map((item) =>
+          ProjectLocationEmployeeModel.fromMap(item),
+        ),
+        // data.project_location_id,
       ),
-      // data.project_location_id,
+      data,
     )
   }
   static example: ProjectLocationHierarchyModel = new ProjectLocationHierarchyModel(

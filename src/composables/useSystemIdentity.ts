@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { fontStack, setGoogleFont } from '@/features/SystemIdentity/typography'
 import { computed, ref } from 'vue'
 import { colorFields } from '@/features/SystemIdentity/appearance'
@@ -82,7 +83,9 @@ const cacheIdentity = (scope: string, value: SystemIdentity) => {
     localStorage.setItem(STORAGE_KEY, json)
   } catch {
     // A successful server save remains successful when browser storage is unavailable.
-    identityCacheWarning.value = 'Identity is applied, but the browser cache could not be updated.'
+    identityCacheWarning.value = localizeUi(
+      'Identity is applied, but the browser cache could not be updated.',
+    )
   }
 }
 const acceptIdentity = (scope: string, value: SystemIdentity) => {
@@ -196,12 +199,13 @@ const saveIdentity = async (value: SystemIdentity) => {
     return
   }
   const context = currentContext()
-  if (!context) throw new Error('Sign in to an organization before saving its identity.')
+  if (!context)
+    throw new Error(localizeUi('Sign in to an organization before saving its identity.'))
   const params = new CreateSystemIdentityParams(value)
   const request = ++generation
   const result = await new CreateSystemIdentityController().getData(params)
   if (request !== generation || currentContext()?.session !== context.session)
-    throw new Error('Organization changed before the identity save completed.')
+    throw new Error(localizeUi('Organization changed before the identity save completed.'))
   if (!(result instanceof DataSuccess) || !result.data?.identity)
     throw new Error(result.error?.title || 'The organization identity could not be saved.')
   acceptIdentity(context.scope, result.data.identity)

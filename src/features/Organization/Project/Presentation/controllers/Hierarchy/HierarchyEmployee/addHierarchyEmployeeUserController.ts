@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
@@ -26,11 +27,7 @@ export default class AddHierarchyEmployeeController extends ControllerInterface<
     return this.instance
   }
 
-  async addHierarchyEmployee(
-    params: Params,
-    router: Router,
-    route: RouteLocationNormalizedLoaded,
-  ) {
+  async addHierarchyEmployee(params: Params, router: Router, route: RouteLocationNormalizedLoaded) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       const dataState: DataState<HierarchyEmployeeModel> =
@@ -39,7 +36,7 @@ export default class AddHierarchyEmployeeController extends ControllerInterface<
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })
@@ -52,14 +49,11 @@ export default class AddHierarchyEmployeeController extends ControllerInterface<
           )
         }
         await ProjectCustomLocationController.getInstance().getData(
-          new ProjectCustomLocationParams(
-            Number(route.params?.project_id || route.params?.id),
-            [
-              ProjectCustomLocationEnum.EMPLOYEE,
-              ProjectCustomLocationEnum.HIERARCHY,
-              ProjectCustomLocationEnum.HIERARCHY_EMPLOYEE,
-            ],
-          ),
+          new ProjectCustomLocationParams(Number(route.params?.project_id || route.params?.id), [
+            ProjectCustomLocationEnum.EMPLOYEE,
+            ProjectCustomLocationEnum.HIERARCHY,
+            ProjectCustomLocationEnum.HIERARCHY_EMPLOYEE,
+          ]),
         )
 
         // useLoaderStore().endLoadingWithDialog();

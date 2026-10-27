@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class SystemBannerModel extends TitleInterface {
@@ -18,6 +19,9 @@ export default class SystemBannerModel extends TitleInterface {
   }
 
   static fromMap(data: any): SystemBannerModel {
-    return new SystemBannerModel(data.id, data.image, data.is_active, data.order, data.link)
+    return localizedRecord(
+      new SystemBannerModel(data.id, data.image, data.is_active, data.order, data.link),
+      data,
+    )
   }
 }

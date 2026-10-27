@@ -1,3 +1,5 @@
+import { translate as localizeUi } from '@/localization/i18n'
+import { localizedRecord } from '@/localization/records'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import TitleInterface from '@/base/Data/Models/title_interface'
 import FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
@@ -75,26 +77,59 @@ export default class InductionModel extends TitleInterface {
       ? InductionEmployeeModel.fromMap(data.instructor_employee_id)
       : null
 
-    return new InductionModel(
-      id,
-      data.title ?? data.name ?? 'Induction #' + id,
-      instructorEmployee?.id ?? data.instractor_id ?? data.instructor_id ?? 0,
-      instructorEmployee,
-      data.project_id ? InductionProjectModel.fromMap(data.project_id) : null,
-      data.project_location_id ? InductionProjectLocationModel.fromMap(data.project_location_id) : null,
-      data.project_location_zone_id
-        ? InductionProjectZoneModel.fromMap(data.project_location_zone_id)
-        : null,
-      data.date,
-      data.created_at,
-      data.media?.map((item: any) => FilesModel.fromMap(item)) ?? [],
-      data.image ?? data.attachments ?? null,
-      data.induction_training_topics?.map((item: any) => InductionTrainingTopicModel.fromMap(item)) ?? [],
-      data.attendees?.map((item: any) => InductionEmployeeModel.fromMap(item)) ?? [],
+    const model = localizedRecord(
+      new InductionModel(
+        id,
+        data.title ?? data.name ?? localizeUi('induction_fallback_title', { number: id ?? '—' }),
+        instructorEmployee?.id ?? data.instractor_id ?? data.instructor_id ?? 0,
+        instructorEmployee,
+        data.project_id ? InductionProjectModel.fromMap(data.project_id) : null,
+        data.project_location_id
+          ? InductionProjectLocationModel.fromMap(data.project_location_id)
+          : null,
+        data.project_location_zone_id
+          ? InductionProjectZoneModel.fromMap(data.project_location_zone_id)
+          : null,
+        data.date,
+        data.created_at,
+        data.media?.map((item: any) => FilesModel.fromMap(item)) ?? [],
+        data.image ?? data.attachments ?? null,
+        data.induction_training_topics?.map((item: any) =>
+          InductionTrainingTopicModel.fromMap(item),
+        ) ?? [],
+        data.attendees?.map((item: any) => InductionEmployeeModel.fromMap(item)) ?? [],
+      ),
+      data,
     )
+    if (data.title == null && data.name == null && !data.titles?.length) {
+      let override: string | undefined
+      Object.defineProperty(model, 'title', {
+        enumerable: true,
+        configurable: true,
+        get: () => override ?? localizeUi('induction_fallback_title', { number: id ?? '—' }),
+        set: (value: string) => {
+          override = value
+        },
+      })
+    }
+    return model
   }
 
   static example: InductionModel[] = [
-    new InductionModel(1, 'Induction #1', 1, null, null, null, null, '2022-01-01', null, [], null, [], []),
+    new InductionModel(
+      1,
+      'Induction #1',
+      1,
+      null,
+      null,
+      null,
+      null,
+      '2022-01-01',
+      null,
+      [],
+      null,
+      [],
+      [],
+    ),
   ]
 }

@@ -114,7 +114,14 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchLang())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchLang" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchLang"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
@@ -143,8 +150,8 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">title</th>
-                <th scope="col">Code</th>
+                <th scope="col">{{ $t('title') }}</th>
+                <th scope="col">{{ $t('Code') }}</th>
 
                 <!-- <th scope="col">Actions</th> -->
                 <th class="empty"></th>
@@ -155,10 +162,10 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
                 <td data-label="#">
                   <span :to="`/users/Lang/edit/${item.id}`">{{ index + 1 }} </span>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="Code">{{ item.code ?? '--' }}</td>
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('Code')">{{ item.code ?? '--' }}</td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusLang-->
                   <!--                  v-if="item.LangStatus === LangStatusEnum.Draft"-->
                   <!--                  :LangId="item.id"-->
@@ -189,25 +196,37 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
       <template #empty>
         <DataEmpty
           :link="`/add/Lang`"
-          addText="Add Lang"
-          description="You have no languages .. All your joined customers will appear here when you add your customer data"
-          title="You have No languages"
+          :addText="$t('Add_Lang')"
+          :description="
+            $t(
+              'You have no languages .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No languages')"
         />
       </template>
       <template #failed>
         <DataFailed
           :link="`/add/Lang`"
-          addText="Add Lang"
-          description="You have no language .. All your joined customers will appear here when you add your customer data"
-          title="You have No languages"
+          :addText="$t('Add_Lang')"
+          :description="
+            $t(
+              'You have no language .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No languages')"
         />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed
-        addText="Have not  Permission"
-        description="You have no language .. All your joined customers will appear here when you add your customer data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no language .. All your joined customers will appear here when you add your customer data',
+          )
+        "
       />
     </template>
   </PermissionBuilder>

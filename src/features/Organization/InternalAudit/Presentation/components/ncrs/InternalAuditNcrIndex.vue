@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import {
+  ncrStatusLabel as statusLabel,
+  ncrCategoryLabel as categoryLabel,
+  isMajorNcrCategory,
+} from '../../utils/labels'
+import { getCurrentLocale } from '@/localization/i18n'
+
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import type InternalAuditNcrModel from '../../../Data/models/ncrs/InternalAuditNcrModel'
 
@@ -14,28 +21,10 @@ const emit = defineEmits<{
   open: [ncr: InternalAuditNcrModel]
 }>()
 
-function statusLabel(status: unknown): string {
-  const value = String(status ?? '')
-  const numericLabels: Record<string, string> = {
-    '1': 'Pending',
-    '2': 'Open',
-    '3': 'In progress',
-    '4': 'Closed',
-  }
-  return (numericLabels[value] ?? value.split('_').join(' ')) || 'Unknown'
-}
-
-function categoryLabel(categoryValue: unknown): string {
-  const value = String(categoryValue ?? '').toLowerCase()
-  if (value === '1' || value === 'minor' || value === 'minor_nc') return 'Minor NC'
-  if (value === '2' || value === 'major' || value === 'major_nc') return 'Major NC'
-  return value.split('_').join(' ') || '—'
-}
-
 function createdAtLabel(value: string): string {
   if (!value) return '—'
   const date = new Date(value)
-  return Number.isNaN(date.getTime()) ? value : date.toLocaleString()
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleString(getCurrentLocale())
 }
 
 function assignedToLabel(ncr: InternalAuditNcrModel, action: 'corrective' | 'preventive'): string {
@@ -47,7 +36,7 @@ function assignedToLabel(ncr: InternalAuditNcrModel, action: 'corrective' | 'pre
 </script>
 
 <template>
-  <div v-if="loading" class="ncr-loading" aria-label="Loading NCRs">
+  <div v-if="loading" class="ncr-loading" :aria-label="$t('Loading NCRs')">
     <span v-for="index in 4" :key="index"></span>
   </div>
   <div v-else-if="ncrs.length" class="ncr-index">
@@ -55,17 +44,19 @@ function assignedToLabel(ncr: InternalAuditNcrModel, action: 'corrective' | 'pre
       <table class="ncr-table">
         <thead>
           <tr>
-            <th>NCR</th>
-            <th>Area</th>
-            <th>Created by</th>
-            <th>Created at</th>
-            <th>Lead Auditor</th>
-            <th>Corrective action assigned to</th>
-            <th>Preventive action assigned to</th>
+            <th>{{ $t('NCR') }}</th>
+            <th>{{ $t('Area') }}</th>
+            <th>{{ $t('Created by') }}</th>
+            <th>{{ $t('created_at') }}</th>
+            <th>{{ $t('lead_auditor') }}</th>
+            <th>{{ $t('Corrective action assigned to') }}</th>
+            <th>{{ $t('Preventive action assigned to') }}</th>
             <!-- <th>Due</th> -->
-            <th>Status</th>
+            <th>{{ $t('Status') }}</th>
             <!-- <th>Lead Review</th> -->
-            <th><span class="sr-only">Actions</span></th>
+            <th>
+              <span class="sr-only">{{ $t('Actions') }}</span>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -73,10 +64,7 @@ function assignedToLabel(ncr: InternalAuditNcrModel, action: 'corrective' | 'pre
             <td>
               <div class="ncr-identity">
                 <strong>{{ item.ncr || `NCR-${item.id}` }}</strong>
-                <span
-                  class="category"
-                  :class="{ major: categoryLabel(item.ncrsCategory) === 'Major NC' }"
-                >
+                <span class="category" :class="{ major: isMajorNcrCategory(item.ncrsCategory) }">
                   {{ categoryLabel(item.ncrsCategory) }}
                 </span>
               </div>
@@ -100,7 +88,7 @@ function assignedToLabel(ncr: InternalAuditNcrModel, action: 'corrective' | 'pre
                 :aria-busy="openingNcrId === item.id"
                 @click="emit('open', item)"
               >
-                {{ openingNcrId === item.id ? 'Opening…' : 'Open' }}
+                {{ openingNcrId === item.id ? $t('Opening…') : $t('Open') }}
               </button>
             </td>
           </tr>
@@ -110,8 +98,8 @@ function assignedToLabel(ncr: InternalAuditNcrModel, action: 'corrective' | 'pre
   </div>
   <div v-else-if="!hasError" class="empty-tab">
     <span class="tab-icon">!</span>
-    <h3>No NCRs found</h3>
-    <p>NCR findings, owners, and corrective actions will appear here.</p>
+    <h3>{{ $t('No NCRs found') }}</h3>
+    <p>{{ $t('NCR findings, owners, and corrective actions will appear here.') }}</p>
   </div>
 </template>
 

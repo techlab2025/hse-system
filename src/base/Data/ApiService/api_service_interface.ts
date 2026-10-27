@@ -1,3 +1,5 @@
+import { localizedApiMessage } from '@/localization/apiMessages'
+import { translate } from '@/localization/i18n'
 import type Params from '@/base/core/params/params'
 import axios from 'axios'
 import type { AxiosResponse } from 'axios'
@@ -110,75 +112,76 @@ export default abstract class ServicesInterface {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const statusCode = error.response?.status
+        const localizedMessage = localizedApiMessage(error.response?.data)
         switch (statusCode) {
           case 400:
             console.error(`BadRequestException >> ${statusCode}`)
-            throw new BadRequestException(error.response?.data.message)
+            throw new BadRequestException(localizedMessage ?? translate('network.validation'))
           case 403:
             console.error(`ForbiddenException >> ${statusCode}`)
-            throw new ForbiddenException(error.response?.data.message ?? 'Forbidden')
+            throw new ForbiddenException(localizedMessage ?? translate('network.forbidden'))
           case 404:
             console.error(`NotFoundException >> ${statusCode}`)
-            throw new NotFoundException(error.response?.data.message ?? 'Not found')
+            throw new NotFoundException(localizedMessage ?? translate('network.notFound'))
           case 401:
             console.error(`NotFoundException >> ${statusCode}`)
-            throw new BadRequestException(error.response?.data.message)
+            throw new BadRequestException(localizedMessage ?? translate('network.unauthorized'))
 
           case 405:
             console.error(`MethodNotAllowedException >> ${statusCode}`)
-            throw new MethodNotAllowedException(
-              error.response?.data.message ?? 'Method not allowed',
-            )
+            throw new MethodNotAllowedException(localizedMessage ?? translate('network.method'))
           case 406:
             console.error(`NotAcceptableException >> ${statusCode}`)
-            throw new NotAcceptableException(error.response?.data.message ?? 'Not acceptable')
+            throw new NotAcceptableException(localizedMessage ?? translate('network.validation'))
           case 408:
             console.error(`RequestTimeoutException >> ${statusCode}`)
-            throw new RequestTimeoutException(error.response?.data.message ?? 'Request timeout')
+            throw new RequestTimeoutException(localizedMessage ?? translate('network.timeout'))
           case 409:
             console.error(`ConflictException >> ${statusCode}`)
-            throw new ConflictException(error.response?.data.message ?? 'Conflict')
-            case 429:
+            throw new ConflictException(localizedMessage ?? translate('network.validation'))
+          case 429:
             console.error(`ConflictException >> ${statusCode}`)
-            throw new ConflictException(error.response?.data.message ?? 'Conflict')
+            throw new ConflictException(localizedMessage ?? translate('network.rateLimit'))
           case 422: {
             console.error(`ConflictException >> ${statusCode}`)
             const errors = error.response?.data?.errors
-            // console.log(error.response?.data?.message, 'eeeeerrrrrooooossss')
-            let message = error.response?.data?.message
+            // console.log(localizedMessage, 'eeeeerrrrrooooossss')
+            let message = localizedMessage
             if (Array.isArray(errors)) {
               message = errors.join('\n')
             } else if (errors && typeof errors === 'object') {
               message = Object.values(errors).flat().join('\n')
             }
-            throw new ConflictException(message)
+            throw new ConflictException(message ?? translate('network.validation'))
           }
           case 500:
             console.error(`InternalServerException >> ${statusCode}`)
-            throw new InternalServerException(
-              error.response?.data.message ?? 'Internal server error',
-            )
+            throw new InternalServerException(localizedMessage ?? translate('network.server'))
           case 501:
             console.error(`NotImplementedException >> ${statusCode}`)
-            throw new NotImplementedException(error.response?.data.message ?? 'Not implemented')
+            throw new NotImplementedException(localizedMessage ?? translate('network.method'))
           case 502:
             console.error(`BadGatewayException >> ${statusCode}`)
-            throw new BadGatewayException(error.response?.data.message ?? 'Bad gateway')
+            throw new BadGatewayException(localizedMessage ?? translate('network.unavailable'))
           case 503:
             console.error(`ServiceUnavailableException >> ${statusCode}`)
             throw new ServiceUnavailableException(
-              error.response?.data.message ?? 'Service unavailable',
+              localizedMessage ?? translate('network.unavailable'),
             )
           case 504:
             console.error(`GatewayTimeoutException >> ${statusCode}`)
-            throw new GatewayTimeoutException(error.response?.data.message ?? 'Gateway timeout')
+            throw new GatewayTimeoutException(localizedMessage ?? translate('network.timeout'))
           default:
             console.error(`UnKnownException >> ${statusCode}`)
-            throw new UnKnownException(error.response?.data.errros ?? 'Unknown error')
+            throw new UnKnownException(
+              localizedMessage ??
+                localizedApiMessage({ message: error.response?.data?.errros }) ??
+                translate(error.response ? 'network.server' : 'network.connection'),
+            )
         }
       } else {
         console.error('UnKnownException')
-        throw new UnKnownException('Unknown error')
+        throw new UnKnownException(translate('network.connection'))
       }
     } finally {
       if (showLoadingDialog) {
@@ -195,7 +198,7 @@ export default abstract class ServicesInterface {
       }
     } else {
       // console.error('Response is null')
-      throw new UnKnownException('Unknown error')
+      throw new UnKnownException(translate('network.connection'))
     }
   }
 

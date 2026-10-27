@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
@@ -24,14 +25,17 @@ export default class RootCausesModel extends TitleInterface {
   }
 
   static fromMap(data: any): RootCausesModel {
-    return new RootCausesModel(
-      data.id,
-      data.translation,
-      data.title,
-      data.all_industries,
-      data.industries?.length > 0
-        ? data.industries?.map((industry: any) => TitleModel.fromMap(industry))
-        : [],
+    return localizedRecord(
+      new RootCausesModel(
+        data.id,
+        data.translation,
+        data.title,
+        data.all_industries,
+        data.industries?.length > 0
+          ? data.industries?.map((industry: any) => TitleModel.fromMap(industry))
+          : [],
+      ),
+      data,
     )
   }
   static transformData(data: string[][]): RootCausesModel[] {
@@ -43,7 +47,6 @@ export default class RootCausesModel extends TitleInterface {
           row[1] || '',
           row[2] ? parseInt(row[2]) : 0,
           [],
-
         ),
     )
   }

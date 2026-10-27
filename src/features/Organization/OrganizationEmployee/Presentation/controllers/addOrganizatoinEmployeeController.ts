@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
@@ -31,26 +32,28 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
     if (params.data != undefined && params?.data?.length > 0) {
       for (const el of params.data) {
         if (!el.name) {
-          new OpenWarningDilaog('Name Is Required').openDialog()
+          new OpenWarningDilaog(localizeUi('Name Is Required')).openDialog()
           return
         }
         if (el.password_confirmation && el.password != el.password_confirmation) {
-          new OpenWarningDilaog('Password And Password Confirmation Not Matching').openDialog()
+          new OpenWarningDilaog(
+            localizeUi('Password And Password Confirmation Not Matching'),
+          ).openDialog()
           return
         }
         //
         if (el.password && el.password?.length < 8) {
-          new OpenWarningDilaog('Password Must Be At Least 8 Characters').openDialog()
+          new OpenWarningDilaog(localizeUi('Password Must Be At Least 8 Characters')).openDialog()
           return
         }
         if (el.hierarchies.map((el) => el.hierarchy_id == undefined).find((el) => el == true)) {
-          new OpenWarningDilaog('You Should select At Least One Position').openDialog()
+          new OpenWarningDilaog(localizeUi('You Should select At Least One Position')).openDialog()
           return
         }
       }
     } else {
       if (params.positions.map((item: any) => item.hierarchy_id).includes(undefined)) {
-        new OpenWarningDilaog('Please Select Position For All Employees').openDialog()
+        new OpenWarningDilaog(localizeUi('Please Select Position For All Employees')).openDialog()
         return
       }
       params.validate()
@@ -70,7 +73,7 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
         if (!isExcelValidation) {
           DialogSelector.instance.successDialog.openDialog({
             dialogName: 'dialog-success',
-            titleContent: 'Added was successful',
+            titleContent: localizeUi('Added was successful'),
             imageElement: successImage,
             messageContent: null,
           })

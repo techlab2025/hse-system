@@ -2,37 +2,38 @@
   <div v-if="isOpen" class="dialog-overlay" @click.self="closeDialog">
     <div class="dialog-content">
       <p class="dialog-message">{{ message }}</p>
-      <button class="dialog-close-btn" @click="closeDialog">Close</button>
+      <button class="dialog-close-btn" @click="closeDialog">{{ $t('Close') }}</button>
     </div>
   </div>
 </template>
 
 <script>
-import ValidationDialog from "@/base/Presentation/utils/validationService";
-import { computed } from "vue";
+import { translateMessage } from '@/localization/messages'
+import ValidationDialog from '@/base/Presentation/utils/validationService'
+import { computed } from 'vue'
 
 export default {
   setup() {
     // Reactive bindings to the ValidationDialog service
-    const isOpen = computed(() => ValidationDialog.isOpen.value);
-    const message = computed(() => ValidationDialog.message.value);
+    const isOpen = computed(() => ValidationDialog.isOpen.value)
+    const message = computed(() => translateMessage(ValidationDialog.message.value))
 
     const openDialog = () => {
-      ValidationDialog.openDialog("This is a validation message.");
-    };
+      ValidationDialog.openDialog('This is a validation message.')
+    }
 
     const closeDialog = () => {
-      ValidationDialog.clearValidation();
-    };
+      ValidationDialog.clearValidation()
+    }
 
     return {
       isOpen,
       message,
       openDialog,
       closeDialog,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>

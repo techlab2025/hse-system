@@ -32,8 +32,8 @@ const UpdateData = () => {
 }
 
 const inspectionType = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'AD-HOC' }),
-  new TitleInterface({ id: 2, title: 'Periodic' }),
+  new TitleInterface({ id: 1, title: 'AD-HOC', translationKey: 'AD-HOC' }),
+  new TitleInterface({ id: 2, title: 'Periodic', translationKey: 'Periodic' }),
 ])
 const SelectedInspectionType = ref<InspectionTypeEnum>(InspectionTypeEnum.DAY)
 const GetInspectionType = (data: InspectionTypeEnum) => {
@@ -43,13 +43,25 @@ const GetInspectionType = (data: InspectionTypeEnum) => {
 
 const SelectedDay = ref<TitleInterface[]>()
 const DayesSelection = ref<TitleInterface[]>([
-  new TitleInterface({ id: PeriodicDaysEnum.SATURDAY, title: 'Saturday' }),
-  new TitleInterface({ id: PeriodicDaysEnum.SUNDAY, title: 'Sunday' }),
-  new TitleInterface({ id: PeriodicDaysEnum.MONDAY, title: 'Monday' }),
-  new TitleInterface({ id: PeriodicDaysEnum.TUESDAY, title: 'Tuesday' }),
-  new TitleInterface({ id: PeriodicDaysEnum.WEDNESDAY, title: 'Wednesday' }),
-  new TitleInterface({ id: PeriodicDaysEnum.THURSDAY, title: 'Thursday' }),
-  new TitleInterface({ id: PeriodicDaysEnum.FRIDAY, title: 'Friday' }),
+  new TitleInterface({
+    id: PeriodicDaysEnum.SATURDAY,
+    title: 'Saturday',
+    translationKey: 'Saturday',
+  }),
+  new TitleInterface({ id: PeriodicDaysEnum.SUNDAY, title: 'Sunday', translationKey: 'Sunday' }),
+  new TitleInterface({ id: PeriodicDaysEnum.MONDAY, title: 'Monday', translationKey: 'Monday' }),
+  new TitleInterface({ id: PeriodicDaysEnum.TUESDAY, title: 'Tuesday', translationKey: 'Tuesday' }),
+  new TitleInterface({
+    id: PeriodicDaysEnum.WEDNESDAY,
+    title: 'Wednesday',
+    translationKey: 'Wednesday',
+  }),
+  new TitleInterface({
+    id: PeriodicDaysEnum.THURSDAY,
+    title: 'Thursday',
+    translationKey: 'Thursday',
+  }),
+  new TitleInterface({ id: PeriodicDaysEnum.FRIDAY, title: 'Friday', translationKey: 'Friday' }),
 ])
 
 const setDay = (data: TitleInterface[]) => {
@@ -58,13 +70,31 @@ const setDay = (data: TitleInterface[]) => {
 }
 
 const PeriodTypeSelection = ref<TitleInterface[]>([
-  new TitleInterface({ id: PeriodTypeEnum.DAILY, title: 'daily' }),
-  new TitleInterface({ id: PeriodTypeEnum.BYDAY, title: 'Choose day' }),
-  new TitleInterface({ id: PeriodTypeEnum.WHITDATE, title: 'Choose date' }),
-  new TitleInterface({ id: PeriodTypeEnum.BYDATE, title: 'Custom date' }),
-  new TitleInterface({ id: PeriodTypeEnum.WITHDAY, title: 'Set Period' }),
+  new TitleInterface({ id: PeriodTypeEnum.DAILY, title: 'daily', translationKey: 'Daily' }),
+  new TitleInterface({
+    id: PeriodTypeEnum.BYDAY,
+    title: 'Choose day',
+    translationKey: 'Choose day',
+  }),
+  new TitleInterface({
+    id: PeriodTypeEnum.WHITDATE,
+    title: 'Choose date',
+    translationKey: 'Choose date',
+  }),
+  new TitleInterface({
+    id: PeriodTypeEnum.BYDATE,
+    title: 'Custom date',
+    translationKey: 'Custom date',
+  }),
+  new TitleInterface({
+    id: PeriodTypeEnum.WITHDAY,
+    title: 'Set Period',
+    translationKey: 'Set Period',
+  }),
 ])
-const SelectedWithDaysType = ref<TitleInterface>(new TitleInterface({ id: 1, title: 'Day' }))
+const SelectedWithDaysType = ref<TitleInterface>(
+  new TitleInterface({ id: 1, title: 'Day', translationKey: 'day' }),
+)
 
 const SelectedPeriodType = ref<PeriodTypeEnum | undefined>()
 const GetSelectedPeridType = (data: PeriodTypeEnum) => {
@@ -153,10 +183,10 @@ watch(
 )
 
 const WithDaysType = ref<TitleInterface[]>([
-  new TitleInterface({ id: WithDayEnum.Day, title: 'Day' }),
-  new TitleInterface({ id: WithDayEnum.Week, title: 'Week' }),
-  new TitleInterface({ id: WithDayEnum.Month, title: 'Month' }),
-  new TitleInterface({ id: WithDayEnum.Year, title: 'Year' }),
+  new TitleInterface({ id: WithDayEnum.Day, title: 'Day', translationKey: 'day' }),
+  new TitleInterface({ id: WithDayEnum.Week, title: 'Week', translationKey: 'Week' }),
+  new TitleInterface({ id: WithDayEnum.Month, title: 'Month', translationKey: 'month' }),
+  new TitleInterface({ id: WithDayEnum.Year, title: 'Year', translationKey: 'Year' }),
 ])
 
 const setWithDayesType = (data: TitleInterface) => {
@@ -293,6 +323,7 @@ const setWithDayesType = (data: TitleInterface) => {
         >
           <label for="with-day">{{ $t(`with ${SelectedWithDaysType?.title}`) }}</label>
           <input
+            dir="ltr"
             id="with-day"
             v-model="WithDays"
             type="number"

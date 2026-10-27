@@ -127,40 +127,53 @@ const actionList = (id: number, deleteMethods: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchMethods())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchMethods" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchMethods"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-      <PermissionBuilder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.METHOD_CREATE,
-        PermissionsEnum.ORG_METHOD_CREATE,
-      ]">
-        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/methods/add`"
-          class="btn btn-primary">
+      <PermissionBuilder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.METHOD_CREATE,
+          PermissionsEnum.ORG_METHOD_CREATE,
+        ]"
+      >
+        <router-link
+          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/methods/add`"
+          class="btn btn-primary"
+        >
           {{ $t('Add_Methods') }}
         </router-link>
       </PermissionBuilder>
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.METHOD_ALL,
-    PermissionsEnum.METHOD_DELETE,
-    PermissionsEnum.METHOD_FETCH,
-    PermissionsEnum.METHOD_UPDATE,
-    PermissionsEnum.METHOD_CREATE,
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.METHOD_ALL,
+      PermissionsEnum.METHOD_DELETE,
+      PermissionsEnum.METHOD_FETCH,
+      PermissionsEnum.METHOD_UPDATE,
+      PermissionsEnum.METHOD_CREATE,
 
-    PermissionsEnum.ORG_METHOD_ALL,
-    PermissionsEnum.ORG_METHOD_DELETE,
-    PermissionsEnum.ORG_METHOD_FETCH,
-    PermissionsEnum.ORG_METHOD_UPDATE,
-    PermissionsEnum.ORG_METHOD_CREATE,
-  ]">
+      PermissionsEnum.ORG_METHOD_ALL,
+      PermissionsEnum.ORG_METHOD_DELETE,
+      PermissionsEnum.ORG_METHOD_FETCH,
+      PermissionsEnum.ORG_METHOD_UPDATE,
+      PermissionsEnum.ORG_METHOD_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -178,26 +191,33 @@ const actionList = (id: number, deleteMethods: (id: number) => void) => [
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/methods/${item.id}`">{{
-                    index + 1 }}
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/methods/${item.id}`"
+                    >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusMethods-->
                   <!--                  v-if="item.MethodsStatus === MethodsStatusEnum.Draft"-->
                   <!--                  :MethodsId="item.id"-->
                   <!--                  @MethodsChangeStatus="fetchMethods"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteMethods)" @delete="deleteMethods(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteMethods)"
+                    @delete="deleteMethods(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -206,22 +226,40 @@ const actionList = (id: number, deleteMethods: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/methods/add`"
-          addText="Add Methods"
-          description="You have no Methods .. All your joined customers will appear here when you add your customer data"
-          title="You have No Methods" />
+        <DataEmpty
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/methods/add`"
+          :addText="$t('Add_Methods')"
+          :description="
+            $t(
+              'You have no Methods .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Methods')"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/methods/add`"
-          addText="Add Methods"
-          description="You have no Methods .. All your joined customers will appear here when you add your customer data"
-          title="You have No Methods" />
+        <DataFailed
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/methods/add`"
+          :addText="$t('Add_Methods')"
+          :description="
+            $t(
+              'You have no Methods .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Methods')"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no Methods .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Methods .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+      />
     </template>
   </PermissionBuilder>
 </template>

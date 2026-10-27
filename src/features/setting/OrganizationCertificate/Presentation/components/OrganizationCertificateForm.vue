@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
 import { nextTick, reactive, ref, watch } from 'vue'
 import DatePicker from 'primevue/datepicker'
@@ -92,7 +94,7 @@ const setFile = (files: File | File[] | null) => {
           if (version === fileVersion) certificateFile.value = result.file
         } catch {
           if (version === fileVersion)
-            fileError.value = 'Unable to read certificate file. Please select it again.'
+            fileError.value = localizeUi('Unable to read certificate file. Please select it again.')
         }
       })()
     : null
@@ -165,6 +167,7 @@ defineExpose({ validateRequiredFields })
   >
     <label :for="field">{{ $t(field) }} <span>*</span></label>
     <input
+      dir="auto"
       :id="field"
       v-model="form[field]"
       type="text"
@@ -196,7 +199,7 @@ defineExpose({ validateRequiredFields })
   <div class="input-wrapper col-span-4 md:col-span-2 mt-6">
     <CustomCheckbox
       :index="1"
-      :title="`has_expire_date`"
+      :title="$t('has_expire_date')"
       :checked="expiredate"
       @update:checked="updateExpireDate"
     />
@@ -237,7 +240,14 @@ defineExpose({ validateRequiredFields })
 
   <div class="input-wrapper col-span-4">
     <label for="notes">{{ $t('notes') }}</label>
-    <textarea id="notes" v-model="form.notes" class="input" rows="4" :placeholder="$t('notes')" />
+    <textarea
+      dir="auto"
+      id="notes"
+      v-model="form.notes"
+      class="input"
+      rows="4"
+      :placeholder="$t('notes')"
+    />
   </div>
 </template>
 

@@ -1,4 +1,5 @@
-MangementChangeTopicType<script lang="ts" setup>
+MangementChangeTopicType
+<script lang="ts" setup>
 import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
 
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
@@ -22,10 +23,14 @@ import AddMangementChangeTopicTypeParams from '../../Core/params/addMangementCha
 type LanguageOption = { locale: string; title: string; icon?: any }
 type LocalizedTitle = { locale: string; title: string }
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('MangementChangeTopicTypeForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('MangementChangeTopicTypeForm')
 
 const emit = defineEmits<{
-  (event: 'update:data', value: AddMangementChangeTopicTypeClonesParams | EditMangementChangeTopicTypeParams): void
+  (
+    event: 'update:data',
+    value: AddMangementChangeTopicTypeClonesParams | EditMangementChangeTopicTypeParams,
+  ): void
 }>()
 const props = defineProps<{ data?: PpeItemDetailsModel }>()
 
@@ -59,9 +64,7 @@ const fetchLanguages = async () => {
 }
 
 const updateData = () => {
-  const translations = new TranslationsParams(
-    languages.value.map((item) => item.locale),
-  )
+  const translations = new TranslationsParams(languages.value.map((item) => item.locale))
 
   titles.value.forEach((item) => {
     translations.setTranslation('title', item.locale, item.title)
@@ -72,15 +75,8 @@ const updateData = () => {
   emit(
     'update:data',
     props.data?.id
-      ? new EditMangementChangeTopicTypeParams(
-          props.data.id,
-          translations,
-          status,
-        )
-      : new AddMangementChangeTopicTypeParams(
-          translations,
-          status,
-        ),
+      ? new EditMangementChangeTopicTypeParams(props.data.id, translations, status)
+      : new AddMangementChangeTopicTypeParams(translations, status),
   )
 }
 
@@ -103,9 +99,8 @@ watch(
     )
 
     mangementChangeTopicType.value =
-      mangementChangeTopicTypes.value.find(
-        (type) => type.id === data?.status,
-      ) ?? mangementChangeTopicTypes.value[0]
+      mangementChangeTopicTypes.value.find((type) => type.id === data?.status) ??
+      mangementChangeTopicTypes.value[0]
 
     updateData()
   },
@@ -119,12 +114,20 @@ const requiredFields = computed(() => [
     message: 'PPE Item Title Is Required',
     isMissing: () => !titles.value.some((item) => hasText(item.title)),
   },
-  { key: 'mangementChangeTopicType', message: '', isMissing: () => !mangementChangeTopicType.value?.id },
+  {
+    key: 'mangementChangeTopicType',
+    message: '',
+    isMissing: () => !mangementChangeTopicType.value?.id,
+  },
 ])
+
 const requiredFieldErrors = ref<Record<string, string>>({})
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const validateRequiredFields = async () => {
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = Object.fromEntries(
     missedFields.map((field) => [field.key, field.message]),
   )
@@ -149,19 +152,20 @@ const mangementChangeTopicTypes = ref<TitleInterface[]>([
   new TitleInterface({
     id: MangementChangeTopicTypeEnum.employee,
     title: 'employee',
+    translationKey: 'employee',
   }),
   new TitleInterface({
     id: MangementChangeTopicTypeEnum.equipment,
     title: 'equipment',
+    translationKey: 'equipment',
   }),
   new TitleInterface({
     id: MangementChangeTopicTypeEnum.other,
     title: 'other',
+    translationKey: 'Other',
   }),
 ])
-const mangementChangeTopicType = ref<TitleInterface>(
-  mangementChangeTopicTypes.value[0],
-)
+const mangementChangeTopicType = ref<TitleInterface>(mangementChangeTopicTypes.value[0])
 </script>
 
 <template>
@@ -169,15 +173,15 @@ const mangementChangeTopicType = ref<TitleInterface>(
     <LangTitleInput
       :langs="languages"
       :model-value="titles"
-      :label="$t('Management Change Topic Type ')"
-      :placeholder="$t('enter management change topic type ')"
+      :label="$t('management_change_topic_type')"
+      :placeholder="$t('enter management change topic type')"
       @update:model-value="setTitles"
     />
     <p v-if="requiredFieldErrors.title" class="required-field-message">
       {{ requiredFieldErrors.title }}
     </p>
   </div>
-    <div data-required-field="mangementChangeTopicType" class="col-span-4 md:col-span-2">
+  <div data-required-field="mangementChangeTopicType" class="col-span-4 md:col-span-2">
     <CustomSelectInput
       :modelValue="mangementChangeTopicType"
       :static-options="mangementChangeTopicTypes"
@@ -186,9 +190,14 @@ const mangementChangeTopicType = ref<TitleInterface>(
       :placeholder="$t('select_management_change_topic_type')"
       @update:modelValue="updateMangementChangeTopicType"
     />
-    <p v-if="requiredFieldErrors.mangementChangeTopicType" class="required-field-message" role="alert">{{ requiredFieldErrors.mangementChangeTopicType }}</p>
+    <p
+      v-if="requiredFieldErrors.mangementChangeTopicType"
+      class="required-field-message"
+      role="alert"
+    >
+      {{ requiredFieldErrors.mangementChangeTopicType }}
+    </p>
   </div>
-
 </template>
 
 <style scoped>

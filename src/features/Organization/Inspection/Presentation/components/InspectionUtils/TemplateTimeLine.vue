@@ -24,6 +24,7 @@ const createNewAnswerObject = () => ({
   SelectedActionType: new TitleInterface({
     id: ActionsEnum.CHECKBOX,
     title: 'Multiple Choice',
+    translationKey: 'Multiple Choice',
   }),
   TemplateItems: [],
   isUpdloadImage: false,
@@ -60,10 +61,30 @@ onMounted(() => {
 })
 
 const ActionsType = ref<TitleInterface[]>([
-  new TitleInterface({ id: ActionsEnum.CHECKBOX, title: 'Multiple Choice', subtitle: '' }),
-  new TitleInterface({ id: ActionsEnum.RADIOBUTTON, title: 'Single Choice', subtitle: '' }),
-  new TitleInterface({ id: ActionsEnum.DROPDOWN, title: 'Dropdown', subtitle: '' }),
-  new TitleInterface({ id: ActionsEnum.TEXTAREA, title: 'Text', subtitle: '' }),
+  new TitleInterface({
+    id: ActionsEnum.CHECKBOX,
+    title: 'Multiple Choice',
+    translationKey: 'Multiple Choice',
+    subtitle: '',
+  }),
+  new TitleInterface({
+    id: ActionsEnum.RADIOBUTTON,
+    title: 'Single Choice',
+    translationKey: 'Single Choice',
+    subtitle: '',
+  }),
+  new TitleInterface({
+    id: ActionsEnum.DROPDOWN,
+    title: 'Dropdown',
+    translationKey: 'Dropdown',
+    subtitle: '',
+  }),
+  new TitleInterface({
+    id: ActionsEnum.TEXTAREA,
+    title: 'Text',
+    translationKey: 'Text',
+    subtitle: '',
+  }),
 ])
 const UpdateType = (itemIndex: number, selectedTypeId: number | string | null) => {
   const selectedId = Number(selectedTypeId)
@@ -195,6 +216,7 @@ watch(
                 <div class="timeline-content-text input-wrapper w-full">
                   <label for="text">{{ $t('inspection_exemined_title') }}</label>
                   <input
+                    dir="auto"
                     type="text"
                     v-model="item.itemTitle"
                     class="input"
@@ -208,6 +230,7 @@ watch(
                 <div class="timeline-content-text input-wrapper w-full">
                   <label for="text">{{ $t('inspection_exemined_tag') }}</label>
                   <input
+                    dir="auto"
                     type="text"
                     v-model="item.itemTag"
                     class="input"
@@ -272,7 +295,7 @@ watch(
 
 <style scoped>
 .input-label {
-  margin-right: auto;
+  margin-inline-end: auto;
   text-align: end;
   width: 100%;
   justify-content: start;

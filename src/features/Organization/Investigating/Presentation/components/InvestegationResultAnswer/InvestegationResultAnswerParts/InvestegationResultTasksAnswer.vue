@@ -54,8 +54,8 @@ const taskLanes = computed(() => {
   <div class="tasks-answer">
     <div class="header">
       <HeaderPage
-        :title="`Actions`"
-        :subtitle="`change the Action status here`"
+        :title="$t('Actions')"
+        :subtitle="$t('change the Action status here')"
         :img="Task"
         class="title-header answer-header border-top"
       />

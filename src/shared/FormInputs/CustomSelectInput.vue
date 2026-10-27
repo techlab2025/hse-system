@@ -1,7 +1,9 @@
 <script lang="ts" setup>
+import { translateKeyOrLiteral } from '@/localization/i18n'
+
 import MultiSelect from 'primevue/multiselect'
 import Select from 'primevue/select'
-import { computed, ref, watch, toRefs, type Component } from 'vue'
+import { computed, ref, watch, useId, toRefs, type Component } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { getSelectOptionLabel } from './selectOptionLabel'
 import type { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
@@ -61,10 +63,14 @@ const {
 // Reactive state
 const loading = ref(false)
 const message = ref('No Data Found')
+const labelId = `select-label-${useId()}`
 const dynamicOptions = ref<TitleInterface[]>([])
-const selectAllOption = Object.assign(new TitleInterface({ id: -1, title: 'Select All' }), {
-  __selectAllOption: true,
-})
+const selectAllOption = Object.assign(
+  new TitleInterface({ id: -1, title: 'Select All', translationKey: 'Select All' }),
+  {
+    __selectAllOption: true,
+  },
+)
 
 // Computed properties
 const isMultiselect = computed(() => Number(type.value) === 2)
@@ -211,11 +217,16 @@ const updateSlot = (data: unknown) => {
     </span>
 
     <div class="label-container flex justify-center items-center gap-2">
-      <label :class="{ required: required }" class="input-label flex items-center gap-2">
+      <label
+        :id="labelId"
+        :for="`${labelId}-input`"
+        :class="{ required: required }"
+        class="input-label flex items-center gap-2"
+      >
         <span v-if="required" class="text-red-500">
           <StarRequiredInput />
         </span>
-        {{ label ? $t(label) : '' }}
+        {{ translateKeyOrLiteral(label) }}
       </label>
 
       <FieldHelpIcon v-if="helpText" :text="helpText" />
@@ -227,17 +238,20 @@ const updateSlot = (data: unknown) => {
   </div>
   <component
     :is="componentType"
+    :input-id="`${labelId}-input`"
+    :aria-labelledby="label ? labelId : undefined"
+    :aria-label="translateKeyOrLiteral(label || placeholder || 'Select')"
     :model-value="normalizedValue"
     @update:model-value="normalizedValue = $event"
     :options="displayedOptions"
     data-key="id"
-    :placeholder="placeholder"
+    :placeholder="translateKeyOrLiteral(placeholder)"
     class="input-select w-full"
     :option-label="getSelectOptionLabel"
     v-bind="{ ...multiselectProps, ...$attrs }"
     filter
     :loading="loading"
-    :empty-message="message"
+    :empty-message="translateKeyOrLiteral(message)"
   >
     <template v-if="showSelectAllOption && isMultiselect" #option="{ option }">
       <span v-if="isSelectAllOption(option)" class="select-all-option">
@@ -246,7 +260,7 @@ const updateSlot = (data: unknown) => {
       <span v-else>{{ getSelectOptionLabel(option) }}</span>
     </template>
   </component>
-  <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
+  <input dir="auto" type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
 
   <!-- <template v-else>
     <slot :onUpdate="updateSlot" />
@@ -260,7 +274,7 @@ const updateSlot = (data: unknown) => {
 .add-dialog {
   width: 20px;
   height: 20px;
-  margin-right: 6px;
+  margin-inline-end: 6px;
   cursor: pointer;
   color: var(--brand-primary-500);
   text-decoration: underline;

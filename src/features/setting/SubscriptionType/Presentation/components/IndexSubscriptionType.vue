@@ -50,7 +50,13 @@ const fetchSubscriptionType = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteSubscriptionTypeTypeParams = new IndexSubscriptionTypeParams(query, pageNumber, perPage, withPage, id)
+  const deleteSubscriptionTypeTypeParams = new IndexSubscriptionTypeParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    id,
+  )
   await indexSubscriptionTypeController.getData(deleteSubscriptionTypeTypeParams)
 }
 
@@ -64,7 +70,9 @@ const searchSubscriptionTypeType = debounce(() => {
 
 const deleteSubscriptionType = async (id: number) => {
   const deleteSubscriptionTypeParams = new DeleteSubscriptionTypeParams(id)
-  await DeleteSubscriptionTypeController.getInstance().deleteSubscriptionType(deleteSubscriptionTypeParams)
+  await DeleteSubscriptionTypeController.getInstance().deleteSubscriptionType(
+    deleteSubscriptionTypeParams,
+  )
   await fetchSubscriptionType()
 }
 
@@ -131,22 +139,30 @@ watch(
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click="((word = ''), searchSubscriptionTypeType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchSubscriptionTypeType" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchSubscriptionTypeType"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-      <permission-builder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
-      ]">
+      <permission-builder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
+        ]"
+      >
         <router-link :to="`/admin/subscription-type/add`" class="btn btn-primary">
           {{ $t('Add_subscription_type') }}
         </router-link>
@@ -154,16 +170,17 @@ watch(
     </div>
   </div>
 
-  <permission-builder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.SUBSCRIPTION_TYPE_ALL,
-    PermissionsEnum.SUBSCRIPTION_TYPE_DELETE,
-    PermissionsEnum.SUBSCRIPTION_TYPE_FETCH,
-    PermissionsEnum.SUBSCRIPTION_TYPE_UPDATE,
-    PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
-
-  ]">
+  <permission-builder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.SUBSCRIPTION_TYPE_ALL,
+      PermissionsEnum.SUBSCRIPTION_TYPE_DELETE,
+      PermissionsEnum.SUBSCRIPTION_TYPE_FETCH,
+      PermissionsEnum.SUBSCRIPTION_TYPE_UPDATE,
+      PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -181,16 +198,22 @@ watch(
                 <td data-label="#">
                   <span :to="`/admin/subscription-type/edit/${item.id}`">{{ index + 1 }}</span>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="Actions">
-                  <DropList :actionList="actionList(item.id, deleteSubscriptionType)"
-                    @delete="deleteSubscriptionType(item.id)" />
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('Actions')">
+                  <DropList
+                    :actionList="actionList(item.id, deleteSubscriptionType)"
+                    @delete="deleteSubscriptionType(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -199,37 +222,63 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <permission-builder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
-        ]">
-          <DataEmpty :link="`/admin/subscription-type/add`" addText="Add SubscriptionType"
-            description="You have no SubscriptionType .. All your joined customers will appear here when you add your customer data"
-            title="You have No SubscriptionType" />
+        <permission-builder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
+          ]"
+        >
+          <DataEmpty
+            :link="`/admin/subscription-type/add`"
+            :addText="$t('auditUi.add_subscription_type')"
+            :description="
+              $t(
+                'You have no SubscriptionType .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No SubscriptionType')"
+          />
         </permission-builder>
       </template>
       <template #failed>
-        <permission-builder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
-        ]">
-          <DataFailed :link="`/admin/subscription-type/add`" addText="Add SubscriptionType"
-            description="You have no SubscriptionType .. All your joined customers will appear here when you add your customer data"
-            title="You have No SubscriptionType" />
+        <permission-builder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
+          ]"
+        >
+          <DataFailed
+            :link="`/admin/subscription-type/add`"
+            :addText="$t('auditUi.add_subscription_type')"
+            :description="
+              $t(
+                'You have no SubscriptionType .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No SubscriptionType')"
+          />
         </permission-builder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <permission-builder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
-      ]">
-        <DataFailed addText="Have not  Permission"
-          description="You have no SubscriptionTypeType .. All your joined customers will appear here when you add your customer data" />
+      <permission-builder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
+        ]"
+      >
+        <DataFailed
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no SubscriptionTypeType .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+        />
       </permission-builder>
     </template>
   </permission-builder>

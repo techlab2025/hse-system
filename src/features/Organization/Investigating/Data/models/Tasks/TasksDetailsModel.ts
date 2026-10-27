@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 export default class TasksDetailsModel {
   public id: number
   public investigation: investigationMeeting
@@ -27,7 +28,10 @@ export default class TasksDetailsModel {
     title: string
     due_date: string
   }): TasksDetailsModel {
-    return new TasksDetailsModel(data.id, data.investigation, data.status, data.title, data.due_date)
+    return localizedRecord(
+      new TasksDetailsModel(data.id, data.investigation, data.status, data.title, data.due_date),
+      data,
+    )
   }
 
   static example: TasksDetailsModel = new TasksDetailsModel(

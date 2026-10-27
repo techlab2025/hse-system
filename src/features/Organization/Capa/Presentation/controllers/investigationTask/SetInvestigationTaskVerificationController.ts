@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
@@ -27,7 +28,7 @@ export default class SetInvestigationTaskVerificationController extends SelectCo
     if (this.isDataSuccess()) {
       DialogSelector.instance.successDialog.openDialog({
         dialogName: 'dialog-success',
-        titleContent: 'Verification saved successfully',
+        titleContent: localizeUi('Verification saved successfully'),
         imageElement: successImage,
         messageContent: null,
       })

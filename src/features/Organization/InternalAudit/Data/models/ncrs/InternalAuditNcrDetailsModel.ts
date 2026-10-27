@@ -183,7 +183,7 @@ export default class InternalAuditNcrDetailsModel {
       Number(item.internal_audit_id ?? asRecord(item.internal_audit).id ?? 0),
       String(asRecord(item.internal_audit).serial_name ?? ''),
       String(item.serial_name ?? ''),
-      Number(item.status)
+      Number(item.status),
     )
   }
 
@@ -207,7 +207,11 @@ export default class InternalAuditNcrDetailsModel {
         },
         preventive: {
           text: 'Add a monthly calibration-record review.',
-          assignedTo: new TitleInterface({ id: 102, title: 'Ahmed Hassan' }),
+          assignedTo: new TitleInterface({
+            id: 102,
+            title: 'Ahmed Hassan',
+            translationKey: 'Ahmed Hassan',
+          }),
           targetDate: '2026-10-25',
           actualDate: '',
         },

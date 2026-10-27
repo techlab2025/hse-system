@@ -79,11 +79,20 @@ const rentalUnit = computed(() => rentUnits[Number(props.rentType)])
 const labelDates = computed(() => [
   ...(isRental.value
     ? [
-        { label: 'eq_rental_start_date', value: props.startDate },
-        { label: 'eq_rental_end_date', value: props.EndDate },
+        {
+          label: 'eq_rental_start_date',
+          value: props.startDate,
+        },
+        {
+          label: 'eq_rental_end_date',
+          value: props.EndDate,
+        },
       ]
     : []),
-  { label: 'eq_certificate_expiry_date', value: props.expiredate },
+  {
+    label: 'eq_certificate_expiry_date',
+    value: props.expiredate,
+  },
 ])
 const displayDate = (value: string | Date | null | undefined, includeTime = true) => {
   if (!value) return '—'

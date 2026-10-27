@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -35,7 +36,7 @@ export default class DeleteProjectLocationHeirarchyEmployeeController extends Co
           new ShowProjectDetailsParams(Number(route.params?.id || route.params?.project_id)),
         )
       } else {
-        throw new Error('Error while addServices')
+        throw new Error(localizeUi('Error while addServices'))
       }
     } catch (error: any) {
       console.log(error)

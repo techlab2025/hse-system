@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
@@ -49,23 +50,26 @@ export default class CertificateModel extends TitleInterface {
   }
 
   static fromMap(data: any): CertificateModel {
-    return new CertificateModel(
-      data.id,
-      data.title,
-      data.subtitle,
-      data.has_certificate,
-      data.all_industries,
-      data.industries?.length > 0
-        ? data.industries?.map((industry) => TitleModel.fromMap(industry))
-        : [],
-      data.parent_id,
-      data.image,
-      data.titles,
-      data.descriptions,
-      this.toBoolean(data.require_expired_date),
-      Number(data.certificate_type?.id ?? data.certificate_type ?? 0),
-      this.toBoolean(data.require_certificate),
-      data.created_at,
+    return localizedRecord(
+      new CertificateModel(
+        data.id,
+        data.title,
+        data.subtitle,
+        data.has_certificate,
+        data.all_industries,
+        data.industries?.length > 0
+          ? data.industries?.map((industry) => TitleModel.fromMap(industry))
+          : [],
+        data.parent_id,
+        data.image,
+        data.titles,
+        data.descriptions,
+        this.toBoolean(data.require_expired_date),
+        Number(data.certificate_type?.id ?? data.certificate_type ?? 0),
+        this.toBoolean(data.require_certificate),
+        data.created_at,
+      ),
+      data,
     )
   }
 

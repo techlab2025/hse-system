@@ -150,7 +150,7 @@ watch(
       <div class="tool-card-media">
         <img
           :src="tool?.image || '/src/assets/images/EmptyEquipment.png'"
-          alt="tool"
+          :alt="$t('tool')"
           @error="setEquipmentDefaultImage"
         />
         <span class="equipment-status">
@@ -211,7 +211,7 @@ watch(
         </div> -->
 
         <div class="equipment-project-info" v-if="tool?.project?.title">
-          <img :src="Helmet" alt="helmet" />
+          <img :src="Helmet" :alt="$t('Helmet')" />
           <div class="project-data">
             <p class="project-name">
               <span class="project-name-title">{{ tool?.project?.title }}</span>
@@ -227,7 +227,7 @@ watch(
           </div>
         </div>
         <div class="equipment-project-info" v-if="tool?.warehouse && !tool?.project?.title">
-          <img :src="WareHouseIcon" alt="helmet" />
+          <img :src="WareHouseIcon" :alt="$t('Helmet')" />
           <div class="project-data">
             <p class="project-name">
               <span class="project-name-title">{{ tool?.warehouse?.name }}</span>

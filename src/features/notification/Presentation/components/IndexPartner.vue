@@ -133,12 +133,21 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchPartner())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchPartner" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchPartner"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-      <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.PARTNER_CREATE]">
+      <PermissionBuilder
+        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.PARTNER_CREATE]"
+      >
         <router-link to="/organization/partner/add" class="btn btn-primary">
           {{ $t('Add_Partner') }}
         </router-link>
@@ -146,17 +155,19 @@ watch(
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.PARTNER_ALL,
-    PermissionsEnum.PARTNER_DELETE,
-    PermissionsEnum.PARTNER_FETCH,
-    PermissionsEnum.PARTNER_UPDATE,
-    PermissionsEnum.PARTNER_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.PARTNER_ALL,
+      PermissionsEnum.PARTNER_DELETE,
+      PermissionsEnum.PARTNER_FETCH,
+      PermissionsEnum.PARTNER_UPDATE,
+      PermissionsEnum.PARTNER_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
-        <div class="table-responsive mt-2 ">
+        <div class="table-responsive mt-2">
           <table class="main-table">
             <thead>
               <tr>
@@ -173,29 +184,37 @@ watch(
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/organization/partner/${item.id}`">{{ index + 1 }}
+                  <router-link :to="`/organization/partner/${item.id}`"
+                    >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
 
-                <td data-label="phone">
+                <td :data-label="$t('phone')">
                   {{ item.phone }}
                 </td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusPartner-->
                   <!--                  v-if="item.PartnerStatus === PartnerStatusEnum.Draft"-->
                   <!--                  :PartnerId="item.id"-->
                   <!--                  @PartnerChangeStatus="fetchPartner"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deletePartner)" @delete="deletePartner(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deletePartner)"
+                    @delete="deletePartner(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -204,25 +223,49 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.PARTNER_CREATE]">
-          <DataEmpty :link="`/organization/partner/add`" addText="Add Partner"
-            description="You have no Partner .. All your joined customers will appear here when you add your customer data"
-            title="You have No Partner" />
+        <PermissionBuilder
+          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.PARTNER_CREATE]"
+        >
+          <DataEmpty
+            :link="`/organization/partner/add`"
+            :addText="$t('add_partner')"
+            :description="
+              $t(
+                'You have no Partner .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Partner')"
+          />
         </PermissionBuilder>
       </template>
       <template #failed>
-        <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.PARTNER_CREATE]">
-          <DataFailed :link="`/organization/partner/add`" addText="Add Partner"
-            description="You have no Partner .. All your joined customers will appear here when you add your customer data"
-            title="You have No Partner" />
+        <PermissionBuilder
+          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.PARTNER_CREATE]"
+        >
+          <DataFailed
+            :link="`/organization/partner/add`"
+            :addText="$t('add_partner')"
+            :description="
+              $t(
+                'You have no Partner .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Partner')"
+          />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no Partner .. All your joined customers will appear here when you add your customer data"
-        link="" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Partner .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+        link=""
+      />
     </template>
   </PermissionBuilder>
 </template>

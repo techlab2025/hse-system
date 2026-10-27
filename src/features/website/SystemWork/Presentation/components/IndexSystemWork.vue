@@ -129,7 +129,14 @@ const actionList = (id: number, deleteSystemWork: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchSystemWork())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchSystemWork" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchSystemWork"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
@@ -142,14 +149,16 @@ const actionList = (id: number, deleteSystemWork: (id: number) => void) => [
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.WEBSITE,
-    PermissionsEnum.SYSTEM_WORK_ALL,
-    PermissionsEnum.SYSTEM_WORK_DELETE,
-    PermissionsEnum.SYSTEM_WORK_FETCH,
-    PermissionsEnum.SYSTEM_WORK_UPDATE,
-    PermissionsEnum.SYSTEM_WORK_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.WEBSITE,
+      PermissionsEnum.SYSTEM_WORK_ALL,
+      PermissionsEnum.SYSTEM_WORK_DELETE,
+      PermissionsEnum.SYSTEM_WORK_FETCH,
+      PermissionsEnum.SYSTEM_WORK_UPDATE,
+      PermissionsEnum.SYSTEM_WORK_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -171,31 +180,43 @@ const actionList = (id: number, deleteSystemWork: (id: number) => void) => [
                 <td data-label="#">
                   <router-link :to="`/admin/system-work/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
-                <td data-label="title">{{ wordSlice(item.title) }}</td>
-                <td data-label="subtitle">{{ wordSlice(item.subtitle) }}</td>
+                <td :data-label="$t('title')">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('subtitle')">{{ wordSlice(item.subtitle) }}</td>
 
-                <td data-label="image">
+                <td :data-label="$t('image')">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
-                <td data-label="status">
-                  <PermissionBuilder :code="[
-                    PermissionsEnum.WEBSITE,
-                    PermissionsEnum.SYSTEM_WORK_ALL,
-                    PermissionsEnum.SYSTEM_WORK_CHANGE_STATUS,
-                  ]">
-                    <ToggleSwitch :modelValue="item.is_active === 1" binary
-                      @update:model-value="changeStatusSystemWork(item.id)" />
+                <td :data-label="$t('status')">
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.WEBSITE,
+                      PermissionsEnum.SYSTEM_WORK_ALL,
+                      PermissionsEnum.SYSTEM_WORK_CHANGE_STATUS,
+                    ]"
+                  >
+                    <ToggleSwitch
+                      :modelValue="item.is_active === 1"
+                      binary
+                      @update:model-value="changeStatusSystemWork(item.id)"
+                    />
                   </PermissionBuilder>
                 </td>
 
-                <td data-label="Actions">
-                  <DropList :actionList="actionList(item.id, deleteSystemWork)" @delete="deleteSystemWork(item.id)" />
+                <td :data-label="$t('Actions')">
+                  <DropList
+                    :actionList="actionList(item.id, deleteSystemWork)"
+                    @delete="deleteSystemWork(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -204,20 +225,40 @@ const actionList = (id: number, deleteSystemWork: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/admin/system-work/add`" addText="Add SystemWork"
-          description="You have no SystemWork .. All your joined customers will appear here when you add your customer data"
-          title="You have No SystemWork" />
+        <DataEmpty
+          :link="`/admin/system-work/add`"
+          :addText="$t('auditUi.add_system_workflow')"
+          :description="
+            $t(
+              'You have no SystemWork .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No SystemWork')"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/admin/system-work/add`" addText="Add SystemWork"
-          description="You have no SystemWork .. All your joined customers will appear here when you add your customer data"
-          title="You have No SystemWork" />
+        <DataFailed
+          :link="`/admin/system-work/add`"
+          :addText="$t('auditUi.add_system_workflow')"
+          :description="
+            $t(
+              'You have no SystemWork .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No SystemWork')"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no SystemWork .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no SystemWork .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+      />
     </template>
   </PermissionBuilder>
 </template>

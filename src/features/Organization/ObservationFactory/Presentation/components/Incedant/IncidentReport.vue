@@ -25,9 +25,8 @@ const indexHazardController = IndexHazardController.getInstance()
 const state = ref(indexHazardController.state.value)
 const incidentCreateRoute = computed(() => ({
   path: '/organization/equipment-mangement/incedant/add',
-  query: Number(route.query.project_id) > 0
-    ? { project_id: String(route.query.project_id) }
-    : undefined,
+  query:
+    Number(route.query.project_id) > 0 ? { project_id: String(route.query.project_id) } : undefined,
 }))
 
 const fetchIncidents = async (query = '', page = 1, limit = 10) => {
@@ -159,6 +158,7 @@ onMounted(() => fetchIncidents('', 1, countPerPage.value))
             <Search />
           </span>
           <input
+            dir="auto"
             v-model="word"
             class="input"
             type="text"
@@ -232,10 +232,10 @@ onMounted(() => fetchIncidents('', 1, countPerPage.value))
         <template #loader><TableLoader :cols="11" :rows="10" /></template>
         <template #initial><TableLoader :cols="11" :rows="10" /></template>
         <template #empty>
-          <DataFailed :withbtn="false" title="No incident reports" />
+          <DataFailed :withbtn="false" :title="$t('No incident reports')" />
         </template>
         <template #failed>
-          <DataFailed :withbtn="false" title="Unable to load incident reports" />
+          <DataFailed :withbtn="false" :title="$t('Unable to load incident reports')" />
         </template>
       </DataStatus>
     </section>
@@ -286,7 +286,9 @@ onMounted(() => fetchIncidents('', 1, countPerPage.value))
   background: linear-gradient(135deg, var(--PrimaryColor), var(--brand-primary-700));
   color: var(--text-on-brand);
   box-shadow: 0 10px 24px color-mix(in srgb, var(--PrimaryColor) 22%, transparent);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .create-incident-btn:hover {
   transform: translateY(-2px);

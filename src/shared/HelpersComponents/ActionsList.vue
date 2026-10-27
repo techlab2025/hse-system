@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { isDeleteAction } from './actionItems'
+import { translateMessage } from '@/localization/messages'
 import { ref, computed, type Component } from 'vue'
 import Popover from 'primevue/popover'
 import DeleteDialog from '@/base/Presentation/Dialogs/MainDialogs/DeleteDialog.vue'
@@ -10,6 +12,7 @@ import CloseArrowActios from '../icons/CloseArrowActios.vue'
 
 interface ActionItem {
   text: string
+  isDelete?: boolean
   icon: any
   link?: string
   action?: () => void
@@ -66,7 +69,7 @@ const isVisible = computed(() => {
         class="btn btn-primary primary-action-button"
       >
         <component :is="action.icon" />
-        <span>{{ action.text }}</span>
+        <span>{{ translateMessage(action.text) }}</span>
       </router-link>
 
       <button
@@ -76,7 +79,7 @@ const isVisible = computed(() => {
         @click="action.action"
       >
         <component :is="action.icon" />
-        <span>{{ action.text }}</span>
+        <span>{{ translateMessage(action.text) }}</span>
       </button>
     </template>
 
@@ -95,27 +98,25 @@ const isVisible = computed(() => {
       <ul class="border-none">
         <li
           class="list-item cursor-pointer"
-          :class="
-            action.type == null ? '' : String(ActionItemsTypeEnum[action.type]).toLowerCase()
-          "
+          :class="action.type == null ? '' : String(ActionItemsTypeEnum[action.type]).toLowerCase()"
           v-for="action in menuActions"
           :key="action.text"
         >
           <router-link v-if="action.link" :to="action.link" class="flex items-center gap-[5px]">
             <component :is="action.icon" />
-            <span>{{ action.text }}</span>
+            <span>{{ translateMessage(action.text) }}</span>
           </router-link>
 
           <button
-            v-else-if="action.action && action.text != $t('delete')"
+            v-else-if="action.action && !isDeleteAction(action)"
             @click="action.action"
             class="flex items-center gap-sm"
           >
             <component :is="action.icon" />
-            <span>{{ action.text }}</span>
+            <span>{{ translateMessage(action.text) }}</span>
           </button>
 
-          <DeleteDialog v-else-if="action.text == $t('delete')" @delete="action.action" />
+          <DeleteDialog v-else-if="isDeleteAction(action)" @delete="action.action" />
         </li>
         <slot name="custom"></slot>
       </ul>

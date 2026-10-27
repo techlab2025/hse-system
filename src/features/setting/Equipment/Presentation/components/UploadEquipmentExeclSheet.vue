@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
 import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
 
@@ -138,7 +140,7 @@ const fileUpload = async (file: File | null) => {
     extractedImages.value = images
   } catch (error) {
     console.error('Error processing file:', error)
-    errorMsg.value = 'Failed to process the file.'
+    errorMsg.value = localizeUi('failed_to_process_file')
   } finally {
     isLoading.value = false
   }
@@ -163,21 +165,51 @@ const SendData = ref<string[]>([
   'description',
 ])
 const SendDataLabels: Record<string, string> = {
-  name: 'Equipment Name',
-  date: 'Training Expiry Date',
-  inspection_duration: 'Inspection Duration',
-  license_number: 'License Number',
-  license_plate_number: 'License Plate',
-  image: 'Equipment Image',
-  certificate_image: 'Training Image',
-  checkin_date: 'Rent Start Date',
-  checkout_date: 'Rent End Date',
-  period: 'Rental Period',
-  period_type: 'Rent Type',
-  status: 'Status',
-  kilometer: 'Vehicle Kilometer',
-  serial_number: 'Serial Number',
-  description: 'Description',
+  get name() {
+    return localizeUi('Equipment Name')
+  },
+  get date() {
+    return localizeUi('Training Expiry Date')
+  },
+  get inspection_duration() {
+    return localizeUi('Inspection Duration')
+  },
+  get license_number() {
+    return localizeUi('License Number')
+  },
+  get license_plate_number() {
+    return localizeUi('License Plate')
+  },
+  get image() {
+    return localizeUi('Equipment Image')
+  },
+  get certificate_image() {
+    return localizeUi('Training Image')
+  },
+  get checkin_date() {
+    return localizeUi('Rent Start Date')
+  },
+  get checkout_date() {
+    return localizeUi('Rent End Date')
+  },
+  get period() {
+    return localizeUi('Rental Period')
+  },
+  get period_type() {
+    return localizeUi('Rent Type')
+  },
+  get status() {
+    return localizeUi('Status')
+  },
+  get kilometer() {
+    return localizeUi('Vehicle Kilometer')
+  },
+  get serial_number() {
+    return localizeUi('Serial Number')
+  },
+  get description() {
+    return localizeUi('Description')
+  },
 }
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return
@@ -310,11 +342,13 @@ const previewColumns = computed(() => {
   const headers = mappedData.value?.[0] ?? []
 
   return headers
-    .map((header: unknown, index: number): PreviewColumn => ({
-      index,
-      header: String(header ?? ''),
-      apiKey: normalizeExcelHeader(header),
-    }))
+    .map(
+      (header: unknown, index: number): PreviewColumn => ({
+        index,
+        header: String(header ?? ''),
+        apiKey: normalizeExcelHeader(header),
+      }),
+    )
     .filter(({ apiKey }: PreviewColumn) => apiKey !== 'image' && apiKey !== 'certificate_image')
 })
 
@@ -487,9 +521,9 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
           :modelValue="equipmentType"
           :required="true"
           :staticOptions="AllEquipmentTypes"
-          :label="`${GetEquipmentTitle(activeTab)} Type`"
+          :label="$t('uiDynamic.typeLabel', { p0: GetEquipmentTitle(activeTab) })"
           :id="`${GetEquipmentTitle(activeTab)} Type`"
-          :placeholder="`Select ${GetEquipmentTitle(activeTab)} Type`"
+          :placeholder="$t('uiDynamic.selectType', { p0: GetEquipmentTitle(activeTab) })"
           @update:modelValue="setEquipmentType"
         />
       </div>
@@ -510,9 +544,9 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
           :modelValue="SelectedContractor"
           :controller="indexContractorController"
           :params="indexContractorTypeParams"
-          :label="`Contractor`"
+          :label="$t('contractor')"
           id="Contractor"
-          :placeholder="`Select Contractor`"
+          :placeholder="$t('Select Contractor')"
           @update:modelValue="setContructor"
         />
       </div>
@@ -522,9 +556,9 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
           :controller="indexWhereHouseController"
           :params="indexWhereHouseParams"
           :modelValue="SelectedWhereHosue"
-          label="Warehouse"
+          :label="$t('Warehouse')"
           id="Warehouse"
-          placeholder="Select Warehouse.."
+          :placeholder="$t('Select Warehouse..')"
           @update:modelValue="setSelectedWhereHouse"
         />
       </div>
@@ -536,7 +570,7 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
       <span class="loading-dot" />
       <span class="loading-dot" />
       <span class="loading-dot" />
-      <span class="loading-label">Processing file and images…</span>
+      <span class="loading-label">{{ $t('Processing file and images…') }}</span>
     </div>
 
     <FileUpload
@@ -559,8 +593,8 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
       <template v-if="mappedData && mappedData.length > 0">
         <div class="table-container">
           <div class="table-header">
-            <h3 class="table-title">Mapped Data Preview</h3>
-            <span class="table-badge">{{ mappedData.length - 1 }} rows</span>
+            <h3 class="table-title">{{ $t('Mapped Data Preview') }}</h3>
+            <span class="table-badge">{{ mappedData.length - 1 }} {{ $t('rows') }}</span>
           </div>
           <div class="table-responsive">
             <table class="main-table">
@@ -568,11 +602,15 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
                 <tr>
                   <th v-for="column in previewColumns" :key="column.index">
                     <span>
-                      {{ column.apiKey ? (SendDataLabels[column.apiKey] ?? column.header) : column.header }}
+                      {{
+                        column.apiKey
+                          ? (SendDataLabels[column.apiKey] ?? column.header)
+                          : column.header
+                      }}
                     </span>
                   </th>
-                  <th>Image</th>
-                  <th>Training Image</th>
+                  <th>{{ $t('image') }}</th>
+                  <th>{{ $t('Training Image') }}</th>
                   <th class="empty"></th>
                 </tr>
               </thead>
@@ -600,7 +638,11 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
                   </td>
 
                   <td>
-                    <button class="btn-delete-row" @click="deleteRow(rowIndex)" title="Delete row">
+                    <button
+                      class="btn-delete-row"
+                      @click="deleteRow(rowIndex)"
+                      :title="$t('delete_row')"
+                    >
                       🗑
                     </button>
                   </td>
@@ -610,7 +652,7 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
           </div>
         </div>
 
-        <button @click="AddOrgEmployee" class="btn-confirm">Confirm & Submit</button>
+        <button @click="AddOrgEmployee" class="btn-confirm">{{ $t('Confirm & Submit') }}</button>
       </template>
     </template>
   </div>
@@ -865,7 +907,7 @@ kbd {
 
 .main-table th {
   padding: 12px 16px;
-  text-align: left;
+  text-align: start;
   color: var(--brand-primary-500);
   border-bottom: 2px solid var(--brand-primary-100);
 }

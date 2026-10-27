@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getCurrentLocale } from '@/localization/i18n'
+
 import MultiImagesDialog from '@/shared/HelpersComponents/dialog/MultiImagesDialog.vue'
 import type TicketDetailsModel from '../../../Data/models/TicketDetailsModel'
 
@@ -14,14 +16,19 @@ const { history } = defineProps<{
         <p>{{ history.description }}</p>
         <MultiImagesDialog :images="history?.media.map((img) => img.url) || []">
           <div class="imgs image-container">
-            <img v-for="(img, i) in history?.media.slice(0, 2)" :key="i" :src="img.url" :class="'img-' + (i + 1)"
-              alt="static" />
+            <img
+              v-for="(img, i) in history?.media.slice(0, 2)"
+              :key="i"
+              :src="img.url"
+              :class="'img-' + (i + 1)"
+              :alt="$t('static')"
+            />
           </div>
         </MultiImagesDialog>
       </div>
 
       <div class="date">
-        <span>{{ new Date(history.createdAt).toLocaleString() }}</span>
+        <span>{{ new Date(history.createdAt).toLocaleString(getCurrentLocale()) }}</span>
       </div>
     </div>
   </div>

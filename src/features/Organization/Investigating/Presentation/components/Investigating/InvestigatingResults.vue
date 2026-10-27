@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
 import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
 
 import InjuryDetailsModel from '@/features/Organization/ObservationFactory/Data/models/InjuryModel'
@@ -81,7 +82,8 @@ type CauseOfActionPayload = {
   hasEmptyOtherFactor: boolean
 }
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('InvestigatingResults')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('InvestigatingResults')
 
 const route = useRoute()
 const id = route.params.id
@@ -326,9 +328,9 @@ const setRootCause = (data: TitleInterface[]) => {
 const RootCausesDialog = ref<boolean>(false)
 
 const InvestigationLevel = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'low' }),
+  new TitleInterface({ id: 1, title: 'low', translationKey: 'low' }),
   new TitleInterface({ id: 2, title: 'meduim' }),
-  new TitleInterface({ id: 3, title: 'high' }),
+  new TitleInterface({ id: 3, title: 'high', translationKey: 'high' }),
 ])
 const SelectedLevel = ref<TitleInterface>()
 const setSelectedLevel = (data: TitleInterface) => {
@@ -542,13 +544,13 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   ...eventTimelineItems.value.flatMap((item, index) => [
     {
       key: timelineFieldKey('time', index),
-      message: `Event ${index + 1} Time Is Required`,
+      message: localizeUi('validation.eventTimeRequired', { row: index + 1 }),
       panel: '3',
       isMissing: () => isTimelineStarted(item) && !item.time,
     },
     {
       key: timelineFieldKey('description', index),
-      message: `Event ${index + 1} Description Is Required`,
+      message: localizeUi('validation.eventDescriptionRequired', { row: index + 1 }),
       panel: '3',
       isMissing: () => isTimelineStarted(item) && !hasValue(item.description),
     },
@@ -556,13 +558,13 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   ...(Accidents.value?.accidentsData ?? []).flatMap((item: any, index: number) => [
     {
       key: `Accidents.${index}.employee`,
-      message: `Injury ${index + 1} Employee Is Required`,
+      message: localizeUi('validation.injuryEmployeeRequired', { row: index + 1 }),
       panel: '4',
       isMissing: () => shouldValidateInjury(item, index) && !hasInjuryEmployee(item),
     },
     {
       key: `Accidents.${index}.text`,
-      message: `Injury ${index + 1} Description Is Required`,
+      message: localizeUi('validation.injuryDescriptionRequired', { row: index + 1 }),
       panel: '4',
       isMissing: () => shouldValidateInjury(item, index) && !hasInjuryDescription(item),
     },
@@ -576,7 +578,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   ...(viewersResults.value ?? []).flatMap((item: any, index: number) => [
     {
       key: viewerFieldKey('employee', index),
-      message: `Witness ${index + 1} Employee Is Required`,
+      message: localizeUi('validation.witnessEmployeeRequired', { row: index + 1 }),
       panel: '5',
       isMissing: () =>
         shouldValidateViewer(item) &&
@@ -585,7 +587,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     },
     {
       key: viewerFieldKey('statement', index),
-      message: `Witness ${index + 1} Statement Is Required`,
+      message: localizeUi('validation.witnessStatementRequired', { row: index + 1 }),
       panel: '5',
       isMissing: () => shouldValidateViewer(item) && !hasValue(item?.witnessesStatements),
     },
@@ -595,25 +597,37 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     getRawCapaTasks(type).flatMap((task: any, index: number) => [
       {
         key: capaFieldKey(type, 'text', index),
-        message: `${type === 'corrective' ? 'Corrective' : 'Preventive'} Action ${index + 1} Title Is Required`,
+        message: localizeUi('validation.capaTitleRequired', {
+          row: index + 1,
+          type: localizeUi(`validation.${type}`),
+        }),
         panel: '8',
         isMissing: () => isCapaTaskStarted(task) && !hasValue(task?.text ?? task?.title),
       },
       {
         key: capaFieldKey(type, 'date', index),
-        message: `${type === 'corrective' ? 'Corrective' : 'Preventive'} Action ${index + 1} Date Is Required`,
+        message: localizeUi('validation.capaDateRequired', {
+          row: index + 1,
+          type: localizeUi(`validation.${type}`),
+        }),
         panel: '8',
         isMissing: () => isCapaTaskStarted(task) && !task?.isGoing && !task?.date,
       },
       {
         key: capaFieldKey(type, 'employee', index),
-        message: `${type === 'corrective' ? 'Corrective' : 'Preventive'} Action ${index + 1} Implementation Responsibility Is Required`,
+        message: localizeUi('validation.capaEmployeeRequired', {
+          row: index + 1,
+          type: localizeUi(`validation.${type}`),
+        }),
         panel: '8',
         isMissing: () => isCapaTaskStarted(task) && !hasSelectedId(getTaskEmployee(task)),
       },
       {
         key: capaFieldKey(type, 'responsible', index),
-        message: `${type === 'corrective' ? 'Corrective' : 'Preventive'} Action ${index + 1} Monitoring Responsibility Is Required`,
+        message: localizeUi('validation.capaResponsibleRequired', {
+          row: index + 1,
+          type: localizeUi(`validation.${type}`),
+        }),
         panel: '8',
         isMissing: () => isCapaTaskStarted(task) && !hasSelectedId(getTaskResponsible(task)),
       },
@@ -645,6 +659,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   //     anotherMeeting.value?.isAnother === null || anotherMeeting.value?.isAnother === undefined,
   // },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
 const getFirstFieldError = (prefix: string) =>
@@ -690,7 +705,9 @@ const scrollToRequiredField = async (field: RequiredFieldRule) => {
 
 const validateRequiredFields = async () => {
   clearResolvedRequiredErrors()
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors
@@ -724,7 +741,9 @@ const getObservationType = (type: number | undefined) => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>{{ getObservationType(state?.data?.observation.type) }} Identification</p>
+                <p>
+                  {{ getObservationType(state?.data?.observation.type) }} {{ $t('Identification') }}
+                </p>
                 <span class="arrow" :class="{ open: isPanelOpen('1') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -757,7 +776,7 @@ const getObservationType = (type: number | undefined) => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Immediate Action Evaluation</p>
+                <p>{{ $t('Immediate Action Evaluation') }}</p>
                 <span class="arrow" :class="{ open: isPanelOpen('6') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -778,7 +797,7 @@ const getObservationType = (type: number | undefined) => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Investigation Team</p>
+                <p>{{ $t('Investigation Team') }}</p>
                 <span class="arrow" :class="{ open: isPanelOpen('2') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -791,17 +810,17 @@ const getObservationType = (type: number | undefined) => {
       </div> -->
                   <div class="meeting-info">
                     <p>
-                      Investigation team leader :
+                      {{ $t('Investigation team leader :') }}
                       <span class="team-leader">{{ state?.data?.TeamLeader?.name }}</span>
                     </p>
                     <p>
-                      Investigation Team Members :
+                      {{ $t('Investigation Team Members :') }}
                       <span class="team-number">{{
                         state?.data?.investigationEmployees?.length
                       }}</span>
                     </p>
                     <p>
-                      Date and Time of meeting :
+                      {{ $t('Date and Time of meeting :') }}
                       <span class="team-number"
                         >{{ state?.data?.investigationMeetingDate }} &
                         {{ state?.data?.investigationMeetingTime }}</span
@@ -845,7 +864,7 @@ const getObservationType = (type: number | undefined) => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Events Timeline</p>
+                <p>{{ $t('Events Timeline') }}</p>
                 <span class="arrow" :class="{ open: isPanelOpen('3') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -869,7 +888,7 @@ const getObservationType = (type: number | undefined) => {
                     <div class="event-timeline-card">
                       <div class="event-timeline-card-header">
                         <div>
-                          <span>Event {{ index + 1 }}</span>
+                          <span>{{ $t('Event') }} {{ index + 1 }}</span>
                           <h4>{{ $t('event_time_line') }}</h4>
                         </div>
                         <button
@@ -890,7 +909,11 @@ const getObservationType = (type: number | undefined) => {
                           <div class="field-label">
                             <label :for="`event_time_${index}`">{{ $t('time') }}</label>
                             <FieldHelpIcon
-                              text="Enter the time when this event occurred in the incident sequence."
+                              :text="
+                                $t(
+                                  'Enter the time when this event occurred in the incident sequence.',
+                                )
+                              "
                             />
                           </div>
                           <DatePicker
@@ -899,7 +922,7 @@ const getObservationType = (type: number | undefined) => {
                             timeOnly
                             hourFormat="12"
                             fluid
-                            :placeholder="`Enter the time `"
+                            :placeholder="$t('Enter the time')"
                             @update:model-value="updateIncidentTimelineDescription"
                           />
                           <p
@@ -919,15 +942,20 @@ const getObservationType = (type: number | undefined) => {
                               $t('description')
                             }}</label>
                             <FieldHelpIcon
-                              text="Describe what happened at this point in the timeline, including relevant actions and conditions."
+                              :text="
+                                $t(
+                                  'Describe what happened at this point in the timeline, including relevant actions and conditions.',
+                                )
+                              "
                             />
                           </div>
                           <textarea
+                            dir="auto"
                             :id="`event_description_${index}`"
                             v-model="item.description"
                             class="input"
                             style="min-height: 10px !important"
-                            :placeholder="'What happened? (in detail)'"
+                            :placeholder="$t('What happened? (in detail)')"
                             @input="updateIncidentTimelineDescription"
                           ></textarea>
                           <p
@@ -943,7 +971,7 @@ const getObservationType = (type: number | undefined) => {
                 </div>
 
                 <button class="btn btn-primary mt-2" type="button" @click="addEventTimelineItem">
-                  + Add new timeline
+                  {{ $t('+ Add new timeline') }}
                 </button>
               </section>
             </AccordionContent>
@@ -956,7 +984,7 @@ const getObservationType = (type: number | undefined) => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Health Impact Integration</p>
+                <p>{{ $t('Health Impact Integration') }}</p>
                 <span class="arrow" :class="{ open: isPanelOpen('4') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -979,14 +1007,16 @@ const getObservationType = (type: number | undefined) => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Witnesses Management</p>
+                <p>{{ $t('Witnesses Management') }}</p>
                 <span class="arrow" :class="{ open: isPanelOpen('5') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
             <AccordionContent>
               <div data-required-field="viewersResults.0.employee">
-
-                <WitnessesTimeLine :statements="state.data?.observation?.witness_statements " @update:data="Updatewitnesses" />
+                <WitnessesTimeLine
+                  :statements="state.data?.observation?.witness_statements"
+                  @update:data="Updatewitnesses"
+                />
                 <p v-if="getFirstFieldError('viewersResults.')" class="required-field-message">
                   {{ getFirstFieldError('viewersResults.') }}
                 </p>
@@ -998,7 +1028,7 @@ const getObservationType = (type: number | undefined) => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Root Cause Analysis (5 Whys)</p>
+                <p>{{ $t('Root Cause Analysis (5 Whys)') }}</p>
                 <span class="arrow" :class="{ open: isPanelOpen('7') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -1019,7 +1049,9 @@ const getObservationType = (type: number | undefined) => {
                   :controller="indexRootCaueseController"
                   :params="indexRootCaueseParams"
                   :label="$t('Identified Root Cause')"
-                  help-text="Select the underlying causes that directly contributed to the incident."
+                  :help-text="
+                    $t('Select the underlying causes that directly contributed to the incident.')
+                  "
                   id="rootCause"
                   :placeholder="$t('select your root_cause')"
                   @update:modelValue="setRootCause"
@@ -1045,7 +1077,7 @@ const getObservationType = (type: number | undefined) => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Action Plan : Corrective and Preventive Actions</p>
+                <p>{{ $t('Action Plan : Corrective and Preventive Actions') }}</p>
                 <span class="arrow" :class="{ open: isPanelOpen('8') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -1062,7 +1094,7 @@ const getObservationType = (type: number | undefined) => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Lessons Learned</p>
+                <p>{{ $t('Lessons Learned') }}</p>
                 <span class="arrow" :class="{ open: isPanelOpen('9') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -1071,17 +1103,26 @@ const getObservationType = (type: number | undefined) => {
                 <div class="section-heading">
                   <!-- <span>Lesson learnt</span> -->
                   <div class="field-label">
-                    <h2>Lessons Learned</h2>
+                    <h2>{{ $t('Lessons Learned') }}</h2>
                     <FieldHelpIcon
-                      text="Record the key learning from this investigation and what should be shared to prevent recurrence."
+                      :text="
+                        $t(
+                          'Record the key learning from this investigation and what should be shared to prevent recurrence.',
+                        )
+                      "
                     />
                   </div>
                 </div>
                 <div class="input-wrapper" data-required-field="lessonLearnt">
                   <textarea
+                    dir="auto"
                     id="lesson_learnt"
                     v-model="lessonLearnt"
-                    placeholder="Write the lesson learnt, what changed, and what should be shared with other teams."
+                    :placeholder="
+                      $t(
+                        'Write the lesson learnt, what changed, and what should be shared with other teams.',
+                      )
+                    "
                   ></textarea>
                   <p v-if="getFieldError('lessonLearnt')" class="required-field-message">
                     {{ getFieldError('lessonLearnt') }}
@@ -1094,7 +1135,7 @@ const getObservationType = (type: number | undefined) => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Similar incident Retrieval</p>
+                <p>{{ $t('Similar incident Retrieval') }}</p>
                 <span class="arrow" :class="{ open: isPanelOpen('10') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -1115,12 +1156,14 @@ const getObservationType = (type: number | undefined) => {
                     class="similar-observation-card"
                   >
                     <span>#{{ observation.serialName || observation.serial || 'N/A' }}</span>
-                    <strong>{{ observation.title || 'Untitled observation' }}</strong>
+                    <strong>{{ observation.title || $t('Untitled observation') }}</strong>
                     <small>{{ observation.date || 'N/A' }}</small>
                   </article>
                 </div>
 
-                <p v-else class="similar-observations-empty">No similar incidents found.</p>
+                <p v-else class="similar-observations-empty">
+                  {{ $t('No similar incidents found.') }}
+                </p>
               </section>
             </AccordionContent>
           </AccordionPanel>
@@ -1128,7 +1171,7 @@ const getObservationType = (type: number | undefined) => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Attachments</p>
+                <p>{{ $t('Attachments') }}</p>
                 <span class="arrow" :class="{ open: isPanelOpen('11') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -1146,7 +1189,7 @@ const getObservationType = (type: number | undefined) => {
                       class="cursor-pointer"
                       @click="investigationAttachments?.files.splice(index, 1)"
                     />
-                    <img :src="image" alt="attachment" width="150" />
+                    <img :src="image" :alt="$t('Attachment')" width="150" />
                   </div>
                 </div>
               </div>
@@ -1156,7 +1199,7 @@ const getObservationType = (type: number | undefined) => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Another Meeting</p>
+                <p>{{ $t('Another Meeting') }}</p>
                 <span class="arrow" :class="{ open: isPanelOpen('12') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -1238,21 +1281,33 @@ const getObservationType = (type: number | undefined) => {
     </template>
     <template #empty>
       <DataEmpty
-        description="You have no Investegation Result .. All your joined customers will appear here when you add your customer data"
-        title="You have No Investegation Result"
+        :description="
+          $t(
+            'You have no Investegation Result .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+        :title="$t('You have No Investegation Result')"
       />
     </template>
     <template #failed>
       <DataFailed
-        description="You have no Investegation Result Data .. All your joined customers will appear here when you add your customer data"
-        title="You have No Investegation Result Data"
+        :description="
+          $t(
+            'You have no Investegation Result Data .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+        :title="$t('You have No Investegation Result Data')"
       />
     </template>
 
     <template #notPermitted>
       <DataFailed
-        addText="Have not Permission"
-        description="You have no Hazard .. All your joined customers will appear here when you add your customer data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Hazard .. All your joined customers will appear here when you add your customer data',
+          )
+        "
       />
     </template>
   </DataStatus>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import DatePicker from 'primevue/datepicker'
@@ -65,7 +67,11 @@ const auditActivityParams = new IndexAuditActivityParams('', 1, 1000, 0)
 const showController = ShowInternalAuditPlanController.getInstance()
 const editController = EditInternalAuditPlanController.getInstance()
 
-const fullCompanyOption = new TitleInterface({ id: 0, title: 'Full Company' })
+const fullCompanyOption = new TitleInterface({
+  id: 0,
+  title: 'Full Company',
+  translationKey: 'full_company',
+})
 const defaultGeneralInstructions =
   'All staff must be notified in advance of the onsite audit: the purpose of the audit, and of their roles. They may be interviewed.\nBefore the audit, keep aside process maps, procedures, work instructions, and supporting documentation.\nWhere applicable, agree corrective and preventive actions and target dates.\nSenior management should attend opening and closing meetings.'
 const projectOptions = ref<TitleInterface[]>([fullCompanyOption])
@@ -403,22 +409,26 @@ function validate(isDraft: boolean): boolean {
   publishAttempted.value = !isDraft
   if (isDraft) return true
   if (!auditStartDate.value || !auditEndDate.value || !selectedProject.value)
-    error.value = 'Complete the audit dates and project scope.'
+    error.value = localizeUi('Complete the audit dates and project scope.')
   else if (auditEndDate.value < auditStartDate.value)
-    error.value = 'Audit end date must be on or after the start date.'
-  else if (!auditStandard.value.length) error.value = 'Select at least one audit standard.'
+    error.value = localizeUi('Audit end date must be on or after the start date.')
+  else if (!auditStandard.value.length)
+    error.value = localizeUi('Select at least one audit standard.')
   else if (
     !auditTeam.value.length ||
     !leadAuditor.value ||
     !auditTeam.value.some((member) => Number(member.id) === Number(leadAuditor.value?.id))
   )
-    error.value = 'Select a lead auditor from the audit team.'
+    error.value = localizeUi('Select a lead auditor from the audit team.')
   else if (
     !scopes.value.length ||
     scopes.value.some((scope) => !scope.department || !scope.activities.length)
   )
-    error.value = 'Every audit scope row requires a department and at least one activity.'
-  else if (!schedules.value.length) error.value = 'Add at least one audit schedule activity.'
+    error.value = localizeUi(
+      'Every audit scope row requires a department and at least one activity.',
+    )
+  else if (!schedules.value.length)
+    error.value = localizeUi('Add at least one audit schedule activity.')
   else {
     const start = formatDate(auditStartDate.value)
     const end = formatDate(auditEndDate.value)
@@ -437,8 +447,9 @@ function validate(isDraft: boolean): boolean {
       )
     })
     if (invalidSchedule) {
-      error.value =
-        'Complete every schedule row. Dates must be inside the audit period and end time must follow start time.'
+      error.value = localizeUi(
+        'Complete every schedule row. Dates must be inside the audit period and end time must follow start time.',
+      )
     }
   }
   return !error.value
@@ -507,34 +518,34 @@ async function saveAsDraft() {
         <div class="section-title">
           <span>01</span>
           <div>
-            <h2>Audit Overview</h2>
-            <p>Define when, where, and who will conduct this internal audit.</p>
+            <h2>{{ $t('Audit Overview') }}</h2>
+            <p>{{ $t('Define when, where, and who will conduct this internal audit.') }}</p>
           </div>
         </div>
         <div class="form-grid">
           <label v-if="isExisting" class="field"
-            ><span>Audit No.</span
-            ><input :value="showController.state.value.data?.title" type="text" readonly
+            ><span>{{ $t('audit_number') }}</span
+            ><input dir="auto" :value="showController.state.value.data?.title" type="text" readonly
           /></label>
           <label class="field"
-            ><span>Audit Start Date <b>*</b></span
+            ><span>{{ $t('Audit Start Date') }} <b>*</b></span
             ><DatePicker
               :disabled="isReadOnly"
               v-model="auditStartDate"
               date-format="yy-mm-dd"
               show-icon
               fluid
-              placeholder="Select start date"
+              :placeholder="$t('Select start date')"
           /></label>
           <label class="field"
-            ><span>Audit End Date <b>*</b></span
+            ><span>{{ $t('Audit End Date') }} <b>*</b></span
             ><DatePicker
               :disabled="isReadOnly"
               v-model="auditEndDate"
               date-format="yy-mm-dd"
               show-icon
               fluid
-              placeholder="Select end date"
+              :placeholder="$t('Select end date')"
           /></label>
           <UpdatedCustomInputSelect
             :hascontent="isReadOnly"
@@ -542,13 +553,14 @@ async function saveAsDraft() {
             class="field"
             :model-value="selectedProject"
             :static-options="projectOptions"
-            label="Focus Area"
-            placeholder="Select a Focus Area"
+            :label="$t('Focus Area')"
+            :placeholder="$t('Select a Focus Area')"
             required
             @update:model-value="selectedProject = normalizeSingle($event)"
           >
             <template #content
               ><input
+                dir="auto"
                 :value="readonlyTitles(selectedProject)"
                 class="readonly-select"
                 type="text"
@@ -558,9 +570,9 @@ async function saveAsDraft() {
             <template #option="{ option }"
               ><span
                 >{{ option.title
-                }}<small v-if="Number(option.id) === 0" class="company-option"
-                  >Company-wide audit</small
-                ></span
+                }}<small v-if="Number(option.id) === 0" class="company-option">{{
+                  $t('Company-wide audit')
+                }}</small></span
               ></template
             >
           </UpdatedCustomInputSelect>
@@ -571,14 +583,15 @@ async function saveAsDraft() {
             :model-value="auditStandard"
             :controller="isReadOnly ? undefined : auditStandardController"
             :params="auditStandardParams"
-            label="Audit Standard"
+            :label="$t('audit_standard_title')"
             type="multiselect"
-            placeholder="Select audit standard"
+            :placeholder="$t('Select audit standard')"
             required
             @update:model-value="setAuditStandard"
           >
             <template #content
               ><input
+                dir="auto"
                 :value="readonlyTitles(auditStandard)"
                 class="readonly-select"
                 type="text"
@@ -593,13 +606,14 @@ async function saveAsDraft() {
             :controller="isReadOnly ? undefined : employeeController"
             :params="employeeParams"
             type="multiselect"
-            label="Audit Team"
-            placeholder="Select audit team members"
+            :label="$t('Audit Team')"
+            :placeholder="$t('Select audit team members')"
             required
             @update:model-value="setTeam"
           >
             <template #content
               ><input
+                dir="auto"
                 :value="readonlyTitles(auditTeam)"
                 class="readonly-select"
                 type="text"
@@ -612,13 +626,14 @@ async function saveAsDraft() {
             class="field"
             :model-value="leadAuditor"
             :static-options="selectedTeamOptions"
-            label="Lead Auditor"
-            placeholder="Select from audit team"
+            :label="$t('lead_auditor')"
+            :placeholder="$t('Select from audit team')"
             required
             @update:model-value="leadAuditor = normalizeSingle($event)"
           >
             <template #content
               ><input
+                dir="auto"
                 :value="readonlyTitles(leadAuditor)"
                 class="readonly-select"
                 type="text"
@@ -632,8 +647,8 @@ async function saveAsDraft() {
         <div class="section-title">
           <span>02</span>
           <div>
-            <h2>Audit Scope</h2>
-            <p>Select the departments and activities included in this audit.</p>
+            <h2>{{ $t('Audit Scope') }}</h2>
+            <p>{{ $t('Select the departments and activities included in this audit.') }}</p>
           </div>
         </div>
         <div v-for="(scope, index) in scopes" :key="index" class="scope-row">
@@ -647,8 +662,8 @@ async function saveAsDraft() {
             :model-value="scope.department"
             :controller="isReadOnly ? undefined : hierarchyController"
             :params="hierarchyParams"
-            label="Audit Process"
-            placeholder="Select Audit Process"
+            :label="$t('Audit Process')"
+            :placeholder="$t('Select Audit Process')"
             @update:model-value="setScopeDepartment(index, $event)"
           >
             <template v-if="!isReadOnly" #LabelHeader>
@@ -661,6 +676,7 @@ async function saveAsDraft() {
             </template>
             <template #content
               ><input
+                dir="auto"
                 :value="readonlyTitles(scope.department)"
                 class="readonly-select"
                 type="text"
@@ -678,8 +694,8 @@ async function saveAsDraft() {
             :controller="isReadOnly ? undefined : auditActivityController"
             :params="auditActivityParams"
             type="multiselect"
-            label="Audit Activities"
-            placeholder="Select activities"
+            :label="$t('Audit Activities')"
+            :placeholder="$t('Select Activities')"
             @update:model-value="setScopeActivities(index, $event)"
           >
             <template v-if="!isReadOnly" #LabelHeader>
@@ -692,6 +708,7 @@ async function saveAsDraft() {
             </template>
             <template #content
               ><input
+                dir="auto"
                 :value="readonlyTitles(scope.activities)"
                 class="readonly-select"
                 type="text"
@@ -701,7 +718,7 @@ async function saveAsDraft() {
           <button
             class="icon-button danger"
             type="button"
-            aria-label="Remove audit scope"
+            :aria-label="$t('Remove audit scope')"
             @click="scopes.splice(index, 1)"
           >
             ×
@@ -712,7 +729,7 @@ async function saveAsDraft() {
           type="button"
           @click="scopes.push({ department: null, activities: [] })"
         >
-          ＋ Add Audit Scope
+          {{ $t('＋ Add Audit Scope') }}
         </button>
       </section>
 
@@ -720,13 +737,13 @@ async function saveAsDraft() {
         <div class="section-title">
           <span>03</span>
           <div>
-            <h2>Audit Schedule</h2>
-            <p>Break the audit into timed activities and assign an auditor.</p>
+            <h2>{{ $t('Audit schedule') }}</h2>
+            <p>{{ $t('Break the audit into timed activities and assign an auditor.') }}</p>
           </div>
         </div>
         <article v-for="(schedule, index) in schedules" :key="index" class="schedule-card">
           <header>
-            <strong>Activity {{ index + 1 }}</strong
+            <strong>{{ $t('Activity') }} {{ index + 1 }}</strong
             ><button
               v-if="schedules.length > 1"
               class="icon-button danger"
@@ -738,7 +755,7 @@ async function saveAsDraft() {
           </header>
           <div class="schedule-grid">
             <label class="field"
-              ><span>Start Time <b>*</b></span
+              ><span>{{ $t('start_time') }} <b>*</b></span
               ><DatePicker
                 :disabled="isReadOnly"
                 v-model="schedule.startTime"
@@ -748,7 +765,7 @@ async function saveAsDraft() {
                 placeholder="09:00"
             /></label>
             <label class="field"
-              ><span>End Time <b>*</b></span
+              ><span>{{ $t('end_time') }} <b>*</b></span
               ><DatePicker
                 :disabled="isReadOnly"
                 v-model="schedule.endTime"
@@ -758,14 +775,14 @@ async function saveAsDraft() {
                 placeholder="10:00"
             /></label>
             <label class="field"
-              ><span>Day <b>*</b></span
+              ><span>{{ $t('day') }} <b>*</b></span
               ><DatePicker
                 :disabled="isReadOnly"
                 v-model="schedule.day"
                 date-format="yy-mm-dd"
                 show-icon
                 fluid
-                placeholder="Select day"
+                :placeholder="$t('select day')"
             /></label>
             <div
               class="schedule-field"
@@ -777,14 +794,15 @@ async function saveAsDraft() {
                 class="field"
                 :model-value="schedule.focus"
                 :static-options="auditFocusOptions"
-                label="Audit Focus"
-                placeholder="Select from audit scope"
+                :label="$t('Audit Focus')"
+                :placeholder="$t('Select from audit scope')"
                 required
                 :aria-invalid="publishAttempted && !hasValidAuditFocus(schedule)"
                 @update:model-value="setScheduleValue(index, 'focus', $event)"
               >
                 <template #content
                   ><input
+                    dir="auto"
                     :value="readonlyTitles(schedule.focus)"
                     class="readonly-select"
                     type="text"
@@ -792,12 +810,16 @@ async function saveAsDraft() {
                 /></template>
               </UpdatedCustomInputSelect>
               <p v-if="publishAttempted && !hasValidAuditFocus(schedule)" class="field-error">
-                Select an audit focus from the audit scope.
+                {{ $t('Select an audit focus from the audit scope.') }}
               </p>
             </div>
             <label class="field"
-              ><span>Location <b>*</b></span
-              ><input v-model="schedule.location" type="text" placeholder="Enter location"
+              ><span>{{ $t('Location') }} <b>*</b></span
+              ><input
+                dir="auto"
+                v-model="schedule.location"
+                type="text"
+                :placeholder="$t('Enter location')"
             /></label>
             <div
               class="schedule-field"
@@ -809,15 +831,16 @@ async function saveAsDraft() {
                 class="field"
                 :model-value="schedule.assignedAuditors"
                 :static-options="selectedTeamOptions"
-                label="Assigned Auditor"
+                :label="$t('Assigned Auditor')"
                 type="multiselect"
-                placeholder="Select from audit team"
+                :placeholder="$t('Select from audit team')"
                 required
                 :aria-invalid="publishAttempted && !hasValidAssignedAuditor(schedule)"
                 @update:model-value="setScheduleValue(index, 'assignedAuditors', $event)"
               >
                 <template #content
                   ><input
+                    dir="auto"
                     :value="readonlyTitles(schedule.assignedAuditors)"
                     class="readonly-select"
                     type="text"
@@ -825,28 +848,29 @@ async function saveAsDraft() {
                 /></template>
               </UpdatedCustomInputSelect>
               <p v-if="publishAttempted && !hasValidAssignedAuditor(schedule)" class="field-error">
-                Select an assigned auditor from the audit team.
+                {{ $t('Select an assigned auditor from the audit team.') }}
               </p>
             </div>
           </div>
         </article>
         <button class="outline-button" type="button" @click="schedules.push(createSchedule())">
-          ＋ Add Activity
+          {{ $t('＋ Add Activity') }}
         </button>
       </section>
       <div class="schedule-shared-fields">
         <label class="field field-wide"
-          ><span>General Instructions</span
+          ><span>{{ $t('General Instructions') }}</span
           ><textarea
+            dir="auto"
             v-model="generalInstructions"
             rows="4"
-            placeholder="Add general instructions for the audit schedule"
+            :placeholder="$t('Add general instructions for the audit schedule')"
           />
         </label>
         <div class="field field-wide">
           <HandleFIlesUpload
             :readonly="isReadOnly"
-            label="Plan Attachments"
+            :label="$t('Plan Attachments')"
             accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
             :multiple="true"
             :max-files="8"
@@ -856,11 +880,8 @@ async function saveAsDraft() {
           />
         </div>
         <label class="field field-wide"
-          ><span>Reason For Date Changes</span
-          ><textarea
-            v-model="reasonForDateChanges"
-            rows="4"
-          />
+          ><span>{{ $t('Reason For Date Changes') }}</span
+          ><textarea dir="auto" v-model="reasonForDateChanges" rows="4" />
         </label>
       </div>
       <p v-if="error" class="form-error" role="alert">{{ error }}</p>
@@ -874,7 +895,7 @@ async function saveAsDraft() {
         :disabled="saving"
         @click="saveAsDraft"
       >
-        {{ saving ? 'Saving…' : 'Save as Draft' }}
+        {{ saving ? $t('emailSettings.saving') : $t('Save as Draft') }}
       </button>
       <button
         class="btn btn-primary"
@@ -882,7 +903,13 @@ async function saveAsDraft() {
         v-if="props.auditStatus !== 'planned'"
         :disabled="saving"
       >
-        {{ saving ? 'Saving…' : isPublished ? 'Save Changes' : 'Publish Plan' }}
+        {{
+          saving
+            ? $t('emailSettings.saving')
+            : isPublished
+              ? $t('save_changes')
+              : $t('Publish Plan')
+        }}
       </button>
     </footer>
   </form>

@@ -115,7 +115,7 @@ const FetchPermitsAuidtResult = async (permitId: number) => {
       <div class="statistics-header">
         <div>
           <span class="statistics-kicker">
-            {{ $t('Overview') }}
+            {{ $t('home_setup_overview_short') }}
           </span>
 
           <h2>
@@ -133,7 +133,7 @@ const FetchPermitsAuidtResult = async (permitId: number) => {
         <div class="statistics-card total">
           <div class="statistics-card-top">
             <div class="statistics-icon">
-              <span>ALL</span>
+              <span>{{ $t('ALL') }}</span>
             </div>
 
             <span class="statistics-badge">
@@ -214,11 +214,11 @@ const FetchPermitsAuidtResult = async (permitId: number) => {
         <div class="statistics-card canceled">
           <div class="statistics-card-top">
             <div class="statistics-icon">
-              <span>CAN</span>
+              <span>{{ $t('can') }}</span>
             </div>
 
             <span class="statistics-badge">
-              {{ $t('Canceled') }}
+              {{ $t('canceled') }}
             </span>
           </div>
 
@@ -410,7 +410,7 @@ const FetchPermitsAuidtResult = async (permitId: number) => {
                 project_id: route.params.project_id,
               },
             }"
-            >Create Audit</router-link
+            >{{ $t('Create Audit') }}</router-link
           >
           <!-- :to="{
               path: `/organization/project-permit/project/templates-result`,

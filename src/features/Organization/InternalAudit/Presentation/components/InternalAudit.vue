@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import InternalAuditPlanTab from './plan/InternalAuditPlanTab.vue'
@@ -9,10 +11,34 @@ import ShowInternalAuditPlanParams from '../../Core/params/plan/showInternalAudi
 import ShowInternalAuditPlanController from '../controllers/plan/showInternalAuditPlanController'
 
 const tabs = [
-  { key: 'plan', label: 'Plan', component: InternalAuditPlanTab },
-  { key: 'attendance', label: 'Attendance', component: InternalAuditAttendanceTab },
-  { key: 'ncrs', label: 'NCRs', component: InternalAuditNcrsTab },
-  { key: 'report', label: 'Report', component: InternalAuditReportTab },
+  {
+    key: 'plan',
+    get label() {
+      return localizeUi('plan')
+    },
+    component: InternalAuditPlanTab,
+  },
+  {
+    key: 'attendance',
+    get label() {
+      return localizeUi('Attendance')
+    },
+    component: InternalAuditAttendanceTab,
+  },
+  {
+    key: 'ncrs',
+    get label() {
+      return localizeUi('NCRs')
+    },
+    component: InternalAuditNcrsTab,
+  },
+  {
+    key: 'report',
+    get label() {
+      return localizeUi('Report')
+    },
+    component: InternalAuditReportTab,
+  },
 ]
 const route = useRoute()
 const router = useRouter()
@@ -57,18 +83,18 @@ onMounted(loadSelectedAudit)
     <header class="page-header">
       <div>
         <!-- <span class="eyebrow">Assurance & compliance</span> -->
-        <h1>Internal Audit</h1>
+        <h1>{{ $t('Internal Audit') }}</h1>
         <!-- <p>Create and manage a complete organization audit lifecycle.</p> -->
         <div v-if="selectedAudit" class="audit-identity">
           <strong>{{ selectedAudit.title }}</strong
           ><span>{{ selectedAudit.status }}</span>
         </div>
       </div>
-      <router-link class="btn btn-secondary" to="/organization/internal-audit/register"
-        >Audit Register</router-link
-      >
+      <router-link class="btn btn-secondary" to="/organization/internal-audit/register">{{
+        $t('Audit Register')
+      }}</router-link>
     </header>
-    <nav class="audit-tabs" aria-label="Internal audit sections">
+    <nav class="audit-tabs" :aria-label="$t('Internal audit sections')">
       <button
         v-for="tab in tabs"
         :key="tab.key"
@@ -81,7 +107,7 @@ onMounted(loadSelectedAudit)
       </button>
     </nav>
     <p v-if="!internalAuditPlanId && activeTab === 'plan'" class="stage-note">
-      Save the audit plan before continuing to Attendance, NCRs, and Report.
+      {{ $t('Save the audit plan before continuing to Attendance, NCRs, and Report.') }}
     </p>
     <KeepAlive>
       <component

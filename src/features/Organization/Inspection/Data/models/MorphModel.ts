@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleModel from '@/base/core/Models/title_model'
 
 export default class MorphModel extends TitleModel {
@@ -9,6 +10,6 @@ export default class MorphModel extends TitleModel {
   }
 
   static fromMap(data: any): MorphModel {
-    return new MorphModel(data.id, data.name || data.title, data.hierarchy)
+    return localizedRecord(new MorphModel(data.id, data.name || data.title, data.hierarchy), data)
   }
 }

@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -5,10 +6,7 @@ import { SelectControllerInterface } from '@/base/Presentation/Controller/select
 import type PpeItemModel from '../../Data/models/PpeItemModel'
 import IndexPpeItemUseCase from '../../Domain/useCase/indexPpeItemUseCase'
 
-
-export default class IndexPpeItemController extends SelectControllerInterface<
-  PpeItemModel[]
-> {
+export default class IndexPpeItemController extends SelectControllerInterface<PpeItemModel[]> {
   private static instance: IndexPpeItemController
   private constructor() {
     super()
@@ -26,14 +24,13 @@ export default class IndexPpeItemController extends SelectControllerInterface<
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<PpeItemModel[]> =
-      await this.IndexPpeItemUseCase.call(params)
+    const dataState: DataState<PpeItemModel[]> = await this.IndexPpeItemUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

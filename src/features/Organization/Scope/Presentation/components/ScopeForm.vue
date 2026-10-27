@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
 
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
@@ -16,7 +18,8 @@ import { useUserStore } from '@/stores/user'
 import TranslationsParams from '@/base/core/params/translations_params'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('ScopeForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('ScopeForm')
 
 const route = useRoute()
 const emit = defineEmits(['update:data'])
@@ -135,8 +138,10 @@ const SerialNumber = ref()
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
@@ -160,6 +165,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     isMissing: () => !hasLangValue(),
   },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
 
@@ -172,7 +178,9 @@ const scrollToRequiredField = async (key: string) => {
 }
 
 const validateRequiredFields = async () => {
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors

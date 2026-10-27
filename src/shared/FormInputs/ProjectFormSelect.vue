@@ -64,6 +64,7 @@ onMounted(() => {
       {{ $t('project') }} <span aria-hidden="true" class="red">*</span>
     </label>
     <input
+      dir="auto"
       v-if="disabled && modelValue"
       :id="id"
       type="text"

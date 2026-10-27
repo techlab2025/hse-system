@@ -28,7 +28,7 @@ const questionGroups = computed(() => {
   }))
   const groupedIds = new Set(groups.flatMap((group) => group.items.map((item) => item.id)))
   const remaining = (document.value?.templateItems ?? []).filter((item) => !groupedIds.has(item.id))
-  if (remaining.length) groups.push({ title: t('Questions'), items: remaining })
+  if (remaining.length) groups.push({ title: t('questions'), items: remaining })
   return groups.filter((group) => group.items.length)
 })
 

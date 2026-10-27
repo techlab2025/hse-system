@@ -1,76 +1,85 @@
-  <script setup lang="ts">
-  import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue';
-  import Dialog from 'primevue/dialog';
-  import { ref, watch } from "vue";
-  import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-  import { useRouter } from 'vue-router';
-  import IndexCheckListController from '@/features/Organization/CheckList/Presentation/controllers/indexCheckListController';
-  import IndexCheckListParams from '@/features/Organization/CheckList/Core/params/indexCheckListParams';
-  import { useI18n } from 'vue-i18n';
-  import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue';
-  import CloseInvestegationController from '../../../controllers/CloseInvestigatingController';
-  import CloseInvestegationParams from '@/features/Organization/Investigating/Core/params/CloseInvestigationParams';
-  import InvestegationChecklistParams from '@/features/Organization/Investigating/Core/params/InvestegationChecklistParams';
+<script setup lang="ts">
+import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
+import Dialog from 'primevue/dialog'
+import { ref, watch } from 'vue'
+import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
+import { useRouter } from 'vue-router'
+import IndexCheckListController from '@/features/Organization/CheckList/Presentation/controllers/indexCheckListController'
+import IndexCheckListParams from '@/features/Organization/CheckList/Core/params/indexCheckListParams'
+import { useI18n } from 'vue-i18n'
+import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue'
+import CloseInvestegationController from '../../../controllers/CloseInvestigatingController'
+import CloseInvestegationParams from '@/features/Organization/Investigating/Core/params/CloseInvestigationParams'
+import InvestegationChecklistParams from '@/features/Organization/Investigating/Core/params/InvestegationChecklistParams'
 
-  const props = defineProps<{
-    isHeaderTap?: boolean
-    investegationId?: number
-  }>()
+const props = defineProps<{
+  isHeaderTap?: boolean
+  investegationId?: number
+}>()
 
-  const visible = ref(false);
+const visible = ref(false)
 
-  const indexCheckListController = IndexCheckListController.getInstance()
-  const state = ref(indexCheckListController.state.value)
-  const fetchWhereHouseType = async (
-    query: string = '',
-    pageNumber: number = 1,
-    perPage: number = 10,
-    withPage: number = 0,
-  ) => {
-    const indexCheckListParams = new IndexCheckListParams(query, pageNumber, perPage, withPage)
-    await indexCheckListController.getData(indexCheckListParams)
-  }
+const indexCheckListController = IndexCheckListController.getInstance()
+const state = ref(indexCheckListController.state.value)
+const fetchWhereHouseType = async (
+  query: string = '',
+  pageNumber: number = 1,
+  perPage: number = 10,
+  withPage: number = 0,
+) => {
+  const indexCheckListParams = new IndexCheckListParams(query, pageNumber, perPage, withPage)
+  await indexCheckListController.getData(indexCheckListParams)
+}
 
-  watch(
-    () => indexCheckListController.state.value,
-    (newState) => {
-      if (newState) {
-        state.value = newState
-      }
-    },
-    {
-      deep: true,
-    },
-  )
-
-  const selectedIds = ref<number[]>([])
-
-  const ChangeStatus = (id: number) => {
-    const index = selectedIds.value.indexOf(id)
-
-    if (index !== -1) {
-      selectedIds.value.splice(index, 1)
-    } else {
-      selectedIds.value.push(id)
+watch(
+  () => indexCheckListController.state.value,
+  (newState) => {
+    if (newState) {
+      state.value = newState
     }
-  }
-  watch(() => visible.value, (newVal) => {
-    if (visible.value) {
+  },
+  {
+    deep: true,
+  },
+)
 
+const selectedIds = ref<number[]>([])
+
+const ChangeStatus = (id: number) => {
+  const index = selectedIds.value.indexOf(id)
+
+  if (index !== -1) {
+    selectedIds.value.splice(index, 1)
+  } else {
+    selectedIds.value.push(id)
+  }
+}
+watch(
+  () => visible.value,
+  (newVal) => {
+    if (visible.value) {
       fetchWhereHouseType()
     }
-  })
+  },
+)
 
-
-  const router = useRouter()
-  const SubmitData = async () => {
-    const closeInvestegationController = CloseInvestegationController.getInstance()
-    const ChecklistParams = selectedIds.value.map((el) => new InvestegationChecklistParams({checklist_id: el}))
-    const closeInvestegationParams = new CloseInvestegationParams(props.investegationId!, ChecklistParams)
-    const dataState = await closeInvestegationController.CloseInvestigating(closeInvestegationParams, router)
-    visible.value = false
-  }
-  const { locale } = useI18n()
+const router = useRouter()
+const SubmitData = async () => {
+  const closeInvestegationController = CloseInvestegationController.getInstance()
+  const ChecklistParams = selectedIds.value.map(
+    (el) => new InvestegationChecklistParams({ checklist_id: el }),
+  )
+  const closeInvestegationParams = new CloseInvestegationParams(
+    props.investegationId!,
+    ChecklistParams,
+  )
+  const dataState = await closeInvestegationController.CloseInvestigating(
+    closeInvestegationParams,
+    router,
+  )
+  visible.value = false
+}
+const { locale } = useI18n()
 </script>
 <template>
   <button class="btn btn-secondary" @click="visible = true">
@@ -80,32 +89,41 @@
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <!-- :img="DialogSystem" -->
-      <HeaderSection title="are you sure?"
-        subtitle="If you want to close the investigations, then you have completed all the steps shown in the task list." />
+      <HeaderSection
+        :title="$t('are you sure?')"
+        :subtitle="
+          $t('auditUi.complete_all_steps_in_the_task_list_before_closing_the_investigation')
+        "
+      />
     </template>
     <DataStatus :controller="state">
       <template #success>
         <div class="system-dialog-content-container">
-
           <div class="system-dialog-content" v-for="item in state.data" :key="item.id">
-            <div class="row-content" :class="{ active: selectedIds.includes(item.id) }" @click="ChangeStatus(item.id)">
+            <div
+              class="row-content"
+              :class="{ active: selectedIds.includes(item.id) }"
+              @click="ChangeStatus(item.id)"
+            >
               <label :for="`${item.title}-${item.id}`" class="title">
                 {{ item.title }}
               </label>
-              <input :id="`${item.title}-${item.id}`" type="checkbox" :checked="selectedIds.includes(item.id)"
-                @click.stop="ChangeStatus(item.id)" />
+              <input
+                :id="`${item.title}-${item.id}`"
+                type="checkbox"
+                :checked="selectedIds.includes(item.id)"
+                @click.stop="ChangeStatus(item.id)"
+              />
             </div>
           </div>
         </div>
-        <button class="btn btn-primary w-full mt-5 confirm-btn" @click="SubmitData">{{ $t('confirm') }}</button>
+        <button class="btn btn-primary w-full mt-5 confirm-btn" @click="SubmitData">
+          {{ $t('confirm') }}
+        </button>
       </template>
-      <template #loader>
-      </template>
-      <template #failed>
-      </template>
+      <template #loader> </template>
+      <template #failed> </template>
     </DataStatus>
-
-
   </Dialog>
 </template>
 <style scoped>
@@ -135,6 +153,5 @@
   &:hover {
     background-color: color-mix(in srgb, var(--brand-primary-500) 5.88%, transparent);
   }
-
 }
 </style>

@@ -11,7 +11,6 @@ interface SessionCardProps {
   data: InspectionModel
   isShow?: boolean
   isDrag?: boolean
-
 }
 const { data, singleImage } = defineProps<SessionCardProps>()
 
@@ -62,10 +61,8 @@ const isOnce = computed(() => data.periodType === InspectionTypeEnum.DAY)
       </h5> -->
     </div>
 
-
     <div class="content-items" v-if="!isOnce && data.periodSubType !== PeriodTypeEnum.DAILY">
       <span v-for="item in data.taskPeriods" :key="item.dayLabel">
-
         <span v-if="item.counterType">
           {{ item.counter }}
           {{ WithDayEnum[item.counterType] }}
@@ -81,8 +78,6 @@ const isOnce = computed(() => data.periodType === InspectionTypeEnum.DAY)
       </span>
     </div>
 
-
-
-    <img v-if="isOnce" :src="singleImage" alt="Once" class="single-image" />
+    <img v-if="isOnce" :src="singleImage" :alt="$t('Once')" class="single-image" />
   </div>
 </template>

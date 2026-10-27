@@ -99,7 +99,7 @@ const UpdateTitle = (data) => {
   <ZoneTitlesForm @update:value="UpdateTitle" />
 
   <ColorSelection
-    title="Action color"
+    :title="$t('Action color')"
     :colors="colors"
     @update:value="(v) => updateField('ActionColor', v)"
   />

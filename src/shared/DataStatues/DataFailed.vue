@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translateKeyOrLiteral } from '@/localization/i18n'
+
 import { computed } from 'vue'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
@@ -17,7 +19,7 @@ const props = withDefaults(
     description: '',
     link: '',
     addText: 'Home',
-    withbtn: true
+    withbtn: true,
   },
 )
 
@@ -58,8 +60,8 @@ const actionLink = computed(
           }}
         </p>
 
-        <router-link v-if="withbtn " :to="actionLink" class="state-action">
-          <span>{{ $t(addText) }}</span>
+        <router-link v-if="withbtn" :to="actionLink" class="state-action">
+          <span>{{ translateKeyOrLiteral(addText) }}</span>
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path
               d="m9 18 6-6-6-6"

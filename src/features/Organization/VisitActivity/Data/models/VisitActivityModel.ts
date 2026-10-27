@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class VisitActivityModel extends TitleInterface {
@@ -6,7 +7,7 @@ export default class VisitActivityModel extends TitleInterface {
   }
 
   static fromMap(data: any): VisitActivityModel {
-    return new VisitActivityModel(data.id, data.title)
+    return localizedRecord(new VisitActivityModel(data.id, data.title), data)
   }
 
   static example: VisitActivityModel[] = [

@@ -3,8 +3,6 @@ import HeaderPage from '@/features/Organization/Project/Presentation/components/
 import TakeAction from '@/assets/images/TakeAction.png'
 import InvestegaionResultTakeActionCard from '../InvestegationResultAnswerUtils/InvestegaionResultTakeActionCard.vue'
 
-
-
 const props = defineProps({
   actions: String,
   isCorrect: {
@@ -18,7 +16,7 @@ const props = defineProps({
   <div class="take-action-answer">
     <div class="header">
       <HeaderPage
-        :title="`Immediate Action Evaluation`"
+        :title="$t('Immediate Action Evaluation')"
         :subtitle="``"
         :img="TakeAction"
         class="title-header answer-header border-top"
@@ -27,7 +25,7 @@ const props = defineProps({
 
     <div class="content">
       <!-- v-for="(action, index) in Actions" :key="index" -->
-      <InvestegaionResultTakeActionCard :action="actions" :isCorrect="isCorrect"/>
+      <InvestegaionResultTakeActionCard :action="actions" :isCorrect="isCorrect" />
     </div>
   </div>
 </template>

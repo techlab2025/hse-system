@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
@@ -31,7 +32,7 @@ export default class disActiveLangController extends ControllerInterface<LangMod
     if (this.isDataSuccess()) {
       DialogSelector.instance.successDialog.openDialog({
         dialogName: 'dialog-success',
-        titleContent: 'Client status changed successfully.',
+        titleContent: localizeUi('Client status changed successfully.'),
         imageElement: successImage,
         messageContent: null,
       })
@@ -43,7 +44,7 @@ export default class disActiveLangController extends ControllerInterface<LangMod
         imageElement: errorImage,
         messageContent: null,
       })
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

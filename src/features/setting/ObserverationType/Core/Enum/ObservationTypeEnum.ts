@@ -6,6 +6,14 @@ export enum ObservationTypeEnum {
 }
 
 export const ObservationTypeStaticOptions = [
-  new TitleInterface({ id: ObservationTypeEnum.UNSAFE_ACT, title: 'unsafe act' }),
-  new TitleInterface({ id: ObservationTypeEnum.UNSAFE_CONDITION, title: 'unsafe condition' }),
+  new TitleInterface({
+    id: ObservationTypeEnum.UNSAFE_ACT,
+    title: 'unsafe act',
+    translationKey: 'unsafe act',
+  }),
+  new TitleInterface({
+    id: ObservationTypeEnum.UNSAFE_CONDITION,
+    title: 'unsafe condition',
+    translationKey: 'unsafe condition',
+  }),
 ]

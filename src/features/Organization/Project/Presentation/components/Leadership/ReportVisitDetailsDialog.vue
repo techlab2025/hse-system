@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import '../../../styles/project.css'
 
 import { ref } from 'vue'
@@ -33,7 +35,7 @@ const printReport = async () => {
       .join('')
     const loaded = new Promise<void>((resolve, reject) => {
       frame.onload = () => resolve()
-      frame.onerror = () => reject(new Error('Unable to prepare report'))
+      frame.onerror = () => reject(new Error(localizeUi('Unable to prepare report')))
     })
     frame.srcdoc = `<!doctype html><html><head><meta charset="utf-8">${styles}
       <style>
@@ -65,8 +67,10 @@ const printReport = async () => {
     document.body.appendChild(frame)
     await loaded
     const printWindow = frame.contentWindow
-    if (!printWindow) throw new Error('Unable to open print preview')
-    printWindow.document.title = 'Leadership visit report'
+    if (!printWindow) throw new Error(localizeUi('Unable to open print preview'))
+    printWindow.document.title = localizeUi('navigationLabels.report_visit')
+    printWindow.document.documentElement.lang = document.documentElement.lang
+    printWindow.document.documentElement.dir = getComputedStyle(reportContent.value).direction
     await printWindow.document.fonts.ready
     printWindow.addEventListener('afterprint', () => frame.remove(), { once: true })
     printWindow.focus()
@@ -75,7 +79,7 @@ const printReport = async () => {
     window.setTimeout(() => frame.remove(), 60_000)
   } catch {
     frame.remove()
-    printError.value = 'Unable to prepare the report. Please try printing again.'
+    printError.value = localizeUi('Unable to prepare the report. Please try printing again.')
   } finally {
     printing.value = false
   }
@@ -112,9 +116,9 @@ const mediaName = (url: string, index: number) =>
             </svg>
           </span>
           <div>
-            <span>Leadership engagement</span>
-            <h2>Visit report</h2>
-            <p>Insights, actions &amp; evidence</p>
+            <span>{{ $t('Leadership engagement') }}</span>
+            <h2>{{ $t('Visit report') }}</h2>
+            <p>{{ $t('Insights, actions & evidence') }}</p>
           </div>
         </div>
         <button
@@ -132,7 +136,7 @@ const mediaName = (url: string, index: number) =>
           >
             <path d="M7 8V3h10v5M7 17H4V9h16v8h-3M7 14h10v7H7zM16 11h1" />
           </svg>
-          {{ printing ? 'Preparing…' : 'Print report' }}
+          {{ printing ? $t('Preparing…') : $t('Print report') }}
         </button>
       </div>
     </template>
@@ -142,15 +146,15 @@ const mediaName = (url: string, index: number) =>
     <div v-if="loading" class="details-feedback" role="status">
       <span class="loading-spinner" aria-hidden="true"></span>
       <div>
-        <strong>Loading report details</strong>
-        <p>Retrieving the latest leadership visit report…</p>
+        <strong>{{ $t('Loading report details') }}</strong>
+        <p>{{ $t('Retrieving the latest leadership visit report…') }}</p>
       </div>
     </div>
 
     <div v-else-if="error" class="details-feedback details-feedback--error" role="alert">
       <span aria-hidden="true">!</span>
       <div>
-        <strong>Unable to load report</strong>
+        <strong>{{ $t('Unable to load report') }}</strong>
         <p>{{ error }}</p>
       </div>
     </div>
@@ -158,43 +162,46 @@ const mediaName = (url: string, index: number) =>
     <div v-else-if="visit" ref="reportContent" class="details-content">
       <header class="report-cover">
         <div class="report-cover__intro">
-          <span class="report-eyebrow">HSE / LEADERSHIP ENGAGEMENT</span>
-          <h2>Leadership in action.</h2>
-          <p>A record of engagement, observations and opportunities to improve.</p>
+          <span class="report-eyebrow">{{ $t('HSE / LEADERSHIP ENGAGEMENT') }}</span>
+          <h2>{{ $t('Leadership in action.') }}</h2>
+          <p>{{ $t('A record of engagement, observations and opportunities to improve.') }}</p>
         </div>
         <div class="report-meta">
           <div>
-            <span>Report reference</span
-            ><strong>{{ visit.serial_name || visit.serial || `Report #${visit.id}` }}</strong>
+            <span>{{ $t('Report reference') }}</span
+            ><strong>{{
+              visit.serial_name || visit.serial || $t('uiDynamic.reportReference', { p0: visit.id })
+            }}</strong>
           </div>
           <div>
-            <span>Visit date</span><strong>{{ visit.date || '—' }}</strong>
+            <span>{{ $t('Visit Date') }}</span
+            ><strong>{{ visit.date || '—' }}</strong>
           </div>
           <div>
-            <span>Improvements</span
+            <span>{{ $t('Improvements') }}</span
             ><strong>{{ String(visit.areasOfImprovement.length).padStart(2, '0') }}</strong>
           </div>
           <div>
-            <span>Attachments</span
+            <span>{{ $t('Attachments') }}</span
             ><strong>{{ String(visit.media.length).padStart(2, '0') }}</strong>
           </div>
         </div>
       </header>
       <div class="report-section-title">
         <span>01</span>
-        <h3>Engagement &amp; observations</h3>
+        <h3>{{ $t('Engagement & observations') }}</h3>
       </div>
       <section class="summary-grid">
         <article>
-          <span>Topic</span>
+          <span>{{ $t('topic') }}</span>
           <p>{{ visit.engagementTopic || '—' }}</p>
         </article>
         <article>
-          <span>Discussion</span>
+          <span>{{ $t('Discussion') }}</span>
           <p>{{ visit.engagementDiscussion || '—' }}</p>
         </article>
         <article class="summary-grid__wide">
-          <span>Positive observations</span>
+          <span>{{ $t('Positive observations') }}</span>
           <p>{{ visit.positiveObservations || '—' }}</p>
         </article>
       </section>
@@ -202,8 +209,8 @@ const mediaName = (url: string, index: number) =>
       <section class="details-section">
         <div class="details-section__heading">
           <div>
-            <span>02 / ACTIONS &amp; FOLLOW-UP</span>
-            <h3>Opportunities for improvement</h3>
+            <span>{{ $t('02 / ACTIONS & FOLLOW-UP') }}</span>
+            <h3>{{ $t('Opportunities for improvement') }}</h3>
           </div>
           <strong>{{ visit.areasOfImprovement.length }}</strong>
         </div>
@@ -215,27 +222,27 @@ const mediaName = (url: string, index: number) =>
           >
             <div class="improvement-detail__top">
               <span>{{ String(index + 1).padStart(2, '0') }}</span>
-              <strong>{{ improvement.areaForImprovement || 'Improvement' }}</strong>
+              <strong>{{ improvement.areaForImprovement || $t('Improvement') }}</strong>
               <small>{{ unsafeTypeLabel(improvement.uaUc) }}</small>
             </div>
             <div class="intervention">
-              <span>Intervention carried out</span>
+              <span>{{ $t('Intervention carried out') }}</span>
               <p>{{ improvement.interventionCarriedOut || '—' }}</p>
             </div>
             <div class="detail-tags">
-              <span>{{ improvement.leadershipTheme?.title || 'No theme' }}</span>
-              <span>{{ improvement.leadershipCategory?.title || 'No category' }}</span>
+              <span>{{ improvement.leadershipTheme?.title || $t('No theme') }}</span>
+              <span>{{ improvement.leadershipCategory?.title || $t('No category') }}</span>
             </div>
           </article>
         </div>
-        <p v-else class="empty-copy">No improvement details were returned.</p>
+        <p v-else class="empty-copy">{{ $t('No improvement details were returned.') }}</p>
       </section>
 
       <section class="details-section">
         <div class="details-section__heading">
           <div>
-            <span>03 / EVIDENCE</span>
-            <h3>Attachments &amp; field notes</h3>
+            <span>{{ $t('03 / EVIDENCE') }}</span>
+            <h3>{{ $t('Attachments & field notes') }}</h3>
           </div>
           <strong>{{ visit.media.length }}</strong>
         </div>
@@ -250,24 +257,28 @@ const mediaName = (url: string, index: number) =>
             />
             <a v-else :href="media" target="_blank" rel="noopener noreferrer" class="media-file">
               <span class="media-item__file" aria-hidden="true">↗</span>
-              Open attachment
+              {{ $t('Open attachment') }}
             </a>
             <span>{{ mediaName(media, index) }}</span>
           </div>
         </div>
-        <p v-else class="empty-copy">No media attached to this report.</p>
+        <p v-else class="empty-copy">{{ $t('No media attached to this report.') }}</p>
       </section>
       <footer class="report-footer">
-        <strong>Leadership engagement report</strong
-        ><span>Report #{{ visit.id }} · Visit #{{ visit.visitId }}</span>
+        <strong>{{ $t('Leadership engagement report') }}</strong
+        ><span>{{ $t('Report #') }}{{ visit.id }} {{ $t('· Visit #') }}{{ visit.visitId }}</span>
       </footer>
     </div>
 
     <div v-else class="details-unavailable">
       <span aria-hidden="true">i</span>
       <div>
-        <strong>Report saved</strong>
-        <p>The visit is marked as reported, but the API response did not include its details.</p>
+        <strong>{{ $t('Report saved') }}</strong>
+        <p>
+          {{
+            $t('The visit is marked as reported, but the API response did not include its details.')
+          }}
+        </p>
       </div>
     </div>
   </Dialog>

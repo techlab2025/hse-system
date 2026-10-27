@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
 
@@ -6,11 +7,7 @@ export default class MethodsModel extends TitleInterface {
 
   public title: string
 
-  constructor(
-    id: number,
-    title: string,
-
-  ) {
+  constructor(id: number, title: string) {
     super({ id, title })
 
     this.id = id
@@ -19,10 +16,6 @@ export default class MethodsModel extends TitleInterface {
   }
 
   static fromMap(data: any): MethodsModel {
-    return new MethodsModel(
-      data.id,
-      data.title,
-
-    )
+    return localizedRecord(new MethodsModel(data.id, data.title), data)
   }
 }

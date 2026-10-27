@@ -15,27 +15,29 @@ const UpdateData = (data) => {
     const itemEmployees = new InvestigationTaskEmployees(
       item.employee?.id || null,
       null,
-      item?.ResponablePerson?.id
+      item?.ResponablePerson?.id,
     )
 
     SelectedTasks.value.push(
-      new InvestegationTasksParams(
-        item.text,
-        item.date,
-        [itemEmployees]
-      ).toMap()
+      new InvestegationTasksParams(item.text, item.date, [itemEmployees]).toMap(),
     )
   })
-  console.log(SelectedTasks.value, "SelectedTasks.value");
+  console.log(SelectedTasks.value, 'SelectedTasks.value')
   emit('update:data', SelectedTasks.value)
 }
-
 </script>
 <template>
   <div class="cause-of-accidant">
-    <HeaderPage :title="`Actions`"
-      :subtitle="` Add the actions is measures that will be taken to prevent a recurrence of this incident.`" :img="tasks"
-      class="title-header" />
+    <HeaderPage
+      :title="$t('Actions')"
+      :subtitle="
+        $t(
+          'Add the actions is measures that will be taken to prevent a recurrence of this incident.',
+        )
+      "
+      :img="tasks"
+      class="title-header"
+    />
 
     <TimeLineTasks @update:data="UpdateData" />
   </div>

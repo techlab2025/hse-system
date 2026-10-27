@@ -1,9 +1,12 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
 export const ppeMatrixTabs = [
   {
     key: 'activities',
-    label: 'PPE Activity',
+    get label() {
+      return localizeUi('PPE Activity')
+    },
     permissions: [
       PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
       PermissionsEnum.ORG_PPE_ACTIVITY_FETCH,
@@ -15,7 +18,9 @@ export const ppeMatrixTabs = [
   },
   {
     key: 'tools',
-    label: 'PPE Tools',
+    get label() {
+      return localizeUi('PPE Tools')
+    },
     permissions: [
       PermissionsEnum.ORG_PPE_TOOLS_ALL,
       PermissionsEnum.ORG_PPE_TOOLS_FETCH,

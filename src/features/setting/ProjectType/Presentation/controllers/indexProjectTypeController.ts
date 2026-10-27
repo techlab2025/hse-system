@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import ProjectTypeModel from '@/features/setting/ProjectType/Data/models/projectTypeModel.ts'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
@@ -26,14 +27,13 @@ export default class IndexProjectTypeController extends SelectControllerInterfac
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<ProjectTypeModel[]> =
-      await this.IndexProjectTypeUseCase.call(params)
+    const dataState: DataState<ProjectTypeModel[]> = await this.IndexProjectTypeUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

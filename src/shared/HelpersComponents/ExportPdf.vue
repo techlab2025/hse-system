@@ -40,7 +40,7 @@ const exportPDF = () =>
     @click="exportPDF"
   >
     <PdefActionIcon v-if="isDropList" />
-    {{ isExporting ? 'Exporting…' : 'Export to PDF' }}
+    {{ isExporting ? $t('Exporting…') : $t('Export to PDF') }}
   </button>
   <p v-if="exportError" class="pdf-export-error" role="alert" data-pdf-exclude>{{ exportError }}</p>
 </template>

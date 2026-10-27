@@ -1,3 +1,5 @@
+import { translate as localizeUi } from '@/localization/i18n'
+import { i18n, translate } from '@/localization/i18n'
 import html2canvas from 'html2canvas-pro'
 import jsPDF from 'jspdf'
 
@@ -218,7 +220,7 @@ const reportStyles = `
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
 .hse-pdf-chrome .pdf-organization { font-size: 12px; line-height: 18px; opacity: .9; }
-.hse-pdf-chrome .pdf-date { flex: 0 0 168px; border-left: 1px solid #ffffff55; padding-left: 20px; }
+.hse-pdf-chrome .pdf-date { flex: 0 0 168px; border-inline-start: 1px solid #ffffff55; padding-inline-start: 20px; }
 .hse-pdf-chrome .pdf-date-label { font: 600 10px/18px Arial, sans-serif; letter-spacing: 1.6px; }
 .hse-pdf-chrome .pdf-date-value { font: 700 16px/24px Arial, sans-serif; }
 .hse-pdf-chrome .pdf-time { font: 400 10px/18px Arial, sans-serif; opacity: .85; }
@@ -245,6 +247,8 @@ function setColors(node: HTMLElement, identity: PdfReportIdentity) {
 
 async function createChrome(options: PdfReportOptions, width: number) {
   const host = element('div', 'hse-pdf-chrome')
+  host.dir = i18n.global.locale.value === 'ar' ? 'rtl' : 'ltr'
+  host.lang = i18n.global.locale.value
   host.setAttribute('aria-hidden', 'true')
   host.style.cssText = `position:fixed;left:-20000px;top:0;width:${width}px;pointer-events:none;`
   host.style.fontFamily = getComputedStyle(document.body).fontFamily
@@ -254,12 +258,12 @@ async function createChrome(options: PdfReportOptions, width: number) {
   host.append(style)
 
   const date = options.exportedAt ?? new Date()
-  const dateText = new Intl.DateTimeFormat('en-GB', {
+  const dateText = new Intl.DateTimeFormat(i18n.global.locale.value, {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
   }).format(date)
-  const timeText = new Intl.DateTimeFormat('en-GB', {
+  const timeText = new Intl.DateTimeFormat(i18n.global.locale.value, {
     hour: '2-digit',
     minute: '2-digit',
     timeZoneName: 'short',
@@ -267,7 +271,9 @@ async function createChrome(options: PdfReportOptions, width: number) {
   const header = element('header', 'pdf-header')
   const logo = element('div', 'pdf-logo', 'HSE')
   const heading = element('div', 'pdf-heading')
-  heading.append(element('p', 'pdf-brand', `${options.identity.name}  /  HSE REPORT`))
+  heading.append(
+    element('p', 'pdf-brand', `${options.identity.name}  /  ${translate('hseReport')}`),
+  )
   const title = element('h1', 'pdf-title', options.title)
   title.dir = 'auto'
   heading.append(title)
@@ -277,12 +283,12 @@ async function createChrome(options: PdfReportOptions, width: number) {
     heading.append(organization)
   }
   const stamp = element('div', 'pdf-date')
-  stamp.append(element('p', 'pdf-date-label', 'EXPORTED ON'))
+  stamp.append(element('p', 'pdf-date-label', translate('exportedOn')))
   stamp.append(element('p', 'pdf-date-value', dateText))
   stamp.append(element('p', 'pdf-time', timeText))
   header.append(logo, heading, stamp)
   const footer = element('footer', 'pdf-footer')
-  footer.append(element('span', 'pdf-footer-brand', 'HSE  /  Health · Safety · Environment'))
+  footer.append(element('span', 'pdf-footer-brand', `HSE  /  ${translate('hseFullName')}`))
   footer.append(element('span', '', dateText))
   host.append(header, footer)
   document.body.append(host)
@@ -309,7 +315,7 @@ async function createChrome(options: PdfReportOptions, width: number) {
 /** Shared by table exports and composed report exports; live page styles are never changed. */
 export async function exportBrandedPdf(options: PdfReportOptions): Promise<void> {
   if (!options.target.isConnected)
-    throw new Error('The report is no longer available. Please try again.')
+    throw new Error(localizeUi('The report is no longer available. Please try again.'))
   await document.fonts.ready
   const pdf = new jsPDF({
     orientation: options.orientation ?? 'landscape',
@@ -362,7 +368,7 @@ export async function exportBrandedPdf(options: PdfReportOptions): Promise<void>
       windowWidth: Math.max(naturalWidth, document.documentElement.clientWidth),
       onclone: (doc) => {
         const target = doc.querySelector<HTMLElement>(`[data-pdf-capture="${marker}"]`)
-        if (!target) throw new Error('Unable to prepare the report for export.')
+        if (!target) throw new Error(localizeUi('Unable to prepare the report for export.'))
         doc.documentElement.setAttribute('data-theme', 'light')
         doc.documentElement.classList.remove('dark')
         const styles = doc.createElement('style')
@@ -412,7 +418,7 @@ export async function exportBrandedPdf(options: PdfReportOptions): Promise<void>
       },
     })
     if (!canvas.width || !canvas.height)
-      throw new Error('The report is empty and cannot be exported.')
+      throw new Error(localizeUi('The report is empty and cannot be exported.'))
     const ratio = canvas.width / (captureWidth || naturalWidth)
     const pagePixels = Math.floor((canvas.width * bodyHeight) / width)
     const pages = paginateReport(
@@ -431,7 +437,7 @@ export async function exportBrandedPdf(options: PdfReportOptions): Promise<void>
       slice.width = canvas.width
       slice.height = page.end - page.start
       const context = slice.getContext('2d')
-      if (!context) throw new Error('Unable to render a PDF page.')
+      if (!context) throw new Error(localizeUi('Unable to render a PDF page.'))
       context.fillStyle = '#ffffff'
       context.fillRect(0, 0, slice.width, slice.height)
       context.drawImage(

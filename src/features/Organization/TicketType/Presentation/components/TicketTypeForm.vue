@@ -151,7 +151,6 @@ watch(
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
-
   <!--industry  -->
   <div
     class="col-span-4 md:col-span-2"
@@ -161,9 +160,9 @@ watch(
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
-      label="Select Industry"
+      :label="$t('Select Industry')"
       id="EquipmentType"
-      placeholder="Select industry"
+      :placeholder="$t('Select industry')"
       :type="2"
       @update:modelValue="setIndustry"
     />

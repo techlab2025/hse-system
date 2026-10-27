@@ -130,7 +130,7 @@ const confirmDelete = async () => {
     <span class="drill-card-accent"></span>
     <span class="drill-card-main">
       <span class="drill-card-kicker">{{ drill.drillType.title || $t('Drill') }}</span>
-      <strong>{{ drill.serialNumber || `Drill #${drill.id}` }}</strong>
+      <strong>{{ drill.serialNumber || $t('uiDynamic.drillReference', { p0: drill.id }) }}</strong>
       <small>{{ drill.date || '—' }} · {{ drill.time || '—' }}</small>
     </span>
     <!-- <span class="drill-card-status"
@@ -162,7 +162,7 @@ const confirmDelete = async () => {
         <span>DR</span>
         <div>
           <small>{{ drill.drillType.title }}</small>
-          <h2>{{ drill.serialNumber || `Drill #${drill.id}` }}</h2>
+          <h2>{{ drill.serialNumber || $t('uiDynamic.drillReference', { p0: drill.id }) }}</h2>
           <p>{{ drill.projectTeam.title }}</p>
         </div>
       </div>
@@ -318,7 +318,7 @@ const confirmDelete = async () => {
                 v-for="image in item.images"
                 :key="image"
                 :src="image.url"
-                alt="Drill evidence"
+                :alt="$t('Drill evidence')"
               />
             </div>
           </div>

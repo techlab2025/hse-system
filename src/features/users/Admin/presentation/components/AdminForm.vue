@@ -68,47 +68,50 @@ const updateTeamMember = () => {
 
 <template>
   <div class="input-wrapper">
-    <label  for="name">{{ $t('name') }}<span class="text-red-500" >*</span>
-    </label>
+    <label for="name">{{ $t('name') }}<span class="text-red-500">*</span> </label>
     <input
+      dir="auto"
       id="name"
       v-model="name"
       class="input"
-      placeholder="Enter name"
+      :placeholder="$t('Enter name')"
       type="text"
       @input="updateData"
     />
   </div>
   <div class="input-wrapper">
-    <label  for="phone">{{ $t('phone') }} <span class="text-red-500" >*</span></label>
+    <label for="phone">{{ $t('phone') }} <span class="text-red-500">*</span></label>
     <input
+      dir="auto"
       id="phone"
       v-model="phone"
       class="input"
-      placeholder="Enter phone"
+      :placeholder="$t('Enter phone')"
       type="text"
       @input="updateData"
     />
   </div>
 
   <div class="input-wrapper">
-    <label  for="name">{{ $t('email') }} <span class="text-red-500" >*</span></label>
+    <label for="name">{{ $t('email') }} <span class="text-red-500">*</span></label>
     <input
+      dir="auto"
       id="email"
       v-model="email"
       class="input"
-      placeholder="Enter Name"
+      :placeholder="$t('Enter Name')"
       type="text"
       @input="updateData"
     />
   </div>
   <div class="input-wrapper">
-    <label  for="password">{{ $t('password') }} <span class="text-red-500" >*</span></label>
+    <label for="password">{{ $t('password') }} <span class="text-red-500">*</span></label>
     <input
+      dir="ltr"
       id="password"
       v-model="password"
       class="input"
-      placeholder="Enter Password"
+      :placeholder="$t('Enter Password')"
       type="password"
       @input="updateData"
     />

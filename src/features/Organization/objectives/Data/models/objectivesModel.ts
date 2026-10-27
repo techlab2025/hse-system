@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import ObjectivesDetailsModel from './objectivesDetailsModel'
 import { objectiveProgressContract } from '../../ObjectiveProgress/Data/apiServices/objectiveProgressContract'
 import type ObjectiveProgressModel from '../../ObjectiveProgress/Data/models/objectiveProgressModel'
@@ -78,6 +79,6 @@ export default class ObjectivesModel extends TitleInterface {
     if (objectiveProgressContract.confirmed) {
       model.progressSummary = objectiveProgressContract.decodeSummary(data)
     }
-    return model
+    return localizedRecord(model, data)
   }
 }

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, onMounted, ref } from 'vue'
@@ -43,11 +45,12 @@ const toggle = async (activityId: number, toolId: number) => {
       new CreatePPEActivityToolParams(activityId, toolId),
     )
     if (!toggleController.isDataSuccess())
-      throw new Error('Unable to update this activity and tool.')
+      throw new Error(localizeUi('Unable to update this activity and tool.'))
     await refreshMatrix()
-    if (!matrixController.isDataSuccess()) throw new Error('Unable to refresh the matrix.')
+    if (!matrixController.isDataSuccess())
+      throw new Error(localizeUi('Unable to refresh the matrix.'))
   } catch {
-    errorMessage.value = 'Unable to update this activity and tool. Please try again.'
+    errorMessage.value = localizeUi('Unable to update this activity and tool. Please try again.')
   } finally {
     const next = new Set(pending.value)
     next.delete(key)
@@ -70,14 +73,16 @@ onMounted(async () => {
       <div>
         <!-- <span class="eyebrow">Project PPE</span> -->
         <!-- <h1>Activity and tool matrix</h1> -->
-        <h1>PPE Matrix & Log</h1>
+        <h1>{{ $t('PPE Matrix & Log') }}</h1>
         <!-- <p>Choose the PPE tools required for each activity.</p> -->
-        <p>Company PPE Matrix</p>
+        <p>{{ $t('Company PPE Matrix') }}</p>
       </div>
-      <nav class="header-actions" aria-label="PPE navigation">
+      <nav class="header-actions" :aria-label="$t('PPE navigation')">
         <!-- <RouterLink :to="`/organization/project-details/${projectId}`">Project details</RouterLink> -->
-        <RouterLink to="/organization/ppe-deliveries"> PPE log </RouterLink>
-        <RouterLink class="primary-link" to="/organization/ppe-delivery">New Delivery →</RouterLink>
+        <RouterLink to="/organization/ppe-deliveries"> {{ $t('PPE log') }} </RouterLink>
+        <RouterLink class="primary-link" to="/organization/ppe-delivery">{{
+          $t('New Delivery →')
+        }}</RouterLink>
       </nav>
     </header>
     <p v-if="errorMessage" class="error-message" role="alert">{{ errorMessage }}</p>
@@ -86,7 +91,7 @@ onMounted(async () => {
       class="error-message"
       role="alert"
     >
-      Unable to load PPE activities or tools.
+      {{ $t('Unable to load PPE activities or tools.') }}
     </p>
     <DataStatus :controller="toolController.state.value">
       <template #success>
@@ -94,7 +99,7 @@ onMounted(async () => {
           <table class="hse-project-table main-table matrix-table">
             <thead>
               <tr>
-                <th scope="col">PPE activity</th>
+                <th scope="col">{{ $t('PPE activity') }}</th>
 
                 <th v-for="tool in tools" :key="tool.id" scope="col">{{ tool.title }}</th>
               </tr>
@@ -108,14 +113,16 @@ onMounted(async () => {
                     :model-value="isLinked(activity.id, tool.id)"
                     binary
                     :disabled="pending.size > 0"
-                    :aria-label="`${tool.title} required for ${activity.title}`"
+                    :aria-label="
+                      $t('uiDynamic.requiredItems', { p0: tool.title, p1: activity.title })
+                    "
                     @update:model-value="() => toggle(activity.id, tool.id)"
                   />
                 </td>
               </tr>
               <tr v-if="!activities.length || !tools.length">
                 <td :colspan="Math.max(tools.length + 1, 2)" class="empty-cell">
-                  Add PPE activities and tools to build the matrix.
+                  {{ $t('Add PPE activities and tools to build the matrix.') }}
                 </td>
               </tr>
             </tbody>
@@ -125,9 +132,13 @@ onMounted(async () => {
       <template #loader><TableLoader :cols="5" :rows="6" /></template>
       <template #initial><TableLoader :cols="5" :rows="6" /></template>
       <template #failed
-        ><p class="error-message">Unable to load activity tool assignments.</p></template
+        ><p class="error-message">
+          {{ $t('Unable to load activity tool assignments.') }}
+        </p></template
       >
-      <template #empty><p class="empty-cell">No activity tool assignments yet.</p></template>
+      <template #empty
+        ><p class="empty-cell">{{ $t('No activity tool assignments yet.') }}</p></template
+      >
     </DataStatus>
   </main>
 </template>
@@ -482,7 +493,7 @@ p {
 }
 
 .matrix-table thead th:first-child {
-  left: 0;
+  inset-inline-start: 0;
   z-index: 8;
 
   min-width: 230px;
@@ -502,7 +513,7 @@ p {
 
 .matrix-table tbody th {
   position: sticky;
-  left: 0;
+  inset-inline-start: 0;
   z-index: 4;
 
   min-width: 230px;
@@ -758,5 +769,10 @@ p {
   .matrix-table thead th {
     min-width: 120px;
   }
+}
+.matrix-table tbody th:dir(rtl) {
+  box-shadow:
+    -1px 0 0 var(--ppe-border),
+    -6px 0 14px rgba(15, 23, 42, 0.015);
 }
 </style>

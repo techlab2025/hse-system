@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -5,9 +6,7 @@ import { SelectControllerInterface } from '@/base/Presentation/Controller/select
 import FetchTaskResultUseCase from '../../Domain/useCase/FetchTaskResultUseCase'
 import type TaskFullResponseModel from '../../Data/models/FetchTaskResultModels/FullTaskResultModel'
 
-export default class FetchTaskResultController extends SelectControllerInterface<
-  TaskFullResponseModel
-> {
+export default class FetchTaskResultController extends SelectControllerInterface<TaskFullResponseModel> {
   private static instance: FetchTaskResultController
   private constructor() {
     super()
@@ -32,7 +31,7 @@ export default class FetchTaskResultController extends SelectControllerInterface
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

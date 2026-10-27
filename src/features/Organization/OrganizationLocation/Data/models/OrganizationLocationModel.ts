@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type LocationModel from '@/features/setting/Location/Data/models/LocationModel'
 // import ClientOrganizationLocationModel from "@/features/dashboard/settings/clientOrganizationLocation/Data/models/index_client_OrganizationLocation_model";
@@ -9,15 +10,7 @@ export default class OrganizationLocationModel extends TitleInterface {
   public lng: string
   public location: LocationModel
 
-  constructor(
-    id: number,
-    title: string,
-    lat: string,
-    lng: string,
-    location: LocationModel
-
-
-  ) {
+  constructor(id: number, title: string, lat: string, lng: string, location: LocationModel) {
     super({ id, title })
     this.id = id
     this.title = title
@@ -28,13 +21,9 @@ export default class OrganizationLocationModel extends TitleInterface {
   }
 
   static fromMap(data: any): OrganizationLocationModel {
-    return new OrganizationLocationModel(
-      data.id,
-      data.title,
-      data.lat,
-      data.lng,
-      data.location
-
+    return localizedRecord(
+      new OrganizationLocationModel(data.id, data.title, data.lat, data.lng, data.location),
+      data,
     )
   }
 }

@@ -38,13 +38,13 @@ watch(
   <div class="another-meeting">
     <div class="another-meeting-header">
       <!-- <div class="section-title-with-help"> -->
-        <HeaderPage
-          title="incident_fatalities_question"
-          subtitle="incident_fatalities_description"
-          :img="RIP"
-          class="title-header"
-        />
-        <!-- <FieldHelpIcon text="Choose Yes if the incident resulted in one or more fatalities." /> -->
+      <HeaderPage
+        :title="$t('incident_fatalities_question')"
+        :subtitle="$t('incident_fatalities_description')"
+        :img="RIP"
+        class="title-header"
+      />
+      <!-- <FieldHelpIcon text="Choose Yes if the incident resulted in one or more fatalities." /> -->
       <!-- </div> -->
       <div class="meeting-status">
         <button

@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
 import type InvestigationTaskEmployeesModel from './investigationTaskEmployeesModel'
 
@@ -38,24 +39,27 @@ export default class InvestegationTasksModel {
   }
 
   static fromMap(data: any): InvestegationTasksModel {
-    return new InvestegationTasksModel(
-      data.id,
-      data.title,
-      data.status,
-      data.due_date,
-      OrganizatoinEmployeeModel.fromMap(data.responable_person),
-      OrganizatoinEmployeeModel.fromMap(data.assigned_to),
-      data.investigation_meeting_id,
-      data.description,
-      data.investigation_task_employees,
-      data?.investigation_task_results?.[0]?.notes ||
-        data?.investigationTaskResults?.[0]?.notes ||
-        data?.task_results?.[0]?.notes ||
-        data?.taskResults?.[0]?.notes ||
-        data?.task_result?.notes ||
-        data?.taskResult?.notes ||
-        data?.notes ||
-        '',
+    return localizedRecord(
+      new InvestegationTasksModel(
+        data.id,
+        data.title,
+        data.status,
+        data.due_date,
+        OrganizatoinEmployeeModel.fromMap(data.responable_person),
+        OrganizatoinEmployeeModel.fromMap(data.assigned_to),
+        data.investigation_meeting_id,
+        data.description,
+        data.investigation_task_employees,
+        data?.investigation_task_results?.[0]?.notes ||
+          data?.investigationTaskResults?.[0]?.notes ||
+          data?.task_results?.[0]?.notes ||
+          data?.taskResults?.[0]?.notes ||
+          data?.task_result?.notes ||
+          data?.taskResult?.notes ||
+          data?.notes ||
+          '',
+      ),
+      data,
     )
   }
 

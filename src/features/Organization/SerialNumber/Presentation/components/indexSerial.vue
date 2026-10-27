@@ -52,7 +52,7 @@ watch(
         <div class="actions-switch">
           <CustomCheckbox
             :index="6"
-            :title="GetSerialTypeTitle(SerialType!)"
+            :title="$t(GetSerialTypeTitle(SerialType!).toLowerCase())"
             @update:checked="updateSerialType"
             :checked="SerialType === SertialNumberStatusEnum.AUTO"
           />

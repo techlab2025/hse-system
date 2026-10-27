@@ -24,7 +24,8 @@ import {
 import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
 import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('ObjectivesForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('ObjectivesForm')
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddObjectivesParams | EditObjectivesParams): void
@@ -33,7 +34,11 @@ const props = defineProps<{ data?: ObjectivesDetailsModel }>()
 
 const { t } = useI18n()
 const maxYearDate = new Date(new Date().getFullYear(), 11, 31)
-const companyWideProject = new TitleInterface({ id: -1, title: t('Company-wide') })
+const companyWideProject = new TitleInterface({
+  id: -1,
+  title: t('Company-wide'),
+  translationKey: 'Company-wide',
+})
 const companyWideProjectOptions = [companyWideProject]
 
 const year = ref<Date | null>(new Date(new Date().getFullYear(), 0, 1))
@@ -346,9 +351,12 @@ const requiredFields = computed(() => [
     isMissing: () => !followUpEmployee.value?.id,
   },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const validateRequiredFields = async () => {
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = Object.fromEntries(
     missedFields.map((field) => [field.key, field.message]),
   )
@@ -458,6 +466,7 @@ defineExpose({ validateRequiredFields })
               {{ $t('Objective') }}
             </label>
             <textarea
+              dir="auto"
               id="objective-text"
               v-model="objective"
               class="input w-full"
@@ -545,6 +554,7 @@ defineExpose({ validateRequiredFields })
               {{ $t(targetLabel) }}
             </label>
             <input
+              dir="ltr"
               id="objective-target"
               v-model.number="target"
               class="input w-full"
@@ -568,6 +578,7 @@ defineExpose({ validateRequiredFields })
               {{ $t('Baseline') }}
             </label>
             <input
+              dir="ltr"
               id="objective-baseline"
               v-model.number="baseline"
               class="input w-full"
@@ -591,6 +602,7 @@ defineExpose({ validateRequiredFields })
               {{ $t('Unit') }}
             </label>
             <input
+              dir="auto"
               id="objective-unit"
               v-model="unit"
               class="input w-full"
@@ -607,6 +619,7 @@ defineExpose({ validateRequiredFields })
               {{ $t('Annual occurrences') }}
             </label>
             <input
+              dir="ltr"
               id="objective-annual-occurrences"
               class="input w-full"
               type="number"

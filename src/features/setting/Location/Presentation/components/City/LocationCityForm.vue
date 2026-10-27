@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
@@ -23,7 +25,12 @@ const route = useRoute()
 const ParentId = ref(route?.params.parent_id)
 
 const TypesSelection = ref([
-  new TitleInterface({ id: LocationEnum.COUNTRY, title: 'Country', subtitle: '' }),
+  new TitleInterface({
+    id: LocationEnum.COUNTRY,
+    title: 'Country',
+    translationKey: 'Country',
+    subtitle: '',
+  }),
   // new TitleInterface({ id: LocationEnum.STATE, title: 'State', subtitle: '' }),
   // new TitleInterface({ id: LocationEnum.CITY, title: 'City', subtitle: '' }),
   // new TitleInterface({ id: LocationEnum.AREA, title: 'Area', subtitle: '' }),
@@ -92,18 +99,18 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditLocationParams(
-      props.data?.id,
-      translationsParams,
-      Code.value,
-      LocationEnum.CITY,
-      +ParentId?.value || SelectedState.value?.id!,
-    )
+        props.data?.id,
+        translationsParams,
+        Code.value,
+        LocationEnum.CITY,
+        +ParentId?.value || SelectedState.value?.id!,
+      )
     : new AddLocationParams(
-      translationsParams,
-      Code.value,
-      LocationEnum.CITY,
-      +ParentId?.value || SelectedState.value?.id!,
-    )
+        translationsParams,
+        Code.value,
+        LocationEnum.CITY,
+        +ParentId?.value || SelectedState.value?.id!,
+      )
 
   // console.log(params, 'Newparams')
   emit('update:data', params)
@@ -119,7 +126,6 @@ watch(
   ([newData, newDefault]) => {
     if (newDefault.length) {
       if (newData?.titles?.length) {
-
         langs.value = newDefault.map((l) => {
           const existing = newData.titles.find((t) => t.locale === l.locale)
           return existing ? existing : { locale: l.locale, title: '' }
@@ -130,9 +136,7 @@ watch(
 
       // SelectedCountry.value = newData?.country
       // console.log(newData?.country, "newData?.country");
-      SelectedCountry.value = newData?.country
-        ? [newData.country]
-        : []
+      SelectedCountry.value = newData?.country ? [newData.country] : []
 
       indexLocationStatesParams.value = new IndexLocationParams(
         '',
@@ -147,7 +151,7 @@ watch(
       SelectedState.value = newData?.state
       // ? [newData?.state]
       // : []
-      console.log(newData?.state, "newData?.state");
+      console.log(newData?.state, 'newData?.state')
       allIndustries.value = newData?.allIndustries! ?? false
       industry.value = newData?.industries!
     }
@@ -205,7 +209,6 @@ watch(
   },
 )
 
-
 const UpdateSerial = (data) => {
   SerialNumber.value = data
   updateData()
@@ -216,8 +219,10 @@ const SerialNumber = ref()
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
@@ -226,10 +231,15 @@ const fields = ref([
 
 <template>
   <div class="col-span-4 md:col-span-4">
-    <LangTitleInput :label="`${$t('city_name')}`" :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+    <LangTitleInput
+      :label="`${$t('city_name')}`"
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="setLangs"
+    />
   </div>
 
-    <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
+  <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
     <SwitchInput
       :fields="fields"
       :switch_title="$t('auto')"
@@ -240,19 +250,40 @@ const fields = ref([
   </div> -->
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="code">Code</label>
-    <input type="text" id="code" v-model="Code" class="input" placeholder="Enter The Code" @input="UpdateCode" />
+    <label for="code">{{ $t('Code') }}</label>
+    <input
+      dir="auto"
+      type="text"
+      id="code"
+      v-model="Code"
+      class="input"
+      :placeholder="$t('Enter The Code')"
+      @input="UpdateCode"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!ParentId">
-    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
-      :params="indexLocationCountriesParams" label="Country" id="Location" placeholder="Select  Country" :type="2"
-      @update:modelValue="SetCountrySelection" />
+    <CustomSelectInput
+      :modelValue="SelectedCountry"
+      :controller="indexLocationCountriesController"
+      :params="indexLocationCountriesParams"
+      :label="$t('Country')"
+      id="Location"
+      :placeholder="$t('Select Country')"
+      :type="2"
+      @update:modelValue="SetCountrySelection"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!ParentId && SelectedCountry?.length != 0">
-    <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
-      :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State"
-      @update:modelValue="SetStateSelection" />
+    <CustomSelectInput
+      :modelValue="SelectedState"
+      :controller="indexLocationStatesController"
+      :params="indexLocationStatesParams"
+      :label="$t('State')"
+      id="Location"
+      :placeholder="$t('Select State')"
+      @update:modelValue="SetStateSelection"
+    />
   </div>
 </template>

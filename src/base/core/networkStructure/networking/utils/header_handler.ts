@@ -1,3 +1,4 @@
+import { getCurrentLocale } from '@/localization/i18n'
 // import { useUserStore } from '@/stores/user'
 
 import { useUserStore } from '@/stores/user'
@@ -32,7 +33,7 @@ class HeaderHandler {
     // const adminToken = '1|uGaOEtBqrL718B1lZlllkayaOaxKT91cMcuoHfSa4583ca2b'
 
     if (includeLanguage) {
-      const savedLocale = localStorage.getItem('lang')
+      const savedLocale = getCurrentLocale()
       if (savedLocale) {
         headers['Accept-Language'] = savedLocale
       }

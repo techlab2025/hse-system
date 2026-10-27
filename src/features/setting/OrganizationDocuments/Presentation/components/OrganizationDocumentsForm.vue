@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { nextTick, reactive, ref, watch } from 'vue'
 import DatePicker from 'primevue/datepicker'
 import FileUpload from '@/shared/FormInputs/FileUpload.vue'
@@ -94,7 +96,7 @@ const setFile = (files: File | File[] | null) => {
           if (version === fileVersion) documentFile.value = result.file
         } catch {
           if (version === fileVersion)
-            fileError.value = 'Unable to read document file. Please select it again.'
+            fileError.value = localizeUi('Unable to read document file. Please select it again.')
         }
       })()
     : null
@@ -153,6 +155,7 @@ defineExpose({ validateRequiredFields })
   >
     <label :for="field">{{ $t(field) }} <span>*</span></label>
     <input
+      dir="auto"
       :id="field"
       v-model="form[field]"
       type="text"
@@ -200,7 +203,7 @@ defineExpose({ validateRequiredFields })
   <div class="input-wrapper col-span-4 md:col-span-2" data-required-field="document_category_id">
     <UpdatedCustomInputSelect
       id="document_category_id"
-      label="document_category"
+      :label="$t('document_category')"
       :required="true"
       :model-value="documentCategory"
       :controller="indexDocumentCategoryController"
@@ -228,7 +231,14 @@ defineExpose({ validateRequiredFields })
 
   <div class="input-wrapper col-span-4">
     <label for="notes">{{ $t('notes') }}</label>
-    <textarea id="notes" v-model="form.notes" class="input" rows="4" :placeholder="$t('notes')" />
+    <textarea
+      dir="auto"
+      id="notes"
+      v-model="form.notes"
+      class="input"
+      rows="4"
+      :placeholder="$t('notes')"
+    />
   </div>
 </template>
 

@@ -8,7 +8,7 @@ import upload from '@/assets/images/upload.png'
 const props = defineProps({
   accept: {
     type: String,
-    default: "image/jp2, image/jpeg, image/jpg, image/png, image/webp",
+    default: 'image/jp2, image/jpeg, image/jpg, image/png, image/webp',
   },
   initialImages: {
     type: Array,
@@ -39,45 +39,45 @@ const placeholderIcons = {
   word: WordIcon,
   excel: ExcelIcon,
   generic: PdfIcon,
-};
+}
 
 // Determine file type placeholder
 function getPlaceholder(fileName: string): string {
-  const extension = fileName.split('.').pop()?.toLowerCase();
+  const extension = fileName.split('.').pop()?.toLowerCase()
   switch (extension) {
     case 'pdf':
-      return placeholderIcons.pdf;
+      return placeholderIcons.pdf
     case 'doc':
     case 'docx':
-      return placeholderIcons.word;
+      return placeholderIcons.word
     case 'xls':
     case 'xlsx':
-      return placeholderIcons.excel;
+      return placeholderIcons.excel
     default:
-      return placeholderIcons.generic;
+      return placeholderIcons.generic
   }
 }
 
 // Handle file changes
 function onFileChange(event: Event) {
-  const files = (event.target as HTMLInputElement).files;
+  const files = (event.target as HTMLInputElement).files
 
   if (files) {
     Array.from(files).forEach((file) => {
       const preview = file.type.startsWith('image/')
         ? URL.createObjectURL(file)
-        : getPlaceholder(file.name);
+        : getPlaceholder(file.name)
 
-      imagePreviews.value.push(preview);
-      imageFiles.value.push(file);
-    });
-    emit('update:images', imageFiles.value, props.index);
+      imagePreviews.value.push(preview)
+      imageFiles.value.push(file)
+    })
+    emit('update:images', imageFiles.value, props.index)
   }
 }
 
 // Fallback for broken images
 function handleImageError(index: number) {
-  imagePreviews.value[index] = placeholderIcons.generic;
+  imagePreviews.value[index] = placeholderIcons.generic
 }
 
 // Remove an image
@@ -92,7 +92,6 @@ function removeImage(index: number) {
   <div class="col-span-4 md:col-span-2 multi-image-uploader">
     <!-- Upload Button -->
     <div class="input-image">
-
       <label :for="`images${index}`" class="input-label-images">
         <!-- <svg width="30" height="30" viewBox="0 0 43 43" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path opacity="0.4"
@@ -105,28 +104,58 @@ function removeImage(index: number) {
             d="M20.6579 22.3418L17.0746 18.7584C17.0567 18.7405 17.0387 18.7405 17.0387 18.7226C16.9312 18.6151 16.7879 18.5255 16.6446 18.4538C16.6267 18.4538 16.6267 18.4538 16.6087 18.4538C16.4654 18.4001 16.3221 18.3822 16.1787 18.3643C16.125 18.3643 16.0892 18.3643 16.0354 18.3643C15.9279 18.3643 15.8025 18.4001 15.695 18.4359C15.6412 18.4538 15.6054 18.4718 15.5696 18.4897C15.4262 18.5613 15.2829 18.633 15.1754 18.7584L11.5921 22.3418C11.0725 22.8613 11.0725 23.7213 11.5921 24.2409C12.1117 24.7605 12.9717 24.7605 13.4912 24.2409L14.7812 22.9509V30.458C14.7812 31.1926 15.3904 31.8018 16.125 31.8018C16.8596 31.8018 17.4687 31.1926 17.4687 30.458V22.9509L18.7587 24.2409C19.0275 24.5097 19.3679 24.6351 19.7083 24.6351C20.0487 24.6351 20.3892 24.5097 20.6579 24.2409C21.1775 23.7213 21.1775 22.8613 20.6579 22.3418Z"
             fill="#224499" />
         </svg> -->
-        <img :src="upload" alt="upload">
+        <img :src="upload" :alt="$t('upload')" />
         <span>
           <!-- <span>Drag files here to upload images or files, or browse files from here</span> -->
-          <span>Attach an image no larger than 3.5MB.</span>
-          <small style="margin-top: 0.25rem !important;">A maximum of 10MB files are allowed</small>
+          <span>{{ $t('Attach an image no larger than 3.5MB.') }}</span>
+          <small style="margin-top: 0.25rem !important">{{
+            $t('A maximum of 10MB files are allowed')
+          }}</small>
         </span>
       </label>
-      <input type="file" :accept="accept" :id="`images${index}`" class="input" multiple @change="onFileChange" />
+      <input
+        type="file"
+        :accept="accept"
+        :id="`images${index}`"
+        class="input"
+        multiple
+        @change="onFileChange"
+      />
     </div>
 
     <!-- Preview Images -->
     <div class="image-gallery" v-if="imagePreviews.length">
       <div class="image-item" v-for="(img, index) in imagePreviews" :key="index">
-        <img :src="img" @error="handleImageError(index)" alt="Previewed Image" />
+        <img :src="img" @error="handleImageError(index)" :alt="$t('Previewed Image')" />
         <button class="remove-btn" type="button" @click="removeImage(index)">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-              stroke="#B91F13" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M9.16998 14.8299L14.83 9.16992" stroke="#B91F13" stroke-width="1.5" stroke-linecap="round"
-              stroke-linejoin="round" />
-            <path d="M14.83 14.8299L9.16998 9.16992" stroke="#B91F13" stroke-width="1.5" stroke-linecap="round"
-              stroke-linejoin="round" />
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+              stroke="#B91F13"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M9.16998 14.8299L14.83 9.16992"
+              stroke="#B91F13"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M14.83 14.8299L9.16998 9.16992"
+              stroke="#B91F13"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </svg>
         </button>
       </div>

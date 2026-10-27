@@ -49,8 +49,8 @@ const totalTeams = computed(
     <div class="locations-teams-header">
       <HeaderSection
         :img="LoactionTeams"
-        title="teams_by_operational_location"
-        subtitle="view_all_working_teams_assigned_to_each_operational_zone"
+        :title="$t('teams_by_operational_location')"
+        :subtitle="$t('view_all_working_teams_assigned_to_each_operational_zone')"
       />
       <div class="team-section-actions">
         <!-- <span class="actions-label"><i aria-hidden="true"></i>{{ $t('Workforce overview') }}</span> -->

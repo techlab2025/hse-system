@@ -161,7 +161,7 @@ const hasTaskResults = (task: InspectionModel) =>
                   <span v-if="!isAuditPage">
                     {{ GetMorohType(task?.morphType)?.slice(0, 3) }}_
                   </span>
-                  <span v-else>Team</span>
+                  <span v-else>{{ $t('Team') }}</span>
                   <span>{{ task?.assigned_to?.name || task?.assigned_to?.title }}</span>
                 </h5>
               </div>

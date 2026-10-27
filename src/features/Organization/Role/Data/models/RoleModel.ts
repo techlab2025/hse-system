@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import RolePermissionModel from './RolePermissionModel'
 
@@ -15,11 +16,14 @@ export default class RoleModel extends TitleInterface {
   }
 
   static fromMap(data: any): RoleModel {
-    return new RoleModel(
-      data.id,
-      data.permissions?.map((permission: any) => RolePermissionModel.fromMap(permission)) ?? [],
-      data.role,
-      data.role_id,
+    return localizedRecord(
+      new RoleModel(
+        data.id,
+        data.permissions?.map((permission: any) => RolePermissionModel.fromMap(permission)) ?? [],
+        data.role,
+        data.role_id,
+      ),
+      data,
     )
   }
 }

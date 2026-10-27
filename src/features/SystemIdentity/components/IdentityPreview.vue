@@ -14,8 +14,12 @@ const groups = computed(() => buildSidebarGroups(preview.value.appearance, t))
 </script>
 <template>
   <section class="identity-editor">
-    <h2>Layout preview</h2>
-    <p>Draft changes stay here until you save. Disabled identities use the system defaults.</p>
+    <h2>{{ $t('Layout preview') }}</h2>
+    <p>
+      {{
+        $t('Draft changes stay here until you save. Disabled identities use the system defaults.')
+      }}
+    </p>
     <div
       class="identity-shell-preview"
       :style="{
@@ -74,7 +78,7 @@ const groups = computed(() => buildSidebarGroups(preview.value.appearance, t))
                 background: colors.breadcrumbBackground || 'var(--hse-project-surface)',
                 color: colors.breadcrumbText || 'var(--hse-project-blue)',
               }"
-              >Home / Projects</span
+              >{{ $t('Home / Projects') }}</span
             >
           </div>
           <div
@@ -100,14 +104,14 @@ const groups = computed(() => buildSidebarGroups(preview.value.appearance, t))
             >
               {{ preview.name }}
             </h3>
-            <p>Your workspace appearance</p>
+            <p>{{ $t('Your workspace appearance') }}</p>
             <span
               class="identity-preview-tag"
               :style="{
                 background: colors.tagBackground || '#e8f0ff',
                 color: colors.tagText || '#256df4',
               }"
-              >Sample tag</span
+              >{{ $t('Sample tag') }}</span
             >
             <div
               class="identity-preview-input"
@@ -117,7 +121,7 @@ const groups = computed(() => buildSidebarGroups(preview.value.appearance, t))
                 borderColor: colors.inputBorder || 'var(--hse-project-line)',
               }"
             >
-              Sample field
+              {{ $t('Sample field') }}
             </div>
             <div class="identity-preview-actions">
               <span
@@ -125,14 +129,14 @@ const groups = computed(() => buildSidebarGroups(preview.value.appearance, t))
                   background: colors.primaryButtonBackground || '#256df4',
                   color: colors.primaryButtonText || '#ffffff',
                 }"
-                >Primary action</span
+                >{{ $t('Primary action') }}</span
               >
               <span
                 :style="{
                   background: colors.secondaryButtonBackground || 'var(--hse-project-surface)',
                   color: colors.secondaryButtonText || 'var(--hse-project-ink)',
                 }"
-                >Secondary action</span
+                >{{ $t('Secondary action') }}</span
               >
             </div>
           </div>

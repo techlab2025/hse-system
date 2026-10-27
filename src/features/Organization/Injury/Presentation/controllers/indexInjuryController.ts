@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -5,10 +6,7 @@ import { SelectControllerInterface } from '@/base/Presentation/Controller/select
 import type InjuryModel from '../../Data/models/InjuryModel'
 import IndexInjuryUseCase from '../../Domain/useCase/indexInjuryUseCase'
 
-
-export default class IndexInjuryController extends SelectControllerInterface<
-  InjuryModel[]
-> {
+export default class IndexInjuryController extends SelectControllerInterface<InjuryModel[]> {
   private static instance: IndexInjuryController
   private constructor() {
     super()
@@ -26,14 +24,13 @@ export default class IndexInjuryController extends SelectControllerInterface<
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<InjuryModel[]> =
-      await this.IndexInjuryUseCase.call(params)
+    const dataState: DataState<InjuryModel[]> = await this.IndexInjuryUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

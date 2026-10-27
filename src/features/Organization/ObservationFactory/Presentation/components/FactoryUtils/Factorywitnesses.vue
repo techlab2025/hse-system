@@ -38,8 +38,8 @@ watch(
   <div class="another-meeting">
     <div class="another-meeting-header">
       <HeaderPage
-        title="incident_witnesses_question"
-        subtitle="incident_witnesses_description"
+        :title="$t('incident_witnesses_question')"
+        :subtitle="$t('incident_witnesses_description')"
         :img="people"
         class="title-header"
       />

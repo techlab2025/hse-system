@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import { computed, ref, onMounted, watch } from 'vue'
@@ -60,7 +62,7 @@ const handleAddAllHierarchies = async () => {
   )
 
   if (hasEmptyHierarchy) {
-    validationMessage.value = 'You should select at least one position'
+    validationMessage.value = localizeUi('You should select at least one position')
     return
   }
 
@@ -253,17 +255,25 @@ watch(
       <template #empty>
         <DataEmpty
           :link="`/organization/project/add`"
-          addText="Add Project"
-          description="You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="You have No Project"
+          :addText="$t('Add Project')"
+          :description="
+            $t(
+              'You have no Project .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Project')"
         />
       </template>
       <template #failed>
         <DataFailed
           :link="`/organization/project/add`"
-          addText="Add Project"
-          description="You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="You have No Project"
+          :addText="$t('Add Project')"
+          :description="
+            $t(
+              'You have no Project .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Project')"
         />
       </template>
     </DataStatus>

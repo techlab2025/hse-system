@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -151,7 +153,7 @@ const saveWorkbook = (rows: Record<string, unknown>[], filename: string) => {
 
 const exportExcel = () => {
   if (!state.value.data?.length) {
-    new OpenWarningDilaog('No data available to export').openDialog()
+    new OpenWarningDilaog(localizeUi('No data available to export')).openDialog()
     return
   }
   saveWorkbook(meetingTypeExportRows(state.value.data, isAdmin.value), 'meeting_types.xlsx')
@@ -215,7 +217,13 @@ const headerActions = () => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 Meeting_Types_index">
     <div class="input-search col-span-1">
       <span class="icon-remove" @click="((word = ''), searchMeetingTypes())"><Search /></span>
-      <input v-model="word" :placeholder="$t('search')" class="input" @input="searchMeetingTypes" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        @input="searchMeetingTypes"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ActionsList
@@ -285,7 +293,7 @@ const headerActions = () => [
       </template>
     </DataStatus>
     <template #notPermitted>
-      <DataFailed add-text="Have not Permission" description="" link="" />
+      <DataFailed :add-text="$t('auditUi.you_do_not_have_permission')" description="" link="" />
     </template>
   </PermissionBuilder>
 

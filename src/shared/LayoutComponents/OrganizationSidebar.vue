@@ -301,6 +301,7 @@ onBeforeUnmount(() => {
               <SidebarUnicon name="search" class="sidebar-search__icon" />
             </span>
             <input
+              dir="auto"
               v-model="searchTerm"
               type="search"
               class="sidebar-search__input"

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { translateMessage } from '@/localization/messages'
 import { ref } from 'vue'
 import Dialog from 'primevue/dialog'
 import type InvestigatingModel from '@/features/Organization/Investigating/Data/models/investigatingModel'
@@ -37,15 +38,20 @@ const ReturnStatusTitle = (status: InvestegationStatusEnum): string => {
 </script>
 
 <template>
-  <button label="Show" @click="visible = true" class="investigation-show-details-btn">
-    show details
+  <button :label="$t('Show')" @click="visible = true" class="investigation-show-details-btn">
+    {{ $t('show details') }}
   </button>
 
-  <Dialog v-model:visible="visible" modal :dismissableMask="true" :style="{ width: '90vw', maxWidth: '85rem' }">
+  <Dialog
+    v-model:visible="visible"
+    modal
+    :dismissableMask="true"
+    :style="{ width: '90vw', maxWidth: '85rem' }"
+  >
     <template #header>
       <div class="show-investigation-dialog-header">
-        <h3>{{ staticData?.title }}</h3>
-        <p>{{ staticData?.description }}</p>
+        <h3>{{ translateMessage(staticData?.title) }}</h3>
+        <p>{{ translateMessage(staticData?.description) }}</p>
       </div>
     </template>
     <!-- <pre>{{ item }} </pre> -->

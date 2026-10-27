@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translateMessage } from '@/localization/messages'
 import { ref, onMounted } from 'vue'
 
 import IndexFilter from './InvestigationMeetingUtils/IndexFilter.vue'
@@ -82,22 +83,25 @@ onMounted(() => {
                 <div class="first-card">
                   <div class="first-card-header">
                     <div class="header">
-                      <p class="first-label-item-primary" :class="{
-                        'high-observation': item.title === 'High observation',
-                        'medium-observation': item.title === 'Medium observation',
-                      }">
-                        {{ item.title }} <span>_OBS-2025-0112</span>
+                      <p
+                        class="first-label-item-primary"
+                        :class="{
+                          'high-observation': item.title === 'High observation',
+                          'medium-observation': item.title === 'Medium observation',
+                        }"
+                      >
+                        {{ translateMessage(item.title) }} <span>_OBS-2025-0112</span>
                       </p>
-                      <p class="new">New</p>
+                      <p class="new">{{ $t('New') }}</p>
                     </div>
                     <div class="first-card-details">
                       <p class="label-item">
-                        Date & Time: <span>{{ item.date }}</span>
+                        {{ $t('Date & Time:') }} <span>{{ item.date }}</span>
                       </p>
                       <p class="label-item">
-                        The victim: <span>{{ item.observer.name }}</span>
+                        {{ $t('The victim:') }} <span>{{ item.observer.name }}</span>
                       </p>
-                      <p class="show-details">show details</p>
+                      <p class="show-details">{{ $t('show details') }}</p>
                     </div>
                   </div>
                 </div>
@@ -108,23 +112,25 @@ onMounted(() => {
                 <div class="card-content">
                   <div class="card-header">
                     <p class="label-item-secondary">
-                      {{ item.serial }}
+                      {{ translateMessage(item.serial) }}
                     </p>
                     <p class="google-icon">
-                      <img :src="item.image" alt="meeting" />
+                      <img :src="item.image" :alt="$t('meeting')" />
                       {{ item.google }}
                     </p>
                   </div>
                   <div class="card-details">
                     <div class="project-details">
                       <p class="label-item-primary">
-                        Date & Time : <span class="date-color">{{ item.zoon.title }}</span>
+                        {{ $t('Date & Time :') }}
+                        <span class="date-color">{{ item.zoon.title }}</span>
                       </p>
                       <p class="label-item-primary">
-                        Investigation team leader : <span>{{ item.equipment.title }}</span>
+                        {{ $t('Investigation team leader :') }}
+                        <span>{{ item.equipment.title }}</span>
                       </p>
                       <p class="label-item-primary">
-                        Num Of Team: <span>{{ item.status.title }}</span>
+                        {{ $t('Num Of Team:') }} <span>{{ item.status.title }}</span>
                       </p>
                     </div>
                   </div>
@@ -132,11 +138,11 @@ onMounted(() => {
               </div>
 
               <div class="card-footer">
-                <img :src="link" alt="link" />
+                <img :src="link" :alt="$t('link')" />
                 <p class="link-text">Https://meet.google.com/abc-defg-hij</p>
                 <p class="join-now">
-                  join now
-                  <img :src="live" alt="live" />
+                  {{ $t('join now') }}
+                  <img :src="live" :alt="$t('live')" />
                 </p>
               </div>
             </div>

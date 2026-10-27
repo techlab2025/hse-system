@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
 import { onMounted, ref, watch } from 'vue'
@@ -198,7 +199,7 @@ const getCertificateTypeLabel = (certificateType: number) => {
 // Export To Excel Sheet
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert('No data available to export')
+    alert(localizeUi('No data available to export'))
     return
   }
   const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
@@ -281,6 +282,7 @@ const IndexOrganizationEmployeectionList = () => [
         <Search />
       </span>
       <input
+        dir="auto"
         v-model="word"
         :placeholder="$t('search certificates')"
         class="input"
@@ -364,11 +366,17 @@ const IndexOrganizationEmployeectionList = () => [
                     >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item?.title) }}</td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                <td :data-label="$t('Name')">{{ wordSlice(item?.title) }}</td>
+                <td
+                  :data-label="$t('all_industries')"
+                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                >
                   {{ item.allIndustries ? $t('yes') : $t('no') }}
                 </td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                <td
+                  :data-label="$t('all_industries')"
+                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                >
                   {{
                     item.industries.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')
@@ -391,7 +399,7 @@ const IndexOrganizationEmployeectionList = () => [
                   </div>
                 </td> -->
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <DropList
                     :actionList="actionList(item.id, deleteCertificate)"
                     @delete="deleteCertificate(item.id)"
@@ -440,8 +448,12 @@ const IndexOrganizationEmployeectionList = () => [
 
     <template #notPermitted>
       <DataFailed
-        addText="Have not  Permission"
-        description="You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data',
+          )
+        "
       />
     </template>
   </PermissionBuilder>

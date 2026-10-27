@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class ShiftModel extends TitleInterface {
@@ -15,6 +16,6 @@ export default class ShiftModel extends TitleInterface {
   }
 
   static fromMap(data: any): ShiftModel {
-    return new ShiftModel(data.id, data.title, data.from_time, data.to_time)
+    return localizedRecord(new ShiftModel(data.id, data.title, data.from_time, data.to_time), data)
   }
 }

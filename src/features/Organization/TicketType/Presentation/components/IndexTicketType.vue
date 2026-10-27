@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -143,8 +142,9 @@ watch(
         <Search />
       </span>
       <input
+        dir="auto"
         v-model="word"
-        :placeholder="'search'"
+        :placeholder="$t('search')"
         class="input"
         type="text"
         @input="searchTicketTypes"
@@ -201,8 +201,8 @@ watch(
                 <td data-label="#">
                   <span :to="`/organization/ticket-type/${item.id}`">{{ index + 1 }} </span>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="Actions">
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('Actions')">
                   <DropList
                     :actionList="actionList(item.id, deleteTicketType)"
                     @delete="deleteTicketType(item.id)"
@@ -236,9 +236,13 @@ watch(
             :link="`/${
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/ticket-type/add`"
-            addText="Add TicketType"
-            description="You have no TicketTypes .. All your joined customers will appear here when you add your customer data"
-            title="You have No TicketTypes"
+            :addText="$t('auditUi.add_ticket_type')"
+            :description="
+              $t(
+                'You have no TicketTypes .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No TicketTypes')"
           />
         </PermissionBuilder>
       </template>
@@ -254,9 +258,13 @@ watch(
             :link="`/${
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/ticket-type/add`"
-            addText="Add TicketType"
-            description="You have no TicketTypes .. All your joined customers will appear here when you add your customer data"
-            title="You have No TicketTypes"
+            :addText="$t('auditUi.add_ticket_type')"
+            :description="
+              $t(
+                'You have no TicketTypes .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No TicketTypes')"
           />
         </PermissionBuilder>
       </template>
@@ -264,8 +272,12 @@ watch(
 
     <template #notPermitted>
       <DataFailed
-        addText="Have not  Permission"
-        description="You have no RootCauses .. All your joined customers will appear here when you add your customer data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no RootCauses .. All your joined customers will appear here when you add your customer data',
+          )
+        "
       />
     </template>
   </PermissionBuilder>

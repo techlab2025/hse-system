@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleModel from '@/base/core/Models/title_model'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import EquipmentDetailsModel from '@/features/setting/Equipment/Data/models/equipmentDetailsModel'
@@ -27,14 +28,17 @@ export default class ProjectLocationEquipmentModel extends TitleModel {
   }
 
   static fromMap(data: any): ProjectLocationEquipmentModel {
-    return new ProjectLocationEquipmentModel(
-      data.equipment_id || data.equipment?.id || data.id,
-      data.equipment_title || data.equipment?.title || data.title,
-      data.equipment_description || data.equipment?.description,
-      data.project_zoon_equipment_id,
-      data.equipment_type,
-      data.project_zoon_equipments?.map((item: any) => EquipmentDetailsModel.fromMap(item)),
-      EquipmentDetailsModel.fromMap(data.equipment),
+    return localizedRecord(
+      new ProjectLocationEquipmentModel(
+        data.equipment_id || data.equipment?.id || data.id,
+        data.equipment_title || data.equipment?.title || data.title,
+        data.equipment_description || data.equipment?.description,
+        data.project_zoon_equipment_id,
+        data.equipment_type,
+        data.project_zoon_equipments?.map((item: any) => EquipmentDetailsModel.fromMap(item)),
+        EquipmentDetailsModel.fromMap(data.equipment),
+      ),
+      data,
     )
   }
 

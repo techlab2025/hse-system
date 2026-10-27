@@ -98,13 +98,18 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--surface-1) 30%, transparent), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--surface-1) 30%, transparent),
+    transparent
+  );
   animation: shimmer 2s infinite;
 }
 
 .timeline-wrapper {
   position: relative;
-  padding-left: 40px;
+  padding-inline-start: 40px;
 }
 
 .timeline-line {
@@ -307,7 +312,7 @@
   }
 
   &.timeline-card-header-2 {
-    margin-left: 20px;
+    margin-inline-start: 20px;
     margin-top: 10px;
     position: relative;
     z-index: 99;
@@ -321,7 +326,7 @@
       height: 15px;
       border-bottom-left-radius: 6px;
       border-bottom: 3px solid var(--text-soft);
-      border-left: 3px solid var(--text-soft);
+      border-inline-start: 3px solid var(--text-soft);
       /* rotate: 60deg; */
       z-index: 1;
       opacity: 0.5;
@@ -357,13 +362,21 @@
   align-items: flex-start;
   gap: 12px;
   padding: 10px;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--brand-primary-700) 2%, transparent) 0%, color-mix(in srgb, var(--brand-primary-700) 5%, transparent) 100%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--brand-primary-700) 2%, transparent) 0%,
+    color-mix(in srgb, var(--brand-primary-700) 5%, transparent) 100%
+  );
   border-radius: 8px;
   transition: all 0.2s ease;
 }
 
 .timeline-detail-item:hover {
-  background: linear-gradient(135deg, color-mix(in srgb, var(--brand-primary-700) 5%, transparent) 0%, color-mix(in srgb, var(--brand-primary-700) 10%, transparent) 100%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--brand-primary-700) 5%, transparent) 0%,
+    color-mix(in srgb, var(--brand-primary-700) 10%, transparent) 100%
+  );
   transform: translateX(4px);
 }
 
@@ -403,7 +416,7 @@
 /* Responsive */
 @media (max-width: 768px) {
   .timeline-wrapper {
-    padding-left: 30px;
+    padding-inline-start: 30px;
   }
 
   .timeline-marker {

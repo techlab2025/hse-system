@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -41,7 +42,7 @@ export default class DisActiveOrganizationDocumentsController extends Controller
         imageElement: errorImage,
         messageContent: null,
       })
-      throw new Error('Unable to load documents')
+      throw new Error(localizeUi('Unable to load documents'))
     }
     super.handleResponseDialogs()
     return this.state

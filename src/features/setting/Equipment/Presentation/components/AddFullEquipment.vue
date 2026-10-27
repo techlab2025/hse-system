@@ -59,7 +59,7 @@ const setParams = (data: Params) => {
           @click.prevent=""
           class="btn btn-danger"
         >
-          <span>Cancel</span>
+          <span>{{ $t('Cancel') }}</span>
         </router-link>
         <button type="button" @click.prevent="saveAndNew" class="btn btn-secondary">
           {{ $t('save and new') }}

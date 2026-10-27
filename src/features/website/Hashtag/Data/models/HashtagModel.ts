@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientHashtagModel from "@/features/dashboard/settings/clientHashtag/Data/models/index_client_hashtag_model";
@@ -40,20 +41,23 @@ export default class HashtagModel extends TitleInterface {
   }
 
   static fromMap(data: any): HashtagModel {
-    return new HashtagModel(
-      data.id,
-      data.title,
-      data.subtitle,
-      data.has_hashtag,
-      data.all_industries,
-      data.industries?.length > 0
-        ? data.industries?.map((industry) => TitleModel.fromMap(industry))
-        : [],
-      data.parent_id,
-      data.image,
-      data.titles,
-      data.descriptions,
-      data.is_active,
+    return localizedRecord(
+      new HashtagModel(
+        data.id,
+        data.title,
+        data.subtitle,
+        data.has_hashtag,
+        data.all_industries,
+        data.industries?.length > 0
+          ? data.industries?.map((industry) => TitleModel.fromMap(industry))
+          : [],
+        data.parent_id,
+        data.image,
+        data.titles,
+        data.descriptions,
+        data.is_active,
+      ),
+      data,
     )
   }
 }

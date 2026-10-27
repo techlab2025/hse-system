@@ -1,8 +1,13 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { MangementChangeTopicTypeEnum } from '../../Core/Core/MangementChangeTopicTypeEnum'
 
 export default class MangementChangeTopicTypeModel extends TitleInterface {
-  constructor(id: number, title: string, public type: MangementChangeTopicTypeEnum) {
+  constructor(
+    id: number,
+    title: string,
+    public type: MangementChangeTopicTypeEnum,
+  ) {
     super({ id, title, type })
   }
 
@@ -11,7 +16,7 @@ export default class MangementChangeTopicTypeModel extends TitleInterface {
     title: string
     type: MangementChangeTopicTypeEnum
   }): MangementChangeTopicTypeModel {
-    return new MangementChangeTopicTypeModel(data.id, data.title, data.type)
+    return localizedRecord(new MangementChangeTopicTypeModel(data.id, data.title, data.type), data)
   }
 
   static example: MangementChangeTopicTypeModel[] = [
@@ -20,6 +25,13 @@ export default class MangementChangeTopicTypeModel extends TitleInterface {
   ]
 
   static transformData(data: string[][]): MangementChangeTopicTypeModel[] {
-    return data.map((row, index) => new MangementChangeTopicTypeModel(index + 1, row[0] || '', MangementChangeTopicTypeEnum.employee))
+    return data.map(
+      (row, index) =>
+        new MangementChangeTopicTypeModel(
+          index + 1,
+          row[0] || '',
+          MangementChangeTopicTypeEnum.employee,
+        ),
+    )
   }
 }

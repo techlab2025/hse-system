@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-import { computed, ref, watch, useAttrs } from 'vue'
+import { translateKeyOrLiteral } from '@/localization/i18n'
+
+import { computed, ref, watch, useAttrs, useId } from 'vue'
 
 import { useI18n } from 'vue-i18n'
 import MultiSelect from 'primevue/multiselect'
@@ -107,6 +109,7 @@ const emit = defineEmits<{
 
 const loading = ref(false)
 const message = ref('No Data Found')
+const labelId = `select-label-${useId()}`
 const dynamicOptions = ref<TitleInterface[]>([])
 
 // Prevent an older request from replacing the latest request result.
@@ -544,10 +547,10 @@ function closeDialog(): void {
         </div>
 
         <div class="flex items-center gap-2">
-          <label class="input-label" :class="{ required }">
+          <label :id="labelId" :for="`${labelId}-input`" class="input-label" :class="{ required }">
             <span v-if="required" class="text-red-500"> * </span>
 
-            {{ $t(label ?? '') }}
+            {{ translateKeyOrLiteral(label) }}
           </label>
 
           <slot name="LabelHeader" />
@@ -560,11 +563,14 @@ function closeDialog(): void {
     <slot v-if="!hascontent">
       <component
         :is="componentType"
+        :input-id="`${labelId}-input`"
+        :aria-labelledby="label && !hasHeader ? labelId : undefined"
+        :aria-label="translateKeyOrLiteral(label || placeholder || 'Select')"
         v-model="normalizedValue"
         :options="mergedOptions"
-        :placeholder="placeholder"
+        :placeholder="translateKeyOrLiteral(placeholder)"
         :loading="loading"
-        :empty-message="message"
+        :empty-message="translateKeyOrLiteral(message)"
         :data-key="'id'"
         class="input-select w-full hse-control hse-select-control"
         panel-class="hse-identity hse-select-panel"
@@ -614,7 +620,7 @@ function closeDialog(): void {
         </template>
       </component>
 
-      <input :id="id" :value="hiddenInputValue" type="text" class="hidden w-full" />
+      <input dir="auto" :id="id" :value="hiddenInputValue" type="text" class="hidden w-full" />
     </slot>
 
     <slot v-else name="content" />
@@ -643,7 +649,7 @@ function closeDialog(): void {
 .add-dialog {
   width: 20px;
   height: 20px;
-  margin-right: 6px;
+  margin-inline-end: 6px;
   cursor: pointer;
 
   svg {

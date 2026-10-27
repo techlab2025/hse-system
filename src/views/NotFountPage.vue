@@ -33,7 +33,7 @@ const homePath = computed(() =>
             <path d="M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5H15v-6H9v6H3.5a.5.5 0 0 1-.5-.5v-9.7Z" />
           </svg>
           {{ t('not_found.back_home') }}
-          <span aria-hidden="true">→</span>
+          <span class="locale-directional-icon" aria-hidden="true">→</span>
         </RouterLink>
       </div>
 
@@ -57,9 +57,7 @@ const homePath = computed(() =>
   place-items: center;
   overflow: hidden;
   isolation: isolate;
-  background:
-    linear-gradient(135deg, var(--brand-primary-50), transparent 55%),
-    var(--app-bg);
+  background: linear-gradient(135deg, var(--brand-primary-50), transparent 55%), var(--app-bg);
 }
 
 .not-found::before {
@@ -166,7 +164,10 @@ h1 {
   box-shadow: 0 12px 28px color-mix(in srgb, var(--brand-primary-500) 28%, transparent);
   color: var(--text-on-brand);
   font-weight: 700;
-  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
 }
 
 .home-button:hover {
@@ -225,8 +226,13 @@ h1 {
   border-radius: 50%;
 }
 
-.orbit--outer { inset: 3%; }
-.orbit--inner { inset: 13%; opacity: 0.6; }
+.orbit--outer {
+  inset: 3%;
+}
+.orbit--inner {
+  inset: 13%;
+  opacity: 0.6;
+}
 
 .floating-dot {
   position: absolute;
@@ -239,15 +245,27 @@ h1 {
   box-shadow: 0 5px 18px var(--shadow-color);
 }
 
-.floating-dot--one { inset-block-start: 12%; inset-inline-end: 13%; }
-.floating-dot--two { inset-block-end: 14%; inset-inline-start: 8%; background: var(--brand-accent-500); }
+.floating-dot--one {
+  inset-block-start: 12%;
+  inset-inline-end: 13%;
+}
+.floating-dot--two {
+  inset-block-end: 14%;
+  inset-inline-start: 8%;
+  background: var(--brand-accent-500);
+}
 
 @keyframes float {
-  50% { transform: translateY(-12px) rotate(1deg); }
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
 }
 
 @keyframes morph {
-  50% { border-radius: 57% 43% 38% 62% / 58% 61% 39% 42%; transform: rotate(5deg); }
+  50% {
+    border-radius: 57% 43% 38% 62% / 58% 61% 39% 42%;
+    transform: rotate(5deg);
+  }
 }
 
 @media (max-width: 800px) {
@@ -256,19 +274,36 @@ h1 {
     text-align: center;
   }
 
-  .not-found__description { margin-inline: auto; }
-  .not-found__visual { order: -1; width: min(330px, 82vw); margin: auto; }
+  .not-found__description {
+    margin-inline: auto;
+  }
+  .not-found__visual {
+    order: -1;
+    width: min(330px, 82vw);
+    margin: auto;
+  }
 }
 
 @media (max-width: 480px) {
-  .not-found { padding: 12px; }
-  .not-found__card { padding: 24px 18px 30px; border-radius: 24px; }
-  .not-found__visual { width: min(245px, 72vw); }
-  .not-found__code { margin-top: 12px; }
+  .not-found {
+    padding: 12px;
+  }
+  .not-found__card {
+    padding: 24px 18px 30px;
+    border-radius: 24px;
+  }
+  .not-found__visual {
+    width: min(245px, 72vw);
+  }
+  .not-found__code {
+    margin-top: 12px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .not-found__visual::before,
-  .not-found__visual img { animation: none; }
+  .not-found__visual img {
+    animation: none;
+  }
 }
 </style>

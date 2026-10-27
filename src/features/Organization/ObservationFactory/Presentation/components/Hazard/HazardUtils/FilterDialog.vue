@@ -31,14 +31,22 @@ const date = ref(new Date())
 const { t } = useI18n()
 
 const caseOptions = ref<TitleInterface[]>([
-  new TitleInterface({ id: SaveStatusEnum.Saved, title: t('Positive') }),
-  new TitleInterface({ id: SaveStatusEnum.NotSaved, title: t('Negative') }),
+  new TitleInterface({
+    id: SaveStatusEnum.Saved,
+    title: t('Positive'),
+    translationKey: 'Positive',
+  }),
+  new TitleInterface({
+    id: SaveStatusEnum.NotSaved,
+    title: t('Negative'),
+    translationKey: 'Negative',
+  }),
 ])
 
 const staticOptions = ref<TitleInterface[]>([
-  new TitleInterface({ id: RiskLevelEnum.High, title: t('High') }),
-  new TitleInterface({ id: RiskLevelEnum.Low, title: t('Low') }),
-  new TitleInterface({ id: RiskLevelEnum.Medium, title: t('Medium') }),
+  new TitleInterface({ id: RiskLevelEnum.High, title: t('High'), translationKey: 'High' }),
+  new TitleInterface({ id: RiskLevelEnum.Low, title: t('Low'), translationKey: 'Low' }),
+  new TitleInterface({ id: RiskLevelEnum.Medium, title: t('Medium'), translationKey: 'Medium' }),
 ])
 
 const locationController = IndexLocationController.getInstance()
@@ -48,9 +56,17 @@ const machineController = IndexEquipmentController.getInstance()
 const machineParams = ref(new IndexEquipmentParams('', 0, 0, 0))
 
 const machineTypeOptions = ref<TitleInterface[]>([
-  new TitleInterface({ id: EquipmentTypesEnum.DEVICE, title: t('Device') }),
-  new TitleInterface({ id: EquipmentTypesEnum.EQUIPMENT, title: t('Equipment') }),
-  new TitleInterface({ id: EquipmentTypesEnum.TOOL, title: t('TOOL') }),
+  new TitleInterface({
+    id: EquipmentTypesEnum.DEVICE,
+    title: t('Device'),
+    translationKey: 'Device',
+  }),
+  new TitleInterface({
+    id: EquipmentTypesEnum.EQUIPMENT,
+    title: t('Equipment'),
+    translationKey: 'Equipment',
+  }),
+  new TitleInterface({ id: EquipmentTypesEnum.TOOL, title: t('TOOL'), translationKey: 'TOOL' }),
 ])
 const machineTypeController = IndexEquipmentTypeController.getInstance()
 const machineTypeParams = ref(new IndexEquipmentTypeParams('', 0, 0, 0, 0))

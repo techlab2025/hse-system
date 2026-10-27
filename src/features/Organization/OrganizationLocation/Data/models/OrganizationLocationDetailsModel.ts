@@ -1,3 +1,4 @@
+import { getCurrentLocale } from '@/localization/i18n'
 import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 
@@ -33,7 +34,7 @@ export default class OrganizationLocationDetailsModel {
   }
 
   static getLocale(): string {
-    return (typeof localStorage !== 'undefined' && localStorage.getItem('lang')) || 'en'
+    return (typeof localStorage !== 'undefined' && getCurrentLocale()) || 'en'
   }
 
   static fromMap(data: any): OrganizationLocationDetailsModel {
@@ -54,6 +55,7 @@ export default class OrganizationLocationDetailsModel {
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((t: any) => t.locale === locale)?.title,
+      localizedTitles: data.titles,
       // subtitle: data.code,
     })
   }

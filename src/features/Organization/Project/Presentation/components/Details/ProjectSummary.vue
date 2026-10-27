@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { translateMessage } from '@/localization/messages'
 import '../../../styles/project-overview.css'
 import { vProjectPanels } from '../../composables/projectPanels'
 
@@ -24,10 +25,26 @@ const summaryTabs = [
   { key: 'all', label: 'allData', icon: 'grid' },
   // { key: 'dashboard', label: 'dashboard', icon: 'grid' },
   { key: 'safety', label: 'safety', icon: 'gauge' },
-  { key: 'operations', label: 'operations', icon: 'users' },
-  { key: 'equipment', label: 'equipment', icon: 'equipment' },
-  { key: 'meetings', label: 'meetings', icon: 'clock' },
-  { key: 'drills', label: 'drills', icon: 'pulse' },
+  {
+    key: 'operations',
+    label: 'operations',
+    icon: 'users',
+  },
+  {
+    key: 'equipment',
+    label: 'equipment',
+    icon: 'equipment',
+  },
+  {
+    key: 'meetings',
+    label: 'meetings',
+    icon: 'clock',
+  },
+  {
+    key: 'drills',
+    label: 'drills',
+    icon: 'pulse',
+  },
   { key: 'lossTime', label: 'lossTime', icon: 'clock' },
   { key: 'quick', label: 'quick', icon: 'folder' },
 ] as const
@@ -67,6 +84,7 @@ const meetingStatistics = computed(() => {
 
 const safetyStatistics = computed(() => [
   {
+    key: 'observations',
     label: 'Observations',
     value: project.value?.observationsCount ?? 0,
     note: ` `,
@@ -75,6 +93,7 @@ const safetyStatistics = computed(() => [
     to: `/organization/equipment-mangement/observation?isAll=1&type=2&project_id=${projectId.value}`,
   },
   {
+    key: 'incidents',
     label: 'Incidents',
     value: project.value?.incidentsCount ?? 0,
     note: 'Reported project incidents',
@@ -83,6 +102,7 @@ const safetyStatistics = computed(() => [
     to: `/organization/equipment-mangement/incedant?isAll=1&project_id=${projectId.value}`,
   },
   {
+    key: 'investigations',
     label: 'Investigations',
     value: project.value?.investigationsCount ?? 0,
     note: 'Investigation records',
@@ -91,6 +111,7 @@ const safetyStatistics = computed(() => [
     to: `/organization/Investigating?project_id=${projectId.value}`,
   },
   {
+    key: 'inspections',
     label: 'Inspections',
     value: project.value?.inspectionsCount ?? 0,
     note: 'Completed and active checks',
@@ -99,6 +120,7 @@ const safetyStatistics = computed(() => [
     to: `/organization/equipment-mangement/inspection?inspectionType=1&project_id=${projectId.value}`,
   },
   {
+    key: 'drills',
     label: 'drills',
     value: `${project.value?.actualDrillsCount || 0} / ${project.value?.drillsCount || 0} `,
     note: 'Preparedness exercises',
@@ -107,7 +129,8 @@ const safetyStatistics = computed(() => [
     to: `/organization/project-summary/${projectId.value}/data/drills`,
   },
   {
-    label: 'Meetings',
+    key: 'meetings',
+    label: 'meetings',
     value: `${meetingStatistics.value.withResults} / ${meetingStatistics.value.total}`,
     note: 'With results / total meetings',
     tone: 'navy',
@@ -118,37 +141,44 @@ const safetyStatistics = computed(() => [
 
 const operationalStatistics = computed(() => [
   {
+    key: 'employees',
     label: 'Employees',
     value: project.value?.assignedEmployeesCount ?? 0,
     to: `/organization/project-summary/${projectId.value}/data/employees`,
   },
   {
-    label: 'Equipment',
+    key: 'equipment',
+    label: 'equipment',
     value: project.value?.equipmentCount ?? 0,
     to: `/organization/project-summary/${projectId.value}/data/equipment`,
   },
   {
+    key: 'locations',
     label: 'Locations',
     value: project.value?.assignedLocationsCount ?? 0,
     to: `/organization/project-summary/${projectId.value}/data/locations`,
   },
   {
+    key: 'zones',
     label: 'Zones',
     value: project.value?.assignedZonesCount ?? 0,
     to: `/organization/project-summary/${projectId.value}/data/zones`,
   },
   {
+    key: 'teams',
     label: 'Teams',
     value: project.value?.teamsCount ?? 0,
     to: `/organization/project-summary/${projectId.value}/data/teams`,
   },
   {
+    key: 'positions',
     label: 'Positions',
     value: project.value?.positionsCount ?? 0,
     to: `/organization/project-summary/${projectId.value}/data/hierarchies`,
   },
   {
-    label: 'Contractors',
+    key: 'contractors',
+    label: 'contractors',
     value: project.value?.contractorsCount ?? 0,
     to: `/organization/project-summary/${projectId.value}/data/contractors`,
   },
@@ -156,14 +186,14 @@ const operationalStatistics = computed(() => [
 
 const visibleSafetyStatistics = computed(() => {
   if (activeTab.value === 'meetings')
-    return safetyStatistics.value.filter((stat) => stat.label === 'Meetings')
+    return safetyStatistics.value.filter((stat) => stat.key === 'meetings')
   if (activeTab.value === 'drills')
-    return safetyStatistics.value.filter((stat) => stat.label === 'drills')
+    return safetyStatistics.value.filter((stat) => stat.key === 'drills')
   return safetyStatistics.value
 })
 const visibleOperationalStatistics = computed(() =>
   activeTab.value === 'equipment'
-    ? operationalStatistics.value.filter((stat) => stat.label === 'Equipment')
+    ? operationalStatistics.value.filter((stat) => stat.key === 'equipment')
     : operationalStatistics.value,
 )
 const safetyHeading = computed(() =>
@@ -283,7 +313,7 @@ watch(
                     <!-- <i aria-hidden="true"></i> -->
                     <!-- Project command overview -->
                   </span>
-                  <h1>{{ project?.title || 'Project summary' }}</h1>
+                  <h1>{{ project?.title || $t('Project Summary') }}</h1>
                   <p>
                     <span class="scope-of-work">{{ labels('scope') }}: </span
                     >{{ project?.description || '' }}
@@ -316,11 +346,11 @@ watch(
             <div class="summary-hero__meta">
               <div>
                 <span>{{ labels('start') }}</span>
-                <strong>{{ project?.startDate || 'Not set' }}</strong>
+                <strong>{{ project?.startDate || $t('Not set') }}</strong>
               </div>
               <div>
                 <span>{{ labels('end') }}</span>
-                <strong>{{ project?.endDate || 'Not set' }}</strong>
+                <strong>{{ project?.endDate || $t('Not set') }}</strong>
               </div>
               <!-- <div>
               <span>Partner</span>
@@ -351,7 +381,7 @@ watch(
             <div class="safety-stat-grid">
               <RouterLink
                 v-for="stat in visibleSafetyStatistics"
-                :key="stat.label"
+                :key="stat.key"
                 :to="stat.to"
                 class="safety-stat-card"
                 :class="`safety-stat-card--${stat.tone}`"
@@ -374,8 +404,8 @@ watch(
                     <span class="tot-num">{{ String(stat.value).split('/')[1] ? '/' : '' }}</span>
                     <span class="tot-num">{{ String(stat.value).split('/')[1] }}</span>
                   </strong>
-                  <h3>{{ $t(stat.label) }}</h3>
-                  <p>{{ stat.note }}</p>
+                  <h3>{{ translateMessage(stat.label) }}</h3>
+                  <p>{{ $t(stat.note) }}</p>
                 </div>
                 <span class="stat-card-arrow" aria-hidden="true">→</span>
               </RouterLink>
@@ -392,12 +422,12 @@ watch(
             <div class="operational-stat-grid">
               <RouterLink
                 v-for="stat in visibleOperationalStatistics"
-                :key="stat.label"
+                :key="stat.key"
                 :to="stat.to"
                 class="operational-stat"
               >
                 <strong>{{ stat.value }}</strong>
-                <span>{{ $t(stat.label) }}</span>
+                <span>{{ translateMessage(stat.label) }}</span>
                 <!-- <small aria-hidden="true">→</small> -->
               </RouterLink>
             </div>
@@ -435,10 +465,10 @@ watch(
                     "
                 /></span>
                 <span class="quick-link__copy">
-                  <strong>{{ $t(item.title) }}</strong>
-                  <small>{{ item.description }}</small>
+                  <strong>{{ translateMessage(item.title) }}</strong>
+                  <small>{{ translateMessage(item.description) }}</small>
                 </span>
-                <span class="quick-link__arrow" aria-hidden="true">→</span>
+                <span class="quick-link__arrow locale-directional-icon" aria-hidden="true">→</span>
               </RouterLink>
             </div>
           </section>
@@ -450,7 +480,7 @@ watch(
           data-hse-project
           v-project-panels
           class="hse-project-root hse-project-page summary-loading"
-          aria-label="Loading project summary"
+          :aria-label="$t('Loading project summary')"
         >
           <span v-for="index in 8" :key="index"></span>
         </div>
@@ -461,7 +491,7 @@ watch(
           data-hse-project
           v-project-panels
           class="hse-project-root hse-project-page summary-loading"
-          aria-label="Loading project summary"
+          :aria-label="$t('Loading project summary')"
         >
           <span v-for="index in 8" :key="index"></span>
         </div>
@@ -470,18 +500,18 @@ watch(
       <template #empty>
         <DataEmpty
           link="/organization/projects"
-          add-text="Back to projects"
-          title="Project details are not available"
-          description="Choose another project and try again."
+          :add-text="$t('auditUi.back_to_projects')"
+          :title="$t('Project details are not available')"
+          :description="$t('Choose another project and try again.')"
         />
       </template>
 
       <template #failed>
         <DataFailed
           link="/organization/projects"
-          add-text="Back to projects"
-          title="Unable to load project summary"
-          description="The project overview could not be loaded. Please try again."
+          :add-text="$t('auditUi.back_to_projects')"
+          :title="$t('Unable to load project summary')"
+          :description="$t('The project overview could not be loaded. Please try again.')"
         />
       </template>
     </DataStatus>

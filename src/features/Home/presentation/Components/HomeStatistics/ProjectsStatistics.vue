@@ -65,6 +65,12 @@ const syncNavigation = (swiper: SwiperInstance) => {
       class="hse-home-projects__swiper"
       :dir="locale.startsWith('ar') ? 'rtl' : 'ltr'"
       :modules="[A11y, Keyboard]"
+      :a11y="{
+        prevSlideMessage: $t('previous'),
+        nextSlideMessage: $t('next'),
+        firstSlideMessage: $t('firstSlide'),
+        lastSlideMessage: $t('lastSlide'),
+      }"
       :keyboard="{ enabled: true, onlyInViewport: true }"
       :slides-per-view="1"
       :space-between="18"

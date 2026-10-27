@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizationParams from '@/features/setting/Organization/Core/params/indexOrganizationParams'
@@ -110,7 +112,7 @@ async function saveAttendance() {
 
   await saveController.save(new SaveInternalAuditAttendanceParams(employees))
   if (saveController.isDataSuccess()) {
-    success.value = 'Attendance saved successfully.'
+    success.value = localizeUi('Attendance saved successfully.')
     await fetchAttendance()
     return
   }
@@ -133,7 +135,7 @@ async function addAttendees() {
   if (addParticipantsController.isDataSuccess()) {
     attendeeDialogVisible.value = false
     selectedEmployees.value = []
-    success.value = 'Attendees added successfully.'
+    success.value = localizeUi('Attendees added successfully.')
     await fetchAttendance()
     return
   }
@@ -149,9 +151,9 @@ onMounted(fetchAttendance)
   <section class="attendance-tab">
     <header class="attendance-header">
       <div>
-        <span class="eyebrow">Audit participants</span>
-        <h2>Audit Attendance</h2>
-        <p>Track attendance for the opening and closing meetings.</p>
+        <span class="eyebrow">{{ $t('Audit participants') }}</span>
+        <h2>{{ $t('Audit Attendance') }}</h2>
+        <p>{{ $t('Track attendance for the opening and closing meetings.') }}</p>
       </div>
       <div v-if="!props.readonly" class="header-actions">
         <!-- <button
@@ -168,7 +170,7 @@ onMounted(fetchAttendance)
           :disabled="!canManageAttendance"
           @click="attendeeDialogVisible = true"
         >
-          Add Attendee
+          {{ $t('Add Attendee') }}
         </button>
         <p v-if="attendanceDisabledMessage" class="attendance-disabled-note" role="status">
           {{ attendanceDisabledMessage }}
@@ -182,22 +184,22 @@ onMounted(fetchAttendance)
       Attendance can be updated after the plan is published and the audit start date is reached.
     </p> -->
 
-    <div v-if="isLoading" class="attendance-loading" aria-label="Loading audit attendance">
+    <div v-if="isLoading" class="attendance-loading" :aria-label="$t('Loading audit attendance')">
       <span v-for="index in 4" :key="index"></span>
     </div>
 
     <div v-else-if="attendance.length" class="attendance-groups">
       <section v-if="auditTeam.length" class="attendance-group">
-        <h3>Audit team</h3>
+        <h3>{{ $t('Audit team') }}</h3>
         <div class="attendance-table-wrap">
           <table class="attendance-table">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Department</th>
-                <th>Opening meeting</th>
-                <th>Closing meeting</th>
+                <th>{{ $t('Name') }}</th>
+                <th>{{ $t('position') }}</th>
+                <th>{{ $t('department') }}</th>
+                <th>{{ $t('Opening meeting') }}</th>
+                <th>{{ $t('Closing meeting') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -207,8 +209,8 @@ onMounted(fetchAttendance)
                     <span class="avatar">{{
                       item.employee.name.charAt(0).toUpperCase() || '?'
                     }}</span>
-                    <strong>{{ item.employee.name || 'Unknown employee' }}</strong>
-                    <span v-if="item.isLead" class="lead-badge">Lead</span>
+                    <strong>{{ item.employee.name || $t('Unknown employee') }}</strong>
+                    <span v-if="item.isLead" class="lead-badge">{{ $t('Lead') }}</span>
                   </div>
                 </td>
                 <td>{{ item.position || '—' }}</td>
@@ -238,16 +240,16 @@ onMounted(fetchAttendance)
       </section>
 
       <section v-if="participants.length" class="attendance-group">
-        <h3>Participants</h3>
+        <h3>{{ $t('Participants') }}</h3>
         <div class="attendance-table-wrap">
           <table class="attendance-table">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Department</th>
-                <th>Opening meeting</th>
-                <th>Closing meeting</th>
+                <th>{{ $t('Name') }}</th>
+                <th>{{ $t('position') }}</th>
+                <th>{{ $t('department') }}</th>
+                <th>{{ $t('Opening meeting') }}</th>
+                <th>{{ $t('Closing meeting') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -257,7 +259,7 @@ onMounted(fetchAttendance)
                     <span class="avatar">{{
                       item.employee.name.charAt(0).toUpperCase() || '?'
                     }}</span>
-                    <strong>{{ item.employee.name || 'Unknown employee' }}</strong>
+                    <strong>{{ item.employee.name || $t('Unknown employee') }}</strong>
                   </div>
                 </td>
                 <td>{{ item.position || '—' }}</td>
@@ -293,30 +295,30 @@ onMounted(fetchAttendance)
         :disabled="!canManageAttendance || isSaving"
         @click="saveAttendance"
       >
-        {{ isSaving ? 'Saving…' : 'Save Attendance' }}
+        {{ isSaving ? $t('emailSettings.saving') : $t('Save Attendance') }}
       </button>
     </div>
 
     <div v-else-if="!error" class="empty-tab">
       <span class="tab-icon">✓</span>
-      <h3>No attendance records</h3>
-      <p>Add attendees or publish the audit plan to create attendance rows.</p>
+      <h3>{{ $t('No attendance records') }}</h3>
+      <p>{{ $t('Add attendees or publish the audit plan to create attendance rows.') }}</p>
     </div>
 
     <Dialog
       v-if="!props.readonly"
       v-model:visible="attendeeDialogVisible"
       modal
-      header="Add audit attendees"
+      :header="$t('Add audit attendees')"
       :dismissable-mask="true"
       :style="{ width: 'min(34rem, calc(100vw - 24px))' }"
     >
       <div class="attendee-dialog">
-        <p>Select one or more organization employees to add as audit participants.</p>
+        <p>{{ $t('Select one or more organization employees to add as audit participants.') }}</p>
         <UpdatedCustomInputSelect
           id="internal-audit-attendees"
-          label="Employees"
-          placeholder="Select employees"
+          :label="$t('Employees')"
+          :placeholder="$t('Select employees')"
           type="multiselect"
           :required="true"
           :controller="employeeController"
@@ -326,7 +328,7 @@ onMounted(fetchAttendance)
         />
         <div class="dialog-actions">
           <button class="secondary-button" type="button" @click="attendeeDialogVisible = false">
-            Cancel
+            {{ $t('Cancel') }}
           </button>
           <button
             class="primary-button"
@@ -334,7 +336,7 @@ onMounted(fetchAttendance)
             :disabled="!selectedEmployees.length || isAddingParticipants"
             @click="addAttendees"
           >
-            {{ isAddingParticipants ? 'Adding…' : 'Add Attendees' }}
+            {{ isAddingParticipants ? $t('Adding…') : $t('Add Attendees') }}
           </button>
         </div>
       </div>

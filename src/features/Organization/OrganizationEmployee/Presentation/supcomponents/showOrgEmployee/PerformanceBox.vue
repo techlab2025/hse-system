@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import type OrganizatoinEmployeeDetailsModel from '../../../Data/models/OrganizatoinEmployeeDetailsModel'
 
 const { state } = defineProps<{
@@ -10,8 +9,8 @@ const { state } = defineProps<{
 <template>
   <div class="performance-box">
     <!-- <div class="decor-bg">
-      <img class="dot-top-left" :src="EmployeeBg" alt="bg" />
-      <img class="dot-bottom-right" :src="Yellowback" alt="bg" />
+      <img class="dot-top-left" :src="EmployeeBg" alt="" aria-hidden="true" />
+      <img class="dot-bottom-right" :src="Yellowback" alt="" aria-hidden="true" />
     </div> -->
 
     <div class="per-wrapper">
@@ -31,8 +30,8 @@ const { state } = defineProps<{
     </div>
     <div class="details-wrapper">
       <div class="info">
-        <h5>current</h5>
-        <span>Eco-friendly / Sustainability-oriented Names</span>
+        <h5>{{ $t('current') }}</h5>
+        <span>{{ $t('Eco-friendly / Sustainability-oriented Names') }}</span>
       </div>
       <div class="progress-circle-small" :style="`--value: ${Number('20'.replace('%', ''))}`">
         <span>{{ '20' }}%</span>
@@ -126,7 +125,12 @@ const { state } = defineProps<{
 .progress-circle span {
   position: relative;
   font-size: 28px;
-  background: linear-gradient(90deg, var(--status-info), var(--status-success), var(--brand-primary-300));
+  background: linear-gradient(
+    90deg,
+    var(--status-info),
+    var(--status-success),
+    var(--brand-primary-300)
+  );
   font-weight: bold;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

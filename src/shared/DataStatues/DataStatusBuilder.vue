@@ -53,7 +53,7 @@ const showEmpty = computed(
     <div v-if="$slots.empty">
       <slot name="empty" />
     </div>
-    <div v-else>empty</div>
+    <div v-else>{{ $t('No Data Found') }}</div>
   </div>
   <div v-else-if="currentState instanceof DataInitial" class="w-full">
     <div v-if="$slots.initial">
@@ -76,7 +76,7 @@ const showEmpty = computed(
     <div v-if="$slots.loader">
       <slot name="loader" />
     </div>
-    <div v-else>loader</div>
+    <div v-else>{{ $t('loading') }}</div>
   </div>
 </template>
 

@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 // import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
@@ -26,12 +27,15 @@ export default class HerikalyModel extends TitleInterface {
   }
 
   static fromMap(data: any): HerikalyModel {
-    return new HerikalyModel(
-      data.id,
-      data.title,
-      data.parent_id ?? data.parent?.id,
-      data.children,
-      data.parent ? new TitleInterface({ id: data.parent.id, title: data.parent.title }) : null,
+    return localizedRecord(
+      new HerikalyModel(
+        data.id,
+        data.title,
+        data.parent_id ?? data.parent?.id,
+        data.children,
+        data.parent ? new TitleInterface({ id: data.parent.id, title: data.parent.title }) : null,
+      ),
+      data,
     )
   }
 }

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
 import { onMounted, ref, watch } from 'vue'
@@ -48,7 +49,7 @@ const onFileSelected = (e: Event) => {
 
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert('No data available to export')
+    alert(localizeUi('No data available to export'))
     return
   }
   const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
@@ -76,7 +77,6 @@ const DownloadExample = () => {
 }
 
 const actionList = () => [
-
   {
     text: t('download_excel_template'),
     icon: ExceIcon,
@@ -102,7 +102,6 @@ const actionList = () => [
       :actionList="actionList()"
       :actionsNumber="2"
     >
-
     </ActionsList>
   </div>
 
@@ -116,9 +115,11 @@ const actionList = () => [
     <UploadHierarachyExeclSheet
       :initial-file="pendingFile"
       @uploaded="
-        showUploadDialog = false;
-        pendingFile = null;
-        fetchHerikaly()
+        () => {
+          showUploadDialog = false
+          pendingFile = null
+          fetchHerikaly()
+        }
       "
     />
   </Dialog>

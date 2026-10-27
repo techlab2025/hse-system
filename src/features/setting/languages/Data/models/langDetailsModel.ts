@@ -36,33 +36,98 @@ export default class ShowLangModel {
   static getCode(code: string): TitleInterface | null {
     switch (code) {
       case LangEnum.ENGLISH:
-        return new TitleInterface({ id: 2, title: 'English', subtitle: code })
+        return new TitleInterface({
+          id: 2,
+          title: 'English',
+          translationKey: 'English',
+          subtitle: code,
+        })
       case LangEnum.ARABIC:
-        return new TitleInterface({ id: 1, title: 'Arabic', subtitle: code })
+        return new TitleInterface({
+          id: 1,
+          title: 'Arabic',
+          translationKey: 'Arabic',
+          subtitle: code,
+        })
       case LangEnum.FRENCH:
-        return new TitleInterface({ id: 3, title: 'French', subtitle: code })
+        return new TitleInterface({
+          id: 3,
+          title: 'French',
+          translationKey: 'French',
+          subtitle: code,
+        })
       case LangEnum.GERMAN:
-        return new TitleInterface({ id: 4, title: 'German', subtitle: code })
+        return new TitleInterface({
+          id: 4,
+          title: 'German',
+          translationKey: 'German',
+          subtitle: code,
+        })
       case LangEnum.SPANISH:
-        return new TitleInterface({ id: 5, title: 'Spanish', subtitle: code })
+        return new TitleInterface({
+          id: 5,
+          title: 'Spanish',
+          translationKey: 'Spanish',
+          subtitle: code,
+        })
       case LangEnum.CHINESE:
-        return new TitleInterface({ id: 6, title: 'Chinese', subtitle: code })
+        return new TitleInterface({
+          id: 6,
+          title: 'Chinese',
+          translationKey: 'Chinese',
+          subtitle: code,
+        })
       case LangEnum.JAPANESE:
-        return new TitleInterface({ id: 7, title: 'Japanese', subtitle: code })
+        return new TitleInterface({
+          id: 7,
+          title: 'Japanese',
+          translationKey: 'Japanese',
+          subtitle: code,
+        })
       case LangEnum.KOREAN:
-        return new TitleInterface({ id: 8, title: 'Korean', subtitle: code })
+        return new TitleInterface({
+          id: 8,
+          title: 'Korean',
+          translationKey: 'Korean',
+          subtitle: code,
+        })
       case LangEnum.ITALIAN:
-        return new TitleInterface({ id: 9, title: 'Italian', subtitle: code })
+        return new TitleInterface({
+          id: 9,
+          title: 'Italian',
+          translationKey: 'Italian',
+          subtitle: code,
+        })
       case LangEnum.PORTUGUESE:
-        return new TitleInterface({ id: 10, title: 'Portuguese', subtitle: code })
+        return new TitleInterface({
+          id: 10,
+          title: 'Portuguese',
+          translationKey: 'Portuguese',
+          subtitle: code,
+        })
       case LangEnum.RUSSIAN:
-        return new TitleInterface({ id: 11, title: 'Russian', subtitle: code })
+        return new TitleInterface({
+          id: 11,
+          title: 'Russian',
+          translationKey: 'Russian',
+          subtitle: code,
+        })
       case LangEnum.THAI:
-        return new TitleInterface({ id: 12, title: 'Thai', subtitle: code })
+        return new TitleInterface({ id: 12, title: 'Thai', translationKey: 'Thai', subtitle: code })
       case LangEnum.VIETNAMESE:
-        return new TitleInterface({ id: 13, title: 'Vietnamese', subtitle: code })
+        return new TitleInterface({
+          id: 13,
+          title: 'Vietnamese',
+          translationKey: 'Vietnamese',
+          subtitle: code,
+        })
       case LangEnum.PERSIAN:
-        return new TitleInterface({ id: 14, title: 'Iraqi', subtitle: code })
+        return new TitleInterface({
+          id: 14,
+          title: 'Iraqi',
+          translationKey: 'Iraqi',
+          subtitle: code,
+        })
       default:
         return null
     }

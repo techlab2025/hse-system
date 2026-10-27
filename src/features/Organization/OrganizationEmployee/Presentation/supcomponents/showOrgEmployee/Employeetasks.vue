@@ -10,26 +10,26 @@ const props = defineProps<{
   <div class="employee-tasks-card">
     <div class="task-details">
       <div class="task-chip-row">
-        <span class="task-chip">Inspection</span>
-        <span class="task-date-pill">{{ tasks?.date || 'No date' }}</span>
+        <span class="task-chip">{{ $t('Inspection') }}</span>
+        <span class="task-date-pill">{{ tasks?.date || $t('No date') }}</span>
       </div>
       <div class="task-date">
-        <h6>{{ tasks?.template?.title || 'Untitled task' }}</h6>
+        <h6>{{ tasks?.template?.title || $t('task_untitled') }}</h6>
       </div>
       <div class="project-name">
         <h6>
-          {{ $t('Project Name') }} <span>{{ tasks?.project?.title || 'Not selected' }}</span>
+          {{ $t('Project Name') }} <span>{{ tasks?.project?.title || $t('Not selected') }}</span>
         </h6>
       </div>
     </div>
     <div class="info-employee-task">
       <div class="back-ground">
         <div class="imge">
-          <img :src="tasks?.created_by?.image || employeeFallback" alt="creator" />
+          <img :src="tasks?.created_by?.image || employeeFallback" alt="" aria-hidden="true" />
         </div>
         <div class="info">
-          <span>Created by</span>
-          <h6>{{ tasks?.created_by?.name || 'Unknown' }}</h6>
+          <span>{{ $t('Created by') }}</span>
+          <h6>{{ tasks?.created_by?.name || $t('Unknown') }}</h6>
           <p>{{ tasks?.created_by?.hierarchy?.map((item) => item.title).join(', ') }}</p>
         </div>
       </div>
@@ -48,7 +48,13 @@ const props = defineProps<{
   padding: 16px;
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 82%, transparent);
   border-radius: 20px;
-  background: radial-gradient(circle at 0 0, color-mix(in srgb, var(--brand-primary-500) 10%, transparent), transparent 32%), var(--surface-1);
+  background:
+    radial-gradient(
+      circle at 0 0,
+      color-mix(in srgb, var(--brand-primary-500) 10%, transparent),
+      transparent 32%
+    ),
+    var(--surface-1);
   box-shadow: 0 12px 30px color-mix(in srgb, var(--brand-primary-900) 5.5%, transparent);
 }
 

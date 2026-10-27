@@ -23,7 +23,7 @@ const Certificates = computed(() => {
 <template>
   <div class="section certifications-section">
     <div class="section-header">
-      <img class="icon" src="/src/assets/images/certificate.png" alt="training" />
+      <img class="icon" src="/src/assets/images/certificate.png" :alt="$t('training')" />
       <div class="section-header-text">
         <h4>{{ $t('certifications') }}</h4>
         <p class="hint">{{ $t('employee_training_hint') }}</p>
@@ -47,13 +47,13 @@ const Certificates = computed(() => {
             <span class="cert-name">{{ cert.title }} </span>
 
             <div class="cert-date">
-              <span> Exp Date : </span>
+              <span> {{ $t('Exp Date :') }} </span>
               <h6>{{ cert.expired_at }}</h6>
             </div>
 
-            <span class="cert-missing" v-if="cert.status == CertificateStatusEnum.Invalid"
-              >{{ $t('missing_training') }}</span
-            >
+            <span class="cert-missing" v-if="cert.status == CertificateStatusEnum.Invalid">{{
+              $t('missing_training')
+            }}</span>
           </div>
         </div>
       </li>

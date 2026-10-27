@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -81,10 +83,10 @@ const handleAddAllEmployees = async () => {
       )
       await addHierarchyEmployeeController.addHierarchyEmployee(params, router, route)
     } else {
-      validationMessage.value = 'Please select at least one employee for each position.'
+      validationMessage.value = localizeUi('Please select at least one employee for each position.')
     }
   } catch (error) {
-    validationMessage.value = 'Please select at least one employee for each position.'
+    validationMessage.value = localizeUi('Please select at least one employee for each position.')
 
     console.error('Error adding employees:', error)
   } finally {
@@ -278,17 +280,25 @@ const assignedEmployeesCount = computed(() =>
       <template #empty>
         <DataEmpty
           :link="`/organization/project/add`"
-          addText="Add Project"
-          description="You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="You have No Project"
+          :addText="$t('Add Project')"
+          :description="
+            $t(
+              'You have no Project .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Project')"
         />
       </template>
       <template #failed>
         <DataFailed
           :link="`/organization/project/add`"
-          addText="Add Project"
-          description="You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="You have No Project"
+          :addText="$t('Add Project')"
+          :description="
+            $t(
+              'You have no Project .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Project')"
         />
       </template>
     </DataStatus>

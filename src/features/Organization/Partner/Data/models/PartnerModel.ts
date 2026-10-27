@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class PartnerModel extends TitleInterface {
@@ -14,7 +15,7 @@ export default class PartnerModel extends TitleInterface {
   }
 
   static fromMap(data: any): PartnerModel {
-    return new PartnerModel(data.id, data.title, data.phone)
+    return localizedRecord(new PartnerModel(data.id, data.title, data.phone), data)
   }
 
   static example: PartnerModel = new PartnerModel(1, 'Partner 1', '1234567890')

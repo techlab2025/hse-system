@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { computed, onScopeDispose, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PermissionHandler from '@/base/Presentation/utils/permission_handler'
@@ -65,17 +66,38 @@ export function useInspectionIndex() {
     ]),
   )
   const taskTabs = [
-    { type: InspectionPageType.InspectionForm, label: 'All tasks' },
-    { type: InspectionPageType.DragInspection, label: 'My tasks' },
-    { type: InspectionPageType.Result, label: 'Submitted tasks' },
+    {
+      type: InspectionPageType.InspectionForm,
+      get label() {
+        return localizeUi('All tasks')
+      },
+    },
+    {
+      type: InspectionPageType.DragInspection,
+      get label() {
+        return localizeUi('My tasks')
+      },
+    },
+    {
+      type: InspectionPageType.Result,
+      get label() {
+        return localizeUi('Submitted tasks')
+      },
+    },
   ]
   const filterFields = [
     {
       key: 'inspectionType',
-      label: 'Inspection Type',
+      get label() {
+        return localizeUi('Inspection Type')
+      },
       options: [
-        new TitleInterface({ id: InspectionTypeEnum.DAY, title: 'Daily' }),
-        new TitleInterface({ id: InspectionTypeEnum.PERIOD, title: 'Periodic' }),
+        new TitleInterface({ id: InspectionTypeEnum.DAY, title: 'Daily', translationKey: 'Daily' }),
+        new TitleInterface({
+          id: InspectionTypeEnum.PERIOD,
+          title: 'Periodic',
+          translationKey: 'Periodic',
+        }),
       ],
     },
   ]

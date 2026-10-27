@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
 
@@ -19,8 +20,7 @@ export default class ClientOpinionModel extends TitleInterface {
     description: string,
     image: string,
     alt: string,
-    is_active: number
-
+    is_active: number,
   ) {
     super({ id })
     this.id = id
@@ -34,16 +34,18 @@ export default class ClientOpinionModel extends TitleInterface {
   }
 
   static fromMap(data: any): ClientOpinionModel {
-    return new ClientOpinionModel(
-      data.id,
-      data.name,
-      data.rate,
-      data.date,
-      data.description,
-      data.image,
-      data.alt,
-      data.is_active
-
+    return localizedRecord(
+      new ClientOpinionModel(
+        data.id,
+        data.name,
+        data.rate,
+        data.date,
+        data.description,
+        data.image,
+        data.alt,
+        data.is_active,
+      ),
+      data,
     )
   }
 }

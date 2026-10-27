@@ -148,7 +148,7 @@ const isImage = (file: ProgressMedia) =>
                 </template>
                 <span
                   class="op-media-count"
-                  :aria-label="`${validMedia(record.media).length} files`"
+                  :aria-label="$t('uiDynamic.fileCount', { p0: validMedia(record.media).length })"
                 >
                   {{ validMedia(record.media).length }}
                 </span>

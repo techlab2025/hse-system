@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import ProjectCustomLocationUseCase from '../../Domain/useCase/ProjectCusomLocationUsecase'
@@ -34,7 +35,7 @@ export default class ProjectCustomLocationController extends SelectControllerInt
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

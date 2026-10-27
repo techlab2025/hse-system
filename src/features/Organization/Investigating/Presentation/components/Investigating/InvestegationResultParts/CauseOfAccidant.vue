@@ -118,7 +118,7 @@ const GetSelectedFactors = (data: SelectedFactor[]) => {
 <template>
   <div class="cause-of-accidant">
     <HeaderPage
-      :title="`Root Cause Factors`"
+      :title="$t('Root Cause Factors')"
       :subtitle="``"
       :img="factor"
       :showAll="false"

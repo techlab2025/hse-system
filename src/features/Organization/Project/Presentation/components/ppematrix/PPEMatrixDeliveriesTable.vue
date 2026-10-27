@@ -85,7 +85,7 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
               <dd>{{ firstDelivery?.project.title || '—' }}</dd>
             </div> -->
             <div>
-              <dt>Activity</dt>
+              <dt>{{ $t('Activity') }}</dt>
               <dd>{{ activityTitles || '—' }}</dd>
             </div>
             <!-- <div>
@@ -98,7 +98,7 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
             <table class="hse-project-table main-table delivery-table">
               <thead>
                 <tr>
-                  <th scope="col">Recipient</th>
+                  <th scope="col">{{ $t('Recipient') }}</th>
                   <!-- <th scope="col">Type</th> -->
                   <th v-for="tool in tools" :key="tool.id" scope="col">
                     {{ tool.title }}
@@ -119,7 +119,7 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
                         'delivery-status--checked': isToolDelivered(delivery, tool.id),
                       }"
                       :aria-label="
-                        isToolDelivered(delivery, tool.id) ? 'Delivered' : 'Not delivered'
+                        isToolDelivered(delivery, tool.id) ? $t('Delivered') : $t('Not delivered')
                       "
                     >
                       {{ isToolDelivered(delivery, tool.id) ? '✓' : '—' }}
@@ -139,9 +139,11 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
       </template>
       <template #loader><TableLoader :cols="6" :rows="5" /></template>
       <template #initial><TableLoader :cols="6" :rows="5" /></template>
-      <template #empty><p class="empty-state">No PPE deliveries found.</p></template>
+      <template #empty
+        ><p class="empty-state">{{ $t('No PPE deliveries found.') }}</p></template
+      >
       <template #failed>
-        <p class="error-state">Unable to load PPE deliveries.</p>
+        <p class="error-state">{{ $t('Unable to load PPE deliveries.') }}</p>
       </template>
     </DataStatus>
   </section>

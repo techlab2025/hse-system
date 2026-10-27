@@ -1,3 +1,4 @@
+import { translate } from '@/localization/i18n'
 import { ref } from 'vue'
 
 // composables/usePrint.ts
@@ -9,7 +10,7 @@ export function usePrint(options: { isolated?: boolean } = {}) {
 
     if (options.isolated) {
       const frame = document.createElement('iframe')
-      frame.title = 'Equipment identification label'
+      frame.title = translate('Equipment identification label')
       frame.style.cssText =
         'position:fixed;width:1px;height:1px;inset:0;border:0;opacity:0;pointer-events:none'
       document.body.appendChild(frame)

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import { computed, ref, watch } from 'vue'
 import * as XLSX from 'xlsx'
@@ -156,7 +158,7 @@ const fileUpload = async (file: File) => {
     console.log(`✅ Extracted ${images.length} image(s) from Excel`, images)
   } catch (error) {
     console.error('Error processing file:', error)
-    errorMsg.value = 'Failed to process the file. Please try again.'
+    errorMsg.value = localizeUi('Failed to process the file. Please try again.')
   } finally {
     isLoading.value = false
   }
@@ -191,9 +193,15 @@ const getValidationStatusClass = (status: number) =>
 const SendData = ref<string[]>(['name', 'email', 'phone'])
 
 const SendDataLabels: Record<string, string> = {
-  name: 'Employee Name',
-  email: 'Email',
-  phone: 'Phone',
+  get name() {
+    return localizeUi('Employee Name')
+  },
+  get email() {
+    return localizeUi('Email')
+  },
+  get phone() {
+    return localizeUi('Phone')
+  },
 }
 
 const filterToSentData = ref(false)
@@ -305,7 +313,8 @@ const deleteRow = (rowIndex: number) => {
 
   // Also remove the row from the validation results in controller state so the table updates
   if (addOrganizatoinEmployeeController.state.value.data) {
-    addOrganizatoinEmployeeController.state.value.data = addOrganizatoinEmployeeController.state.value.data.filter((_, i) => i !== rowIndex)
+    addOrganizatoinEmployeeController.state.value.data =
+      addOrganizatoinEmployeeController.state.value.data.filter((_, i) => i !== rowIndex)
   }
 
   // Remove the two images belonging to this row
@@ -378,7 +387,7 @@ const onMappingClose = () => {
       <span class="loading-dot" />
       <span class="loading-dot" />
       <span class="loading-dot" />
-      <span class="loading-label">Processing file…</span>
+      <span class="loading-label">{{ $t('processing_file') }}</span>
     </div>
 
     <!-- ── Step 1 : Upload ──────────────────────────────────── -->
@@ -431,19 +440,19 @@ const onMappingClose = () => {
         <div class="table-container">
           <div class="table-header">
             <h3 class="table-title">
-              {{ Datastate.data ? 'Validation Results' : 'Mapped Data Preview' }}
+              {{ Datastate.data ? $t('Validation Results') : $t('Mapped Data Preview') }}
             </h3>
-            <span class="table-badge">{{ mappedData.length - 1 }} rows</span>
+            <span class="table-badge">{{ mappedData.length - 1 }} {{ $t('rows') }}</span>
           </div>
           <div class="table-responsive">
             <!-- ── Validation results (returned after submitting) ──────── -->
             <table v-if="Datastate.data" class="main-table">
               <thead>
                 <tr>
-                  <th>Employee Name</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Status</th>
+                  <th>{{ $t('employee_name') }}</th>
+                  <th>{{ $t('Email') }}</th>
+                  <th>{{ $t('Phone') }}</th>
+                  <th>{{ $t('Status') }}</th>
                   <th class="last"></th>
                 </tr>
               </thead>
@@ -470,7 +479,11 @@ const onMappingClose = () => {
                     </span>
                   </td>
                   <td>
-                    <button class="btn-delete-row" @click="deleteRow(rowIndex)" title="Delete row">
+                    <button
+                      class="btn-delete-row"
+                      @click="deleteRow(rowIndex)"
+                      :title="$t('delete_row')"
+                    >
                       🗑
                     </button>
                   </td>
@@ -483,7 +496,7 @@ const onMappingClose = () => {
               <thead>
                 <tr>
                   <th v-for="(item, i) in mappedData[0]" :key="i">{{ item }}</th>
-                  <th v-if="extractedImages.length > 0">Image</th>
+                  <th v-if="extractedImages.length > 0">{{ $t('image') }}</th>
                   <th class="last"></th>
                 </tr>
               </thead>
@@ -496,12 +509,16 @@ const onMappingClose = () => {
                       v-if="extractedImages[rowIndex]"
                       :src="extractedImages[rowIndex].base64"
                       class="row-thumb"
-                      :alt="`Row ${rowIndex + 1} image`"
+                      :alt="$t('uiDynamic.rowImage', { p0: rowIndex + 1 })"
                     />
                     <span v-else class="no-img-text">—</span>
                   </td>
                   <td>
-                    <button class="btn-delete-row" @click="deleteRow(rowIndex)" title="Delete row">
+                    <button
+                      class="btn-delete-row"
+                      @click="deleteRow(rowIndex)"
+                      :title="$t('delete_row')"
+                    >
                       🗑
                     </button>
                   </td>
@@ -524,7 +541,7 @@ const onMappingClose = () => {
           >
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
           </svg>
-          {{ isCurrentlyAllValid ? 'Confirm & Create' : 'Validate Data' }}
+          {{ isCurrentlyAllValid ? $t('Confirm & Create') : $t('Validate Data') }}
         </button>
       </template>
     </template>
@@ -786,7 +803,7 @@ kbd {
   font-size: 13px;
   color: var(--brand-primary-500);
   font-weight: 500;
-  margin-left: 4px;
+  margin-inline-start: 4px;
 }
 
 /* ── Images section ─────────────────────────────────────── */
@@ -916,7 +933,7 @@ kbd {
 
 .main-table th {
   padding: 12px 16px;
-  text-align: left;
+  text-align: start;
   font-weight: 700;
   font-size: 13px;
   color: var(--brand-primary-500);

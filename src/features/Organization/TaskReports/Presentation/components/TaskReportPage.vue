@@ -474,6 +474,7 @@ onMounted(() => fetchReport())
         <label class="report-search">
           <Search aria-hidden="true" />
           <input
+            dir="auto"
             v-model="word"
             type="search"
             :placeholder="$t('report_search_actions')"

@@ -83,8 +83,8 @@ const submitData = async () => {
     <template #header>
       <HeaderSection
         :img="DialogSystem"
-        title="Add Items from the System"
-        subtitle="Click here to open the list and select items directly from the system."
+        :title="$t('Add Items from the System')"
+        :subtitle="$t('Click here to open the list and select items directly from the system.')"
       />
     </template>
 

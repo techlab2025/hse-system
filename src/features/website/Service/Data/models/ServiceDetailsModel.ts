@@ -1,6 +1,6 @@
-import TranslationsParams, {
-  type TitleLocale,
-} from '@/base/core/params/translations_params.ts'
+import { getCurrentLocale } from '@/localization/i18n'
+import { localizedRecord } from '@/localization/records'
+import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 // import { LangEnum } from '../../Core/enums/langEnum'
 
@@ -38,25 +38,31 @@ export default class ServiceDetailsModel {
   }
 
   static fromMap(data: any): ServiceDetailsModel {
-    return new ServiceDetailsModel(
-      data.id,
-      TranslationsParams.fromMap(data.titles).titles,
-      TranslationsParams.fromMap([], [], data.subtitles).subtitles,
-      TranslationsParams.fromMap([], data.descriptions, []).descriptions,
-      data.alt,
-      data.image,
-      data.is_active,
-      data.order,
-      data.includes?.length > 0 ? data.includes.map((item: any) => ServiceDetailsModel.fromMap(item)) : [],
+    return localizedRecord(
+      new ServiceDetailsModel(
+        data.id,
+        TranslationsParams.fromMap(data.titles).titles,
+        TranslationsParams.fromMap([], [], data.subtitles).subtitles,
+        TranslationsParams.fromMap([], data.descriptions, []).descriptions,
+        data.alt,
+        data.image,
+        data.is_active,
+        data.order,
+        data.includes?.length > 0
+          ? data.includes.map((item: any) => ServiceDetailsModel.fromMap(item))
+          : [],
+      ),
+      data,
     )
   }
 
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data.titles,
     })
   }
 }

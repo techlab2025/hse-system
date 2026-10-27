@@ -1,3 +1,3 @@
 <template>
-    change task status
+  {{ $t('change task status') }}
 </template>

@@ -23,7 +23,6 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 
-
 const { t } = useI18n()
 const word = ref('')
 const currentPage = ref(1)
@@ -84,7 +83,8 @@ const actionList = (id: number, deleteRole: (id: number) => void) => [
   {
     text: t('edit'),
     icon: ActionsTableEdit,
-    link: user?.type === OrganizationTypeEnum.ADMIN ? `/admin/Role/${id}` : `/organization/Role/${id}`,
+    link:
+      user?.type === OrganizationTypeEnum.ADMIN ? `/admin/Role/${id}` : `/organization/Role/${id}`,
     permission: [
       PermissionsEnum.ORG_ROLE_UPDATE,
       PermissionsEnum.ORG_ROLE_DETAILS,
@@ -121,28 +121,43 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchRole())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="$t('search')" class="input" type="text" @input="searchRole" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchRole"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-      <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_ROLE_CREATE]">
-        <router-link :to="user?.type === OrganizationTypeEnum.ADMIN ? '/admin/Role/add' : '/organization/Role/add'"
-          class="btn btn-primary">
+      <PermissionBuilder
+        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_ROLE_CREATE]"
+      >
+        <router-link
+          :to="
+            user?.type === OrganizationTypeEnum.ADMIN ? '/admin/Role/add' : '/organization/Role/add'
+          "
+          class="btn btn-primary"
+        >
           {{ $t('Add_Role') }}
         </router-link>
       </PermissionBuilder>
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.ORG_ROLE_ALL,
-    PermissionsEnum.ORG_ROLE_UPDATE,
-    PermissionsEnum.ORG_ROLE_CREATE,
-    PermissionsEnum.ORG_ROLE_DETAILS,
-    PermissionsEnum.ORG_ROLE_DELETE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_ROLE_ALL,
+      PermissionsEnum.ORG_ROLE_UPDATE,
+      PermissionsEnum.ORG_ROLE_CREATE,
+      PermissionsEnum.ORG_ROLE_DETAILS,
+      PermissionsEnum.ORG_ROLE_DELETE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -158,18 +173,24 @@ watch(
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/organization/Role/${item.id}`">{{ index + 1 }}
-                  </router-link>
+                  <router-link :to="`/organization/Role/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="Actions">
-                  <DropList :actionList="actionList(item.id, deleteRole)" @delete="deleteRole(item.id)" />
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('Actions')">
+                  <DropList
+                    :actionList="actionList(item.id, deleteRole)"
+                    @delete="deleteRole(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -178,27 +199,49 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_ROLE_CREATE]">
-
-          <DataEmpty :link="`/organization/Role/add`" addText="Add Role"
-            description="You have no Role .. All your joined customers will appear here when you add your customer data"
-            title="You have No Role" />
+        <PermissionBuilder
+          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_ROLE_CREATE]"
+        >
+          <DataEmpty
+            :link="`/organization/Role/add`"
+            :addText="$t('Add_Role')"
+            :description="
+              $t(
+                'You have no Role .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Role')"
+          />
         </PermissionBuilder>
       </template>
       <template #failed>
-        <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_ROLE_CREATE]">
-
-          <DataFailed :link="`/organization/Role/add`" addText="Add Role"
-            description="You have no Role .. All your joined customers will appear here when you add your customer data"
-            title="You have No Role" />
+        <PermissionBuilder
+          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_ROLE_CREATE]"
+        >
+          <DataFailed
+            :link="`/organization/Role/add`"
+            :addText="$t('Add_Role')"
+            :description="
+              $t(
+                'You have no Role .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Role')"
+          />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no Role .. All your joined customers will appear here when you add your customer data"
-        link="" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Role .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+        link=""
+      />
     </template>
   </PermissionBuilder>
 </template>

@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
@@ -26,14 +27,13 @@ export default class IndexHazardTypeController extends SelectControllerInterface
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<HazardTypeModel[]> =
-      await this.IndexHazardTypeUseCase.call(params)
+    const dataState: DataState<HazardTypeModel[]> = await this.IndexHazardTypeUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

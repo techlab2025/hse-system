@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -5,13 +6,9 @@ import { SelectControllerInterface } from '@/base/Presentation/Controller/select
 import type HerikalyModel from '../../Data/models/HerikalyModel'
 import IndexHerikalyUseCase from '../../Domain/useCase/indexHerikalyUseCase'
 
-
-
 // import TitleInterface from '@/base/Data/Models/title_interface'
 
-export default class IndexHerikalyController extends SelectControllerInterface<
-  HerikalyModel[]
-> {
+export default class IndexHerikalyController extends SelectControllerInterface<HerikalyModel[]> {
   private static instance: IndexHerikalyController
   private constructor() {
     super()
@@ -29,14 +26,13 @@ export default class IndexHerikalyController extends SelectControllerInterface<
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<HerikalyModel[]> =
-      await this.IndexHerikalyUseCase.call(params)
+    const dataState: DataState<HerikalyModel[]> = await this.IndexHerikalyUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

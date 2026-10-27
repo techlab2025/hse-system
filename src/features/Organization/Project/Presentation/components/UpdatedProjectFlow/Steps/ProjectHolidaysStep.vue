@@ -25,8 +25,8 @@ const addCustomHoliday = () => holidays.value.custom.push({ holiday_title: '', h
     <div class="section-title full">
       <span>02</span>
       <div>
-        <h2>Project holidays</h2>
-        <p>Select weekly days off and add exceptional dates.</p>
+        <h2>{{ $t('Project holidays') }}</h2>
+        <p>{{ $t('Select weekly days off and add exceptional dates.') }}</p>
       </div>
     </div>
     <div class="full weekday-grid">
@@ -38,17 +38,18 @@ const addCustomHoliday = () => holidays.value.custom.push({ holiday_title: '', h
     <label class="hse-project-field-label switch-row full">
       <input v-model="holidays.hasCustom" type="checkbox" />
       <span>
-        <strong>Custom holidays</strong>
-        <small>Add named holidays with one or more dates.</small>
+        <strong>{{ $t('Custom holidays') }}</strong>
+        <small>{{ $t('Add named holidays with one or more dates.') }}</small>
       </span>
     </label>
     <template v-if="holidays.hasCustom">
       <div v-for="(holiday, index) in holidays.custom" :key="index" class="repeat-card full">
         <label class="hse-project-field-label"
-          >Holiday name<input class="hse-project-input" v-model="holiday.holiday_title"
+          >{{ $t('Holiday name')
+          }}<input dir="auto" class="hse-project-input" v-model="holiday.holiday_title"
         /></label>
         <label class="hse-project-field-label">
-          Holiday dates
+          {{ $t('Holiday dates') }}
           <DatePicker
             panel-class="hse-project-overlay"
             v-model="holiday.holidays_dates"
@@ -56,7 +57,7 @@ const addCustomHoliday = () => holidays.value.custom.push({ holiday_title: '', h
             date-format="yy-mm-dd"
             show-icon
             fluid
-            placeholder="Select one or more dates"
+            :placeholder="$t('Select one or more dates')"
           />
         </label>
         <button
@@ -69,7 +70,7 @@ const addCustomHoliday = () => holidays.value.custom.push({ holiday_title: '', h
         </button>
       </div>
       <button type="button" class="add-row full" @click="addCustomHoliday">
-        + Add custom holiday
+        {{ $t('+ Add custom holiday') }}
       </button>
     </template>
   </div>

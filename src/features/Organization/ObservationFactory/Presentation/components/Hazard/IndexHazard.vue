@@ -68,7 +68,7 @@ const fetchHazard = async (
   saveStatus?: number[],
   date?: string,
   equipmentTypeIds?: number[],
-  equipmentSubTypeIds?: number[]
+  equipmentSubTypeIds?: number[],
 ) => {
   const params = new IndexHazardParams(
     query,
@@ -79,7 +79,7 @@ const fetchHazard = async (
     37,
     zoonIds,
     projectLocationIds || null,
-    projectZoneLozationId
+    projectZoneLozationId,
     // equipmentIds,
     // riskLevel,
     // saveStatus,
@@ -98,7 +98,7 @@ const confirmFilters = (
   machineTypeIds?: number[],
   machineSubTypeIds?: number[],
   caseIds?: number[],
-  statusIds?: number[]
+  statusIds?: number[],
 ) => {
   fetchHazard(
     '',
@@ -113,7 +113,7 @@ const confirmFilters = (
     caseIds,
     date,
     machineSubTypeIds,
-    machineTypeIds
+    machineTypeIds,
   )
 }
 
@@ -144,7 +144,7 @@ watch(
   (newState) => {
     if (newState) state.value = newState
   },
-  { deep: true }
+  { deep: true },
 )
 
 // action list
@@ -152,8 +152,9 @@ const actionList = (id: number) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/${user?.type === OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-      }/equipment-mangement/hazard-type/${id}`,
+    link: `/${
+      user?.type === OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/equipment-mangement/hazard-type/${id}`,
     permission: [
       PermissionsEnum.HAZARD_TYPE_UPDATE,
       PermissionsEnum.ORG_HAZARD_UPDATE,
@@ -202,12 +203,12 @@ const FetchMyZones = async () => {
 const SelectedZonesFilter = ref<number[]>([])
 const ApplayFilter = (data: number[]) => {
   SelectedZonesFilter.value = data
-  fetchHazard('', 1, 10, 1, null, null,SelectedZonesFilter.value)
+  fetchHazard('', 1, 10, 1, null, null, SelectedZonesFilter.value)
 }
 
 const setSelectedProjectFilter = (data) => {
   selectedProjctesFilters.value = data
-    if (data) {
+  if (data) {
     FetchMyZones()
   }
 }
@@ -223,12 +224,20 @@ onMounted(async () => {
     <IndexEquipmentMangement class="col-span-2" />
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-10'">
       <div class="col-span-10">
-        <IndexHazardHeader :title="'Hazard'" :length="state?.pagination?.total || 0" :projects="Projects"
-          @update:data="setSelectedProjectFilter" />
+        <IndexHazardHeader
+          :title="$t('Hazard')"
+          :length="state?.pagination?.total || 0"
+          :projects="Projects"
+          @update:data="setSelectedProjectFilter"
+        />
 
         <div class="flex items-center justify-between">
-          <IndexFilter :filters="Filters" @update:data="ApplayFilter"
-            :link="'/organization/equipment-mangement/hazard/add'" :linkText="'Create Hazard'" />
+          <IndexFilter
+            :filters="Filters"
+            @update:data="ApplayFilter"
+            :link="'/organization/equipment-mangement/hazard/add'"
+            :linkText="$t('Create Hazard')"
+          />
 
           <div class="btns-filter">
             <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
@@ -239,14 +248,16 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-      <PermissionBuilder :code="[
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.ORG_HAZARD_ALL,
-        PermissionsEnum.ORG_HAZARD_DELETE,
-        PermissionsEnum.ORG_HAZARD_FETCH,
-        PermissionsEnum.ORG_HAZARD_UPDATE,
-        PermissionsEnum.ORG_HAZARD_CREATE,
-      ]">
+      <PermissionBuilder
+        :code="[
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.ORG_HAZARD_ALL,
+          PermissionsEnum.ORG_HAZARD_DELETE,
+          PermissionsEnum.ORG_HAZARD_FETCH,
+          PermissionsEnum.ORG_HAZARD_UPDATE,
+          PermissionsEnum.ORG_HAZARD_CREATE,
+        ]"
+      >
         <DataStatus :controller="state">
           <template #success>
             <!-- <div class="equipment-home"> -->
@@ -261,44 +272,51 @@ onMounted(async () => {
                         <div class="card-content">
                           <div class="card-header">
                             <p class="label-item-primary">
-                              Serial: <span>{{ item.serial }}</span>
+                              {{ $t('Serial:') }} <span>{{ item.serial }}</span>
                             </p>
                             <p class="label-item-secondary">
-                              Date & Time: <span>{{ item.date }}</span>
+                              {{ $t('Date & Time:') }} <span>{{ item.date }}</span>
                             </p>
                           </div>
                           <div class="card-details">
-                            <p class="title">{{ item.observer.name }} <span>(observer)</span></p>
+                            <p class="title">
+                              {{ item.observer.name }} <span>{{ $t('(observer)') }}</span>
+                            </p>
                             <p class="subtitle">{{ item.description }}</p>
                             <div class="project-details">
                               <p class="label-item-primary">
-                                Zone: <span>{{ item.zoon?.title }}</span>
+                                {{ $t('Zone:') }} <span>{{ item.zoon?.title }}</span>
                               </p>
                               <p class="label-item-primary">
-                                Machine: <span>{{ item.equipment?.title }}</span>
+                                {{ $t('Machine:') }} <span>{{ item.equipment?.title }}</span>
                               </p>
                             </div>
                           </div>
                         </div>
                         <div class="card-info">
-                          <p class="title">Hazard Type</p>
+                          <p class="title">{{ $t('Hazard Type') }}</p>
                           <!-- {{ item.media[0].url }} -->
 
-                          <Image v-if="item.media?.[0]?.url" :src="item.media?.[0]?.url" alt="Image" preview>
+                          <Image
+                            v-if="item.media?.[0]?.url"
+                            :src="item.media?.[0]?.url"
+                            :alt="$t('image')"
+                            preview
+                          >
                             <template #previewicon>
                               <div class="perview">
-                                <span>view</span>
+                                <span>{{ $t('view') }}</span>
                                 <ViewIcon />
                               </div>
                             </template>
                           </Image>
-                          <img v-else src="@/assets/images/logo.svg" alt="">
+                          <img v-else src="@/assets/images/logo.svg" alt="" />
                         </div>
                       </div>
 
                       <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
-                        <span v-if="ShowDetails[index]">Show Less</span>
-                        <span v-else>Show More</span>
+                        <span v-if="ShowDetails[index]">{{ $t('Show Less') }}</span>
+                        <span v-else>{{ $t('Show More') }}</span>
                         <ShowMoreIcon />
                       </p>
                     </div>
@@ -311,8 +329,11 @@ onMounted(async () => {
                 </div>
               </div>
             </div>
-            <Pagination :pagination="state.pagination" @changePage="handleChangePage"
-              @countPerPage="handleCountPerPage" />
+            <Pagination
+              :pagination="state.pagination"
+              @changePage="handleChangePage"
+              @countPerPage="handleCountPerPage"
+            />
           </template>
 
           <template #loader>
@@ -324,20 +345,40 @@ onMounted(async () => {
           </template>
 
           <template #empty>
-            <DataEmpty :link="`/organization/equipment-mangement/hazard/add`" addText="Add Hazard"
-              description="You have no Hazard .. All your joined customers will appear here when you add your customer data"
-              title="You have No Hazard" />
+            <DataEmpty
+              :link="`/organization/equipment-mangement/hazard/add`"
+              :addText="$t('Add Hazard')"
+              :description="
+                $t(
+                  'You have no Hazard .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Hazard')"
+            />
           </template>
 
           <template #failed>
-            <DataFailed :link="`/organization/equipment-mangement/hazard/add`" addText="Add Hazard"
-              description="You have no Hazard .. All your joined customers will appear here when you add your customer data"
-              title="You have No Hazard" />
+            <DataFailed
+              :link="`/organization/equipment-mangement/hazard/add`"
+              :addText="$t('Add Hazard')"
+              :description="
+                $t(
+                  'You have no Hazard .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Hazard')"
+            />
           </template>
 
           <template #notPermitted>
-            <DataFailed addText="Have not Permission"
-              description="You have no Hazard .. All your joined customers will appear here when you add your customer data" />
+            <DataFailed
+              :addText="$t('auditUi.you_do_not_have_permission')"
+              :description="
+                $t(
+                  'You have no Hazard .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+            />
           </template>
         </DataStatus>
       </PermissionBuilder>

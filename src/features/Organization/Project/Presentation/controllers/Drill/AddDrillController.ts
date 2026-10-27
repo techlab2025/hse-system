@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type Params from '@/base/core/params/params'
 import DrillModel from '../../../Data/models/Drill/DrillModel'
@@ -10,9 +11,11 @@ import errorImage from '@/assets/images/error.png'
 export default class AddDrillController extends ControllerInterface<DrillModel> {
   private static instance: AddDrillController
   private readonly useCase = new AddDrillUseCase()
-  private constructor() { super() }
+  private constructor() {
+    super()
+  }
   static getInstance() {
-    if (!this.instance) this.instance = new AddDrillController() 
+    if (!this.instance) this.instance = new AddDrillController()
     return this.instance
   }
   // async addDrill(params: Params) {
@@ -21,7 +24,7 @@ export default class AddDrillController extends ControllerInterface<DrillModel> 
   //   super.handleResponseDialogs()
   //   return this.state
   // }
-    async addDrill(params: Params) {
+  async addDrill(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       const dataState: DataState<DrillModel> = await this.useCase.call(params)
@@ -29,7 +32,7 @@ export default class AddDrillController extends ControllerInterface<DrillModel> 
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })
@@ -37,7 +40,7 @@ export default class AddDrillController extends ControllerInterface<DrillModel> 
         // if (!draft) await router.push('/organization/projects')
 
         // useLoaderStore().endLoadingWithDialog();
-        console.log(this.state.value.error?.title, "error title")
+        console.log(this.state.value.error?.title, 'error title')
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',
@@ -45,7 +48,7 @@ export default class AddDrillController extends ControllerInterface<DrillModel> 
           imageElement: errorImage,
           messageContent: null,
         })
-        console.log(this.state.value, "error title")
+        console.log(this.state.value, 'error title')
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
@@ -54,7 +57,7 @@ export default class AddDrillController extends ControllerInterface<DrillModel> 
         imageElement: errorImage,
         messageContent: null,
       })
-      console.log(this.state.value, "error title")
+      console.log(this.state.value, 'error title')
     }
 
     super.handleResponseDialogs()

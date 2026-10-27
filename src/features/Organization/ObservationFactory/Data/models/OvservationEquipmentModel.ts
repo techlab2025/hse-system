@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import acc from '@/assets/images/acc.png'
 
 export default class OvservationEquipmentModel {
@@ -46,20 +47,23 @@ export default class OvservationEquipmentModel {
   }
 
   static fromMap(data: any): OvservationEquipmentModel {
-    return new OvservationEquipmentModel(
-      data.id,
-      data.title,
-      data.description,
-      data.all_industries,
-      data.equipmentTypeId,
-      data.industries,
-      data.image,
-      data.certificate_image,
-      data.date,
-      data.status,
-      data.inspection_duration,
-      data.license_number,
-      data.license_plate_number,
+    return localizedRecord(
+      new OvservationEquipmentModel(
+        data.id,
+        data.title,
+        data.description,
+        data.all_industries,
+        data.equipmentTypeId,
+        data.industries,
+        data.image,
+        data.certificate_image,
+        data.date,
+        data.status,
+        data.inspection_duration,
+        data.license_number,
+        data.license_plate_number,
+      ),
+      data,
     )
   }
 

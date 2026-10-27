@@ -50,7 +50,12 @@ const FetchIndustries = async () => {
 }
 
 const ActionsSelection = ref<TitleInterface[]>([
-  new TitleInterface({ id: ActionsEnum.CheckBox, title: 'Checkbox', subtitle: '' }),
+  new TitleInterface({
+    id: ActionsEnum.CheckBox,
+    title: 'Checkbox',
+    translationKey: 'Checkbox',
+    subtitle: '',
+  }),
 ])
 
 // Image
@@ -202,11 +207,36 @@ watch(
 
 const SelectedTemplateType = ref<TitleInterface | null>(null)
 const TemplateTypes = ref<TitleInterface[]>([
-  new TitleInterface({ id: TemplateType.Equipment, title: 'Equipment', subtitle: '' }),
-  new TitleInterface({ id: TemplateType.Tool, title: 'Tool', subtitle: '' }),
-  new TitleInterface({ id: TemplateType.Location, title: 'Location', subtitle: '' }),
-  new TitleInterface({ id: TemplateType.PermitToWork, title: 'Permit To Work', subtitle: '' }),
-  new TitleInterface({ id: TemplateType.device, title: 'Device', subtitle: '' }),
+  new TitleInterface({
+    id: TemplateType.Equipment,
+    title: 'Equipment',
+    translationKey: 'Equipment',
+    subtitle: '',
+  }),
+  new TitleInterface({
+    id: TemplateType.Tool,
+    title: 'Tool',
+    translationKey: 'Tool',
+    subtitle: '',
+  }),
+  new TitleInterface({
+    id: TemplateType.Location,
+    title: 'Location',
+    translationKey: 'Location',
+    subtitle: '',
+  }),
+  new TitleInterface({
+    id: TemplateType.PermitToWork,
+    title: 'Permit To Work',
+    translationKey: 'Permit To Work',
+    subtitle: '',
+  }),
+  new TitleInterface({
+    id: TemplateType.device,
+    title: 'Device',
+    translationKey: 'Device',
+    subtitle: '',
+  }),
   // new TitleInterface({ id: TemplateType.machine, title: 'Machine', subtitle: '' }),
 ])
 
@@ -220,8 +250,12 @@ const setTemplateType = (data: TitleInterface) => {
   <div class="w-full col-span-4">
     <PagesHeader
       :img="Setting"
-      title="Customize Inspection Template"
-      subtitle="Choose a predefined inspection template, adjust its fields if needed, and decide whether to save your changes permanently or just for this session."
+      :title="$t('Customize Inspection Template')"
+      :subtitle="
+        $t(
+          'auditUi.choose_an_inspection_template_adjust_its_fields_and_save_your_changes_permanently_or_for_this_session_only',
+        )
+      "
     />
   </div>
   <div class="col-span-4 md:col-span-2">
@@ -237,9 +271,9 @@ const setTemplateType = (data: TitleInterface) => {
       :modelValue="SelectedTemplateType"
       :staticOptions="TemplateTypes"
       :required="false"
-      label="Template Type "
+      :label="$t('Template Type')"
       id="TemplateType"
-      placeholder="Select Template Type"
+      :placeholder="$t('Select Template Type')"
       @update:modelValue="setTemplateType"
     />
   </div>
@@ -258,8 +292,8 @@ const setTemplateType = (data: TitleInterface) => {
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
   >
     <label for="all-industry">
-      <span>All industries</span>
-      <img :src="Geer" alt="all industries" />
+      <span>{{ $t('All industries') }}</span>
+      <img :src="Geer" :alt="$t('all industries')" />
     </label>
     <input
       type="radio"
@@ -282,13 +316,13 @@ const setTemplateType = (data: TitleInterface) => {
         :modelValue="industry"
         :controller="industryController"
         :params="industryParams"
-        label="Industry"
+        :label="$t('industry')"
         id="Industry"
-        placeholder="Select industry"
+        :placeholder="$t('Select industry')"
         :type="2"
         @update:modelValue="setIndustry"
       />
-      <img :src="hand" alt="single industry" />
+      <img :src="hand" :alt="$t('single industry')" />
     </label>
 
     <input

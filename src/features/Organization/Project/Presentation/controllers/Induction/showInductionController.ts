@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
@@ -26,7 +27,7 @@ export default class ShowInductionController extends ControllerInterface<Inducti
     if (this.isDataSuccess()) {
       // success state is already stored
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
 
     super.handleResponseDialogs()

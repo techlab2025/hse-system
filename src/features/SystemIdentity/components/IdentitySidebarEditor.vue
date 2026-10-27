@@ -86,10 +86,16 @@ const reset = () => {
     </Teleport>
     <div class="identity-editor-heading">
       <div>
-        <h2>Sidebar layout</h2>
-        <p>Rename tabs and items, arrange their order, and move items between tabs or submenus.</p>
+        <h2>{{ $t('Sidebar layout') }}</h2>
+        <p>
+          {{
+            $t(
+              'Rename tabs and items, arrange their order, and move items between tabs or submenus.',
+            )
+          }}
+        </p>
       </div>
-      <button type="button" @click="reset">Restore sidebar defaults</button>
+      <button type="button" @click="reset">{{ $t('Restore sidebar defaults') }}</button>
     </div>
     <!-- <p>Drag the handle to move an item between tabs or submenus. Overview stays at the top.</p>
     <p class="identity-sidebar-drag-status" role="status" aria-live="polite">
@@ -105,29 +111,32 @@ const reset = () => {
       :disabled="!drag.activeId.value"
       @click="drag.cancel"
     >
-      Cancel move
+      {{ $t('Cancel move') }}
     </button>
     <div class="identity-sidebar-add-group">
-      <label :for="groupNameId">New group name</label>
+      <label :for="groupNameId">{{ $t('New group name') }}</label>
       <div>
         <input
+          dir="auto"
           :id="groupNameId"
           v-model="newGroupName"
           type="text"
           maxlength="120"
-          placeholder="For example, Safety management"
+          :placeholder="$t('For example, Safety management')"
           @keydown.enter.prevent="addGroup"
           @dragstart.stop.prevent
         />
-        <button type="button" :disabled="!newGroupName.trim()" @click="addGroup">Add group</button>
+        <button type="button" :disabled="!newGroupName.trim()" @click="addGroup">
+          {{ $t('Add group') }}
+        </button>
       </div>
-      <small>Drag items into the new group, then save and apply your identity.</small>
+      <small>{{ $t('Drag items into the new group, then save and apply your identity.') }}</small>
     </div>
     <IdentityOrderList
       v-model="model.sidebarOrder"
       :items="groups"
       :locked="['overview']"
-      label="Sidebar group order"
+      :label="$t('Sidebar group order')"
       @drag-item-start="drag.cancel"
       @drag-item-end="drag.cancel"
       @drag-item-over="(event, key) => drag.over(event, key)"
@@ -135,11 +144,12 @@ const reset = () => {
     >
       <template #label="{ item }">
         <input
+          dir="auto"
           v-model="model.sidebarLabels[`group:${item}`]"
           class="identity-sidebar-name"
           type="text"
           maxlength="120"
-          :aria-label="`Name for ${defaultGroupLabel(item)} tab`"
+          :aria-label="$t('uiDynamic.tabName', { p0: defaultGroupLabel(item) })"
           :placeholder="defaultGroupLabel(item)"
           @dragstart.stop.prevent
         />
@@ -148,17 +158,21 @@ const reset = () => {
         <button
           v-if="groups.find((group) => group.key === item)?.custom"
           type="button"
-          :aria-label="`Remove ${defaultGroupLabel(item)} group`"
-          title="Items return to their original groups"
+          :aria-label="$t('uiDynamic.removeGroup', { p0: defaultGroupLabel(item) })"
+          :title="$t('Items return to their original groups')"
           @click="removeGroup(item)"
         >
-          Remove group
+          {{ $t('Remove group') }}
         </button>
-        <small v-if="item === 'overview'" class="identity-sidebar-pinned">Fixed at top</small>
+        <small v-if="item === 'overview'" class="identity-sidebar-pinned">{{
+          $t('Fixed at top')
+        }}</small>
         <IdentitySidebarDropZone
           v-if="item !== 'overview'"
           :container="item"
-          :label="`Drop into ${groups.find((group) => group.key === item)?.label}`"
+          :label="
+            $t('uiDynamic.dropInto', { p0: groups.find((group) => group.key === item)?.label })
+          "
           @entered="openGroups[item] = true"
         />
         <details
@@ -166,7 +180,9 @@ const reset = () => {
           :open="openGroups[item]"
           @toggle="openGroups[item] = ($event.target as HTMLDetailsElement).open"
         >
-          <summary>{{ groups.find((group) => group.key === item)?.label }} menu items</summary>
+          <summary>
+            {{ groups.find((group) => group.key === item)?.label }} {{ $t('menu items') }}
+          </summary>
           <IdentitySidebarItems v-model="model" :container="item" />
         </details>
       </template>

@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
@@ -37,19 +38,22 @@ export default class IncidentCategoryModel extends TitleInterface {
   }
 
   static fromMap(data: any): IncidentCategoryModel {
-    return new IncidentCategoryModel(
-      data.id,
-      data.title,
-      data.subtitle,
-      // data.has_certificate,
-      data.all_industries,
-      data.industries?.length > 0
-        ? data.industries?.map((industry) => TitleModel.fromMap(industry))
-        : [],
-      data.parent_id,
-      data.image,
-      data.titles,
-      data.accidents_type ? TitleModel.fromMap(data.accidents_type) : null,
+    return localizedRecord(
+      new IncidentCategoryModel(
+        data.id,
+        data.title,
+        data.subtitle,
+        // data.has_certificate,
+        data.all_industries,
+        data.industries?.length > 0
+          ? data.industries?.map((industry) => TitleModel.fromMap(industry))
+          : [],
+        data.parent_id,
+        data.image,
+        data.titles,
+        data.accidents_type ? TitleModel.fromMap(data.accidents_type) : null,
+      ),
+      data,
     )
   }
   static transformData(data: string[][]): IncidentCategoryModel[] {

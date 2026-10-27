@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -16,8 +17,8 @@ import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import Search from '@/shared/icons/Search.vue'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
-import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
+import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver'
 import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
@@ -35,7 +36,6 @@ const countPerPage = ref(10)
 const indexCheckListController = IndexCheckListController.getInstance()
 const state = ref(indexCheckListController.state.value)
 const route = useRoute()
-
 
 const fetchCheckList = async (
   query: string = '',
@@ -120,26 +120,22 @@ watch(
 
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert("No data available to export");
-    return;
+    alert(localizeUi('No data available to export'))
+    return
   }
-  const worksheetData = state.value.data.map(
-    (item: Record<string, unknown>) => {
-      const it = item as any;
-      return {
-        "title": it.title || "N/A",
-      };
-    },
-  );
-  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
-  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
-  saveAs(data, "WarehouseType.xlsx");
-};
-
-
+  const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
+    const it = item as any
+    return {
+      title: it.title || 'N/A',
+    }
+  })
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Invoices')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(data, 'WarehouseType.xlsx')
+}
 
 const IndexActionList = () => [
   {
@@ -159,33 +155,36 @@ const IndexActionList = () => [
     icon: ActionsListAddIcon,
     primary: true,
     type: ActionItemsTypeEnum.Info,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE
-    ],
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE],
   },
   //{
-    // text: t('upload_complated_template'),
-    // type: ActionItemsTypeEnum.Warning,
-    // link: '/organization/check-list/upload',
-    // icon: UploadExcelIcon,
-    // permission: [
-    //   PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-    //   PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE
-    // ],
+  // text: t('upload_complated_template'),
+  // type: ActionItemsTypeEnum.Warning,
+  // link: '/organization/check-list/upload',
+  // icon: UploadExcelIcon,
+  // permission: [
+  //   PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+  //   PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE
+  // ],
   // },
 ]
 </script>
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click="((word = ''), searchCheckList())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchCheckList" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchCheckList"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
@@ -220,20 +219,20 @@ const IndexActionList = () => [
           <ExportPdf :isDropList="true" />
         </template>
       </ActionsList>
-
-
     </div>
     <SystemWarehouseTypes :isHeaderTap="true" />
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
-    PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
-    PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
-    PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
-    PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
+      PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -249,19 +248,26 @@ const IndexActionList = () => [
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/organization/check-list/${item.id}`">{{ index + 1 }}
+                  <router-link :to="`/organization/check-list/${item.id}`"
+                    >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="Actions">
-                  <DropList :actionList="actionList(item.id, deleteCheckList)"
-                    @delete="deleteCheckList(item.id)" />
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('Actions')">
+                  <DropList
+                    :actionList="actionList(item.id, deleteCheckList)"
+                    @delete="deleteCheckList(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -270,27 +276,55 @@ const IndexActionList = () => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
-
-          <DataEmpty :link="`/organization/check-list/add`" addText="Add CheckList"
-            description="You have no CheckList .. All your joined customers will appear here when you add your customer data"
-            title="You have No CheckList" />
+        <PermissionBuilder
+          :code="[
+            PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE,
+          ]"
+        >
+          <DataEmpty
+            :link="`/organization/check-list/add`"
+            :addText="$t('Add CheckList')"
+            :description="
+              $t(
+                'You have no CheckList .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No CheckList')"
+          />
         </PermissionBuilder>
       </template>
       <template #failed>
-        <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
-
-          <DataFailed :link="`/organization/check-list/add`" addText="Add CheckList"
-            description="You have no CheckList .. All your joined customers will appear here when you add your customer data"
-            title="You have No CheckList" />
+        <PermissionBuilder
+          :code="[
+            PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE,
+          ]"
+        >
+          <DataFailed
+            :link="`/organization/check-list/add`"
+            :addText="$t('Add CheckList')"
+            :description="
+              $t(
+                'You have no CheckList .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No CheckList')"
+          />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no CheckList .. All your joined customers will appear here when you add your customer data"
-        link="" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no CheckList .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+        link=""
+      />
     </template>
   </PermissionBuilder>
 </template>

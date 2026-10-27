@@ -171,7 +171,7 @@ defineExpose({ validateRequiredFields })
   >
     <CustomCheckbox
       :index="3"
-      title="all_industries"
+      :title="$t('all_industries')"
       :checked="allIndustries"
       @update:checked="updateAllIndustries"
     />
@@ -184,9 +184,9 @@ defineExpose({ validateRequiredFields })
       :model-value="industry"
       :controller="industryController"
       :params="industryParams"
-      label="industry"
+      :label="$t('industry')"
       id="traning-topic-industry"
-      placeholder="Select industry"
+      :placeholder="$t('Select industry')"
       :type="2"
       @update:model-value="setIndustry"
     />

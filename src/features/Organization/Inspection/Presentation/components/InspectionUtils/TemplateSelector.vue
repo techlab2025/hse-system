@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import TemplateDocument from '@/features/setting/TemplateItem/Presentation/components/TemplateDocument.vue'
-import type TemplateModel from '@/features/setting/Template/Data/models/TemplateModel';
+import type TemplateModel from '@/features/setting/Template/Data/models/TemplateModel'
 import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
-import { ref, watch } from 'vue';
+import { ref, watch } from 'vue'
 import RadioButton from 'primevue/radiobutton'
-import wordSlice from '@/base/Presentation/utils/word_slice';
+import wordSlice from '@/base/Presentation/utils/word_slice'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -18,9 +18,12 @@ const SetSelectedTemplate = (id: number) => {
   emit('update:data', id)
 }
 
-watch(() => props.selectedTemplates, (newVal) => {
-  SelectedTemplate.value = newVal
-})
+watch(
+  () => props.selectedTemplates,
+  (newVal) => {
+    SelectedTemplate.value = newVal
+  },
+)
 
 const showMore = ref(false)
 </script>
@@ -28,9 +31,13 @@ const showMore = ref(false)
 <template>
   <div class="template-selector">
     <div class="template-selector-container-AccordionPanel">
-      <div @click="SetSelectedTemplate(template.id)" class="panel-acc"
-        :class="SelectedTemplate == template.id ? 'active' : ''" v-for="(template, index) in data"
-        :key="index">
+      <div
+        @click="SetSelectedTemplate(template.id)"
+        class="panel-acc"
+        :class="SelectedTemplate == template.id ? 'active' : ''"
+        v-for="(template, index) in data"
+        :key="index"
+      >
         <div class="template-document-container">
           <div class="template-document-header">
             <div class="template-header">
@@ -51,11 +58,15 @@ const showMore = ref(false)
             </div>
             <div class="header-select">
               <div class="template-checkbox">
-                <RadioButton :inputId="`${template.id}`" name="template" v-model="SelectedTemplate"
-                  :value="template.id" />
+                <RadioButton
+                  :inputId="`${template.id}`"
+                  name="template"
+                  v-model="SelectedTemplate"
+                  :value="template.id"
+                />
                 <label :for="`${template.id}`">{{ $t('select') }}</label>
               </div>
-              <img :src="DocumnetHeader" alt="header" />
+              <img :src="DocumnetHeader" :alt="$t('header')" />
             </div>
           </div>
         </div>
@@ -73,7 +84,7 @@ const showMore = ref(false)
 </template>
 
 <style lang="scss" scoped>
-.template-selector-container-AccordionPanel .active.panel-acc{
+.template-selector-container-AccordionPanel .active.panel-acc {
   border: 2px dashed color-mix(in srgb, var(--brand-primary-500) 60%, transparent) !important;
   background-color: color-mix(in srgb, var(--brand-primary-200) 6%, transparent);
 }

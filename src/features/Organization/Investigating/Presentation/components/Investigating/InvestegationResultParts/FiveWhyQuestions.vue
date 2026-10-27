@@ -22,7 +22,7 @@ const UpdateData = (data) => {
   <div class="viwers-result five-why">
     <HeaderPage
       :Nobg="true"
-      :title="`5 why questions`"
+      :title="$t('5 why questions')"
       :subtitle="``"
       :img="why"
       class="title-header"
@@ -36,4 +36,3 @@ const UpdateData = (data) => {
   margin-bottom: 12px;
 }
 </style>
-

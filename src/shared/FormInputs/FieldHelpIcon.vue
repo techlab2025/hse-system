@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, ref, useId } from 'vue'
+import { translateMessage } from '@/localization/messages'
 
 defineProps<{
   text: string
@@ -56,7 +57,7 @@ onBeforeUnmount(hideTooltip)
     ref="trigger"
     type="button"
     class="field-help"
-    aria-label="More information about this field"
+    :aria-label="$t('More information about this field')"
     :aria-describedby="tooltipId"
     @click.prevent.stop
     @mouseenter="showTooltip"
@@ -80,9 +81,9 @@ onBeforeUnmount(hideTooltip)
     >
       <span class="field-help__eyebrow">
         <span class="field-help__spark" aria-hidden="true">✦</span>
-        Field guide
+        {{ $t('Field guide') }}
       </span>
-      <span class="field-help__text">{{ text }}</span>
+      <span class="field-help__text">{{ translateMessage(text) }}</span>
       <span class="field-help__arrow" aria-hidden="true"></span>
     </span>
   </Teleport>
@@ -103,7 +104,7 @@ onBeforeUnmount(hideTooltip)
 
 .field-help {
   position: relative;
-  margin-right: auto !important;
+  margin-inline-end: auto !important;
   display: inline-flex;
   align-items: center;
   justify-content: center;

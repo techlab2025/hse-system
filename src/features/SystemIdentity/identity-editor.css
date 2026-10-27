@@ -329,8 +329,7 @@
 .identity-typography-sample-arabic {
   direction: rtl !important;
   unicode-bidi: isolate !important;
-  text-align: right !important;
-  rotate: 180deg;
+  text-align: start !important;
 }
 @media (max-width: 600px) {
   .identity-typography-grid {

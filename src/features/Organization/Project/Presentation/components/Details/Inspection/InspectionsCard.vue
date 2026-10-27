@@ -35,11 +35,11 @@ const { showHeader, showArrowLink, isAssign } = defineProps<{
         <p class="status">{{ $t('non _ complete') }}</p>
         <div class="card-body-content">
           <p class="content-title">{{ $t('device inspection') }}</p>
-          <span class="content-date"> 22 july / 10 : 30 AM </span>
+          <span class="content-date"> {{ $t('22 july / 10 : 30 AM') }} </span>
         </div>
         <div class="assign-to" v-if="isAssign">
           <span> {{ $t('assigned to') }} :</span>
-          <p>Abdallah Mohamed</p>
+          <p>{{ $t('Abdallah Mohamed') }}</p>
         </div>
       </div>
 

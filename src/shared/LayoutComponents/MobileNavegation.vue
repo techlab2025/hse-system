@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -37,10 +39,30 @@ const { locale, t } = useI18n()
 // )
 
 const navItems = computed(() => [
-  { path: `/organization`, label: 'home' },
-  { path: `/organization/equipment-mangement/all-observatin`, label: 'Operation' },
-  { path: `/organization/equipments`, label: 'Equipment' },
-  { path: `/organization/setting`, label: 'Setting' },
+  {
+    path: `/organization`,
+    get label() {
+      return localizeUi('home')
+    },
+  },
+  {
+    path: `/organization/equipment-mangement/all-observatin`,
+    get label() {
+      return localizeUi('Operation')
+    },
+  },
+  {
+    path: `/organization/equipments`,
+    get label() {
+      return localizeUi('Equipment')
+    },
+  },
+  {
+    path: `/organization/setting`,
+    get label() {
+      return localizeUi('Setting')
+    },
+  },
   // { path: `/${locale.value}/Contact`, label: 'contact' },
 ])
 

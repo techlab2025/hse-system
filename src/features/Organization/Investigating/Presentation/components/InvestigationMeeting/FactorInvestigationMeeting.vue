@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { ref } from 'vue'
 import RadioButton from 'primevue/radiobutton'
 
@@ -7,34 +9,74 @@ const selectedSubItem = ref('')
 
 const subItemsMap = {
   factor1: [
-    { label: 'Lorem Ipsum is simply dummy text', value: 'sub11' },
-    { label: 'Lorem Ipsum is simply dummy text', value: 'sub12' },
+    {
+      get label() {
+        return localizeUi('Lorem Ipsum is simply dummy text')
+      },
+      value: 'sub11',
+    },
+    {
+      get label() {
+        return localizeUi('Lorem Ipsum is simply dummy text')
+      },
+      value: 'sub12',
+    },
   ],
   factor2: [
-    { label: 'Lorem Ipsum is simply dummy text', value: 'sub21' },
-    { label: 'Lorem Ipsum is simply dummy text', value: 'sub22' },
+    {
+      get label() {
+        return localizeUi('Lorem Ipsum is simply dummy text')
+      },
+      value: 'sub21',
+    },
+    {
+      get label() {
+        return localizeUi('Lorem Ipsum is simply dummy text')
+      },
+      value: 'sub22',
+    },
   ],
   item1: [
-    { label: 'Lorem Ipsum is simply dummy text', value: 'sub31' },
-    { label: 'Lorem Ipsum is simply dummy text', value: 'sub32' },
+    {
+      get label() {
+        return localizeUi('Lorem Ipsum is simply dummy text')
+      },
+      value: 'sub31',
+    },
+    {
+      get label() {
+        return localizeUi('Lorem Ipsum is simply dummy text')
+      },
+      value: 'sub32',
+    },
   ],
   item2: [
-    { label: 'Lorem Ipsum is simply dummy text', value: 'sub41' },
-    { label: 'Lorem Ipsum is simply dummy text', value: 'sub42' },
+    {
+      get label() {
+        return localizeUi('Lorem Ipsum is simply dummy text')
+      },
+      value: 'sub41',
+    },
+    {
+      get label() {
+        return localizeUi('Lorem Ipsum is simply dummy text')
+      },
+      value: 'sub42',
+    },
   ],
 }
 </script>
 
 <template>
   <div class="col-span-6 md:col-span-6 input-wrapper w-full factor-item factor-items">
-    <label class="factot-title">Factors & Items</label>
+    <label class="factot-title">{{ $t('Factors & Items') }}</label>
 
     <div class="radio-grid">
       <div class="radio-column">
         <!-- Radio 1 -->
         <div class="radio-item">
           <RadioButton v-model="selectedFactor" inputId="factor1" name="factors" value="factor1" />
-          <label class="radio-label" for="factor1">Lorem Ipsum 1</label>
+          <label class="radio-label" for="factor1">{{ $t('Lorem Ipsum 1') }}</label>
         </div>
 
         <!-- sub items -->
@@ -53,7 +95,7 @@ const subItemsMap = {
         <!-- Radio 2 -->
         <div class="radio-item">
           <RadioButton v-model="selectedFactor" inputId="factor2" name="factors" value="factor2" />
-          <label class="radio-label" for="factor2">Lorem Ipsum 2</label>
+          <label class="radio-label" for="factor2">{{ $t('Lorem Ipsum 2') }}</label>
         </div>
 
         <!-- sub items -->
@@ -74,7 +116,7 @@ const subItemsMap = {
         <!-- item1 -->
         <div class="radio-item">
           <RadioButton v-model="selectedFactor" inputId="item1" name="factors" value="item1" />
-          <label class="radio-label" for="item1">Lorem Ipsum 3</label>
+          <label class="radio-label" for="item1">{{ $t('Lorem Ipsum 3') }}</label>
         </div>
 
         <div v-if="selectedFactor === 'item1'" class="sub-radio-group">
@@ -92,7 +134,7 @@ const subItemsMap = {
         <!-- item2 -->
         <div class="radio-item">
           <RadioButton v-model="selectedFactor" inputId="item2" name="factors" value="item2" />
-          <label class="radio-label" for="item2">Lorem Ipsum 4</label>
+          <label class="radio-label" for="item2">{{ $t('Lorem Ipsum 4') }}</label>
         </div>
 
         <div v-if="selectedFactor === 'item2'" class="sub-radio-group">

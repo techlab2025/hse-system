@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
 
 /* =========================
@@ -44,7 +46,8 @@ import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/
 /* =========================
  * Route & Props
  * ========================= */
-const { configureRules: configureValidationRules } = useConfiguredValidation('InspectionForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('InspectionForm')
 
 const route = useRoute()
 const id = route.params?.equipment_id
@@ -80,9 +83,13 @@ interface InspectionForm {
 
 // Assign To (Machine / Employee / Zone)
 const AssignToOptions = ref<TitleInterface[]>([
-  new TitleInterface({ id: AssignToTypeEnum.MACHINE, title: 'Machine' }),
-  new TitleInterface({ id: AssignToTypeEnum.EMPLOYEE, title: 'Employee' }),
-  new TitleInterface({ id: AssignToTypeEnum.ZONE, title: 'Zone' }),
+  new TitleInterface({ id: AssignToTypeEnum.MACHINE, title: 'Machine', translationKey: 'Machine' }),
+  new TitleInterface({
+    id: AssignToTypeEnum.EMPLOYEE,
+    title: 'Employee',
+    translationKey: 'Employee',
+  }),
+  new TitleInterface({ id: AssignToTypeEnum.ZONE, title: 'Zone', translationKey: 'Zone' }),
 ])
 
 const SelectedAssigned = ref<TitleInterface>(AssignToTypeEnum.MACHINE)
@@ -270,8 +277,10 @@ const SerialNumber = ref()
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
@@ -390,6 +399,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     },
   },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
 
@@ -472,6 +482,7 @@ defineExpose({
       <div class="input-wrapper serial-input">
         <label for="serialNumber">{{ $t('serial_number') }}</label>
         <input
+          dir="auto"
           id="serialNumber"
           v-model="SerialNumber"
           type="text"
@@ -479,8 +490,8 @@ defineExpose({
           :disabled="projtecStateus.isSerialNumberAuto()"
           :placeholder="
             projtecStateus.isSerialNumberAuto()
-              ? 'You can leave it (auto-generated)'
-              : 'Enter Your Serial Number'
+              ? $t('You can leave it (auto-generated)')
+              : $t('Enter Your Serial Number')
           "
         />
       </div>
@@ -514,7 +525,7 @@ defineExpose({
         </div>
         <span class="stage-status">
           <span></span>
-          {{ $t(data?.id ? 'Editing' : 'In progress') }}
+          {{ $t(data?.id ? 'Editing' : 'in progress') }}
         </span>
       </div>
 
@@ -548,7 +559,7 @@ defineExpose({
               :controller="indexEquipmentController"
               :params="indexEquipmentParams"
               :label="$t('Equipment')"
-              :placeholder="$t('select your Equipment')"
+              :placeholder="$t('Select Your Equipment')"
               @update:modelValue="setEquipment"
               :isDialog="true"
               v-model:dialogVisible="inspectionDoalouge"
@@ -742,7 +753,7 @@ defineExpose({
 }
 
 .inspection-page-header :deep(.employee-header) {
- /* min-height: 8.75rem;*/
+  /* min-height: 8.75rem;*/
   margin: 0;
   border: 1px solid color-mix(in srgb, var(--brand-primary-500) 14%, var(--main-border));
   border-radius: inherit;

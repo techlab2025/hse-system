@@ -1,3 +1,4 @@
+import { translateNavigationLabel } from '@/localization/navigation'
 // composables/useBreadcrumb.ts
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -9,7 +10,7 @@ export function useBreadcrumb() {
     return route.matched
       .filter((r) => r.meta?.breadcrumb)
       .map((r) => ({
-        label: r.meta.breadcrumb,
+        label: translateNavigationLabel(r.meta.breadcrumb),
         to: r.path,
         icon: r.meta.icon,
       }))

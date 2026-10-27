@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 // import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams'
 // import IndexEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/indexEquipmentTypeController'
 import * as XLSX from 'xlsx'
@@ -62,12 +64,24 @@ const filterStatus = ref<number | null>(null)
 const filterEquipmentType = ref<number | null>(null)
 const equipmentTypeOptions = ref<TitleInterface[]>([])
 const ownershipOptions = [
-  new TitleInterface({ id: EquipmentStatus.RENT, title: 'Rent' }),
-  new TitleInterface({ id: EquipmentStatus.OWN, title: 'Owned' }),
+  new TitleInterface({ id: EquipmentStatus.RENT, title: 'Rent', translationKey: 'Rent' }),
+  new TitleInterface({ id: EquipmentStatus.OWN, title: 'Owned', translationKey: 'Owned' }),
 ]
 const filterFields = computed(() => [
-  { key: 'status', label: 'Rent Type', options: ownershipOptions },
-  { key: 'equipmentType', label: 'Equipment Type', options: equipmentTypeOptions.value },
+  {
+    key: 'status',
+    get label() {
+      return localizeUi('Rent Type')
+    },
+    options: ownershipOptions,
+  },
+  {
+    key: 'equipmentType',
+    get label() {
+      return localizeUi('Equipment Type')
+    },
+    options: equipmentTypeOptions.value,
+  },
 ])
 const indexEquipmentController = IndexEquipmentController.getInstance()
 const state = ref(indexEquipmentController.state.value)
@@ -258,7 +272,7 @@ watch(
 
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert('No data available to export')
+    alert(localizeUi('No data available to export'))
     return
   }
   const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
@@ -389,8 +403,9 @@ const IndexEquipmentactionList = () => [
           <Search />
         </span>
         <input
+          dir="auto"
           v-model="word"
-          :placeholder="'search'"
+          :placeholder="$t('search')"
           class="input"
           type="text"
           @input="searchEquipmentType"
@@ -471,9 +486,13 @@ const IndexEquipmentactionList = () => [
           >
             <DataEmpty
               :link="addEquipmentLink"
-              addText="Add Equipment"
-              description="You have no Equipment .. All your joined customers will appear here when you add your customer data"
-              title="You have No Equipment"
+              :addText="$t('Add Equipment')"
+              :description="
+                $t(
+                  'You have no Equipment .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Equipment')"
             />
           </PermissionBuilder>
         </template>
@@ -488,9 +507,13 @@ const IndexEquipmentactionList = () => [
           >
             <DataFailed
               :link="addEquipmentLink"
-              addText="Add Equipment"
-              description="You have no Equipment .. All your joined customers will appear here when you add your customer data"
-              title="You have No Equipment"
+              :addText="$t('Add Equipment')"
+              :description="
+                $t(
+                  'You have no Equipment .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Equipment')"
             />
           </PermissionBuilder>
         </template>
@@ -498,8 +521,12 @@ const IndexEquipmentactionList = () => [
 
       <template #notPermitted>
         <DataFailed
-          addText="Have not  Permission"
-          description="You have no Equipment .. All your joined customers will appear here when you add your customer data"
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no Equipment .. All your joined customers will appear here when you add your customer data',
+            )
+          "
         />
       </template>
     </PermissionBuilder>

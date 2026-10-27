@@ -157,7 +157,7 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
       </div>
 
       <div class="matrix-stats">
-        <span>{{ employeeCount }} employees</span>
+        <span>{{ employeeCount }} {{ $t('employees') }}</span>
         <span>{{ certificateCount }} {{ $t('certificates') }}</span>
       </div>
     </div>
@@ -169,8 +169,9 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
         </span>
 
         <input
+          dir="auto"
           v-model="word"
-          placeholder="Search employee"
+          :placeholder="$t('Search employee')"
           class="input"
           type="text"
           @input="searchEmployeeCertificate"
@@ -278,25 +279,33 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
 
         <template #empty>
           <DataFailed
-            title="You have No Employee in this heirarchy"
+            :title="$t('You have No Employee in this heirarchy')"
             :withbtn="false"
             link=" "
-            description="You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
+            :description="
+              $t(
+                'You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data',
+              )
+            "
           />
         </template>
 
         <template #failed>
           <DataFailed
-            title="You have No Employee in this heirarchy"
+            :title="$t('You have No Employee in this heirarchy')"
             :withbtn="false"
             link=" "
-            description="You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
+            :description="
+              $t(
+                'You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data',
+              )
+            "
           />
         </template>
       </DataStatus>
 
       <template #notPermitted>
-        <DataFailed addText="Have not Permission" />
+        <DataFailed :addText="$t('auditUi.you_do_not_have_permission')" />
       </template>
     </PermissionBuilder>
   </section>

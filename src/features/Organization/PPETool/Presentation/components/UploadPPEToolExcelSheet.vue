@@ -193,7 +193,9 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
           <div class="table-container">
             <div class="table-header">
               <h3 class="table-title">{{ $t('mapped_data_preview') }}</h3>
-              <span class="table-badge">{{ $t('row_count', { count: mappedData.length - 1 }) }}</span>
+              <span class="table-badge">{{
+                $t('row_count', { count: mappedData.length - 1 })
+              }}</span>
             </div>
             <div class="table-responsive">
               <table class="main-table">
@@ -481,7 +483,7 @@ kbd {
 
 .main-table th {
   padding: 12px 16px;
-  text-align: left;
+  text-align: start;
   color: var(--brand-primary-500);
   border-bottom: 2px solid var(--brand-primary-100);
 }

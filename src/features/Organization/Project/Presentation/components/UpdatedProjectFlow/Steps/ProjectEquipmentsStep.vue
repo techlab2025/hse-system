@@ -97,16 +97,16 @@ watch([() => props.projectId, () => props.isEdit], getProjectZonesEquipments, { 
     <div class="section-title">
       <span>05</span>
       <div>
-        <h2>Project equipment</h2>
-        <p>Attach equipment to zones, or finish without equipment.</p>
+        <h2>{{ $t('Project equipment') }}</h2>
+        <p>{{ $t('Attach equipment to zones, or finish without equipment.') }}</p>
       </div>
     </div>
-    <p v-if="isLoadingZones" class="locations-status">Loading project zones…</p>
+    <p v-if="isLoadingZones" class="locations-status">{{ $t('Loading project zones…') }}</p>
     <p v-else-if="zonesError" class="locations-status locations-error">
       {{ zonesError }}
     </p>
     <p v-else-if="!equipments.length" class="locations-status">
-      No zones are assigned to this project.
+      {{ $t('No zones are assigned to this project.') }}
     </p>
     <div
       v-for="(zone, zoneIndex) in equipments"
@@ -114,7 +114,7 @@ watch([() => props.projectId, () => props.isEdit], getProjectZonesEquipments, { 
       class="group-card fixed-equipment-row"
     >
       <div class="fixed-location">
-        <span>Project zone</span>
+        <span>{{ $t('Project zone') }}</span>
         <strong>{{ zone.zone?.title }}</strong>
       </div>
       <div class="hse-project-field input-wrapper w-full">
@@ -123,8 +123,8 @@ watch([() => props.projectId, () => props.isEdit], getProjectZonesEquipments, { 
           :params="zone.equipmentParams"
           :controller="equipmentController"
           :excluded-option-ids="equipmentIdsSelectedInOtherZones(zoneIndex)"
-          label="Equipment"
-          placeholder="Select equipment"
+          :label="$t('Equipment')"
+          :placeholder="$t('Select equipment')"
           :type="2"
           :disabled="!zone.zone"
           @update:model-value="setZoneEquipments(zone, $event)"

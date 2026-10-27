@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import UserModel from '@/features/auth/Data/models/user_model'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
@@ -42,7 +43,7 @@ export default class LoginController extends ControllerInterface<UserModel> {
       } else if (activeType === OrganizationTypeEnum.ORGANIZATION) {
         dataState = await this.LoginOrganizationUseCase.call(params)
       } else {
-        throw new Error('Invalid user type')
+        throw new Error(localizeUi('Invalid user type'))
       }
 
       this.setState(dataState)

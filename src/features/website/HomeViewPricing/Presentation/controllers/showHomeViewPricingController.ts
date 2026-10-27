@@ -1,11 +1,9 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import type HomeViewPricingDetailsModel from '../../Data/models/HomeViewPricingDetailsModel'
 import ShowHomeViewPricingUseCase from '../../Domain/useCase/showHomeViewPricingUseCase'
-
-
-
 
 export default class ShowHomeViewPricingController extends ControllerInterface<HomeViewPricingDetailsModel> {
   private static instance: ShowHomeViewPricingController
@@ -28,13 +26,14 @@ export default class ShowHomeViewPricingController extends ControllerInterface<H
     // console.log(params)
     this.setLoading()
 
-    const dataState: DataState<HomeViewPricingDetailsModel> = await this.ShowHomeViewPricingUseCase.call(params)
+    const dataState: DataState<HomeViewPricingDetailsModel> =
+      await this.ShowHomeViewPricingUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

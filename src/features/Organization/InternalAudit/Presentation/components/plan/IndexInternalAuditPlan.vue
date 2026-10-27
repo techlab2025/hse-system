@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { auditPlanStatusLabel } from '../../utils/labels'
 import { computed, onMounted, ref, watch } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
@@ -94,9 +95,21 @@ watch(
 onMounted(fetchInternalAuditPlans)
 
 const statusOptions = ref<TitleInterface[]>([
-  new TitleInterface({ id: InrernalAuditStatusEnum.draft, title: 'draft' }),
-  new TitleInterface({ id: InrernalAuditStatusEnum.planned, title: 'planned' }),
-  new TitleInterface({ id: InrernalAuditStatusEnum.reported, title: 'reported' }),
+  new TitleInterface({
+    id: InrernalAuditStatusEnum.draft,
+    title: 'draft',
+    translationKey: 'Draft',
+  }),
+  new TitleInterface({
+    id: InrernalAuditStatusEnum.planned,
+    title: 'planned',
+    translationKey: 'Planned',
+  }),
+  new TitleInterface({
+    id: InrernalAuditStatusEnum.reported,
+    title: 'reported',
+    translationKey: 'internalAuditLabels.reported',
+  }),
 ])
 
 const handleChangePage = (page: number) => {
@@ -123,9 +136,9 @@ const handleCountPerPage = (count: number) => {
           to="/organization/internal-audit">New Audit Plan</router-link> -->
       </div>
     </header>
-    <router-link class="btn btn-primary" to="/organization/internal-audit"
-      >New Audit Plan</router-link
-    >
+    <router-link class="btn btn-primary" to="/organization/internal-audit">{{
+      $t('New Audit Plan')
+    }}</router-link>
     <Accordion value="filters" class="audit-filters-accordion">
       <AccordionPanel value="">
         <AccordionHeader v-slot="{ active }">
@@ -145,10 +158,10 @@ const handleCountPerPage = (count: number) => {
             </span>
             <span class="filter-heading-copy">
               <!-- {{ activeFilterCount ? ``:`(${activeFilterCount})` }} -->
-              <span class="filter-title">Audit filters </span>
-              <span class="filter-description"
-                >Find the right audit by status, date or focus area</span
-              >
+              <span class="filter-title">{{ $t('Audit filters') }} </span>
+              <span class="filter-description">{{
+                $t('Find the right audit by status, date or focus area')
+              }}</span>
             </span>
             <span class="filter-count" :class="{ 'has-filters': activeFilterCount > 0 }">
               <!-- {{ activeFilterCount ? `${activeFilterCount} active` : 'All audits' }} -->
@@ -162,13 +175,14 @@ const handleCountPerPage = (count: number) => {
           <div class="toolbar">
             <div class="filters">
               <div class="input-wrapper">
-                <label for="search">Search</label>
+                <label for="search">{{ $t('search') }}</label>
                 <input
+                  dir="auto"
                   id="search"
                   v-model="word"
                   class="input"
                   type="search"
-                  placeholder="Search audit number"
+                  :placeholder="$t('search_audit_number')"
                   @input="applyFilters"
                 />
               </div>
@@ -177,20 +191,20 @@ const handleCountPerPage = (count: number) => {
                 <UpdatedCustomInputSelect
                   :model-value="statusFilter"
                   :static-options="statusOptions"
-                  label="Status"
-                  placeholder="select statuses"
+                  :label="$t('Status')"
+                  :placeholder="$t('select statuses')"
                   class="audit-filter-select"
                   @update:model-value="normalizeStatus"
                 />
               </div>
 
               <div class="input-wrapper">
-                <label for="audit-from-date">From Date</label>
+                <label for="audit-from-date">{{ $t('from_date') }}</label>
                 <DatePicker
                   v-model="fromDate"
                   input-id="audit-from-date"
                   date-format="yy-mm-dd"
-                  placeholder="Select from date"
+                  :placeholder="$t('Select from date')"
                   :max-date="toDate ?? undefined"
                   :manual-input="false"
                   show-icon
@@ -199,12 +213,12 @@ const handleCountPerPage = (count: number) => {
                 />
               </div>
               <div class="input-wrapper">
-                <label for="audit-to-date">To Date</label>
+                <label for="audit-to-date">{{ $t('To Date') }}</label>
                 <DatePicker
                   v-model="toDate"
                   input-id="audit-to-date"
                   date-format="yy-mm-dd"
-                  placeholder="Select to date"
+                  :placeholder="$t('Select to date')"
                   :min-date="fromDate ?? undefined"
                   :manual-input="false"
                   show-icon
@@ -217,8 +231,8 @@ const handleCountPerPage = (count: number) => {
                   :model-value="focusArea"
                   :controller="hierarchyController"
                   :params="hierarchyParams"
-                  label="Focus Area"
-                  placeholder="Select department"
+                  :label="$t('Focus Area')"
+                  :placeholder="$t('Select department')"
                   class="audit-filter-select"
                   @update:model-value="normalizeFocusArea"
                 />
@@ -235,14 +249,16 @@ const handleCountPerPage = (count: number) => {
           <table class="main-table">
             <thead>
               <tr>
-                <th>Audit No.</th>
-                <th>Period</th>
-                <th>Scope</th>
-                <th>Lead</th>
-                <th>Status</th>
-                <th>NCRs count</th>
+                <th>{{ $t('audit_number') }}</th>
+                <th>{{ $t('audit_period') }}</th>
+                <th>{{ $t('Scope') }}</th>
+                <th>{{ $t('Lead') }}</th>
+                <th>{{ $t('Status') }}</th>
+                <th>{{ $t('NCRs count') }}</th>
                 <!-- <th>ncr count</th> -->
-                <th><span class="sr-only">Actions</span></th>
+                <th>
+                  <span class="sr-only">{{ $t('Actions') }}</span>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -251,12 +267,15 @@ const handleCountPerPage = (count: number) => {
                   <strong>{{ audit.title }}</strong>
                 </td>
                 <td>{{ audit.auditStartDate }}<br />{{ audit.auditEndDate }}</td>
-                <td>{{ audit.fullCompany ? 'Full Company' : audit.project?.title || '—' }}</td>
+                <td>{{ audit.fullCompany ? $t('full_company') : audit.project?.title || '—' }}</td>
                 <td>{{ leadName(audit.auditTeam) }}</td>
                 <td>
-                  <span class="status">{{ audit.status }}</span>
+                  <span class="status">{{ auditPlanStatusLabel(audit.status) }}</span>
                 </td>
-                <td>{{ audit.OpenncrsCount }} open / {{ audit.ClosedncrsCount }} closed</td>
+                <td>
+                  {{ audit.OpenncrsCount }} {{ $t('open /') }} {{ audit.ClosedncrsCount }}
+                  {{ $t('closed') }}
+                </td>
                 <!-- <td>{{ audit.ClosedncrsCount }}</td> -->
                 <!-- <td>{{ audit.OpenncrsCount }}</td> -->
                 <td>
@@ -266,12 +285,12 @@ const handleCountPerPage = (count: number) => {
                       path: '/organization/internal-audit',
                       query: { internal_audit_plan_id: audit.id, tab: 'plan' },
                     }"
-                    >Open</router-link
+                    >{{ $t('Open') }}</router-link
                   >
                 </td>
               </tr>
               <tr v-if="!filteredAudits.length">
-                <td colspan="7" class="empty-row">No matching audits</td>
+                <td colspan="7" class="empty-row">{{ $t('no_matching_audits') }}</td>
               </tr>
             </tbody>
           </table>
@@ -289,17 +308,17 @@ const handleCountPerPage = (count: number) => {
       <template #empty>
         <DataEmpty
           link="/organization/internal-audit"
-          add-text="New audit Plan"
-          title="No internal audits"
-          description="Your internal audit plans will appear here."
+          :add-text="$t('New Audit Plan')"
+          :title="$t('No internal audits')"
+          :description="$t('Your internal audit plans will appear here.')"
         />
       </template>
       <template #failed>
         <DataEmpty
           link="/organization/internal-audit"
-          add-text="New audit Plan"
-          title="Could not load audits"
-          description="Try again or create a new audit plan."
+          :add-text="$t('New Audit Plan')"
+          :title="$t('Could not load audits')"
+          :description="$t('Try again or create a new audit plan.')"
         />
       </template>
     </DataStatus>
@@ -313,7 +332,7 @@ const handleCountPerPage = (count: number) => {
   color: white !important;
 }
 .btn-primary {
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 .filters {
   padding-block: 10px;

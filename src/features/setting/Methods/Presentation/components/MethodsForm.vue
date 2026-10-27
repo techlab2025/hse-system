@@ -203,9 +203,9 @@ watch(
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
-      label="industry"
+      :label="$t('industry')"
       id="Methods"
-      placeholder="Select industry"
+      :placeholder="$t('Select industry')"
       :type="2"
       @update:modelValue="setIndustry"
     />

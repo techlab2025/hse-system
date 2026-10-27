@@ -19,8 +19,8 @@ const UpdateData = (data) => {
 <template>
   <div class="investegation-attachment">
     <HeaderPage
-      :title="`Investigation attachments`"
-      :subtitle="`Add a description of each witness to the incident.`"
+      :title="$t('Investigation attachments')"
+      :subtitle="$t('Add a description of each witness to the incident.')"
       :img="Investegationattachment"
       class="title-header"
     />

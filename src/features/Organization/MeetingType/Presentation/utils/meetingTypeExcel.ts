@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import {
   PeriodicTypeEnum,
   parsePeriodicType,
@@ -68,7 +69,8 @@ export const buildMeetingTypeExcelRows = (
 ): MeetingTypeExcelRow[] => {
   const headers = (sheet[0] ?? []).map(normalizeMeetingTypeHeader)
   const used = headers.filter(Boolean)
-  if (new Set(used).size !== used.length) throw new Error('Excel column names must be unique.')
+  if (new Set(used).size !== used.length)
+    throw new Error(localizeUi('Excel column names must be unique.'))
   const rows: MeetingTypeExcelRow[] = []
   sheet.slice(1).forEach((cells, index) => {
     if (!cells.some((cell) => String(cell ?? '').trim())) return
@@ -112,6 +114,6 @@ export const buildMeetingTypeExcelRows = (
     }
     rows.push(row)
   })
-  if (!rows.length) throw new Error('At least one data row is required.')
+  if (!rows.length) throw new Error(localizeUi('At least one data row is required.'))
   return rows
 }

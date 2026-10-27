@@ -1,10 +1,13 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import OverviewInvestigationsChartUseCase from '../../domain/usecase/OverviewInvestigationsChartUseCase'
 import type OverviewInvestigationsChartModel from '../../data/Model/OverviewInvestigationsChartModel'
 
-export default class OverviewInvestigationsChartController extends SelectControllerInterface<OverviewInvestigationsChartModel[]> {
+export default class OverviewInvestigationsChartController extends SelectControllerInterface<
+  OverviewInvestigationsChartModel[]
+> {
   private static instance: OverviewInvestigationsChartController
   private constructor() {
     super()
@@ -29,7 +32,7 @@ export default class OverviewInvestigationsChartController extends SelectControl
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

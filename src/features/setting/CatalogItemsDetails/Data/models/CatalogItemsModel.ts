@@ -1,17 +1,13 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class CatalogItemsModel extends TitleInterface {
   public id: number
   public title: string
-   public description: string
+  public description: string
 
-  constructor(
-    id: number,
-    title: string,
-    description: string
-
-  ) {
-    super({ id, title, })
+  constructor(id: number, title: string, description: string) {
+    super({ id, title })
 
     this.id = id
     this.title = title
@@ -19,11 +15,6 @@ export default class CatalogItemsModel extends TitleInterface {
   }
 
   static fromMap(data: any): CatalogItemsModel {
-    return new CatalogItemsModel(
-      data.id,
-      data.title,
-      data.description
-
-    )
+    return localizedRecord(new CatalogItemsModel(data.id, data.title, data.description), data)
   }
 }

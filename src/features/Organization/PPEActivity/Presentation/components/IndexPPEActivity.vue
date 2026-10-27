@@ -182,6 +182,7 @@ const headerActions = () => [
     <div class="input-search col-span-1">
       <span class="icon-remove" @click="((word = ''), searchPPEActivities())"><Search /></span>
       <input
+        dir="auto"
         v-model="word"
         :placeholder="$t('search')"
         class="input"

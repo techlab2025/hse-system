@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import DeleteTemplateIcon from '@/shared/icons/DeleteTemplateIcon.vue';
-import Dialog from 'primevue/dialog';
-import { ref } from "vue";
-import Warning from "@/assets/images/warning.png";
+import DeleteTemplateIcon from '@/shared/icons/DeleteTemplateIcon.vue'
+import Dialog from 'primevue/dialog'
+import { ref } from 'vue'
+import Warning from '@/assets/images/warning.png'
 
 const emit = defineEmits(['update:data'])
-const visible = ref(false);
+const visible = ref(false)
 
 const UpdateData = () => {
   emit('update:data')
@@ -17,22 +17,31 @@ const UpdateData = () => {
   <button class="delete-btn" @click.prevent="visible = true">
     <DeleteTemplateIcon />
   </button>
-  <Dialog v-model:visible="visible" modal :dismissable-mask="true" :show-header="false" :style="{ width: '25rem' }">
+  <Dialog
+    v-model:visible="visible"
+    modal
+    :dismissable-mask="true"
+    :show-header="false"
+    :style="{ width: '25rem' }"
+  >
     <div class="delete-content" style="">
-      <img :src="Warning" alt="warning">
-      <h2>Are You Sure You Want To Delete ?</h2>
+      <img :src="Warning" alt="" aria-hidden="true" />
+      <h2>{{ $t('Are You Sure You Want To Delete ?') }}</h2>
     </div>
 
     <div class="btn-container w-full">
-      <button class="btn btn-primary " style="width: 50%; " @click.prevent="UpdateData">Yes</button>
-      <button class="btn btn-secondary " style="width: 50%; " @click.prevent="visible = false">No</button>
+      <button class="btn btn-primary" style="width: 50%" @click.prevent="UpdateData">
+        {{ $t('Yes') }}
+      </button>
+      <button class="btn btn-secondary" style="width: 50%" @click.prevent="visible = false">
+        {{ $t('No') }}
+      </button>
     </div>
   </Dialog>
 </template>
 
 <style scoped>
 .delete-content {
-
   display: flex;
   flex-direction: column;
   align-items: center;

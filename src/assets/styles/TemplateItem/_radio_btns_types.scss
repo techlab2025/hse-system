@@ -9,7 +9,7 @@
   font-family: 'Light';
   font-size: $SmSize;
   font-weight: $BaseFontWeightBold;
-  padding-left: $XlSize;
+  padding-inline-start: $XlSize;
   input {
     background-color: color-mix(in srgb, var(--surface-1) 60%, transparent);
     width: 90px;

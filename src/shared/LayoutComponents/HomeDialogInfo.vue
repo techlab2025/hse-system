@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { translateMessage } from '@/localization/messages'
 import Dialog from 'primevue/dialog'
-import HomeInfoIcon from '../icons/HomeInfoIcon.vue';
+import HomeInfoIcon from '../icons/HomeInfoIcon.vue'
 
 const visible = ref(false)
 
@@ -11,12 +12,13 @@ const modules = ref([
     id: 1,
     title: 'Observation',
     subtitle: 'Report a Potential Risk',
-    description: 'Used to report unsafe conditions or behaviors <strong>before</strong> they cause harm.',
+    description:
+      'Used to report unsafe conditions or behaviors <strong>before</strong> they cause harm.',
     features: [
       'Identify hazards or unsafe behaviors.',
       'Add photos and assess risk level (L/M/H).',
-      'Assign corrective & preventive actions.'
-    ]
+      'Assign corrective & preventive actions.',
+    ],
   },
   {
     id: 2,
@@ -26,8 +28,8 @@ const modules = ref([
     features: [
       'Record root cause and witnesses.',
       'Log injuries or fatalities.',
-      'Trigger automatic Investigations.'
-    ]
+      'Trigger automatic Investigations.',
+    ],
   },
   {
     id: 3,
@@ -37,8 +39,8 @@ const modules = ref([
     features: [
       'Review incident details & root causes.',
       'Conduct formal team meetings.',
-      'Assign responsibilities and close cases.'
-    ]
+      'Assign responsibilities and close cases.',
+    ],
   },
   {
     id: 4,
@@ -48,25 +50,37 @@ const modules = ref([
     features: [
       'Assign to Machines, Employees, or Zones.',
       'Ad-Hoc (one-time) or Periodic (repeated).',
-      'Complete digital checklists on schedule.'
-    ]
-  }
+      'Complete digital checklists on schedule.',
+    ],
+  },
 ])
 </script>
 
 <template>
-  <button @click="visible = true" class="info-trigger">
+  <button
+    @click="visible = true"
+    class="info-trigger"
+    :aria-label="$t('Operations Module: HSE Management')"
+  >
     <HomeInfoIcon class="info-dialog" />
   </button>
 
-  <Dialog v-model:visible="visible" :modal="true" header="Operations Module: HSE Management" :style="{ width: '70vw' }"
-    :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+  <Dialog
+    v-model:visible="visible"
+    :modal="true"
+    :header="$t('Operations Module: HSE Management')"
+    :style="{ width: '70vw' }"
+    :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+  >
     <div class="hse-container">
       <section class="overview-header">
         <p>
-          The <strong>Operations Module</strong> helps you manage workplace safety through reporting, monitoring, and
-          corrective actions.
-          It consists of four primary pillars designed to maintain a safe and compliant work environment.
+          {{ $t('The') }} <strong>{{ $t('Operations Module') }}</strong>
+          {{
+            $t(
+              'helps you manage workplace safety through reporting, monitoring, and corrective actions. It consists of four primary pillars designed to maintain a safe and compliant work environment.',
+            )
+          }}
         </p>
       </section>
 
@@ -76,16 +90,16 @@ const modules = ref([
         <div v-for="item in modules" :key="item.id" class="module-card">
           <div class="card-header">
             <span class="badge">{{ item.id }}</span>
-            <h3>{{ item.title }}</h3>
+            <h3>{{ translateMessage(item.title) }}</h3>
           </div>
 
-          <p class="subtitle">{{ item.subtitle }}</p>
+          <p class="subtitle">{{ translateMessage(item.subtitle) }}</p>
 
-          <p class="description" v-html="item.description"></p>
+          <p class="description" v-html="translateMessage(item.description)"></p>
 
           <ul class="info-list">
             <li v-for="(feature, fIndex) in item.features" :key="fIndex">
-              {{ feature }}
+              {{ translateMessage(feature) }}
             </li>
           </ul>
         </div>
@@ -139,7 +153,9 @@ const modules = ref([
   border: 1px solid var(--brand-primary-100);
   border-radius: 12px;
   padding: 20px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .module-card:hover {
@@ -190,7 +206,7 @@ const modules = ref([
 }
 
 .info-list {
-  padding-left: 20px;
+  padding-inline-start: 20px;
   margin: 0;
   font-size: 0.9rem;
   color: var(--brand-primary-600);

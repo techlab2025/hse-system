@@ -1,3 +1,4 @@
+import { getCurrentLocale } from '@/localization/i18n'
 import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params'
 import TitleInterface from '@/base/Data/Models/title_interface'
 export default class ServiceSectionDetailsModel {
@@ -9,7 +10,6 @@ export default class ServiceSectionDetailsModel {
   public alt: string
   public image: string
 
-
   constructor(
     id: number,
     titles: TitleLocale[],
@@ -18,7 +18,6 @@ export default class ServiceSectionDetailsModel {
     service: TitleInterface | null,
     alt: string,
     image: string,
-
   ) {
     this.id = id
     this.titles = titles
@@ -42,11 +41,12 @@ export default class ServiceSectionDetailsModel {
   }
 
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
-      subtitle: data.subtitles?.find((title: any) => title.locale === savedLocale)?.subtitle
+      localizedTitles: data.titles,
+      subtitle: data.subtitles?.find((title: any) => title.locale === savedLocale)?.subtitle,
     })
   }
 }
@@ -54,5 +54,4 @@ export default class ServiceSectionDetailsModel {
 interface subTitleInterface {
   id?: number
   subtitle: string
-
 }

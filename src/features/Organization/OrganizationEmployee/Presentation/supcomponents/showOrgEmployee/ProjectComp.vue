@@ -23,10 +23,10 @@ const getStatusText = (status, startDate) => {
 <template>
   <div class="section projects-section">
     <div class="section-header">
-      <img class="icon" src="/src/assets/images/project.png" alt="project" />
+      <img class="icon" src="/src/assets/images/project.png" :alt="$t('project')" />
       <div class="section-header-text">
-        <h4>Projects</h4>
-        <p class="hint">All Projects Where This Employee Is Present</p>
+        <h4>{{ $t('Projects') }}</h4>
+        <p class="hint">{{ $t('All Projects Where This Employee Is Present') }}</p>
       </div>
     </div>
 
@@ -59,7 +59,9 @@ const getStatusText = (status, startDate) => {
       </div>
     </div>
 
-    <p v-if="!state?.length" class="side-empty">No projects found for this employee yet.</p>
+    <p v-if="!state?.length" class="side-empty">
+      {{ $t('No projects found for this employee yet.') }}
+    </p>
   </div>
 </template>
 

@@ -193,9 +193,24 @@ const setImage = async (data: File | string) => {
 }
 
 const EquipmentsTypes = ref([
-  new TitleInterface({ id: EquipmentTypesEnum.DEVICE, title: 'Device', subtitle: '' }),
-  new TitleInterface({ id: EquipmentTypesEnum.EQUIPMENT, title: 'Equipment', subtitle: '' }),
-  new TitleInterface({ id: EquipmentTypesEnum.TOOL, title: 'TOOL', subtitle: '' }),
+  new TitleInterface({
+    id: EquipmentTypesEnum.DEVICE,
+    title: 'Device',
+    translationKey: 'Device',
+    subtitle: '',
+  }),
+  new TitleInterface({
+    id: EquipmentTypesEnum.EQUIPMENT,
+    title: 'Equipment',
+    translationKey: 'Equipment',
+    subtitle: '',
+  }),
+  new TitleInterface({
+    id: EquipmentTypesEnum.TOOL,
+    title: 'TOOL',
+    translationKey: 'TOOL',
+    subtitle: '',
+  }),
 ])
 
 const EquipmentType = ref<TitleInterface | null>(null)
@@ -235,11 +250,25 @@ const GettypeName = (type: EquipmentTypesEnum) => {
   }
 }
 
-const { requiredFieldErrors, validateRequiredFields: validateFields } = useRequiredFields('EquipmentTypeForm', () => [
-  { key: 'langs', message: '', isMissing: () => !langs.value.some((item) => String(item.title ?? '').trim().length > 0) },
-  { key: 'industry', message: '', isMissing: () => user.user?.type === OrganizationTypeEnum.ADMIN && !allIndustries.value && !hasSelectedValue(industry.value) },
-  { key: 'image', message: '', isMissing: () => !image.value },
-])
+const { requiredFieldErrors, validateRequiredFields: validateFields } = useRequiredFields(
+  'EquipmentTypeForm',
+  () => [
+    {
+      key: 'langs',
+      message: '',
+      isMissing: () => !langs.value.some((item) => String(item.title ?? '').trim().length > 0),
+    },
+    {
+      key: 'industry',
+      message: '',
+      isMissing: () =>
+        user.user?.type === OrganizationTypeEnum.ADMIN &&
+        !allIndustries.value &&
+        !hasSelectedValue(industry.value),
+    },
+    { key: 'image', message: '', isMissing: () => !image.value },
+  ],
+)
 const validateRequiredFields = async () => {
   updateData()
   return validateFields()
@@ -253,12 +282,14 @@ defineExpose({ validateRequiredFields })
   </div>
   <div data-required-field="langs" class="col-span-4 md:col-span-2">
     <LangTitleInput
-      :label="`${GettypeName(activeTab)} ${$t('equipment_type_name')}`"
+      :label="`${$t(GettypeName(activeTab) || 'Equipment')} ${$t('equipment_type_name')}`"
       :langs="langDefault"
       :modelValue="langs"
       @update:modelValue="setLangs"
     />
-    <p v-if="requiredFieldErrors.langs" class="required-field-message" role="alert">{{ requiredFieldErrors.langs }}</p>
+    <p v-if="requiredFieldErrors.langs" class="required-field-message" role="alert">
+      {{ requiredFieldErrors.langs }}
+    </p>
   </div>
 
   <!-- Has Certificate -->
@@ -295,14 +326,15 @@ defineExpose({ validateRequiredFields })
   <div class="input-wrapper col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
     <CustomCheckbox
       :index="3"
-      :title="`all_industries`"
+      :title="$t('all_industries')"
       :checked="allIndustries === 1"
       @update:checked="updateAllIndustries"
     />
   </div>
 
   <!--industry  -->
-  <div data-required-field="industry"
+  <div
+    data-required-field="industry"
     class="col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
   >
@@ -310,31 +342,40 @@ defineExpose({ validateRequiredFields })
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
-      label="Select Industry"
+      :label="$t('Select Industry')"
       id="EquipmentType"
-      placeholder="Select industry"
+      :placeholder="$t('Select industry')"
       :type="2"
       @update:modelValue="setIndustry"
     />
-    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">{{ requiredFieldErrors.industry }}</p>
+    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">
+      {{ requiredFieldErrors.industry }}
+    </p>
   </div>
 
   <!-- image -->
   <div data-required-field="image" class="col-span-4 md:col-span-4 input-wrapper">
-    <label for="image">Image</label>
+    <label for="image">{{ $t('image') }}</label>
     <SingleFileUpload
       v-model="image"
       @update:modelValue="setImage"
-      label="Image"
+      :label="$t('image')"
       id="image"
-      placeholder="Select image"
+      :placeholder="$t('Select image')"
     />
-    <p v-if="requiredFieldErrors.image" class="required-field-message" role="alert">{{ requiredFieldErrors.image }}</p>
+    <p v-if="requiredFieldErrors.image" class="required-field-message" role="alert">
+      {{ requiredFieldErrors.image }}
+    </p>
   </div>
 
   <!-- <button @click="updateData; $emit('close:data')" class="btn btn-primary w-full" style="margin-top: 10px;">ADD</button> -->
 </template>
 
 <style scoped>
-.required-field-message { margin-top: .35rem; color: var(--status-danger); font-size: .82rem; font-weight: 700; }
+.required-field-message {
+  margin-top: 0.35rem;
+  color: var(--status-danger);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
 </style>

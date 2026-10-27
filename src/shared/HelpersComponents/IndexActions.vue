@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translateKeyOrLiteral } from '@/localization/i18n'
+
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 // import ExportPdf from '@/components/ExportPdf.vue'
 import PermissionBuilder from './PermissionBuilder.vue'
@@ -11,11 +13,11 @@ const searchOrganizatoinEmployee = () => {
 }
 
 const props = defineProps<{
-  permissions: PermissionsEnum[],
-  addLink: string,
-  ImportexcelLink: string,
-  addText: string,
-  addDescription: string,
+  permissions: PermissionsEnum[]
+  addLink: string
+  ImportexcelLink: string
+  addText: string
+  addDescription: string
   numberOfActions: number
 }>()
 // ── menu state ────────────────────────────────────────────
@@ -43,42 +45,56 @@ const handleExportExcel = () => {
   emit('export:excel')
   // your existing exportExcel() call here
 }
-
-
-
 </script>
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-
-
     <!-- Actions Menu -->
     <div class="col-span-2 flex justify-end">
       <div class="actions-wrapper" ref="wrapperRef">
-
         <button class="trigger-btn" :class="{ open: menuOpen }" @click="menuOpen = !menuOpen">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
             <circle cx="12" cy="5" r="1.5" fill="currentColor" />
             <circle cx="12" cy="12" r="1.5" fill="currentColor" />
             <circle cx="12" cy="19" r="1.5" fill="currentColor" />
           </svg>
-          <span>Actions</span>
+          <span>{{ $t('Actions') }}</span>
           <span class="trigger-badge">{{ numberOfActions }}</span>
-          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2.5">
+          <svg
+            class="chevron"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
             <polyline points="6 9 12 15 18 9" />
           </svg>
         </button>
 
         <Transition name="panel">
           <div v-if="menuOpen" class="action-panel">
-
             <!-- Export section -->
-            <p class="panel-label">Export</p>
+            <p class="panel-label">{{ $t('export') }}</p>
 
             <!-- handleExportPdf -->
             <button class="action-item" @click="handleExportPdf">
               <span class="action-icon icon-pdf">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                   <polyline points="14 2 14 8 20 8" />
                   <line x1="16" y1="13" x2="8" y2="13" />
@@ -86,31 +102,45 @@ const handleExportExcel = () => {
                 </svg>
               </span>
               <span class="action-meta">
-                <span class="action-name">Export PDF</span>
-                <span class="action-desc">Download as .pdf</span>
+                <span class="action-name">{{ $t('Export PDF') }}</span>
+                <span class="action-desc">{{ $t('Download as .pdf') }}</span>
               </span>
             </button>
 
             <!-- handleExportExcel -->
             <button class="action-item" @click="handleExportExcel">
               <span class="action-icon icon-xls">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
                   <rect x="3" y="3" width="18" height="18" rx="2" />
                   <path d="M3 9h18M9 21V9" />
                 </svg>
               </span>
               <span class="action-meta">
-                <span class="action-name">Export Excel</span>
-                <span class="action-desc">Download as .xlsx</span>
+                <span class="action-name">{{ $t('Export Excel') }}</span>
+                <span class="action-desc">{{ $t('Download as .xlsx') }}</span>
               </span>
             </button>
 
             <div class="panel-divider" />
-            <p class="panel-label">Import</p>
+            <p class="panel-label">{{ $t('actions_list') }}</p>
 
             <router-link class="action-item" :to="ImportexcelLink" @click="menuOpen = false">
               <span class="action-icon icon-up">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
                   <polyline points="16 16 12 12 8 16" />
                   <line x1="12" y1="12" x2="12" y2="21" />
                   <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
@@ -118,7 +148,7 @@ const handleExportExcel = () => {
               </span>
               <span class="action-meta">
                 <span class="action-name">{{ $t('upload_excel') }}</span>
-                <span class="action-desc">Import from .xlsx</span>
+                <span class="action-desc">{{ $t('Import from .xlsx') }}</span>
               </span>
             </router-link>
 
@@ -127,10 +157,20 @@ const handleExportExcel = () => {
             <!-- Add Employee (highlighted CTA) -->
             <!-- [PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE] -->
             <PermissionBuilder :code="permissions">
-              <router-link class="action-item highlight" to="/organization/organization-employee/add"
-                @click="menuOpen = false">
+              <router-link
+                class="action-item highlight"
+                to="/organization/organization-employee/add"
+                @click="menuOpen = false"
+              >
                 <span class="action-icon icon-add">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
                     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                     <circle cx="9" cy="7" r="4" />
                     <line x1="19" y1="8" x2="19" y2="14" />
@@ -138,21 +178,17 @@ const handleExportExcel = () => {
                   </svg>
                 </span>
                 <span class="action-meta">
-                  <span class="action-name">{{ $t(addText) }}</span>
+                  <span class="action-name">{{ translateKeyOrLiteral(addText) }}</span>
                   <span class="action-desc">{{ $t(addDescription) }}</span>
                 </span>
               </router-link>
             </PermissionBuilder>
-
           </div>
         </Transition>
-
       </div>
     </div>
   </div>
 </template>
-
-
 
 <style scoped>
 /* ── Wrapper ──────────────────────────────────────────── */
@@ -224,11 +260,15 @@ const handleExportExcel = () => {
 
 /* ── Vue Transition ───────────────────────────────────── */
 .panel-enter-active {
-  transition: opacity 0.2s ease, transform 0.22s cubic-bezier(0.34, 1.2, 0.64, 1);
+  transition:
+    opacity 0.2s ease,
+    transform 0.22s cubic-bezier(0.34, 1.2, 0.64, 1);
 }
 
 .panel-leave-active {
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
 }
 
 .panel-enter-from,
@@ -262,12 +302,14 @@ const handleExportExcel = () => {
   border-radius: 12px;
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.15s ease, transform 0.15s ease;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
   color: var(--brand-primary-700);
   border: none;
   background: transparent;
   width: 100%;
-  text-align: left;
+  text-align: start;
   font-size: 13.5px;
   font-weight: 500;
 }
@@ -368,7 +410,7 @@ const handleExportExcel = () => {
 }
 
 .panel-enter-active .action-item:nth-child(5) {
-  animation: rowIn 0.2s 0.20s both;
+  animation: rowIn 0.2s 0.2s both;
 }
 
 @keyframes rowIn {

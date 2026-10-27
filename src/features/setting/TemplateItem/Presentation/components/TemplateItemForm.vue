@@ -130,8 +130,8 @@ const ClearTitle = () => {
   <div class="template-item-form-page w-full col-span-4">
     <PagesHeader
       :img="SmartContract"
-      title="smart create for your inspection templet"
-      subtitle="add your items one by one to the templet and you can see them"
+      :title="$t('smart create for your inspection templet')"
+      :subtitle="$t('auditUi.add_items_to_the_template_one_at_a_time_to_review_them')"
     />
   </div>
 
@@ -141,7 +141,9 @@ const ClearTitle = () => {
         <!-- <span class="template-form-step">01</span> -->
         <div>
           <p class="template-form-title">{{ $t('inspection_exemined_title') }}</p>
-          <p class="template-form-subtitle">Build the item, options, and required evidence.</p>
+          <p class="template-form-subtitle">
+            {{ $t('Build the item, options, and required evidence.') }}
+          </p>
         </div>
       </div>
 
@@ -149,22 +151,24 @@ const ClearTitle = () => {
         <div class="input-wrapper field-required">
           <label for="item-title">{{ $t('inspection_exemined_item') }}</label>
           <input
+            dir="auto"
             type="text"
             id="item-title"
             v-model="title"
             class="input"
-            placeholder="add your title here.."
+            :placeholder="$t('add your title here..')"
             @input="updateData"
           />
         </div>
         <div class="input-wrapper field-required">
           <label for="item-category">{{ $t('inspection_exemined_title') }}</label>
           <input
+            dir="auto"
             type="text"
             id="item-category"
             v-model="category"
             class="input"
-            placeholder="add your tepmlate item category.."
+            :placeholder="$t('add your tepmlate item category..')"
             @input="updateData"
           />
         </div>
@@ -213,8 +217,16 @@ const ClearTitle = () => {
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 80%, transparent);
   border-radius: 22px;
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 94%, transparent)),
-    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 4%, transparent), color-mix(in srgb, var(--status-success) 4%, transparent));
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface-1) 98%, transparent),
+      color-mix(in srgb, var(--brand-primary-50) 94%, transparent)
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--brand-primary-500) 4%, transparent),
+      color-mix(in srgb, var(--status-success) 4%, transparent)
+    );
   box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
 }
 

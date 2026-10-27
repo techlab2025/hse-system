@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
 import InductionEmployeeModel from './InductionEmployeeModel'
@@ -72,20 +73,23 @@ export default class InductionDetailsModel extends TitleInterface {
   static fromMap(data: Record<string, unknown>): InductionDetailsModel {
     const induction = InductionModel.fromMap(data)
 
-    return new InductionDetailsModel(
-      induction.id,
-      induction.title,
-      induction.instractor_id,
-      induction.instructorEmployee,
-      induction.project,
-      induction.projectLocation,
-      induction.projectZone,
-      induction.date,
-      induction.createdAt,
-      induction.media,
-      induction.image,
-      induction.trainingTopic,
-      induction.organisationEmployee,
+    return localizedRecord(
+      new InductionDetailsModel(
+        induction.id,
+        induction.title,
+        induction.instractor_id,
+        induction.instructorEmployee,
+        induction.project,
+        induction.projectLocation,
+        induction.projectZone,
+        induction.date,
+        induction.createdAt,
+        induction.media,
+        induction.image,
+        induction.trainingTopic,
+        induction.organisationEmployee,
+      ),
+      data,
     )
   }
 

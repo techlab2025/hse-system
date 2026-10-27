@@ -37,20 +37,23 @@ const visible = ref(false)
   </button>
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
-      <HeaderSection title="CAPA" subtitle="If you want to Show the CAPA" />
+      <HeaderSection
+        :title="$t('CAPA')"
+        :subtitle="$t('auditUi.view_corrective_and_preventive_action_details')"
+      />
     </template>
     <!-- <DataStatus :controller="state"> -->
-      <!-- <template #success> -->
-        <div class="show-observation-container">
-          <ObservationCapaDestails
-            class="show-observation-container"
-            v-if="props.capa"
-            :data="props.capa"
-            @close="visible = false"
-          />
-        </div>
-      <!-- </template> -->
-      <!-- <template #loader> </template>
+    <!-- <template #success> -->
+    <div class="show-observation-container">
+      <ObservationCapaDestails
+        class="show-observation-container"
+        v-if="props.capa"
+        :data="props.capa"
+        @close="visible = false"
+      />
+    </div>
+    <!-- </template> -->
+    <!-- <template #loader> </template>
       <template #failed> </template> -->
     <!-- </DataStatus> -->
   </Dialog>

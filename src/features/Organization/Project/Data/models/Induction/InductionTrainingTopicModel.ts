@@ -1,3 +1,4 @@
+import { getCurrentLocale } from '@/localization/i18n'
 import TraningTopicModel from '@/features/Organization/TraningTopic/Data/models/TraningTopicModel'
 
 type LocaleTitle = { locale?: string; title?: string }
@@ -15,7 +16,12 @@ export default class InductionTrainingTopicModel extends TraningTopicModel {
   public trainingTopicId: number
   public displayTitle: string
 
-  constructor(id: number, title: string, inductionTrainingTopicId: number, trainingTopicId: number) {
+  constructor(
+    id: number,
+    title: string,
+    inductionTrainingTopicId: number,
+    trainingTopicId: number,
+  ) {
     super(id, title)
     this.inductionTrainingTopicId = inductionTrainingTopicId
     this.trainingTopicId = trainingTopicId
@@ -29,8 +35,8 @@ export default class InductionTrainingTopicModel extends TraningTopicModel {
         ? item.training_topic_id
         : typeof item.training_Topic_id === 'object' && item.training_Topic_id
           ? item.training_Topic_id
-          : item.training_topic ?? item
-    const locale = (typeof localStorage !== 'undefined' && localStorage.getItem('lang')) || 'en'
+          : (item.training_topic ?? item)
+    const locale = (typeof localStorage !== 'undefined' && getCurrentLocale()) || 'en'
     const trainingTopicId = Number(
       topic.id ??
         (typeof item.training_topic_id === 'number' ? item.training_topic_id : null) ??

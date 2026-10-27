@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class ProjectLocationHierarchyModel extends TitleInterface {
@@ -17,12 +18,15 @@ export default class ProjectLocationHierarchyModel extends TitleInterface {
   }
 
   static fromMap(data: any): ProjectLocationHierarchyModel {
-    return new ProjectLocationHierarchyModel(
-      data.project_location_hierarchy_id,
-      data.title,
-      data.location_id,
-      data.project_location_id,
-      data.hierarchy_id,
+    return localizedRecord(
+      new ProjectLocationHierarchyModel(
+        data.project_location_hierarchy_id,
+        data.title,
+        data.location_id,
+        data.project_location_id,
+        data.hierarchy_id,
+      ),
+      data,
     )
   }
 }

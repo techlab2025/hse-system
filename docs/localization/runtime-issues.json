@@ -1,0 +1,320 @@
+{
+  "fixtureData": true,
+  "note": "Errors observed using representative record ID 1 and incomplete detail fixtures; requires validation with valid backend records. Not treated as passing routes.",
+  "routes": {
+    "/organization/equipment-mangement/inspection/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation.",
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'id')"
+      ]
+    },
+    "/organization/template-item/add/:parent_id?": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [],
+      "consoleErrorSummaries": [
+        "TypeError: Cannot read properties of undefined (reading 'length')"
+      ]
+    },
+    "/organization/equipment/:id/:parent_id?": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation.",
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'length')"
+      ]
+    },
+    "/organization/template-item/:id/:parent_id?": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation."
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'length')"
+      ]
+    },
+    "/organization/Investigating-result/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [],
+      "consoleErrorSummaries": [
+        "TypeError: Cannot read properties of undefined (reading 'name')",
+        "TypeError: Cannot read properties of undefined (reading 'type')"
+      ]
+    },
+    "/organization/where-house/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation.",
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'id')"
+      ]
+    },
+    "/organization/ticket/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Error while show Ticket"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'map')"
+      ]
+    },
+    "/organization/equipment-show/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'length')"
+      ]
+    },
+    "/organization/factory-item/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation.",
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'id')"
+      ]
+    },
+    "/organization/hazard-type/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation.",
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'id')"
+      ]
+    },
+    "/organization/role/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation.",
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'map')"
+      ]
+    },
+    "/organization/hazard/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation.",
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'id')"
+      ]
+    },
+    "/organization/partner/:id": {
+      "languages": [
+        "ar"
+      ],
+      "pageErrors": [
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": []
+    },
+    "/admin/template-item/add/:parent_id?": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [],
+      "consoleErrorSummaries": [
+        "TypeError: Cannot read properties of undefined (reading 'length')"
+      ]
+    },
+    "/admin/system-risk-management/add": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [],
+      "consoleErrorSummaries": [
+        "TypeError: Cannot read properties of undefined (reading 'titles')"
+      ]
+    },
+    "/admin/equipment/:id/:parent_id?": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation.",
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'length')"
+      ]
+    },
+    "/admin/template-item/:id/:parent_id?": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation.",
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'length')"
+      ]
+    },
+    "/admin/services/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation.",
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: t.includes.map is not a function"
+      ]
+    },
+    "/admin/organization/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation.",
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'id')"
+      ]
+    },
+    "/admin/catalog-items-details/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation.",
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'id')"
+      ]
+    },
+    "/admin/equipment-show/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'length')"
+      ]
+    },
+    "/admin/factory-item/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation.",
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'id')"
+      ]
+    },
+    "/admin/hazard-type/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation.",
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'id')"
+      ]
+    },
+    "/admin/role/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation.",
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'map')"
+      ]
+    },
+    "/admin/hazard/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Unable to complete the operation.",
+        "تعذر إتمام العملية"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'id')"
+      ]
+    },
+    "/admin/ticket/:id": {
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "pageErrors": [
+        "Error while show Ticket"
+      ],
+      "consoleErrorSummaries": [
+        "Error parsing data from Repo TypeError: Cannot read properties of undefined (reading 'map')"
+      ]
+    }
+  }
+}

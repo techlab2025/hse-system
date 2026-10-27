@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import { type TitleLocale } from '@/base/core/params/translations_params.ts'
 import FactoryModel from '@/features/setting/Factory/Data/models/FactoryModel'
 
@@ -26,13 +27,16 @@ export default class InvestegationFactorModel {
   }
 
   static fromMap(data: any): InvestegationFactorModel {
-    return new InvestegationFactorModel(
-      data.id,
-      data.factory,
-      data.status,
-      data.title,
-      data.investigation_factor_items,
-      data.corrective_action,
+    return localizedRecord(
+      new InvestegationFactorModel(
+        data.id,
+        data.factory,
+        data.status,
+        data.title,
+        data.investigation_factor_items,
+        data.corrective_action,
+      ),
+      data,
     )
   }
 

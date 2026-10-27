@@ -1,3 +1,5 @@
+import { getCurrentLocale } from '@/localization/i18n'
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 // import type ProjectLocationZonesModel from '@/features/Organization/Project/Data/models/ProjectLocationZones'
 import SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
@@ -36,23 +38,27 @@ export default class LocationDetailsModel extends TitleInterface {
   }
 
   static fromMap(data: any): LocationDetailsModel {
-    return new LocationDetailsModel(
-      data.id,
-      data.title,
-      data.code,
-      data.parent?.length > 0 ? data.parent?.map((parent) => this.getTitle(parent)) : [],
-      data.type,
-      data.status,
-      data.image,
-      data.zoons,
+    return localizedRecord(
+      new LocationDetailsModel(
+        data.id,
+        data.title,
+        data.code,
+        data.parent?.length > 0 ? data.parent?.map((parent) => this.getTitle(parent)) : [],
+        data.type,
+        data.status,
+        data.image,
+        data.zoons,
+      ),
+      data,
     )
   }
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data.titles,
     })
   }
 
@@ -74,6 +80,6 @@ export default class LocationDetailsModel extends TitleInterface {
     1,
     1,
     acc,
-    [SohwProjectZoonModel.example , SohwProjectZoonModel.example],
+    [SohwProjectZoonModel.example, SohwProjectZoonModel.example],
   )
 }

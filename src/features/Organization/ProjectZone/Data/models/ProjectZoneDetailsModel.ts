@@ -1,3 +1,5 @@
+import { getCurrentLocale } from '@/localization/i18n'
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type OrganizationLocationModel from '@/features/Organization/OrganizationLocation/Data/models/OrganizationLocationModel'
 import ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
@@ -30,14 +32,17 @@ export default class ProjectZoneDetailsModel {
   }
 
   static fromMap(data: any): ProjectZoneDetailsModel {
-    return new ProjectZoneDetailsModel(
-      data.id,
-      data.titles,
-      data?.project ? this.getTitle(data.project) : null,
-      data?.location ? this.getTitle(data.location) : null,
-      data.lat,
-      data.lng,
-      data.title,
+    return localizedRecord(
+      new ProjectZoneDetailsModel(
+        data.id,
+        data.titles,
+        data?.project ? this.getTitle(data.project) : null,
+        data?.location ? this.getTitle(data.location) : null,
+        data.lat,
+        data.lng,
+        data.title,
+      ),
+      data,
     )
   }
 
@@ -51,12 +56,13 @@ export default class ProjectZoneDetailsModel {
     'Zoon1',
   )
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     if (!data.id) return null
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data.titles,
     })
   }
 }

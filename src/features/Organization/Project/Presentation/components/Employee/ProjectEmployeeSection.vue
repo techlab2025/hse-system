@@ -78,7 +78,7 @@ watch(
           data-hse-project
           v-project-panels
           class="hse-project-panel hse-project-root people-overview"
-          aria-label="Project people overview"
+          :aria-label="$t('Project people overview')"
         >
           <div class="overview-copy">
             <span class="overview-kicker">{{ $t('Project workforce') }}</span>

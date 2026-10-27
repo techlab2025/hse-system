@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
 
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -160,37 +161,37 @@ const getStatusMeta = (status: StatusEnum | undefined) => {
       return {
         label,
         tone: 'warning',
-        summary: 'Waiting for review and next assignment',
+        summary: localizeUi('Waiting for review and next assignment'),
       }
     case StatusEnum.OPEN:
       return {
         label,
         tone: 'info',
-        summary: 'Actively tracked by the operations team',
+        summary: localizeUi('Actively tracked by the operations team'),
       }
     case StatusEnum.SOLVED:
       return {
         label,
         tone: 'success',
-        summary: 'Issue handled and marked as solved',
+        summary: localizeUi('Issue handled and marked as solved'),
       }
     case StatusEnum.RESOLVED:
       return {
         label,
         tone: 'resolved',
-        summary: 'Resolution submitted and ready for closure',
+        summary: localizeUi('Resolution submitted and ready for closure'),
       }
     case StatusEnum.CLOSED:
       return {
         label,
         tone: 'neutral',
-        summary: 'Ticket closed and preserved in history',
+        summary: localizeUi('Ticket closed and preserved in history'),
       }
     default:
       return {
         label,
         tone: 'neutral',
-        summary: 'Ticket status is currently unavailable',
+        summary: localizeUi('Ticket status is currently unavailable'),
       }
   }
 }
@@ -220,10 +221,13 @@ const showDefaultTicketImage = (event: Event) => {
     <div class="ticket-index-toolbar">
       <div class="ticket-index-hero">
         <span class="ticket-index-kicker">{{ $t('tickets') }}</span>
-        <h1 class="ticket-index-title">Support flow with a cleaner ticket overview</h1>
+        <h1 class="ticket-index-title">{{ $t('Support flow with a cleaner ticket overview') }}</h1>
         <p class="ticket-index-subtitle">
-          Review open requests, track progress by status, and jump into action from one branded
-          workspace.
+          {{
+            $t(
+              'Review open requests, track progress by status, and jump into action from one branded workspace.',
+            )
+          }}
         </p>
       </div>
 
@@ -233,6 +237,7 @@ const showDefaultTicketImage = (event: Event) => {
             <Search />
           </span>
           <input
+            dir="auto"
             id="ticket-search"
             v-model="word"
             :placeholder="$t('search')"
@@ -287,7 +292,7 @@ const showDefaultTicketImage = (event: Event) => {
                   {{ getStatusMeta(ticket?.status).label }}
                 </div>
                 <span class="ticket-type-chip">
-                  {{ ticket?.ticketType?.title || 'General ticket' }}
+                  {{ ticket?.ticketType?.title || $t('General ticket') }}
                 </span>
               </div>
 
@@ -311,7 +316,7 @@ const showDefaultTicketImage = (event: Event) => {
                   <img
                     class="ticket-media-image"
                     :src="getTicketImages(ticket?.media)[0]"
-                    :alt="ticket?.title || 'ticket image'"
+                    :alt="ticket?.title || $t('ticket image')"
                     @error="showDefaultTicketImage"
                   />
                   <div class="ticket-media-overlay">
@@ -328,7 +333,7 @@ const showDefaultTicketImage = (event: Event) => {
                 <img
                   class="ticket-media-image ticket-media-image--empty"
                   :src="DefaultTicketImage"
-                  alt="Default ticket image"
+                  :alt="$t('Default ticket image')"
                 />
                 <span class="ticket-media-empty-label">{{ $t('no_photos') }}</span>
               </div>
@@ -341,7 +346,8 @@ const showDefaultTicketImage = (event: Event) => {
                 <span class="ticket-description-label">{{ $t('description') }}</span>
                 <p class="ticket-description">
                   {{
-                    ticket?.description || 'No additional description was added for this ticket.'
+                    ticket?.description ||
+                    $t('No additional description was added for this ticket.')
                   }}
                 </p>
               </component>
@@ -370,9 +376,13 @@ const showDefaultTicketImage = (event: Event) => {
           >
             <DataEmpty
               :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket/add`"
-              addText="Add Ticket"
-              description="You have no Tickets .. All your joined customers will appear here when you add your customer data"
-              title="You have No Tickets"
+              :addText="$t('add_ticket')"
+              :description="
+                $t(
+                  'You have no Tickets .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Tickets')"
             />
           </PermissionBuilder>
         </template>
@@ -386,9 +396,13 @@ const showDefaultTicketImage = (event: Event) => {
           >
             <DataFailed
               :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket/add`"
-              addText="Add Ticket"
-              description="You have no Tickets .. All your joined customers will appear here when you add your customer data"
-              title="You have No Tickets"
+              :addText="$t('add_ticket')"
+              :description="
+                $t(
+                  'You have no Tickets .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Tickets')"
             />
           </PermissionBuilder>
         </template>
@@ -396,8 +410,12 @@ const showDefaultTicketImage = (event: Event) => {
 
       <template #notPermitted>
         <DataFailed
-          addText="Have not  Permission"
-          description="You have no RootCauses .. All your joined customers will appear here when you add your customer data"
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no RootCauses .. All your joined customers will appear here when you add your customer data',
+            )
+          "
         />
       </template>
     </PermissionBuilder>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
 import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
 
@@ -69,7 +71,7 @@ const fileUpload = async (file: File | null) => {
     mappedData.value = null
   } catch (error) {
     console.error('Error processing file:', error)
-    errorMsg.value = 'Failed to process the file.'
+    errorMsg.value = localizeUi('failed_to_process_file')
   } finally {
     isLoading.value = false
   }
@@ -88,7 +90,9 @@ watch(
 // ─── Column Mapping ───────────────────────────────────────────────────────────
 const SendData = ref<string[]>(['title'])
 const SendDataLabels: Record<string, string> = {
-  title: 'PPE Item Title',
+  get title() {
+    return localizeUi('PPE Item Title')
+  },
 }
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return
@@ -137,7 +141,6 @@ const deleteRow = (rowIndex: number) => {
     mappedData.value[0],
     ...mappedData.value.slice(1).filter((_, i) => i !== rowIndex),
   ]
-
 }
 
 const onMappingClose = () => {
@@ -160,7 +163,7 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
       <span class="loading-dot" />
       <span class="loading-dot" />
       <span class="loading-dot" />
-      <span class="loading-label">Processing file…</span>
+      <span class="loading-label">{{ $t('processing_file') }}</span>
     </div>
 
     <FileUpload
@@ -183,18 +186,20 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
       <template v-if="mappedData && mappedData.length > 0">
         <div class="table-container">
           <div class="table-header">
-            <h3 class="table-title">Mapped Data Preview</h3>
-            <span class="table-badge">{{ mappedData.length - 1 }} rows</span>
+            <h3 class="table-title">{{ $t('Mapped Data Preview') }}</h3>
+            <span class="table-badge">{{ mappedData.length - 1 }} {{ $t('rows') }}</span>
           </div>
           <div class="table-responsive">
             <table class="main-table">
               <thead>
                 <tr>
                   <th v-for="(item, i) in mappedData[0]" :key="i">
-                    <span v-if="item == 'checkin_date'"> Rent Start Date </span>
-                    <span v-else-if="item == 'checkout_date'"> Rent End Date </span>
-                    <span v-else-if="item == 'license_plate_number'"> License Plate Number </span>
-                    <span v-else-if="item == 'period_type'"> Period Type </span>
+                    <span v-if="item == 'checkin_date'"> {{ $t('Rent Start Date') }} </span>
+                    <span v-else-if="item == 'checkout_date'"> {{ $t('Rent End Date') }} </span>
+                    <span v-else-if="item == 'license_plate_number'">
+                      {{ $t('License Plate Number') }}
+                    </span>
+                    <span v-else-if="item == 'period_type'"> {{ $t('Period Type') }} </span>
                     <span v-else-if="item !== 'image' && item !== 'certificate_image'">
                       {{ item }}
                     </span>
@@ -210,7 +215,11 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
                     <span>{{ value }}</span>
                   </td>
                   <td>
-                    <button class="btn-delete-row" @click="deleteRow(rowIndex)" title="Delete row">
+                    <button
+                      class="btn-delete-row"
+                      @click="deleteRow(rowIndex)"
+                      :title="$t('delete_row')"
+                    >
                       🗑
                     </button>
                   </td>
@@ -220,7 +229,7 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
           </div>
         </div>
 
-        <button class="btn-confirm" @click="addPpeItems">Confirm & Submit</button>
+        <button class="btn-confirm" @click="addPpeItems">{{ $t('Confirm & Submit') }}</button>
       </template>
     </template>
   </div>
@@ -478,7 +487,7 @@ kbd {
 
 .main-table th {
   padding: 12px 16px;
-  text-align: left;
+  text-align: start;
   color: var(--brand-primary-500);
   border-bottom: 2px solid var(--brand-primary-100);
 }

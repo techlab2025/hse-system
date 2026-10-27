@@ -1,10 +1,9 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import type ServiceFeatureDetailsModel from '../../Data/models/ServiceFeatureDetailsModel'
 import ShowServiceFeatureUseCase from '../../Domain/useCase/showServiceFeatureUseCase'
-
-
 
 export default class ShowServiceFeatureController extends ControllerInterface<ServiceFeatureDetailsModel> {
   private static instance: ShowServiceFeatureController
@@ -27,13 +26,14 @@ export default class ShowServiceFeatureController extends ControllerInterface<Se
     // console.log(params)
     this.setLoading()
 
-    const dataState: DataState<ServiceFeatureDetailsModel> = await this.ShowServiceFeatureUseCase.call(params)
+    const dataState: DataState<ServiceFeatureDetailsModel> =
+      await this.ShowServiceFeatureUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

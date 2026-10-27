@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
 
 import { vProjectPanels } from '../composables/projectPanels'
@@ -37,7 +39,8 @@ import HandleFIlesUpload, {
   type UploadedFile,
 } from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('ProjectForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('ProjectForm')
 
 const emit = defineEmits(['update:data'])
 const SerialNumber = ref<string>('')
@@ -315,8 +318,10 @@ const reloadLocations = () => {
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
@@ -365,6 +370,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     isMissing: () => !ZoneIds.value?.length,
   },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
 
@@ -377,7 +383,9 @@ const scrollToRequiredField = async (key: string) => {
 }
 
 const validateRequiredFields = async () => {
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors
@@ -410,7 +418,11 @@ defineExpose({
       :switch_title="$t('auto')"
       :isAuto="true"
       :switch_reverse="true"
-      help-text="Enter a unique project serial number, or enable automatic generation to let the system create it."
+      :help-text="
+        $t(
+          'Enter a unique project serial number, or enable automatic generation to let the system create it.',
+        )
+      "
       @update:value="UpdateSerial"
     />
     <!-- <label for="serialNumber">{{ $t('serial_number') }}</label>
@@ -435,10 +447,14 @@ defineExpose({
     data-required-field="langs"
   >
     <LangTitleInput
-      :label="`Project Name`"
+      :label="$t('Project Name')"
       :langs="langDefault"
       :modelValue="langs"
-      help-text="Enter the project name in each available language so it is clear throughout the system."
+      :help-text="
+        $t(
+          'Enter the project name in each available language so it is clear throughout the system.',
+        )
+      "
       @update:modelValue="setLangTitles"
     />
     <p v-if="getFieldError('langs')" class="hse-project-field required-field-message">
@@ -456,14 +472,14 @@ defineExpose({
         {{ $t('start_date') }}
         <span class="required-star">*</span>
       </span>
-      <FieldHelpIcon text="Select the planned date when work on this project starts." />
+      <FieldHelpIcon :text="$t('Select the planned date when work on this project starts.')" />
     </label>
     <DatePicker
       panel-class="hse-project-overlay"
       v-model="date"
       @date-select="UpdateDate"
       id="date"
-      :placeholder="`select the date`"
+      :placeholder="$t('select the date')"
     />
     <p v-if="getFieldError('date')" class="hse-project-field required-field-message">
       {{ getFieldError('date') }}
@@ -480,14 +496,14 @@ defineExpose({
         {{ $t('end_date') }}
         <span class="required-star">*</span>
       </span>
-      <FieldHelpIcon text="Select the planned completion date for this project." />
+      <FieldHelpIcon :text="$t('Select the planned completion date for this project.')" />
     </label>
     <DatePicker
       panel-class="hse-project-overlay"
       v-model="endDate"
       @date-select="UpdateEndDate"
       id="end-date"
-      :placeholder="`select the end date`"
+      :placeholder="$t('select the end date')"
     />
     <p v-if="getFieldError('endDate')" class="hse-project-field required-field-message">
       {{ getFieldError('endDate') }}
@@ -505,7 +521,7 @@ defineExpose({
       :type="2"
       :controller="indexContractorController"
       :params="indexContractorTypeParams"
-      label="contractors"
+      :label="$t('contractors')"
       :placeholder="$t('sub_contractors')"
       @close="ContractorDialog = false"
       :isDialog="true"
@@ -531,11 +547,13 @@ defineExpose({
       @update:modelValue="SetAreaSelection"
       :controller="indexLocationAreasController"
       :params="indexLocationAreasParams"
-      label="location"
-      placeholder="location"
+      :label="$t('location')"
+      :placeholder="$t('location')"
       :type="2"
       :onclick="ShowLocationDialog"
-      help-text="Select the project locations or work areas where project activities will take place."
+      :help-text="
+        $t('Select the project locations or work areas where project activities will take place.')
+      "
     />
     <p v-if="getFieldError('location')" class="hse-project-field required-field-message">
       {{ getFieldError('location') }}
@@ -554,7 +572,9 @@ defineExpose({
           {{ $t('zones') }}
           <span class="required-star">*</span>
         </span>
-        <FieldHelpIcon text="Select the specific zones within the chosen project locations." />
+        <FieldHelpIcon
+          :text="$t('Select the specific zones within the chosen project locations.')"
+        />
       </span>
       <AddProjectZoneDialog @update:data="UpdateZones" />
     </label>
@@ -576,7 +596,7 @@ defineExpose({
     class="hse-project-root hse-project-field col-span-4 input-wrapper"
   >
     <HandleFIlesUpload
-      label="Project image (optional)"
+      :label="$t('Project image (optional)')"
       accept="image/*"
       :max-files="1"
       :multiple="false"
@@ -590,15 +610,19 @@ defineExpose({
     class="hse-project-root hse-project-field col-span-4 md:col-span-4 input-wrapper"
   >
     <LangTitleInput
-      label="project_scope_of_work"
+      :label="$t('project_scope_of_work')"
       :langs="langDefault"
       :modelValue="langsDescription"
       @update:modelValue="setLangDescriptions"
       field-type="description"
       type="textarea"
-      :placeholder="`What is the project scope of work?`"
+      :placeholder="$t('What is the project scope of work?')"
       :required="false"
-      help-text="Describe the project scope, main activities, and work boundaries in each available language."
+      :help-text="
+        $t(
+          'Describe the project scope, main activities, and work boundaries in each available language.',
+        )
+      "
     />
   </div>
   <LocationSelectDialog v-model:visible="LocationVisible" @location-added="reloadLocations" />

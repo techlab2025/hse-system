@@ -34,7 +34,8 @@ import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog.t
 import fingerprintInvestigation from '@/assets/images/fingerprintInvestigation.png'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddOrganizatoinEmployee from '@/features/Organization/OrganizationEmployee/Presentation/components/AddOrganizatoinEmployee.vue'
-const { configureRules: configureValidationRules } = useConfiguredValidation('InvestigatingForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('InvestigatingForm')
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -220,6 +221,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     isMissing: () => isOtherMeetingPlatform() && !hasValue(MeetingPlace.value),
   },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
 
@@ -243,7 +245,9 @@ const scrollToRequiredField = async (key: string) => {
 
 const validateRequiredFields = async () => {
   clearResolvedRequiredErrors()
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((acc, field) => {
     acc[field.key] = field.message
     return acc
@@ -261,11 +265,27 @@ defineExpose({
 })
 
 const MeetingPlatforms = ref<TitleInterface[]>([
-  new TitleInterface({ id: InvestigationMeetingEnum.ZOOM, title: 'Zoom' }),
-  new TitleInterface({ id: InvestigationMeetingEnum.TEAM, title: 'Teams' }),
-  new TitleInterface({ id: InvestigationMeetingEnum.SKYPE, title: 'Skype' }),
-  new TitleInterface({ id: InvestigationMeetingEnum.GOOGLE_MEET, title: 'Google Meet' }),
-  new TitleInterface({ id: InvestigationMeetingEnum.OTHER, title: 'Other' }),
+  new TitleInterface({ id: InvestigationMeetingEnum.ZOOM, title: 'Zoom', translationKey: 'Zoom' }),
+  new TitleInterface({
+    id: InvestigationMeetingEnum.TEAM,
+    title: 'Teams',
+    translationKey: 'Teams',
+  }),
+  new TitleInterface({
+    id: InvestigationMeetingEnum.SKYPE,
+    title: 'Skype',
+    translationKey: 'Skype',
+  }),
+  new TitleInterface({
+    id: InvestigationMeetingEnum.GOOGLE_MEET,
+    title: 'Google Meet',
+    translationKey: 'Google Meet',
+  }),
+  new TitleInterface({
+    id: InvestigationMeetingEnum.OTHER,
+    title: 'Other',
+    translationKey: 'Other',
+  }),
 ])
 const SelectedPlatform = ref<TitleInterface>(null)
 const setSelectedPlatform = (data: TitleInterface) => {
@@ -319,8 +339,8 @@ watch(
 
     <div class="investigation-hero">
       <HeaderPage
-        :title="'start investigating'"
-        :subtitle="'Document what you observe to improve workplace safety'"
+        :title="$t('start investigating')"
+        :subtitle="$t('Document what you observe to improve workplace safety')"
         :img="fingerprintInvestigation"
       />
 
@@ -328,7 +348,7 @@ watch(
         <span class="reference-dot" aria-hidden="true"></span>
         <div>
           <small>{{ $t('Investigation form') }}</small>
-          <strong>#{{ props.data?.id || 'NEW' }}</strong>
+          <strong>#{{ props.data?.id || $t('new') }}</strong>
         </div>
       </div>
     </div>
@@ -386,10 +406,10 @@ watch(
             class="input"
             :controller="indexOrganizatoinEmployeeController"
             :params="indexOrganizatoinEmployeeParams"
-            label="Investigation team"
+            :label="$t('Investigation team')"
             :type="2"
             id="investigation-team"
-            placeholder="select your team"
+            :placeholder="$t('select your team')"
             @update:modelValue="setTeams"
             :isDialog="true"
             v-model:dialogVisible="investigationTeamDialog"
@@ -419,9 +439,9 @@ watch(
             :modelValue="SelectedTeamLeader"
             class="input"
             :staticOptions="SelectedTeam"
-            label="assign team leader"
+            :label="$t('assign team leader')"
             id="team-leader"
-            placeholder="select your team leader"
+            :placeholder="$t('select your team leader')"
             @update:modelValue="setTeamLeader"
           />
           <p v-if="getFieldError('SelectedTeamLeader')" class="required-field-message">
@@ -458,7 +478,7 @@ watch(
           <DatePicker
             v-model="date"
             inputId="investigation-date"
-            placeholder="Add your date"
+            :placeholder="$t('Add your date')"
             showIcon
           />
           <p v-if="getFieldError('date')" class="required-field-message">
@@ -478,7 +498,7 @@ watch(
             inputId="investigation-time"
             timeOnly
             hourFormat="24"
-            placeholder="Add your time"
+            :placeholder="$t('Add your time')"
             showIcon
             @update:modelValue="updateData"
           />
@@ -497,9 +517,9 @@ watch(
             :modelValue="SelectedPlatform"
             class="input"
             :staticOptions="MeetingPlatforms"
-            label="meeting platform"
+            :label="$t('meeting platform')"
             id="meeting-platform"
-            placeholder="select meeting platform"
+            :placeholder="$t('select meeting platform')"
             @update:modelValue="setSelectedPlatform"
           />
           <p v-if="getFieldError('SelectedPlatform')" class="required-field-message">
@@ -517,11 +537,12 @@ watch(
             <span class="field-number">04</span>
             <label for="meeting-place">{{ $t('Meeting place') }}</label>
             <input
+              dir="auto"
               id="meeting-place"
               v-model="MeetingPlace"
               class="input"
               type="text"
-              placeholder="Enter meeting place"
+              :placeholder="$t('Enter meeting place')"
               @input="setMeetingPlace"
             />
             <p v-if="getFieldError('MeetingPlace')" class="required-field-message">

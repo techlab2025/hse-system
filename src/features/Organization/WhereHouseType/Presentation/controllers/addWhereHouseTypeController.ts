@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
@@ -28,7 +29,7 @@ export default class AddWhereHouseTypeController extends ControllerInterface<Whe
       if (params?.data?.length > 0) {
         for (const el of params.data) {
           if (!el.title) {
-            new OpenWarningDilaog('title Is Required').openDialog()
+            new OpenWarningDilaog(localizeUi('Title Is Required')).openDialog()
             return
           }
         }
@@ -46,7 +47,7 @@ export default class AddWhereHouseTypeController extends ControllerInterface<Whe
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })

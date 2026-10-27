@@ -9,7 +9,6 @@ import ShowHomeContactUsParams from '../../Core/params/showHomeContactUsParams'
 import ShowHomeContactUsController from '../controllers/showHomeContactUsController'
 import EditHomeContactUsController from '../controllers/editHomeContactUsController'
 
-
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
@@ -60,7 +59,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditHomeContactUs">
         <HomeContactUsForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">Edit</button>
+          <button type="submit" class="btn btn-primary">{{ $t('Edit') }}</button>
         </div>
       </form>
     </template>

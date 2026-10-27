@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
@@ -28,7 +29,7 @@ export default class UpdateInvestigationTaskController extends SelectControllerI
     if (this.isDataSuccess()) {
       DialogSelector.instance.successDialog.openDialog({
         dialogName: 'dialog-success',
-        titleContent: 'Added was successful',
+        titleContent: localizeUi('Added was successful'),
         imageElement: successImage,
         messageContent: null,
       })

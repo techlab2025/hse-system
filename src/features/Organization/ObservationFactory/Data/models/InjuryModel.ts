@@ -1,11 +1,13 @@
+import { getCurrentLocale } from '@/localization/i18n'
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
 import OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
 
 export type InjuryPpeItem = {
-  ppe_item: number,
-  id:number,
-  title:string
+  ppe_item: number
+  id: number
+  title: string
 }
 
 export default class InjuryDetailsModel {
@@ -72,36 +74,40 @@ export default class InjuryDetailsModel {
   }
 
   static fromMap(data: any): InjuryDetailsModel {
-    return new InjuryDetailsModel(
-      data.id,
-      data.title,
-      data.description,
-      data.created_at,
-      data.employee_name,
-      data.is_work_stopped,
-      data.media,
-      data.note,
-      OrganizatoinEmployeeModel.fromMap(data.organization_employee),
-      data.status,
-      data.type,
-      data.updated_at,
-      data.injury_type,
-      (data.incident_categories ?? []).map((item: any) => {
-        const category = item?.incident_category ?? item
-        const locale = localStorage.getItem('lang')
-        return new TitleInterface({
-          id: Number(item?.incident_category_id ?? category?.id ?? item) || 0,
-          title:
-            category?.title ??
-            category?.titles?.find((title: any) => title.locale === locale)?.title ??
-            '',
-        })
-      }),
-      data.ppeItems,
-      Number(data.ppe_item_condition) || 0,
-      data.ppe_item_text ?? '',
-      data.ppeItems,
-      this.getLocations(data),
+    return localizedRecord(
+      new InjuryDetailsModel(
+        data.id,
+        data.title,
+        data.description,
+        data.created_at,
+        data.employee_name,
+        data.is_work_stopped,
+        data.media,
+        data.note,
+        OrganizatoinEmployeeModel.fromMap(data.organization_employee),
+        data.status,
+        data.type,
+        data.updated_at,
+        data.injury_type,
+        (data.incident_categories ?? []).map((item: any) => {
+          const category = item?.incident_category ?? item
+          const locale = getCurrentLocale()
+          return new TitleInterface({
+            id: Number(item?.incident_category_id ?? category?.id ?? item) || 0,
+            title:
+              category?.title ??
+              category?.titles?.find((title: any) => title.locale === locale)?.title ??
+              '',
+            localizedTitles: category?.titles,
+          })
+        }),
+        data.ppeItems,
+        Number(data.ppe_item_condition) || 0,
+        data.ppe_item_text ?? '',
+        data.ppeItems,
+        this.getLocations(data),
+      ),
+      data,
     )
   }
 

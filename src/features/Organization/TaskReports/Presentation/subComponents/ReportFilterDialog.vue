@@ -4,8 +4,7 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import Dialog from 'primevue/dialog'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import DatePicker from 'primevue/datepicker';
-
+import DatePicker from 'primevue/datepicker'
 
 interface StatusOption {
   label: string
@@ -29,6 +28,7 @@ const props = withDefaults(
     subtitle: '',
     initialStatus: new TitleInterface({
       title: 'all',
+      translationKey: 'all',
       id: 1,
     }),
     initialFromDate: '',
@@ -113,6 +113,7 @@ const handleApply = () => {
 const handleReset = () => {
   draftStatus.value = new TitleInterface({
     title: 'all',
+    translationKey: 'all',
     id: 1,
   })
   draftFromDate.value = null
@@ -120,19 +121,18 @@ const handleReset = () => {
   emit('reset')
   closeDialog()
 }
-
 </script>
 
 <template>
   <Dialog
-  :visible="modelValue"
-  :modal="true"
-  :header="title || $t('Filter')"
-  @update:visible="emit('update:modelValue', $event)"
+    :visible="modelValue"
+    :modal="true"
+    :header="title || $t('Filter')"
+    @update:visible="emit('update:modelValue', $event)"
     append-to="body"
-  position="center"
-  :dismissableMask="true"
->
+    position="center"
+    :dismissableMask="true"
+  >
     <div class="report-filter-dialog__content">
       <p v-if="subtitle" class="report-filter-dialog__subtitle">{{ subtitle }}</p>
 

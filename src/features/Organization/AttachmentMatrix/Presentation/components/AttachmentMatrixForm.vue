@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { translateMessage } from '@/localization/messages'
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { computed, onMounted, reactive, ref } from 'vue'
 import HandleFIlesUpload, {
   type UploadedFile,
@@ -91,7 +94,7 @@ const submit = async () => {
   )
 
   if (createController.isDataSuccess()) {
-    feedback.value = 'Attachment matrix saved successfully.'
+    feedback.value = localizeUi('Attachment matrix saved successfully.')
     return
   }
 
@@ -110,20 +113,22 @@ onMounted(fetchMatrix)
 
       <div class="attachment-matrix__hero-copy">
         <!-- <span class="attachment-matrix__eyebrow"><i></i> Organization configuration</span> -->
-        <h1>Attachment <em>matrix</em></h1>
+        <h1>
+          {{ $t('Attachment') }} <em>{{ $t('matrix') }}</em>
+        </h1>
         <!-- <p>
           Build a clear, organized library of supporting documents across your three operational
           blocks.
         </p> -->
 
-        <div class="attachment-matrix__stats" aria-label="Attachment summary">
+        <div class="attachment-matrix__stats" :aria-label="$t('Attachment summary')">
           <span v-for="group in groups" :key="group.key" :data-stat="group.key">
             <b>{{ group.key.toUpperCase() }}</b>
-            {{ attachmentCount(group.key) }} files
+            {{ attachmentCount(group.key) }} {{ $t('Files') }}
           </span>
           <span class="attachment-matrix__total">
             <b>{{ totalAttachments }}</b>
-            total
+            {{ $t('total') }}
           </span>
         </div>
       </div>
@@ -141,13 +146,17 @@ onMounted(fetchMatrix)
             <path d="M8 4v6h8V4M8 20v-6h8v6" />
           </svg>
           <span v-else class="matrix-save-button__spinner" aria-hidden="true"></span>
-          {{ isSaving ? 'Saving changes…' : 'Save matrix' }}
+          {{ isSaving ? $t('Saving changes…') : $t('Save matrix') }}
         </button>
-        <small>PDF, Word, Excel and images supported</small>
+        <small>{{ $t('PDF, Word, Excel and images supported') }}</small>
       </div>
     </header>
 
-    <div v-if="isLoading" class="attachment-matrix__loading" aria-label="Loading attachment matrix">
+    <div
+      v-if="isLoading"
+      class="attachment-matrix__loading"
+      :aria-label="$t('Loading attachment matrix')"
+    >
       <span v-for="index in 3" :key="index"></span>
     </div>
 
@@ -163,15 +172,15 @@ onMounted(fetchMatrix)
           <div class="matrix-group__title">
             <span class="matrix-group__symbol">{{ group.key.toUpperCase() }}</span>
             <div>
-              <small>Block {{ String(groupIndex + 1).padStart(2, '0') }}</small>
-              <h2>{{ group.title }}</h2>
-              <p>{{ group.description }}</p>
+              <small>{{ $t('Block') }} {{ String(groupIndex + 1).padStart(2, '0') }}</small>
+              <h2>{{ translateMessage(group.title) }}</h2>
+              <p>{{ translateMessage(group.description) }}</p>
             </div>
           </div>
           <div class="matrix-group__actions">
             <span class="matrix-group__count">
               <b>{{ attachmentCount(group.key) }}</b>
-              {{ attachmentCount(group.key) === 1 ? 'file' : 'files' }}
+              {{ attachmentCount(group.key) === 1 ? $t('file') : $t('Files') }}
             </span>
           </div>
         </header>
@@ -182,7 +191,7 @@ onMounted(fetchMatrix)
             :class="{ 'attachment-slot--filled': attachmentCount(group.key) }"
           >
             <HandleFIlesUpload
-              :label="group.title"
+              :label="translateMessage(group.title)"
               accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
               :max-files="10"
               :multiple="true"
@@ -193,7 +202,11 @@ onMounted(fetchMatrix)
               @change="(files) => handleFilesChange(group.key, files)"
             />
             <p class="attachment-slot__hint">
-              Select up to 10 files at once. You can remove individual files from the preview list.
+              {{
+                $t(
+                  'Select up to 10 files at once. You can remove individual files from the preview list.',
+                )
+              }}
             </p>
           </article>
         </div>

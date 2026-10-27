@@ -77,14 +77,13 @@
           text-align: start;
           &:first-child {
             color: var(--text-strong);
-            text-align: right;
+            text-align: end;
             width: 100%;
             min-width: 130px;
           }
           &:last-child {
-            margin-left: auto;
+            margin-inline-start: auto;
             color: var(--text-soft);
-
           }
         }
       }

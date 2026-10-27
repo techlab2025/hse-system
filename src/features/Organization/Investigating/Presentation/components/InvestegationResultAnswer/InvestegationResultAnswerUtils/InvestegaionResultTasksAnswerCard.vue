@@ -267,6 +267,7 @@ const route = useRoute()
         <label v-if="isReasonRequired" class="status-reason-field">
           <span>{{ $t('task_reason') }}</span>
           <textarea
+            dir="auto"
             v-model="selectedStatusReason"
             rows="4"
             :placeholder="$t('task_reason_placeholder')"

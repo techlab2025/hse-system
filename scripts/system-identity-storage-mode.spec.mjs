@@ -1,5 +1,8 @@
 import { test, expect } from '@playwright/test'
-import { useIdentityApiCodeFlag } from './fixtures/system-identity-api-mode.mjs'
+import {
+  useIdentityApiCodeFlag,
+  useIdentityCodeFlag,
+} from './fixtures/system-identity-api-mode.mjs'
 import { readFileSync } from 'node:fs'
 import { installFixtures } from '../src/features/Organization/Project/tests/project-fixtures.mjs'
 const baseURL = process.env.PROJECT_TEST_URL || 'http://127.0.0.1:5173'
@@ -41,6 +44,7 @@ test('default local mode loads, saves and resets using the original key without 
   page,
 }) => {
   const state = await setup(page)
+  await useIdentityCodeFlag(page, false)
   await page.goto(`${baseURL}/organization/system-identity`)
   await expect(page.locator('#identity-use-api')).toHaveCount(0)
   await expect(page.locator('#identity-name')).toHaveValue('Browser identity')
@@ -85,6 +89,7 @@ test('a saved browser API preference cannot enable requests when the code flag i
   page,
 }) => {
   const state = await setup(page)
+  await useIdentityCodeFlag(page, false)
   await page.addInitScript(() => localStorage.setItem('hse-system-identity-use-api', 'true'))
   await page.goto(`${baseURL}/organization/documentation`)
   await expect(page.getByRole('heading', { name: 'Documentation', exact: true })).toBeVisible()

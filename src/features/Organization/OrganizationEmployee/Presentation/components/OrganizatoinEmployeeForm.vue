@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
 
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
@@ -36,7 +38,8 @@ import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enu
 import { adminPermissions, type PermissionItem } from '@/constant/adminPremission'
 import { OrgPermissions } from '@/constant/organizationPremission'
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('OrganizatoinEmployeeForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('OrganizatoinEmployeeForm')
 
 const toast = useToast()
 
@@ -287,8 +290,10 @@ const UpdateConfirmPassword = (data) => {
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
@@ -349,6 +354,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   //   isMissing: () => !AllPermissions.value && !role.value?.length,
   // },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
 
@@ -361,7 +367,9 @@ const scrollToRequiredField = async (key: string) => {
 }
 
 const validateRequiredFields = async () => {
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors
@@ -388,7 +396,7 @@ defineExpose({
       <div>
         <p class="employee-form-hero__eyebrow">{{ data?.id ? $t('edit') : $t('add') }}</p>
         <h2>{{ $t('employee') }}</h2>
-        <p>Set up the employee profile, organization position, and workspace access.</p>
+        <p>{{ $t('Set up the employee profile, organization position, and workspace access.') }}</p>
       </div>
       <span class="employee-form-hero__status">
         <span aria-hidden="true"></span>
@@ -400,8 +408,8 @@ defineExpose({
       <div class="employee-section-heading">
         <span class="employee-section-heading__index">01</span>
         <div>
-          <h3 id="employee-profile-heading">Profile information</h3>
-          <p>Core information used to identify and contact this employee.</p>
+          <h3 id="employee-profile-heading">{{ $t('Profile information') }}</h3>
+          <p>{{ $t('Core information used to identify and contact this employee.') }}</p>
         </div>
       </div>
 
@@ -410,18 +418,23 @@ defineExpose({
           <label for="serialNumber" class="flex items-center gap-2">
             {{ $t('serial_number') }}
             <FieldHelpIcon
-              text="Enter a unique employee serial number, or leave it empty when automatic generation is enabled."
+              :text="
+                $t(
+                  'Enter a unique employee serial number, or leave it empty when automatic generation is enabled.',
+                )
+              "
             />
           </label>
           <input
+            dir="auto"
             id="serialNumber"
             v-model="SerialNumber"
             type="text"
             :disabled="projtecStateus.isSerialNumberAuto()"
             :placeholder="
               projtecStateus.isSerialNumberAuto()
-                ? 'You can leave it (auto-generated)'
-                : 'Enter Your Serial Number'
+                ? $t('You can leave it (auto-generated)')
+                : $t('Enter Your Serial Number')
             "
             @input="UpdateSerial"
           />
@@ -431,10 +444,11 @@ defineExpose({
           <label for="name" class="flex items-center gap-2">
             {{ $t('employee_name') }}
             <FieldHelpIcon
-              text="Enter the employee's full name as it should appear in the system."
+              :text="$t('Enter the employee\'s full name as it should appear in the system.')"
             />
           </label>
           <input
+            dir="auto"
             id="name"
             v-model="Name"
             type="text"
@@ -450,7 +464,7 @@ defineExpose({
           <label for="phone-country-code" class="flex items-center gap-2">
             {{ $t('phone_country_code') }}
             <FieldHelpIcon
-              text="Select the international dialing code for the employee's phone number."
+              :text="$t('Select the international dialing code for the employee\'s phone number.')"
             />
           </label>
           <PhoneCountryCode :model-value="CountryCode" @update:model-value="updateCountryCode" />
@@ -459,9 +473,12 @@ defineExpose({
         <div class="input-wrapper field-required" data-required-field="Phone">
           <label for="phone" class="flex items-center gap-2">
             {{ $t('phone_number') }}
-            <FieldHelpIcon text="Enter the employee's phone number for work-related contact." />
+            <FieldHelpIcon
+              :text="$t('Enter the employee\'s phone number for work-related contact.')"
+            />
           </label>
           <input
+            dir="ltr"
             id="phone"
             v-model="Phone"
             type="tel"
@@ -490,8 +507,8 @@ defineExpose({
       <div class="employee-section-heading">
         <span class="employee-section-heading__index">02</span>
         <div>
-          <h3 id="employee-workspace-heading">Organization and workspace</h3>
-          <p>Connect the employee to their position and dashboard credentials.</p>
+          <h3 id="employee-workspace-heading">{{ $t('Organization and workspace') }}</h3>
+          <p>{{ $t('Connect the employee to their position and dashboard credentials.') }}</p>
         </div>
       </div>
 
@@ -499,9 +516,10 @@ defineExpose({
         <div class="input-wrapper field-required" data-required-field="Email">
           <label for="email" class="flex items-center gap-2">
             {{ $t('email_address') }}
-            <FieldHelpIcon text="This email address is used to log in to the system." />
+            <FieldHelpIcon :text="$t('This email address is used to log in to the system.')" />
           </label>
           <input
+            dir="ltr"
             id="email"
             v-model="Email"
             type="email"
@@ -516,9 +534,12 @@ defineExpose({
         <div v-if="booleandashAccessStatus" class="input-wrapper" data-required-field="Password">
           <label for="password" class="flex items-center gap-2">
             {{ $t('Password') }}
-            <FieldHelpIcon text="Set the password the employee will use to log in to the system." />
+            <FieldHelpIcon
+              :text="$t('Set the password the employee will use to log in to the system.')"
+            />
           </label>
           <input
+            dir="ltr"
             id="password"
             v-model="Password"
             type="password"
@@ -544,9 +565,11 @@ defineExpose({
             @update:modelValue="setHeirarchy"
           >
             <template #LabelHeader>
-              <FieldHelpIcon text="Select the employee's position in the organization hierarchy." />
+              <FieldHelpIcon
+                :text="$t('Select the employee\'s position in the organization hierarchy.')"
+              />
               <button class="inline-create-action" type="button" @click="PositionDialog = true">
-                + New
+                {{ $t('+ New') }}
               </button>
             </template>
             <template #Dialog>
@@ -567,8 +590,12 @@ defineExpose({
       <div class="employee-section-heading">
         <span class="employee-section-heading__index">03</span>
         <div>
-          <h3 id="employee-access-heading">Access and permissions</h3>
-          <p>Choose the access level and roles that match this employee's responsibilities.</p>
+          <h3 id="employee-access-heading">{{ $t('Access and permissions') }}</h3>
+          <p>
+            {{
+              $t("Choose the access level and roles that match this employee's responsibilities.")
+            }}
+          </p>
         </div>
       </div>
 
@@ -578,12 +605,12 @@ defineExpose({
             <div class="access-toggle-card__icon" aria-hidden="true">A</div>
             <div>
               <strong>{{ $t('admin_permission') }}</strong>
-              <p>Allow organization administration capabilities.</p>
+              <p>{{ $t('Allow organization administration capabilities.') }}</p>
             </div>
           </div>
           <CustomCheckbox
             :index="3"
-            :title="`admin_permission`"
+            :title="$t('admin_permission')"
             :checked="booleanEmpStatus"
             @update:checked="updaetAdminStatus"
           />
@@ -594,12 +621,12 @@ defineExpose({
             <div class="access-toggle-card__icon" aria-hidden="true">D</div>
             <div>
               <strong>{{ $t('dashboard_access') }}</strong>
-              <p>Allow the employee to sign in to the dashboard.</p>
+              <p>{{ $t('Allow the employee to sign in to the dashboard.') }}</p>
             </div>
           </div>
           <CustomCheckbox
             :index="4"
-            :title="`dashboard_access`"
+            :title="$t('dashboard_access')"
             :checked="booleandashAccessStatus"
             @update:checked="updaetdashAccessStatus"
           />
@@ -610,12 +637,12 @@ defineExpose({
             <div class="access-toggle-card__icon" aria-hidden="true">∞</div>
             <div>
               <strong>{{ $t('all_permissions') }}</strong>
-              <p>Grant access to all available organization modules.</p>
+              <p>{{ $t('Grant access to all available organization modules.') }}</p>
             </div>
           </div>
           <CustomCheckbox
             :index="5"
-            :title="`all_permissions`"
+            :title="$t('all_permissions')"
             :checked="AllPermissions"
             @update:checked="updaetAllPermissions"
           />
@@ -640,10 +667,10 @@ defineExpose({
         >
           <template #LabelHeader>
             <FieldHelpIcon
-              text="Select the roles that define what the employee can view and manage."
+              :text="$t('Select the roles that define what the employee can view and manage.')"
             />
             <button class="inline-create-action" type="button" @click="RoleDialog = true">
-              + New
+              {{ $t('+ New') }}
             </button>
           </template>
           <template #option="{ option }">

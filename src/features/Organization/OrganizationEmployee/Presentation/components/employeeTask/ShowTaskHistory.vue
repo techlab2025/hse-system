@@ -1,3 +1,3 @@
 <template>
-    show task history
+  {{ $t('show task history') }}
 </template>

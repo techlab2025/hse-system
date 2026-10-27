@@ -23,7 +23,8 @@ import type VisitThemeDetailsModel from '../../Data/models/VisitThemeDetailsMode
 
 type LanguageOption = { locale: string; title: string; icon?: Component | string }
 type LocalizedTitle = { locale: string; title: string }
-const { configureRules: configureValidationRules } = useConfiguredValidation('VisitThemeForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('VisitThemeForm')
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddVisitThemeParams | EditVisitThemeParams): void
@@ -108,13 +109,23 @@ const requiredFields = computed(() => [
   {
     key: 'title',
     message: 'Visit Theme Title Is Required',
-    isMissing: () =>
-      !titles.value.some((item) => String(item.title ?? '').trim().length > 0),
+    isMissing: () => !titles.value.some((item) => String(item.title ?? '').trim().length > 0),
   },
-  { key: 'industry', message: '', isMissing: () => user.user?.type === OrganizationTypeEnum.ADMIN && !allIndustries.value && !industry.value?.length },
+  {
+    key: 'industry',
+    message: '',
+    isMissing: () =>
+      user.user?.type === OrganizationTypeEnum.ADMIN &&
+      !allIndustries.value &&
+      !industry.value?.length,
+  },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
+
 const validateRequiredFields = async () => {
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = Object.fromEntries(
     missedFields.map((field) => [field.key, field.message]),
   )
@@ -143,14 +154,35 @@ onMounted(fetchLanguages)
       {{ requiredFieldErrors.title }}
     </p>
   </div>
-  <div v-if="user.user?.type === OrganizationTypeEnum.ADMIN" class="input-wrapper col-span-4 md:col-span-2">
-    <CustomCheckbox :index="3" title="all_industries" :checked="allIndustries" @update:checked="updateAllIndustries" />
+  <div
+    v-if="user.user?.type === OrganizationTypeEnum.ADMIN"
+    class="input-wrapper col-span-4 md:col-span-2"
+  >
+    <CustomCheckbox
+      :index="3"
+      :title="$t('all_industries')"
+      :checked="allIndustries"
+      @update:checked="updateAllIndustries"
+    />
   </div>
-  <div data-required-field="industry" v-if="!allIndustries && user.user?.type === OrganizationTypeEnum.ADMIN" class="col-span-4 md:col-span-2">
-    <CustomSelectInput :model-value="industry" :controller="industryController" :params="industryParams"
-      label="industry" id="visittheme-industry" placeholder="Select industry" :type="2"
-      @update:model-value="setIndustry" />
-    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">{{ requiredFieldErrors.industry }}</p>
+  <div
+    data-required-field="industry"
+    v-if="!allIndustries && user.user?.type === OrganizationTypeEnum.ADMIN"
+    class="col-span-4 md:col-span-2"
+  >
+    <CustomSelectInput
+      :model-value="industry"
+      :controller="industryController"
+      :params="industryParams"
+      :label="$t('industry')"
+      id="visittheme-industry"
+      :placeholder="$t('Select industry')"
+      :type="2"
+      @update:model-value="setIndustry"
+    />
+    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">
+      {{ requiredFieldErrors.industry }}
+    </p>
   </div>
 </template>
 

@@ -1,6 +1,5 @@
-import TranslationsParams, {
-  type TitleLocale,
-} from '@/base/core/params/translations_params.ts'
+import { getCurrentLocale } from '@/localization/i18n'
+import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 type IndustryDetails = { id: number; title?: string; titles?: TitleLocale[] }
@@ -17,7 +16,12 @@ export default class PPEActivityDetailsModel {
   public allIndustries: boolean
   public industries: TitleInterface[]
 
-  constructor(id: number, titles: TitleLocale[], allIndustries = false, industries: TitleInterface[] = []) {
+  constructor(
+    id: number,
+    titles: TitleLocale[],
+    allIndustries = false,
+    industries: TitleInterface[] = [],
+  ) {
     this.id = id
     this.titles = titles
     this.allIndustries = allIndustries
@@ -30,10 +34,19 @@ export default class PPEActivityDetailsModel {
       data.id,
       translations.titles,
       Boolean(data.all_industries),
-      (data.industries ?? []).map((industry) => new TitleInterface({
-        id: industry.id,
-        title: industry.title ?? industry.titles?.find((title: TitleLocale) => title.locale === localStorage.getItem('lang'))?.title ?? industry.titles?.[0]?.title ?? '',
-      })),
+      (data.industries ?? []).map(
+        (industry) =>
+          new TitleInterface({
+            id: industry.id,
+            title:
+              industry.title ??
+              industry.titles?.find((title: TitleLocale) => title.locale === getCurrentLocale())
+                ?.title ??
+              industry.titles?.[0]?.title ??
+              '',
+            localizedTitles: industry.titles,
+          }),
+      ),
     )
   }
 

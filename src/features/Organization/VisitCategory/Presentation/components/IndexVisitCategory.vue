@@ -146,6 +146,7 @@ const headerActions = () => [
     <div class="input-search col-span-1">
       <span class="icon-remove" @click="((word = ''), searchVisitCategories())"><Search /></span
       ><input
+        dir="auto"
         v-model="word"
         :placeholder="$t('search')"
         class="input"
@@ -213,7 +214,7 @@ const headerActions = () => [
       /></template>
     </DataStatus>
     <template #notPermitted
-      ><DataFailed add-text="Have not Permission" description="" link=""
+      ><DataFailed :add-text="$t('auditUi.you_do_not_have_permission')" description="" link=""
     /></template>
   </PermissionBuilder>
 

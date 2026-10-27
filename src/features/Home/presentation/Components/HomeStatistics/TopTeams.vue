@@ -1,20 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import {
-  Chart,
-  ArcElement,
-  Tooltip,
-  Legend,
-  DoughnutController
-} from 'chart.js'
-import type TopTeamsModel from '@/features/Home/data/Model/TopTeamsModel';
+import { Chart, ArcElement, Tooltip, Legend, DoughnutController } from 'chart.js'
+import type TopTeamsModel from '@/features/Home/data/Model/TopTeamsModel'
 
-Chart.register(
-  DoughnutController,
-  ArcElement,
-  Tooltip,
-  Legend
-)
+Chart.register(DoughnutController, ArcElement, Tooltip, Legend)
 
 const props = defineProps<{
   topTeams: TopTeamsModel[]
@@ -98,22 +87,26 @@ onMounted(() => {
 <template>
   <div class="top-teams-container">
     <div class="top-teams-header">
-      <span class="static">static</span>
-      <p class="static-title">top 3 teams <span>_ The largest in number</span></p>
+      <span class="static">{{ $t('static') }}</span>
+      <p class="static-title">
+        {{ $t('top 3 teams') }} <span>{{ $t('_ The largest in number') }}</span>
+      </p>
     </div>
     <div class="top-teams-container">
-      <div class="first" style="width:300px;margin:auto">
+      <div class="first" style="width: 300px; margin: auto">
         <canvas ref="chartCanvas"></canvas>
       </div>
-      <div class="second" style="width:200px;margin:auto">
+      <div class="second" style="width: 200px; margin: auto">
         <canvas ref="chartCanvas2"></canvas>
       </div>
-      <div class="third" style="width:120px;margin:auto">
+      <div class="third" style="width: 120px; margin: auto">
         <canvas ref="chartCanvas3"></canvas>
       </div>
     </div>
     <div class="top-teams-names">
-      <p v-for="(teams, index) in topTeams" :key="index">{{ teams.title }} <span>( {{ teams.number }})</span></p>
+      <p v-for="(teams, index) in topTeams" :key="index">
+        {{ teams.title }} <span>( {{ teams.number }})</span>
+      </p>
     </div>
   </div>
 </template>

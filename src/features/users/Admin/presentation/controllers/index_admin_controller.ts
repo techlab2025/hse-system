@@ -1,39 +1,37 @@
-import type { DataState } from "@/base/core/networkStructure/Resources/dataState/data_state";
-import type Params from "@/base/core/params/params";
-import { SelectControllerInterface } from "@/base/Presentation/Controller/select_controller_interface";
-import type AdminModel from "../../Data/models/index_admin_model";
-import IndexAdminUseCase from "../../Domain/useCase/index_admin_use_case";
+import { translate as localizeUi } from '@/localization/i18n'
+import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
+import type Params from '@/base/core/params/params'
+import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
+import type AdminModel from '../../Data/models/index_admin_model'
+import IndexAdminUseCase from '../../Domain/useCase/index_admin_use_case'
 
-export default class IndexAdminController extends SelectControllerInterface<
-  AdminModel[]
-> {
-  private static instance: IndexAdminController;
+export default class IndexAdminController extends SelectControllerInterface<AdminModel[]> {
+  private static instance: IndexAdminController
   private constructor() {
-    super();
+    super()
   }
-  private IndexAdminUseCase = new IndexAdminUseCase();
+  private IndexAdminUseCase = new IndexAdminUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new IndexAdminController();
+      this.instance = new IndexAdminController()
     }
-    return this.instance;
+    return this.instance
   }
 
   async getData(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
-    this.setLoading();
-    const dataState: DataState<AdminModel[]> =
-      await this.IndexAdminUseCase.call(params);
+    this.setLoading()
+    const dataState: DataState<AdminModel[]> = await this.IndexAdminUseCase.call(params)
 
-    this.setState(dataState);
+    this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error("Error while addServices");
+      throw new Error(localizeUi('Error while addServices'))
     }
-    super.handleResponseDialogs();
-    return this.state;
+    super.handleResponseDialogs()
+    return this.state
   }
 }

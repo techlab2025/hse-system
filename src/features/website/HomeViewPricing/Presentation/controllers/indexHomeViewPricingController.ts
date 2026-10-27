@@ -1,11 +1,10 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import IndexHomeViewPricingUseCase from '../../Domain/useCase/indexHomeViewPricingUseCase'
 import type HomeViewPricingModel from '../../Data/models/HomeViewPricingModel'
-
-
 
 // import TitleInterface from '@/base/Data/Models/title_interface'
 
@@ -36,7 +35,7 @@ export default class IndexHomeViewPricingController extends SelectControllerInte
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

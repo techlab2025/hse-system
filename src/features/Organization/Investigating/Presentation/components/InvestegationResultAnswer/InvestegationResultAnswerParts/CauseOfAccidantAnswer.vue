@@ -11,7 +11,7 @@ const props = defineProps<{
 <template>
   <div class="cause-of-accidant">
     <HeaderPage
-      :title="`Root Cause Factors`"
+      :title="$t('Root Cause Factors')"
       :subtitle="``"
       :img="factor"
       class="title-header answer-header"
@@ -27,7 +27,7 @@ const props = defineProps<{
 
         <div class="corrective-action" v-if="factor.corrective_action">
           <div class="corrective-action-header">
-            <p class="corrective-action-title">Corrective Action</p>
+            <p class="corrective-action-title">{{ $t('Corrective Action') }}</p>
             <hr />
           </div>
           <p class="corrective-action-content">{{ factor.corrective_action }}</p>

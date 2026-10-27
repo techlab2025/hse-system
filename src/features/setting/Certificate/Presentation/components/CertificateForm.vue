@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
 
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
@@ -25,7 +27,8 @@ import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import { CertificateTypeEnum } from '../../Core/Enums/CertificateTypeEnum'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('CertificateForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('CertificateForm')
 
 const emit = defineEmits(['update:data'])
 
@@ -227,9 +230,8 @@ watch(
       firstImage.value = newData?.image ? newData?.image : ''
       expiredate.value = newData?.requireExpiredDate ?? false
       certificateType.value =
-        certificateTypes.value.find(
-          (type) => type.id === newData?.certificateType?.id,
-        ) ?? certificateTypes.value[0]
+        certificateTypes.value.find((type) => type.id === newData?.certificateType?.id) ??
+        certificateTypes.value[0]
       requireCertificate.value = newData?.requireCertificate ?? false
     }
   },
@@ -278,8 +280,10 @@ const SerialNumber = ref()
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
@@ -302,19 +306,20 @@ const certificateTypes = ref<TitleInterface[]>([
   new TitleInterface({
     id: CertificateTypeEnum.SCALE,
     title: 'skill',
+    translationKey: 'organization_certificate_type_skill',
   }),
   new TitleInterface({
     id: CertificateTypeEnum.AWARENESS,
     title: 'awareness',
+    translationKey: 'organization_certificate_type_awareness',
   }),
   new TitleInterface({
     id: CertificateTypeEnum.KNOWLEDGE,
     title: 'knowledge',
+    translationKey: 'organization_certificate_type_knowledge',
   }),
 ])
-const certificateType = ref<TitleInterface>(
-  certificateTypes.value[0],
-)
+const certificateType = ref<TitleInterface>(certificateTypes.value[0])
 const updateCertificateType = (data: TitleInterface) => {
   certificateType.value = data
   console.log(certificateType.value, 'certificateType')
@@ -347,6 +352,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
       !industry.value?.length,
   },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
 
@@ -369,7 +375,9 @@ const scrollToRequiredField = async (key: string) => {
 
 const validateRequiredFields = async () => {
   clearResolvedRequiredErrors()
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors
@@ -394,7 +402,7 @@ defineExpose({
       :modelValue="langs"
       @update:modelValue="(val) => (langs = val)"
       :required="true"
-      :label="`certtificate_title`"
+      :label="$t('certtificate_title')"
       :placeholder="$t('certtificate_title')"
     />
     <p v-if="getFieldError('langs')" class="required-field-message">
@@ -410,12 +418,11 @@ defineExpose({
   <div class="input-wrapper col-span-2 mt-6">
     <CustomCheckbox
       :index="1"
-      :title="`expiry_date_required`"
+      :title="$t('expiry_date_required')"
       :checked="expiredate"
       @update:checked="updateExpireDate"
     />
   </div>
-
 
   <div class="col-span-4 md:col-span-2">
     <CustomSelectInput
@@ -431,7 +438,7 @@ defineExpose({
   <div class="input-wrapper col-span-2 mt-6">
     <CustomCheckbox
       :index="2"
-      :title="`require_certificate`"
+      :title="$t('require_certificate')"
       :checked="requireCertificate"
       @update:checked="updateRequireCertificate"
     />
@@ -467,7 +474,7 @@ defineExpose({
       :params="industryParams"
       :label="$t('all_industries')"
       id="all_industries"
-      placeholder="Select industry"
+      :placeholder="$t('Select industry')"
       :type="2"
       @update:modelValue="(val) => (industry = val)"
     />

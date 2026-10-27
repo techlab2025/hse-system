@@ -137,12 +137,21 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchOrganizationLocation())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchOrganizationLocation" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchOrganizationLocation"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-      <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.ORG_LOCATION_CREATE]">
+      <PermissionBuilder
+        :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.ORG_LOCATION_CREATE]"
+      >
         <router-link to="/organization/organization-location/add" class="btn btn-primary">
           {{ $t('Add_organization_location') }}
         </router-link>
@@ -150,14 +159,16 @@ watch(
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.ORG_LOCATION_ALL,
-    PermissionsEnum.ORG_LOCATION_DELETE,
-    PermissionsEnum.ORG_LOCATION_FETCH,
-    PermissionsEnum.ORG_LOCATION_UPDATE,
-    PermissionsEnum.ORG_LOCATION_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_LOCATION_ALL,
+      PermissionsEnum.ORG_LOCATION_DELETE,
+      PermissionsEnum.ORG_LOCATION_FETCH,
+      PermissionsEnum.ORG_LOCATION_UPDATE,
+      PermissionsEnum.ORG_LOCATION_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -178,37 +189,44 @@ watch(
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/organization/organization-location/${item.id}`">{{ index + 1 }}
+                  <router-link :to="`/organization/organization-location/${item.id}`"
+                    >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
 
-                <td data-label="lat">
+                <td :data-label="$t('lat')">
                   {{ item.lat }}
                 </td>
 
-                <td data-label="lng">
+                <td :data-label="$t('lng')">
                   {{ item.lng }}
                 </td>
-                <td data-label="location">
+                <td :data-label="$t('location')">
                   {{ item.location?.title }}
                 </td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusOrganizationLocation-->
                   <!--                  v-if="item.OrganizationLocationStatus === OrganizationLocationStatusEnum.Draft"-->
                   <!--                  :OrganizationLocationId="item.id"-->
                   <!--                  @OrganizationLocationChangeStatus="fetchOrganizationLocation"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteOrganizationLocation)"
-                    @delete="deleteOrganizationLocation(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteOrganizationLocation)"
+                    @delete="deleteOrganizationLocation(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -217,24 +235,48 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.ORG_LOCATION_CREATE]">
-          <DataEmpty :link="`/organization/organization-location/add`" addText="Add OrganizationLocation"
-            description="You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data"
-            title="You have No OrganizationLocation" />
+        <PermissionBuilder
+          :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.ORG_LOCATION_CREATE]"
+        >
+          <DataEmpty
+            :link="`/organization/organization-location/add`"
+            :addText="$t('auditUi.add_organization_location')"
+            :description="
+              $t(
+                'You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No OrganizationLocation')"
+          />
         </PermissionBuilder>
       </template>
       <template #failed>
-        <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.ORG_LOCATION_CREATE]">
-          <DataFailed :link="`/organization/organization-location/add`" addText="Add OrganizationLocation"
-            description="You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data"
-            title="You have No OrganizationLocation" />
+        <PermissionBuilder
+          :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.ORG_LOCATION_CREATE]"
+        >
+          <DataFailed
+            :link="`/organization/organization-location/add`"
+            :addText="$t('auditUi.add_organization_location')"
+            :description="
+              $t(
+                'You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No OrganizationLocation')"
+          />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+      />
     </template>
   </PermissionBuilder>
 </template>

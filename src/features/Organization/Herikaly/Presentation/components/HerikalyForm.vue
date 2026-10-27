@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { getCurrentLocale } from '@/localization/i18n'
+
 import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
 
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
@@ -24,7 +26,8 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import { CertificateTypeEnum } from '@/features/setting/Certificate/Core/Enums/CertificateTypeEnum'
 import AddHerikaly from './AddHerikaly.vue'
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('HerikalyForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('HerikalyForm')
 
 const emit = defineEmits(['update:data'])
 
@@ -150,16 +153,16 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditHerikalyParams(
-      props?.data?.id,
-      translationsParams,
-      effectiveParentId.value,
-      props.mode === 'department' ? [] : Certificate.value.map((item) => item.id),
-    )
+        props?.data?.id,
+        translationsParams,
+        effectiveParentId.value,
+        props.mode === 'department' ? [] : Certificate.value.map((item) => item.id),
+      )
     : new AddHerikalyParams(
-      translationsParams,
-      props.mode === 'department' ? [] : Certificate.value.map((item) => item.id),
-      effectiveParentId.value,
-    )
+        translationsParams,
+        props.mode === 'department' ? [] : Certificate.value.map((item) => item.id),
+        effectiveParentId.value,
+      )
 
   emit('update:data', params)
 }
@@ -212,7 +215,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   },
   {
     key: 'department',
-    message: 'Department is required',
+    message: 'requiredFields.department',
     isMissing: () => props.mode === 'position' && !(Number(SelectedDepartment.value?.id) > 0),
   },
   // {
@@ -221,6 +224,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   //   isMissing: () => !Certificate.value?.length,
   // },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
 
@@ -233,7 +237,9 @@ const scrollToRequiredField = async (key: string) => {
 }
 
 const validateRequiredFields = async () => {
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors
@@ -283,7 +289,7 @@ watch(
   [() => props.data?.parent_id, () => props.data?.parent],
   ([newParentId, parent]) => {
     if (parent) {
-      const locale = localStorage.getItem('lang')
+      const locale = getCurrentLocale()
       SelectedDepartment.value = new TitleInterface({
         id: parent.id,
         title:
@@ -324,18 +330,32 @@ const GetCertificateTypeTitle = (type: CertificateTypeEnum) => {
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2 depart" v-if="showDepartmentSelect" data-required-field="department">
+  <div
+    class="col-span-4 md:col-span-2 depart"
+    v-if="showDepartmentSelect"
+    data-required-field="department"
+  >
     <div class="input-wrapper">
-      <UpdatedCustomInputSelect :modelValue="SelectedDepartment" :params="HerikalyParams"
-        :controller="indexHerikalyController" class="input" :label="$t('Department')"
-        :required="props.mode === 'position'" id="herikaly" :placeholder="$t('Select department')"
+      <UpdatedCustomInputSelect
+        :modelValue="SelectedDepartment"
+        :params="HerikalyParams"
+        :controller="indexHerikalyController"
+        class="input"
+        :label="$t('department')"
+        :required="props.mode === 'position'"
+        id="herikaly"
+        :placeholder="$t('Select department')"
         :is-dialog="true"
         v-model:dialogVisible="departmentDialogVisible"
         @update:modelValue="updatedDepartment"
       >
         <template #LabelHeader>
-          <button class="inline-create-action" type="button" @click="departmentDialogVisible = true">
-            + New
+          <button
+            class="inline-create-action"
+            type="button"
+            @click="departmentDialogVisible = true"
+          >
+            {{ $t('+ New') }}
           </button>
         </template>
         <template #Dialog>
@@ -353,10 +373,18 @@ const GetCertificateTypeTitle = (type: CertificateTypeEnum) => {
     </div>
   </div>
   <div class="col-span-4 md:col-span-2" data-required-field="langs">
-    <LangTitleInput type="text" :langs="langDefault" :modelValue="langs" :label="isPosition || (props.mode === 'auto' && route.fullPath.includes('organization-employee/add'))
-      ? $t('position_name')
-      : $t('Department Name')
-      " @update:modelValue="setLangs" />
+    <LangTitleInput
+      type="text"
+      :langs="langDefault"
+      :modelValue="langs"
+      :label="
+        isPosition ||
+        (props.mode === 'auto' && route.fullPath.includes('organization-employee/add'))
+          ? $t('position_name')
+          : $t('Department Name')
+      "
+      @update:modelValue="setLangs"
+    />
     <p v-if="getFieldError('langs')" class="required-field-message">
       {{ getFieldError('langs') }}
     </p>
@@ -368,8 +396,12 @@ const GetCertificateTypeTitle = (type: CertificateTypeEnum) => {
         <label class="training-selector-label">{{ $t('certificate') }}</label>
         <div class="training-selector-actions">
           <label class="training-select-all">
-            <input type="checkbox" :checked="areAllCertificatesSelected"
-              :disabled="isLoadingCertificates || !certificateOptions.length" @change="toggleAllCertificates" />
+            <input
+              type="checkbox"
+              :checked="areAllCertificatesSelected"
+              :disabled="isLoadingCertificates || !certificateOptions.length"
+              @change="toggleAllCertificates"
+            />
             <span>{{ $t('select_all') }}</span>
           </label>
           <span class="training-selected-count">
@@ -379,9 +411,13 @@ const GetCertificateTypeTitle = (type: CertificateTypeEnum) => {
       </div>
 
       <div class="training-search">
-        <input v-model="certificateSearch" type="search" :placeholder="$t('search certificates')"
-          @keydown.enter.prevent />
-
+        <input
+          dir="auto"
+          v-model="certificateSearch"
+          type="search"
+          :placeholder="$t('search certificates')"
+          @keydown.enter.prevent
+        />
       </div>
 
       <div class="training-options" role="group" :aria-label="$t('certificate')">
@@ -390,14 +426,23 @@ const GetCertificateTypeTitle = (type: CertificateTypeEnum) => {
         </div>
 
         <template v-else-if="filteredCertificateOptions.length">
-          <label v-for="certificate in filteredCertificateOptions" :key="certificate.id" class="training-option"
-            :class="{ selected: isCertificateSelected(certificate.id) }">
-            <input type="checkbox" :checked="isCertificateSelected(certificate.id)"
-              @change="toggleCertificate(certificate)" />
+          <label
+            v-for="certificate in filteredCertificateOptions"
+            :key="certificate.id"
+            class="training-option"
+            :class="{ selected: isCertificateSelected(certificate.id) }"
+          >
+            <input
+              type="checkbox"
+              :checked="isCertificateSelected(certificate.id)"
+              @change="toggleCertificate(certificate)"
+            />
             <span class="training-option-check" aria-hidden="true">
               <span>✓</span>
             </span>
-            <span class="training-option-title">{{ certificate.title || '—' }} - <span class="optional">
+            <span class="training-option-title"
+              >{{ certificate.title || '—' }} -
+              <span class="optional">
                 {{ GetCertificateTypeTitle(certificate.certificateType!) }}
               </span>
             </span>
@@ -428,7 +473,7 @@ const GetCertificateTypeTitle = (type: CertificateTypeEnum) => {
   font: inherit;
   cursor: pointer;
 }
-.optional{
+.optional {
   font-size: 0.75rem;
   color: var(--text-muted, #64748b);
 }
@@ -605,7 +650,7 @@ const GetCertificateTypeTitle = (type: CertificateTypeEnum) => {
   transition: all 0.2s ease;
 }
 
-.training-option input:focus-visible+.training-option-check {
+.training-option input:focus-visible + .training-option-check {
   outline: 3px solid rgb(37 83 219 / 18%);
   outline-offset: 2px;
 }

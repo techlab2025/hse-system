@@ -1,3 +1,4 @@
+import { getCurrentLocale } from '@/localization/i18n'
 import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
@@ -39,10 +40,10 @@ export default class PpeItemDetailsModel {
             id: industry.id,
             title:
               industry.title ??
-              industry.titles?.find((title) => title.locale === localStorage.getItem('lang'))
-                ?.title ??
+              industry.titles?.find((title) => title.locale === getCurrentLocale())?.title ??
               industry.titles?.[0]?.title ??
               '',
+            localizedTitles: industry.titles,
           }),
       ),
     )

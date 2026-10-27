@@ -9,7 +9,6 @@ import ShowPowerFullController from '../controllers/showPowerFullController'
 import ShowPowerFullParams from '../../Core/params/showPowerFullParams'
 import EditPowerFullController from '../controllers/editPowerFullController'
 
-
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
@@ -60,7 +59,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditPowerFull">
         <PowerFullForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">Edit</button>
+          <button type="submit" class="btn btn-primary">{{ $t('Edit') }}</button>
         </div>
       </form>
     </template>

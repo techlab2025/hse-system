@@ -110,7 +110,7 @@ function tabKeydown(event: KeyboardEvent, index: number) {
               <h1>{{ $t('eq_equipment_details') }}</h1>
             </div> -->
             <!-- <router-link :to="backLink" class="hse-project-button eq-back"
-              ><ProjectIcon name="arrow-right" />{{ $t('Back') }}</router-link
+              ><ProjectIcon name="arrow-right" />{{ $t('back') }}</router-link
             > -->
           </header>
           <div class="eq-overview">
@@ -232,7 +232,7 @@ function tabKeydown(event: KeyboardEvent, index: number) {
         ><div class="eq-panel eq-empty">
           <ProjectIcon name="equipment" />
           <p>{{ $t('No Equipment Data Found') }}</p>
-          <router-link :to="backLink" class="hse-project-button">{{ $t('Back') }}</router-link>
+          <router-link :to="backLink" class="hse-project-button">{{ $t('back') }}</router-link>
         </div></template
       >
       <template #failed

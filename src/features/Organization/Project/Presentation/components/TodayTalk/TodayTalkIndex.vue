@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getCurrentLocale } from '@/localization/i18n'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -25,9 +27,17 @@ const isLoading = computed(() => state.value instanceof DataLoading)
 const isFailed = computed(() => state.value instanceof DataFailed)
 const projectParams = new IndexProjectParams('', 1, 100, 1)
 const assignmentOptions = [
-  new TitleInterface({ id: -1, title: 'All talks' }),
-  new TitleInterface({ id: 1, title: 'Assigned to project' }),
-  new TitleInterface({ id: 0, title: 'Not assigned to project' }),
+  new TitleInterface({ id: -1, title: 'All talks', translationKey: 'All talks' }),
+  new TitleInterface({
+    id: 1,
+    title: 'Assigned to project',
+    translationKey: 'Assigned to project',
+  }),
+  new TitleInterface({
+    id: 0,
+    title: 'Not assigned to project',
+    translationKey: 'Not assigned to project',
+  }),
 ]
 const selectedProject = ref<TitleInterface | null>(null)
 const selectedAssignment = ref<TitleInterface | null>(assignmentOptions[0] ?? null)
@@ -92,7 +102,7 @@ const formatDate = (date: string) => {
   const parsed = new Date(`${date}T00:00:00`)
   return Number.isNaN(parsed.getTime())
     ? date
-    : new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(parsed)
+    : new Intl.DateTimeFormat(getCurrentLocale(), { dateStyle: 'medium' }).format(parsed)
 }
 
 const formatDateTime = (dateTime: string | null | undefined) => {
@@ -100,7 +110,7 @@ const formatDateTime = (dateTime: string | null | undefined) => {
   const parsed = new Date(dateTime.replace(' ', 'T'))
   return Number.isNaN(parsed.getTime())
     ? dateTime
-    : new Intl.DateTimeFormat(undefined, {
+    : new Intl.DateTimeFormat(getCurrentLocale(), {
         dateStyle: 'medium',
         timeStyle: 'short',
       }).format(parsed)
@@ -115,19 +125,19 @@ onMounted(fetchTalks)
   <main data-hse-project v-project-panels class="hse-project-root hse-project-page talks-page">
     <header data-hse-project-head class="hse-project-page-head talks-header">
       <div>
-        <span class="eyebrow">Daily safety conversations</span>
-        <h1>Today Talks</h1>
-        <p>Review organization and project briefings, attendance, dates, and times.</p>
+        <span class="eyebrow">{{ $t('Daily safety conversations') }}</span>
+        <h1>{{ $t('Today Talks') }}</h1>
+        <p>{{ $t('Review organization and project briefings, attendance, dates, and times.') }}</p>
       </div>
       <RouterLink
         to="/organization/today-talks/create"
         class="hse-project-button hse-project-button--primary btn btn-primary"
       >
-        <span aria-hidden="true">+</span> Add today talk
+        <span aria-hidden="true">+</span> {{ $t('Add today talk') }}
       </RouterLink>
     </header>
 
-    <section class="filters" aria-label="Today talk filters">
+    <section class="filters" :aria-label="$t('Today talk filters')">
       <UpdatedCustomInputSelect
         id="today-talk-project-filter"
         class="filter-select"
@@ -135,8 +145,8 @@ onMounted(fetchTalks)
         :controller="projectController"
         :params="projectParams"
         :reload="false"
-        label="Project"
-        placeholder="All projects"
+        :label="$t('Project')"
+        :placeholder="$t('All projects')"
         @update:model-value="setSelectedProject"
       />
       <UpdatedCustomInputSelect
@@ -145,12 +155,12 @@ onMounted(fetchTalks)
         :model-value="selectedAssignment"
         :static-options="assignmentOptions"
         :reload="false"
-        label="Assignment"
-        placeholder="All talks"
+        :label="$t('Assignment')"
+        :placeholder="$t('All talks')"
         @update:model-value="setSelectedAssignment"
       />
       <button type="button" class="hse-project-button reset-button" @click="resetFilters">
-        Reset filters
+        {{ $t('Reset filters') }}
       </button>
     </section>
 
@@ -165,7 +175,7 @@ onMounted(fetchTalks)
         class="talk-card"
         role="button"
         tabindex="0"
-        :aria-label="`View details for talk ${talk.serialName || talk.id}`"
+        :aria-label="$t('uiDynamic.viewTalkDetails', { p0: talk.serialName || talk.id })"
         @click="openTalkDetails(talk)"
         @keydown.enter="openTalkDetails(talk)"
         @keydown.space.prevent="openTalkDetails(talk)"
@@ -174,30 +184,41 @@ onMounted(fetchTalks)
           <span :class="['assignment-badge', { organization: !talk.projectId }]">
             {{
               talk.projectId
-                ? projectNames.get(talk.projectId) || `Project #${talk.projectId}`
-                : 'Organization'
+                ? projectNames.get(talk.projectId) ||
+                  $t('uiDynamic.projectReference', { p0: talk.projectId })
+                : $t('Organization')
             }}
           </span>
-          <span>{{ formatDate(talk.date) }} · {{ talk.time || 'No time' }}</span>
+          <span>{{ formatDate(talk.date) }} · {{ talk.time || $t('No time') }}</span>
         </div>
         <p class="talk-content">{{ talk.content }}</p>
         <footer>
           <div>
-            <strong>{{ attendingCount(talk.employees) }}</strong>
-            <span>of {{ talk.employees.length }} attended</span>
+            <strong>{{
+              $t('attendanceSummary', {
+                count: attendingCount(talk.employees),
+                total: talk.employees.length,
+              })
+            }}</strong>
           </div>
-          <div class="employee-dots" :aria-label="`${talk.employees.length} employees`">
+          <div
+            class="employee-dots"
+            :aria-label="$t('employeeCount', { count: talk.employees.length })"
+          >
             <i
               v-for="employee in talk.employees.slice(0, 8)"
               :key="employee.id || employee.organizationEmployeeId"
               :class="{ attended: employee.isAttend }"
-              :title="employee.title || `Employee #${employee.organizationEmployeeId}`"
+              :title="
+                employee.title ||
+                $t('uiDynamic.employeeReference', { p0: employee.organizationEmployeeId })
+              "
             ></i>
             <small v-if="talk.employees.length > 8">+{{ talk.employees.length - 8 }}</small>
           </div>
         </footer>
         <span class="view-details">
-          View full details
+          {{ $t('View full details') }}
           <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6" /></svg>
         </span>
       </article>
@@ -205,12 +226,12 @@ onMounted(fetchTalks)
 
     <section v-else class="empty-state">
       <span aria-hidden="true">💬</span>
-      <h2>{{ isFailed ? 'Today talks could not be loaded' : 'No today talks found' }}</h2>
+      <h2>{{ isFailed ? $t('Today talks could not be loaded') : $t('No today talks found') }}</h2>
       <p>
         {{
           isFailed
-            ? 'Please retry loading the talks.'
-            : 'Change the filters or record a new daily safety conversation.'
+            ? $t('Please retry loading the talks.')
+            : $t('Change the filters or record a new daily safety conversation.')
         }}
       </p>
       <!-- <button v-if="isFailed" type="button" class="btn btn-primary" @click="fetchTalks">Retry</button> -->
@@ -234,8 +255,8 @@ onMounted(fetchTalks)
             </svg>
           </span>
           <div>
-            <span class="dialog-eyebrow">Today talk details</span>
-            <h2>Talk {{ selectedTalk.serialName || `#${selectedTalk.id}` }}</h2>
+            <span class="dialog-eyebrow">{{ $t('Today talk details') }}</span>
+            <h2>{{ $t('Talk') }} {{ selectedTalk.serialName || `#${selectedTalk.id}` }}</h2>
           </div>
         </div>
       </template>
@@ -246,13 +267,14 @@ onMounted(fetchTalks)
             <span :class="['assignment-badge', { organization: !selectedTalk.projectId }]">
               {{
                 selectedTalk.projectId
-                  ? projectNames.get(selectedTalk.projectId) || `Project #${selectedTalk.projectId}`
-                  : 'Organization'
+                  ? projectNames.get(selectedTalk.projectId) ||
+                    $t('uiDynamic.projectReference', { p0: selectedTalk.projectId })
+                  : $t('Organization')
               }}
             </span>
             <span>{{ formatDate(selectedTalk.date) }}</span>
             <i aria-hidden="true"></i>
-            <span>{{ selectedTalk.time || 'No time' }}</span>
+            <span>{{ selectedTalk.time || $t('No time') }}</span>
           </div>
           <p>{{ selectedTalk.content }}</p>
           <div class="talk-identifiers">
@@ -260,11 +282,11 @@ onMounted(fetchTalks)
               ><small>Talk ID</small><strong>#{{ selectedTalk.id }}</strong></span
             > -->
             <span
-              ><small>Serial number</small
+              ><small>{{ $t('Serial number') }}</small
               ><strong>{{ selectedTalk.serialNumber || '—' }}</strong></span
             >
             <span
-              ><small>Created</small
+              ><small>{{ $t('Created') }}</small
               ><strong>{{ formatDateTime(selectedTalk.createdAt) }}</strong></span
             >
           </div>
@@ -292,10 +314,12 @@ onMounted(fetchTalks)
         <section class="employee-roster">
           <header>
             <div>
-              <span>Attendance roster</span>
-              <h3>Employees and attendance</h3>
+              <span>{{ $t('Attendance roster') }}</span>
+              <h3>{{ $t('Employees and attendance') }}</h3>
             </div>
-            <span class="roster-count">{{ selectedTalk.employees.length }} employees</span>
+            <span class="roster-count"
+              >{{ selectedTalk.employees.length }} {{ $t('employees') }}</span
+            >
           </header>
 
           <div v-if="selectedTalk.employees.length" class="employee-list">
@@ -309,20 +333,23 @@ onMounted(fetchTalks)
               </span>
               <div class="employee-identity">
                 <strong>{{
-                  employee.title || `Employee #${employee.organizationEmployeeId}`
+                  employee.title ||
+                  $t('uiDynamic.employeeReference', { p0: employee.organizationEmployeeId })
                 }}</strong>
-                <span>Employee ID #{{ employee.organizationEmployeeId }}</span>
+                <span>{{ $t('Employee ID #') }}{{ employee.organizationEmployeeId }}</span>
               </div>
               <div class="attendance-result">
                 <span :class="['status-pill', { attended: employee.isAttend }]">
                   <i aria-hidden="true"></i>
-                  {{ employee.isAttend ? 'Attended' : 'Absent' }}
+                  {{ employee.isAttend ? $t('attended') : $t('Absent') }}
                 </span>
                 <small v-if="employee.isAttend">{{ formatDateTime(employee.attendAt) }}</small>
               </div>
             </article>
           </div>
-          <div v-else class="no-employees">No employees were assigned to this talk.</div>
+          <div v-else class="no-employees">
+            {{ $t('No employees were assigned to this talk.') }}
+          </div>
         </section>
       </div>
     </Dialog>

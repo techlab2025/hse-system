@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
 import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/indexHazardTypeParams'
 import IndexHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/indexHazardTypeController'
@@ -236,7 +237,7 @@ watch(
 )
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert('No data available to export')
+    alert(localizeUi('No data available to export'))
     return
   }
   const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
@@ -314,8 +315,9 @@ const IndexHazardTypeactionList = () => [
         <Search />
       </span>
       <input
+        dir="auto"
         v-model="word"
-        :placeholder="'search'"
+        :placeholder="$t('search')"
         class="input"
         type="text"
         @input="searchHazardType"
@@ -417,11 +419,17 @@ const IndexHazardTypeactionList = () => [
                     >{{ index + 1 }}
                   </span>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                <td
+                  :data-label="$t('all_industries')"
+                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                >
                   {{ item.allIndustries ? $t('yes') : $t('no') }}
                 </td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                <td
+                  :data-label="$t('all_industries')"
+                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                >
                   {{
                     item.industries.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')
@@ -432,7 +440,7 @@ const IndexHazardTypeactionList = () => [
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td> -->
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusHazardType-->
                   <!--                  v-if="item.HazardTypeStatus === HazardTypeStatusEnum.Draft"-->
                   <!--                  :HazardTypeId="item.id"-->
@@ -481,9 +489,13 @@ const IndexHazardTypeactionList = () => [
                 ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params.parent_id}`
                 : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`
             "
-            :addText="route.params.parent_id ? 'Add Hazard' : 'Add Hazard Classification'"
-            description="You have no hazard classifications yet. All your joined customers will appear here when you add your customer data"
-            title="You have No Hazard Classifications"
+            :addText="route.params.parent_id ? $t('Add Hazard') : $t('add_hazard_classification')"
+            :description="
+              $t(
+                'You have no hazard classifications yet. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Hazard Classifications')"
           />
         </PermissionBuilder>
       </template>
@@ -502,9 +514,13 @@ const IndexHazardTypeactionList = () => [
                 ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}hazard-type/add/${route.params.parent_id}`
                 : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`
             "
-            :addText="route.params.parent_id ? 'Add Hazard' : 'Add Hazard Classification'"
-            description="You have no hazard classifications yet. All your joined customers will appear here when you add your customer data"
-            title="You have No Hazard Classifications"
+            :addText="route.params.parent_id ? $t('Add Hazard') : $t('add_hazard_classification')"
+            :description="
+              $t(
+                'You have no hazard classifications yet. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Hazard Classifications')"
           />
         </PermissionBuilder>
       </template>
@@ -512,8 +528,12 @@ const IndexHazardTypeactionList = () => [
 
     <template #notPermitted>
       <DataFailed
-        addText="Have not  Permission"
-        description="You have no hazard classifications yet. All your joined customers will appear here when you add your customer data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no hazard classifications yet. All your joined customers will appear here when you add your customer data',
+          )
+        "
       />
     </template>
   </PermissionBuilder>

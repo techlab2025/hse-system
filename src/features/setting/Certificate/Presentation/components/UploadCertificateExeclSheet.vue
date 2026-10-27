@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import { ref, watch } from 'vue'
 
@@ -124,7 +126,7 @@ const fileUpload = async (file: File) => {
     extractedImages.value = images
   } catch (error) {
     console.error('Error processing file:', error)
-    errorMsg.value = 'Failed to process the file.'
+    errorMsg.value = localizeUi('failed_to_process_file')
   } finally {
     isLoading.value = false
   }
@@ -148,10 +150,18 @@ const SendData = ref<string[]>([
   'require_certificate',
 ])
 const SendDataLabels: Record<string, string> = {
-  title: t('title'),
-  certificate_type: t('certificate_type'),
-  require_expired_date: t('require_expired_date'),
-  require_certificate: t('require_certificate'),
+  get title() {
+    return t('title')
+  },
+  get certificate_type() {
+    return t('certificate_type')
+  },
+  get require_expired_date() {
+    return t('require_expired_date')
+  },
+  get require_certificate() {
+    return t('require_certificate')
+  },
 }
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return
@@ -170,10 +180,18 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 const addCertificateController = AddCertificateController.getInstance()
 
 const getBooleanValue = (value: unknown) =>
-  ['yes', 'true', '1'].includes(String(value ?? '').trim().toLowerCase()) ? 1 : 0
+  ['yes', 'true', '1'].includes(
+    String(value ?? '')
+      .trim()
+      .toLowerCase(),
+  )
+    ? 1
+    : 0
 
 const getCertificateTypeValue = (value: unknown) => {
-  const normalizedValue = String(value ?? '').trim().toLowerCase()
+  const normalizedValue = String(value ?? '')
+    .trim()
+    .toLowerCase()
   const certificateTypes: Record<string, CertificateTypeEnum> = {
     '1': CertificateTypeEnum.SCALE,
     skill: CertificateTypeEnum.SCALE,
@@ -282,7 +300,7 @@ const onMappingClose = () => {
       <span class="loading-dot" />
       <span class="loading-dot" />
       <span class="loading-dot" />
-      <span class="loading-label">Processing file and images…</span>
+      <span class="loading-label">{{ $t('Processing file and images…') }}</span>
     </div>
 
     <FileUpload
@@ -305,8 +323,8 @@ const onMappingClose = () => {
       <template v-if="mappedData && mappedData.length > 0">
         <div class="table-container">
           <div class="table-header">
-            <h3 class="table-title">Mapped Data Preview</h3>
-            <span class="table-badge">{{ mappedData.length - 1 }} rows</span>
+            <h3 class="table-title">{{ $t('Mapped Data Preview') }}</h3>
+            <span class="table-badge">{{ mappedData.length - 1 }} {{ $t('rows') }}</span>
           </div>
           <div class="table-responsive">
             <table class="main-table">
@@ -327,7 +345,11 @@ const onMappingClose = () => {
                   </td>
 
                   <td>
-                    <button class="btn-delete-row" @click="deleteRow(rowIndex)" title="Delete row">
+                    <button
+                      class="btn-delete-row"
+                      @click="deleteRow(rowIndex)"
+                      :title="$t('delete_row')"
+                    >
                       🗑
                     </button>
                   </td>
@@ -337,11 +359,10 @@ const onMappingClose = () => {
           </div>
         </div>
 
-        <button @click="AddOrgEmployee" class="btn-confirm">Confirm & Submit</button>
+        <button @click="AddOrgEmployee" class="btn-confirm">{{ $t('Confirm & Submit') }}</button>
       </template>
     </template>
   </div>
-  
 </template>
 
 <style scoped>
@@ -596,7 +617,7 @@ kbd {
 
 .main-table th {
   padding: 12px 16px;
-  text-align: left;
+  text-align: start;
   color: var(--brand-primary-500);
   border-bottom: 2px solid var(--brand-primary-100);
 }

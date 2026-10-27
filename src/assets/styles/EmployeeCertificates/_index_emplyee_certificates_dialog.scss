@@ -12,7 +12,7 @@
     td {
       display: table-cell !important;
       vertical-align: middle !important;
-      text-align: left;
+      text-align: start;
       padding: 12px;
 
       &:last-of-type {
@@ -63,7 +63,7 @@
       .valid-counter {
         color: var(--status-success);
         position: relative;
-        padding-left: 10px;
+        padding-inline-start: 10px;
         font-size: $XsSize;
         font-weight: $BaseFontSemiBoldWeight;
         @include flex-row(nowrap, flex-start, flex-start);
@@ -83,7 +83,7 @@
       .invalid-counter {
         color: var(--status-danger);
         position: relative;
-        padding-left: 3px;
+        padding-inline-start: 3px;
         font-size: $XsSize;
         font-weight: $BaseFontSemiBoldWeight;
         @include flex-row(nowrap, flex-start, flex-start);
@@ -103,7 +103,7 @@
       .expired-counter {
         color: var(--brand-accent-300);
         position: relative;
-        padding-left: 3px;
+        padding-inline-start: 3px;
         font-size: $XsSize;
         font-weight: $BaseFontSemiBoldWeight;
         @include flex-row(nowrap, flex-start, flex-start);

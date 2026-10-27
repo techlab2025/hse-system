@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { getCurrentLocale } from '@/localization/i18n'
+
+import { translate as localizeUi } from '@/localization/i18n'
+
 import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { vProjectPanels } from '../../composables/projectPanels'
@@ -121,8 +125,10 @@ const months = computed<ProjectMonth[]>(() => {
       year === end.getFullYear() && monthNumber === end.getMonth() + 1 ? end : endOfMonth
     result.push({
       key: `${year}-${String(monthNumber).padStart(2, '0')}`,
-      label: new Intl.DateTimeFormat(undefined, { month: 'long', year: 'numeric' }).format(cursor),
-      shortLabel: new Intl.DateTimeFormat(undefined, { month: 'short' }).format(cursor),
+      label: new Intl.DateTimeFormat(getCurrentLocale(), { month: 'long', year: 'numeric' }).format(
+        cursor,
+      ),
+      shortLabel: new Intl.DateTimeFormat(getCurrentLocale(), { month: 'short' }).format(cursor),
       monthNumber,
       firstDate: formatDate(first),
       lastDate: formatDate(final),
@@ -169,7 +175,7 @@ const saveVisitDate = async () => {
   editError.value = ''
   const date = editedDate.value
   if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
-    editError.value = 'Choose a valid visit date.'
+    editError.value = localizeUi('Choose a valid visit date.')
     return
   }
   const dateText = formatDate(date)
@@ -177,7 +183,7 @@ const saveVisitDate = async () => {
     (month) => dateText >= month.firstDate && dateText <= month.lastDate,
   )
   if (!month) {
-    editError.value = 'Choose a date within the project dates.'
+    editError.value = localizeUi('Choose a date within the project dates.')
     return
   }
   if (
@@ -199,7 +205,7 @@ const saveVisitDate = async () => {
     editDialogVisible.value = false
     await refreshVisits()
   } catch {
-    editError.value = 'Unable to update the visit date.'
+    editError.value = localizeUi('Unable to update the visit date.')
   } finally {
     savingDate.value = false
   }
@@ -227,7 +233,9 @@ const saveMonth = async (month: ProjectMonth) => {
         row.visitActivityIds.some((id) => !Number.isInteger(id) || id <= 0),
     )
   ) {
-    errorMessage.value = 'Complete every visit and choose a date within the selected month.'
+    errorMessage.value = localizeUi(
+      'Complete every visit and choose a date within the selected month.',
+    )
     return
   }
   try {
@@ -248,7 +256,7 @@ const saveMonth = async (month: ProjectMonth) => {
       await refreshVisits()
     } else errorMessage.value = planController.state.value.error?.title ?? 'Unable to save visits.'
   } catch {
-    errorMessage.value = 'Unable to save visits.'
+    errorMessage.value = localizeUi('Unable to save visits.')
   }
 }
 onMounted(async () => {
@@ -305,13 +313,13 @@ onMounted(async () => {
           :to="`/organization/project-details/${projectId}/leadership/visits`"
           class="hse-project-button hse-project-button--primary back-link back-link--primary"
         >
-          <span>View leadership plans</span> →
+          <span>{{ $t('View leadership plans') }}</span> →
         </RouterLink>
         <RouterLink
           :to="`/organization/project-details/${projectId}`"
           class="hse-project-button back-link"
         >
-          ← <span>Back to project</span>
+          ← <span>{{ $t('Back to project') }}</span>
         </RouterLink>
       </div>
     </header>
@@ -332,7 +340,7 @@ onMounted(async () => {
             <!-- <p>Choose a project month, add one or more visits, and save them together.</p> -->
             <!-- </div> -->
             <div class="date-range">
-              <span>Project duration</span
+              <span>{{ $t('Project duration') }}</span
               ><strong
                 >{{ projectState.data?.startDate?.slice(0, 10) }} <i>→</i>
                 {{ projectState.data?.endDate?.slice(0, 10) }}</strong
@@ -344,13 +352,15 @@ onMounted(async () => {
             <div class="overview__item">
               <span class="overview__icon">▦</span>
               <div>
-                <small>Project months</small><strong>{{ months.length }}</strong>
+                <small>{{ $t('Project months') }}</small
+                ><strong>{{ months.length }}</strong>
               </div>
             </div>
             <div class="overview__item">
               <span class="overview__icon">◎</span>
               <div>
-                <small>Planned visits</small><strong>{{ visits.length }}</strong>
+                <small>{{ $t('Planned visits') }}</small
+                ><strong>{{ visits.length }}</strong>
               </div>
             </div>
             <!-- <div class="overview__item">
@@ -393,8 +403,8 @@ onMounted(async () => {
                     <span>
                       {{
                         savedVisitsForMonth(month.key).length === 1
-                          ? 'planned visit'
-                          : 'planned visits'
+                          ? $t('planned visit')
+                          : $t('Planned visits')
                       }}
                     </span>
                   </span>
@@ -409,8 +419,10 @@ onMounted(async () => {
                     class="month-empty"
                   >
                     <div>
-                      <strong>Start this month’s plan</strong>
-                      <p>Add a visit with its date, location, employee, and activity.</p>
+                      <strong>{{ $t('Start this month’s plan') }}</strong>
+                      <p>
+                        {{ $t('Add a visit with its date, location, employee, and activity.') }}
+                      </p>
                     </div>
                     <button
                       v-if="canAddVisit(month.key)"
@@ -418,7 +430,7 @@ onMounted(async () => {
                       class="hse-project-button hse-project-button--primary button button--primary"
                       @click="addVisit(month.key)"
                     >
-                      Add first visit
+                      {{ $t('Add first visit') }}
                     </button>
                   </div>
                   <div v-if="savedVisitsForMonth(month.key).length" class="month-actions">
@@ -428,21 +440,21 @@ onMounted(async () => {
                       class="hse-project-button button button--outline"
                       @click="addVisit(month.key)"
                     >
-                      ＋ Add another visit
+                      {{ $t('＋ Add another visit') }}
                     </button>
                   </div>
 
                   <div v-if="savedVisitsForMonth(month.key).length" class="saved-visits-table">
-                    <h3>plans</h3>
+                    <h3>{{ $t('plans') }}</h3>
 
                     <table class="hse-project-table">
                       <thead>
                         <tr>
-                          <th>plan</th>
-                          <th>Date</th>
-                          <th>Visit Location</th>
-                          <th>Report Status</th>
-                          <th v-if="canEdit">Actions</th>
+                          <th>{{ $t('plan') }}</th>
+                          <th>{{ $t('Date') }}</th>
+                          <th>{{ $t('Visit Location') }}</th>
+                          <th>{{ $t('Report Status') }}</th>
+                          <th v-if="canEdit">{{ $t('Actions') }}</th>
                           <!-- <th>Employee</th> -->
                           <!-- <th>Activity</th> -->
                         </tr>
@@ -453,7 +465,7 @@ onMounted(async () => {
                           v-for="(visit, index) in savedVisitsForMonth(month.key)"
                           :key="visit.id"
                         >
-                          <td>plan {{ index + 1 }}</td>
+                          <td>{{ $t('plan') }} {{ index + 1 }}</td>
 
                           <td>
                             {{ visit.date }}
@@ -463,7 +475,7 @@ onMounted(async () => {
                             {{ visit.location }}
                           </td>
                           <td>
-                            {{ visit.hasReport ? `Report Submitted` : `not submitted yet` }}
+                            {{ visit.hasReport ? $t('Report Submitted') : $t('not submitted yet') }}
                           </td>
                           <td v-if="canEdit">
                             <button
@@ -471,7 +483,7 @@ onMounted(async () => {
                               class="hse-project-button hse-project-button--secondary"
                               @click="openEditVisit(visit)"
                             >
-                              Edit
+                              {{ $t('Edit') }}
                             </button>
                           </td>
 
@@ -499,8 +511,8 @@ onMounted(async () => {
                           {{ String(index + 1).padStart(2, '0') }}
                         </div>
                         <div>
-                          <strong>Visit {{ index + 1 }}</strong
-                          ><small>Complete the details for this planned visit</small>
+                          <strong>{{ $t('Visit') }} {{ index + 1 }}</strong
+                          ><small>{{ $t('Complete the details for this planned visit') }}</small>
                         </div>
                         <button
                           v-if="canCreate"
@@ -509,7 +521,7 @@ onMounted(async () => {
                           class="hse-project-button hse-project-button--danger remove-button"
                           @click="monthVisits[month.key]?.splice(index, 1)"
                         >
-                          Remove
+                          {{ $t('Remove') }}
                         </button>
                       </div>
                       <div class="visit-fields">
@@ -525,7 +537,7 @@ onMounted(async () => {
                                 />
                               </svg>
                             </span>
-                            <span>Date <b>*</b></span>
+                            <span>{{ $t('Date') }} <b>*</b></span>
                           </label>
                           <DatePicker
                             panel-class="hse-project-overlay hse-project-assurance"
@@ -536,7 +548,7 @@ onMounted(async () => {
                             fluid
                             :min-date="parseDate(month.firstDate) ?? undefined"
                             :max-date="parseDate(month.lastDate) ?? undefined"
-                            placeholder="Select visit date"
+                            :placeholder="$t('Select visit date')"
                             @update:model-value="(value) => setVisitDate(visit, value)"
                           />
                         </div>
@@ -551,22 +563,23 @@ onMounted(async () => {
                                 <circle cx="12" cy="10" r="2.5" />
                               </svg>
                             </span>
-                            <span>Visit Location <b>*</b></span>
+                            <span>{{ $t('Visit Location') }} <b>*</b></span>
                           </label>
                           <input
+                            dir="auto"
                             class="hse-project-input"
                             :id="`visit-location-${month.key}-${index}`"
                             v-model="visit.location"
                             type="text"
-                            placeholder="e.g. Main site"
+                            :placeholder="$t('e.g. Main site')"
                             required
                           />
                         </div>
                         <UpdatedCustomInputSelect
                           :id="`visit-employee-${month.key}-${index}`"
                           class="hse-project-field visit-field visit-field--select"
-                          label="Organization employee"
-                          placeholder="Select Visiting Managers"
+                          :label="$t('Organization employee')"
+                          :placeholder="$t('Select Visiting Managers')"
                           :required="true"
                           :reload="true"
                           :has-header="true"
@@ -589,15 +602,15 @@ onMounted(async () => {
                                   <path d="M5.5 20c.7-3.8 3-5.7 6.5-5.7s5.8 1.9 6.5 5.7" />
                                 </svg>
                               </span>
-                              <span>Visiting Managers <b>*</b></span>
+                              <span>{{ $t('Visiting Managers') }} <b>*</b></span>
                             </label>
                           </template>
                         </UpdatedCustomInputSelect>
                         <UpdatedCustomInputSelect
                           :id="`visit-activity-${month.key}-${index}`"
                           class="hse-project-field visit-field visit-field--select"
-                          label="Visit activity"
-                          placeholder="Select Activities"
+                          :label="$t('Visit activity')"
+                          :placeholder="$t('Select Activities')"
                           :required="true"
                           :reload="true"
                           :has-header="true"
@@ -621,7 +634,7 @@ onMounted(async () => {
                                   />
                                 </svg>
                               </span>
-                              <span>Visit Activities <b>*</b></span>
+                              <span>{{ $t('Visit Activities') }} <b>*</b></span>
                             </label>
                           </template>
                         </UpdatedCustomInputSelect>
@@ -655,7 +668,7 @@ onMounted(async () => {
                         class="hse-project-button button button--outline"
                         @click="addVisit(month.key)"
                       >
-                        ＋ Add another plan
+                        {{ $t('＋ Add another plan') }}
                       </button>
 
                       <button
@@ -664,7 +677,7 @@ onMounted(async () => {
                         class="hse-project-button hse-project-button--primary button button--primary"
                         @click="saveMonth(month)"
                       >
-                        Save plan
+                        {{ $t('Save plan') }}
                       </button>
                     </div>
                   </div>
@@ -673,8 +686,8 @@ onMounted(async () => {
             </AccordionPanel>
           </Accordion>
           <div v-else class="empty-state">
-            <span>▦</span><strong>No valid project date range</strong>
-            <p>Add valid start and end dates to the project before planning visits.</p>
+            <span>▦</span><strong>{{ $t('No valid project date range') }}</strong>
+            <p>{{ $t('Add valid start and end dates to the project before planning visits.') }}</p>
           </div>
         </section>
       </template>
@@ -685,7 +698,7 @@ onMounted(async () => {
         <TableLoader :cols="4" :rows="3" />
       </template>
       <template #failed>
-        <div class="notice notice--error">Unable to load project dates.</div>
+        <div class="notice notice--error">{{ $t('Unable to load project dates.') }}</div>
       </template>
     </DataStatus>
     <Dialog
@@ -693,7 +706,7 @@ onMounted(async () => {
       data-hse-project
       :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
       modal
-      header="Edit visit date"
+      :header="$t('Edit visit date')"
       class="hse-project-root hse-project-assurance hse-project-overlay"
       :style="{ width: 'min(420px, 96vw)' }"
       :closable="!savingDate"
@@ -701,7 +714,7 @@ onMounted(async () => {
     >
       <form id="edit-leadership-visit-date" @submit.prevent="saveVisitDate">
         <div class="hse-project-field">
-          <label for="edit-visit-date" class="hse-project-field-label">Date</label>
+          <label for="edit-visit-date" class="hse-project-field-label">{{ $t('Date') }}</label>
           <DatePicker
             v-model="editedDate"
             input-id="edit-visit-date"
@@ -712,7 +725,7 @@ onMounted(async () => {
             :disabled="savingDate"
             :min-date="parseDate(months[0]?.firstDate ?? '') ?? undefined"
             :max-date="parseDate(months[months.length - 1]?.lastDate ?? '') ?? undefined"
-            placeholder="Select visit date"
+            :placeholder="$t('Select visit date')"
           />
         </div>
         <p v-if="editError" class="notice notice--error" role="alert">{{ editError }}</p>
@@ -724,7 +737,7 @@ onMounted(async () => {
           :disabled="savingDate"
           @click="editDialogVisible = false"
         >
-          Cancel
+          {{ $t('Cancel') }}
         </button>
         <button
           type="submit"
@@ -732,7 +745,7 @@ onMounted(async () => {
           class="hse-project-button hse-project-button--primary"
           :disabled="savingDate || !editedDate"
         >
-          {{ savingDate ? 'Saving…' : 'Save' }}
+          {{ savingDate ? $t('emailSettings.saving') : $t('save') }}
         </button>
       </template>
     </Dialog>

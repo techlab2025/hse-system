@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { PeriodicTypeEnum } from '../../Core/Enum/periodic_type_enum'
 export default class MeetingTypeModel extends TitleInterface {
@@ -34,13 +35,16 @@ export default class MeetingTypeModel extends TitleInterface {
         ? null
         : Number(data.number_of_days ?? data.numberOfDays)
 
-    return new MeetingTypeModel(
-      data.id,
-      data.title,
-      Number(data.periodic_type ?? data.periodicType) as PeriodicTypeEnum,
-      numberOfDays,
-      data.all_industries === true || Number(data.all_industries) === 1,
-      data.industries ?? [],
+    return localizedRecord(
+      new MeetingTypeModel(
+        data.id,
+        data.title,
+        Number(data.periodic_type ?? data.periodicType) as PeriodicTypeEnum,
+        numberOfDays,
+        data.all_industries === true || Number(data.all_industries) === 1,
+        data.industries ?? [],
+      ),
+      data,
     )
   }
 

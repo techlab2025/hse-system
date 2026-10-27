@@ -27,9 +27,9 @@ const state = ref(indexNotificationPlanController.state.value)
 const { t, locale } = useI18n()
 
 const activeOptions = computed(() => [
-  new TitleInterface({ id: -1, title: t('all_statuses') }),
-  new TitleInterface({ id: 1, title: t('active') }),
-  new TitleInterface({ id: 0, title: t('inactive') }),
+  new TitleInterface({ id: -1, title: t('all_statuses'), translationKey: 'all_statuses' }),
+  new TitleInterface({ id: 1, title: t('active'), translationKey: 'active' }),
+  new TitleInterface({ id: 0, title: t('inactive'), translationKey: 'inactive' }),
 ])
 
 const selectedActive = ref<TitleInterface | null>(null)
@@ -204,7 +204,7 @@ const handleCountPerPage = (count: number) => {
       <CustomSelectInput
         id="is-active-filter"
         :modelValue="selectedActive ?? activeOptions[0]"
-        label="status"
+        :label="$t('status')"
         :static-options="activeOptions"
         :reload="false"
         :placeholder="$t('all_statuses')"

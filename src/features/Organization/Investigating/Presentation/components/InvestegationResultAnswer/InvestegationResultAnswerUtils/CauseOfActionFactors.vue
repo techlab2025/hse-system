@@ -22,7 +22,7 @@ const factoryTitle = computed(() => {
 <template>
   <div class="accident-answer-factors">
     <p class="main-factor">
-      main factor : <span>{{ factoryTitle }}</span>
+      {{ $t('main factor :') }} <span>{{ factoryTitle }}</span>
     </p>
     <p
       class="sub-factor"
@@ -30,7 +30,7 @@ const factoryTitle = computed(() => {
       :key="index2"
     >
       <SidebarVector class="sub-factor-icon" />
-      factor : <span>{{ subfactor }}</span>
+      {{ $t('factor :') }} <span>{{ subfactor }}</span>
     </p>
   </div>
 </template>

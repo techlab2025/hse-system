@@ -60,12 +60,12 @@ const UpdateTitle = (data) => {
 <template>
   <ZoneTitlesForm @update:value="UpdateTitle" />
   <ColorSelection
-    title="chart color"
+    :title="$t('chart color')"
     :colors="colors"
     @update:value="(v) => updateField('SelectedColor', v)"
   />
   <RadioSection
-    title="Available to"
+    :title="$t('Available to')"
     :selections="['anyone', 'only me']"
     @update:value="(v) => updateField('SelectedAvailable', v)"
   />

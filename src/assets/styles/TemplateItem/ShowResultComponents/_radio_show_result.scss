@@ -14,7 +14,7 @@
       padding-bottom: $XsSize;
       gap: $XsSize2;
       position: relative;
-      padding-left: 15px;
+      padding-inline-start: 15px;
 
       &::before {
         position: absolute;
@@ -53,7 +53,7 @@
   .textarea-conatneir {
     background-color: var(--surface-1);
     @include flex-column(nowrap, flex-start, flex-start);
-    padding-left: 15px;
+    padding-inline-start: 15px;
     width: 100%;
     padding: 10px;
     border-radius: 12px;

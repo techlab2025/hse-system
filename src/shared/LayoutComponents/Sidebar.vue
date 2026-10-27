@@ -27,7 +27,7 @@ const user = useUserStore()
   <aside :class="['sidebar', isOpen ? 'open' : 'close']">
     <div class="sidebar-wrapper">
       <div class="logo">
-        <img src="@/assets/images/logo.svg" alt="logo" />
+        <img src="@/assets/images/logo.svg" :alt="$t('Organization logo')" />
         <h2>HSE.Cloud.Ai</h2>
       </div>
       <button class="close-sidebar" @click="toggleSidebar">

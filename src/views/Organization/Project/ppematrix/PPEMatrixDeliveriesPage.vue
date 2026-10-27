@@ -5,15 +5,12 @@ import PPEMatrixDeliveriesTable from '@/features/Organization/Project/Presentati
 
 <template>
   <main class="deliveries-page">
-    <nav class="deliveries-navigation" aria-label="PPE navigation">
+    <nav class="deliveries-navigation" :aria-label="$t('PPE navigation')">
       <RouterLink to="/organization/ppe-matrix">
-        ← Activity and tool matrix
+        {{ $t('← Activity and tool matrix') }}
       </RouterLink>
-      <RouterLink
-        class="primary-link"
-        to="/organization/ppe-delivery"
-      >
-        Deliver PPE →
+      <RouterLink class="primary-link" to="/organization/ppe-delivery">
+        {{ $t('Deliver PPE →') }}
       </RouterLink>
     </nav>
 

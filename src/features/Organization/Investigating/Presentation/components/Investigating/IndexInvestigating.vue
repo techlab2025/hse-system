@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { computed, ref, onMounted, watch } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import InvestigatingCardsLoader from './InvestigatingCardsLoader.vue'
@@ -41,23 +43,51 @@ const filterObservationType = ref<number | null>(null)
 const filterFields = [
   {
     key: 'status',
-    label: 'status',
+    get label() {
+      return localizeUi('status')
+    },
     options: [
-      new TitleInterface({ id: InvestegationStatusEnum.OPEN, title: 'Open' }),
-      new TitleInterface({ id: InvestegationStatusEnum.NEW, title: 'New' }),
-      new TitleInterface({ id: InvestegationStatusEnum.IN_PROGRESS, title: 'In Progress' }),
-      new TitleInterface({ id: InvestegationStatusEnum.HOLD, title: 'Hold' }),
-      new TitleInterface({ id: InvestegationStatusEnum.CLOSED, title: 'Closed' }),
+      new TitleInterface({
+        id: InvestegationStatusEnum.OPEN,
+        title: 'Open',
+        translationKey: 'Open',
+      }),
+      new TitleInterface({ id: InvestegationStatusEnum.NEW, title: 'New', translationKey: 'New' }),
+      new TitleInterface({
+        id: InvestegationStatusEnum.IN_PROGRESS,
+        title: 'In Progress',
+        translationKey: 'In Progress',
+      }),
+      new TitleInterface({
+        id: InvestegationStatusEnum.HOLD,
+        title: 'Hold',
+        translationKey: 'Hold',
+      }),
+      new TitleInterface({
+        id: InvestegationStatusEnum.CLOSED,
+        title: 'Closed',
+        translationKey: 'Closed',
+      }),
       new TitleInterface({ id: InvestegationStatusEnum.COMPLETED, title: 'Completed' }),
     ],
   },
   {
     key: 'observationType',
-    label: 'Observation Type',
+    get label() {
+      return localizeUi('Observation Type')
+    },
     options: [
-      new TitleInterface({ id: Observation.ObservationType, title: 'Observation' }),
-      new TitleInterface({ id: Observation.HazardType, title: 'Hazard' }),
-      new TitleInterface({ id: Observation.AccidentsType, title: 'Incident' }),
+      new TitleInterface({
+        id: Observation.ObservationType,
+        title: 'Observation',
+        translationKey: 'Observation',
+      }),
+      new TitleInterface({ id: Observation.HazardType, title: 'Hazard', translationKey: 'Hazard' }),
+      new TitleInterface({
+        id: Observation.AccidentsType,
+        title: 'Incident',
+        translationKey: 'Incident',
+      }),
     ],
   },
 ]
@@ -252,7 +282,7 @@ const GerIncidantCount = (data: any): number => {
             <div class="investigation-command-copy">
               <span class="investigation-command-mark" aria-hidden="true">I</span>
               <div>
-                <span class="investigation-command-eyebrow">HSE operations</span>
+                <span class="investigation-command-eyebrow">{{ $t('HSE operations') }}</span>
                 <h1>{{ $t('Investigation') }}</h1>
                 <p>{{ $t('Review investigation status, evidence, meetings, and outcomes') }}</p>
               </div>
@@ -372,7 +402,7 @@ const GerIncidantCount = (data: any): number => {
                             class="investigation-summary-box"
                           >
                             <span class="summary-label summary-label-with-icon">
-                              <img :src="mark" alt="zone" />
+                              <img :src="mark" :alt="$t('zone')" />
                               {{ $t('Zone') }} :
                             </span>
                             <span class="summary-value">{{ item?.observation?.zoon?.title }}</span>
@@ -608,15 +638,23 @@ const GerIncidantCount = (data: any): number => {
     </template>
     <template #empty>
       <DataEmpty
-        description="You have no investigations .. All your joined customers will appear here when you add your customer data"
-        title="You have No investigations"
+        :description="
+          $t(
+            'You have no investigations .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+        :title="$t('You have No investigations')"
         :withbtn="false"
       />
     </template>
     <template #failed>
       <DataEmpty
-        description="You have no investigations .. All your joined customers will appear here when you add your customer data"
-        title="You have No investigations"
+        :description="
+          $t(
+            'You have no investigations .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+        :title="$t('You have No investigations')"
         :withbtn="false"
       />
     </template>
@@ -624,8 +662,12 @@ const GerIncidantCount = (data: any): number => {
     <template #notPermitted>
       <DataFailed
         :withbtn="false"
-        addText="Have not Permission"
-        description="You have no Investigating .. All your joined customers will appear here when you add your customer data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Investigating .. All your joined customers will appear here when you add your customer data',
+          )
+        "
       />
     </template>
   </DataStatus>

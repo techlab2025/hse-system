@@ -59,7 +59,7 @@ const GetHeader = (value: number) => {
       : 'incident'
 }
 
-const {user} = useUserStore();
+const { user } = useUserStore()
 </script>
 <template>
   <div class="hse-observation-identity record-details-page">
@@ -105,7 +105,10 @@ const {user} = useUserStore();
           </template>
         </div>
 
-        <div v-if="state.data?.investigation && user?.employeeType == EmployeeStatusEnum.Admin" class="show-observation-container investigation-card">
+        <div
+          v-if="state.data?.investigation && user?.employeeType == EmployeeStatusEnum.Admin"
+          class="show-observation-container investigation-card"
+        >
           <ObservationInvestigationDetails :data="state.data?.investigation" />
         </div>
       </template>
@@ -121,9 +124,13 @@ const {user} = useUserStore();
         >
           <DataEmpty
             :link="`/organization/equipment-mangement/observation/add`"
-            addText="Add Observation"
-            description="You have no Observation .. All your joined customers will appear here when you add your customer data"
-            title="You have No Observation"
+            :addText="$t('Add Observation')"
+            :description="
+              $t(
+                'You have no Observation .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Observation')"
           />
         </PermissionBuilder>
       </template>
@@ -133,9 +140,13 @@ const {user} = useUserStore();
         >
           <DataFailed
             :link="`/organization/equipment-mangement/observation/add`"
-            addText="Add Observation"
-            description="You have no Observation .. All your joined customers will appear here when you add your customer data"
-            title="You have No Observation"
+            :addText="$t('Add Observation')"
+            :description="
+              $t(
+                'You have no Observation .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Observation')"
           />
         </PermissionBuilder>
       </template>

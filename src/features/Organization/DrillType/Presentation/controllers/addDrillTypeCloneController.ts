@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
@@ -31,14 +32,13 @@ export default class AddDrillTypeCloneController extends ControllerInterface<Dri
         params.validateOrThrow()
         return
       }
-      const dataState: DataState<DrillTypeModel> =
-        await this.addDrillTypeCloneUseCase.call(params)
+      const dataState: DataState<DrillTypeModel> = await this.addDrillTypeCloneUseCase.call(params)
       this.setLoading()
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })
@@ -47,9 +47,7 @@ export default class AddDrillTypeCloneController extends ControllerInterface<Dri
         // }
 
         // useLoaderStore().endLoadingWithDialog();
-        await IndexDrillTypeController.getInstance().getData(
-          new IndexDrillTypeParams('', 1, 10, 1),
-        )
+        await IndexDrillTypeController.getInstance().getData(new IndexDrillTypeParams('', 1, 10, 1))
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',

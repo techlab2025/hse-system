@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import Dialog from 'primevue/dialog';
-import GuideIcon from '@/assets/images/GuideIcon.gif';
+import { ref } from 'vue'
+import Dialog from 'primevue/dialog'
+import GuideIcon from '@/assets/images/GuideIcon.gif'
 // Control for the Dialog
 
 // Logic for the Minimized Switch
-const checked = defineModel<boolean>('checked', { default: false });
+const checked = defineModel<boolean>('checked', { default: false })
 
 const props = defineProps<{
-  visible: boolean,
-  title: string,
+  visible: boolean
+  title: string
   index: number
-}>();
-const visible = ref(props.visible);
+}>()
+const visible = ref(props.visible)
 
 // Function to open the help dialog
 const openHelp = () => {
-  visible.value = true;
-};
-const emit = defineEmits(['Gotit']);
+  visible.value = true
+}
+const emit = defineEmits(['Gotit'])
 const Gotit = () => {
-  visible.value = false;
-  emit('Gotit' , true);
+  visible.value = false
+  emit('Gotit', true)
 }
 </script>
 
@@ -47,21 +47,33 @@ const Gotit = () => {
       <button class="info-btn" @click.stop="openHelp">?</button>
     </div> -->
 
-    <Dialog v-model:visible="visible" :dismissable-mask="true" modal :header="$t('Project Progress Guide')"
-      :style="{ width: '60rem', height: 'fit-content' }" :breakpoints="{ '960px': '75vw', '641px': '90vw' }">
+    <Dialog
+      v-model:visible="visible"
+      :dismissable-mask="true"
+      modal
+      :header="$t('Project Progress Guide')"
+      :style="{ width: '60rem', height: 'fit-content' }"
+      :breakpoints="{ '960px': '75vw', '641px': '90vw' }"
+    >
       <div class="dialog-content">
         <div class="gif-container">
-          <img :src="GuideIcon" alt="System Guide" />
+          <img :src="GuideIcon" :alt="$t('System Guide')" />
         </div>
 
         <div class="text-section">
           <h3>{{ $t('Track Your Milestones') }}</h3>
-          <p>{{ $t('This is the Projects Progress Page. To use the system effectively, ensure you:') }}</p>
+          <p>
+            {{
+              $t('This is the Projects Progress Page. To use the system effectively, ensure you:')
+            }}
+          </p>
 
           <ul class="guide-list">
             <li><span>1</span> {{ $t('Fill in All Data You Want To Track.') }}</li>
             <li><span>2</span> {{ $t('Link your Employees to the project.') }}</li>
-            <li><span>3</span> {{ $t('Toggle the status switch to "Active" to start tracking.') }}</li>
+            <li>
+              <span>3</span> {{ $t('Toggle the status switch to "Active" to start tracking.') }}
+            </li>
           </ul>
         </div>
 
@@ -102,7 +114,7 @@ const Gotit = () => {
   transition: 0.3s;
 }
 
-.hidden-input:checked+.switch-label .switch-track {
+.hidden-input:checked + .switch-label .switch-track {
   background-color: var(--status-success);
   /* Success Green */
 }
@@ -121,7 +133,7 @@ const Gotit = () => {
   justify-content: center;
 }
 
-.hidden-input:checked+.switch-label .switch-thumb {
+.hidden-input:checked + .switch-label .switch-thumb {
   transform: translateX(calc(20px * var(--switch-scale)));
 }
 

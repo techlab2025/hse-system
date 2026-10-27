@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -30,12 +31,12 @@ export default class CreateProjectMeetingController extends ControllerInterface<
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })
       } else {
-      console.log(this.state.value.error , "this.state.value.error");
+        console.log(this.state.value.error, 'this.state.value.error')
 
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',
@@ -45,7 +46,7 @@ export default class CreateProjectMeetingController extends ControllerInterface<
         })
       }
     } catch (error: unknown) {
-      console.log(this.state.value.error , "this.state.value.error");
+      console.log(this.state.value.error, 'this.state.value.error')
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),

@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -6,9 +7,7 @@ import IndexHeaderUseCase from '../../Domain/useCase/indexHeaderUseCase'
 import type HeaderModel from '../../Data/models/HeaderModel'
 // import TitleInterface from '@/base/Data/Models/title_interface'
 
-export default class IndexHeaderController extends SelectControllerInterface<
-  HeaderModel[]
-> {
+export default class IndexHeaderController extends SelectControllerInterface<HeaderModel[]> {
   private static instance: IndexHeaderController
   private constructor() {
     super()
@@ -26,14 +25,13 @@ export default class IndexHeaderController extends SelectControllerInterface<
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<HeaderModel[]> =
-      await this.IndexHeaderUseCase.call(params)
+    const dataState: DataState<HeaderModel[]> = await this.IndexHeaderUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

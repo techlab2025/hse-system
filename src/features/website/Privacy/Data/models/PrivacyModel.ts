@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientPrivacyModel from "@/features/dashboard/settings/clientPrivacy/Data/models/index_client_term_model";
@@ -37,19 +38,22 @@ export default class PrivacyModel extends TitleInterface {
   }
 
   static fromMap(data: any): PrivacyModel {
-    return new PrivacyModel(
-      data.id,
-      data.title,
-      data.subtitle,
-      data.has_term,
-      data.all_industries,
-      data.industries?.length > 0
-        ? data.industries?.map((industry) => TitleModel.fromMap(industry))
-        : [],
-      data.parent_id,
-      data.image,
-      data.titles,
-      data.descriptions,
+    return localizedRecord(
+      new PrivacyModel(
+        data.id,
+        data.title,
+        data.subtitle,
+        data.has_term,
+        data.all_industries,
+        data.industries?.length > 0
+          ? data.industries?.map((industry) => TitleModel.fromMap(industry))
+          : [],
+        data.parent_id,
+        data.image,
+        data.titles,
+        data.descriptions,
+      ),
+      data,
     )
   }
 }

@@ -127,7 +127,6 @@ watch(
       industry.value = newData?.industries ?? []
       Equipment.value = newData?.equipmentTypeId
       allIndustries.value = newData?.allIndustries == 1
-
     }
   },
   { immediate: true },
@@ -158,9 +157,9 @@ watch(
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
-      label="Industry"
+      :label="$t('industry')"
       id="EquipmentType"
-      placeholder="Select industry"
+      :placeholder="$t('Select industry')"
       :type="2"
       @update:modelValue="setIndustry"
     />
@@ -170,9 +169,9 @@ watch(
       :modelValue="Equipment"
       :controller="indexEquipmentTypeController"
       :params="indexEquipmentTypeParams"
-      label="EquipmentType"
+      :label="$t('EquipmentType')"
       id="EquipmentType"
-      placeholder="Select EquipmentType"
+      :placeholder="$t('Select EquipmentType')"
       @update:modelValue="setEquipmentType"
     />
   </div>

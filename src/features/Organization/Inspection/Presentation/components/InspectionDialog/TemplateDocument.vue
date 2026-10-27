@@ -307,7 +307,7 @@ const totalVisibleQuestions = computed(() =>
     v-if="isLoading"
     class="template-document-container template-document-skeleton"
     aria-busy="true"
-    aria-label="Loading inspection document"
+    :aria-label="$t('Loading inspection document')"
   >
     <header class="template-skeleton-hero">
       <div class="template-skeleton-hero__copy">

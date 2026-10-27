@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { NcrCategoryEnum } from '../../../Core/enums/ncrs/NcrCategoryEnum'
 import { StatusEnum } from '../../../Core/enums/ncrs/StatusEnum'
@@ -62,29 +63,32 @@ export default class InternalAuditNcrModel extends TitleInterface {
   static fromMap(data: unknown): InternalAuditNcrModel {
     const item = detailsRecord(data)
     const leadReview = item.LeadReview ?? item.lead_review
-    return new InternalAuditNcrModel(
-      Number(item.id ?? item.internal_audit_ncr_id ?? item.ncrs_id ?? item.ncr_id ?? 0),
-      String(item.ncr ?? item.serial_name ?? ''),
-      (item.ncrs_category ?? item.ncr_category ?? item.category ?? '') as
-        | NcrCategoryEnum
-        | number
-        | string,
-      parseArea(item),
-      parsePerson(item.created_by ?? item.cerated_by),
-      parsePerson(item.auditee ?? item.audited_employee),
-      String(item.due_date ?? ''),
-      item.status as StatusEnum,
-      parsePerson(leadReview),
-      String(
-        item.lead_review_status ??
-          item.LeadReviewStatus ??
-          (typeof leadReview === 'string' ? leadReview : ''),
+    return localizedRecord(
+      new InternalAuditNcrModel(
+        Number(item.id ?? item.internal_audit_ncr_id ?? item.ncrs_id ?? item.ncr_id ?? 0),
+        String(item.ncr ?? item.serial_name ?? ''),
+        (item.ncrs_category ?? item.ncr_category ?? item.category ?? '') as
+          | NcrCategoryEnum
+          | number
+          | string,
+        parseArea(item),
+        parsePerson(item.created_by ?? item.cerated_by),
+        parsePerson(item.auditee ?? item.audited_employee),
+        String(item.due_date ?? ''),
+        item.status as StatusEnum,
+        parsePerson(leadReview),
+        String(
+          item.lead_review_status ??
+            item.LeadReviewStatus ??
+            (typeof leadReview === 'string' ? leadReview : ''),
+        ),
+        String(item.serial_name ?? ''),
+        String(item.serial_number ?? ''),
+        String(item.created_at ?? ''),
+        item.has_result === true,
+        InternalAuditNcrDetailsModel.fromMap(item),
       ),
-      String(item.serial_name ?? ''),
-      String(item.serial_number ?? ''),
-      String(item.created_at ?? ''),
-      item.has_result === true,
-      InternalAuditNcrDetailsModel.fromMap(item),
+      data,
     )
   }
 

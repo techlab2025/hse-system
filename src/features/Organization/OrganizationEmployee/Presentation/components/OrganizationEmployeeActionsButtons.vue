@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
 import { onMounted, ref, watch } from 'vue'
@@ -21,7 +22,18 @@ const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.
 const state = ref(indexOrganizatoinEmployeeController.state.value)
 
 const fetchOrganizatoinEmployee = async () => {
-  const params = new IndexOrganizatoinEmployeeParams('', 1, 10, 1, null, null, null, null, null, false)
+  const params = new IndexOrganizatoinEmployeeParams(
+    '',
+    1,
+    10,
+    1,
+    null,
+    null,
+    null,
+    null,
+    null,
+    false,
+  )
   await indexOrganizatoinEmployeeController.getData(params)
 }
 onMounted(fetchOrganizatoinEmployee)
@@ -48,7 +60,7 @@ const onFileSelected = (e: Event) => {
 
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert('No data available to export')
+    alert(localizeUi('No data available to export'))
     return
   }
   const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
@@ -92,7 +104,6 @@ const DownloadExample = () => {
 }
 
 const actionList = () => [
-
   {
     text: t('upload_complated_template'),
     type: ActionItemsTypeEnum.Warning,
@@ -118,7 +129,6 @@ const actionList = () => [
       :actionList="actionList()"
       :actionsNumber="2"
     >
-
     </ActionsList>
   </div>
 
@@ -131,11 +141,11 @@ const actionList = () => [
   >
     <UploadOrganizationEmployee
       :initial-file="pendingFile"
-      @uploaded="
-        showUploadDialog = false;
-        pendingFile = null;
+      @uploaded="() => {
+showUploadDialog = false
+        pendingFile = null
         fetchOrganizatoinEmployee()
-      "
+}"
     />
   </Dialog>
 

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
 import { onMounted, ref, watch } from 'vue'
@@ -49,7 +50,7 @@ const onFileSelected = (e: Event) => {
 
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert('No data available to export')
+    alert(localizeUi('No data available to export'))
     return
   }
   const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
@@ -115,9 +116,11 @@ const actionList = () => [
     <UploaFactorExeclSheet
       :initial-file="pendingFile"
       @uploaded="
-        showUploadDialog = false;
-        pendingFile = null;
-        fetchFactors();
+        () => {
+          showUploadDialog = false
+          pendingFile = null
+          fetchFactors()
+        }
       "
     />
   </Dialog>

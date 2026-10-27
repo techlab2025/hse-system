@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
 import { ref, nextTick, onMounted, watch } from 'vue'
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
@@ -55,11 +56,11 @@ const handleFileChange = (event: Event) => {
   if (!file) return
 
   if (!file.type.startsWith('image/')) {
-    alert('Please select an image file')
+    alert(localizeUi('Please select an image file'))
     return
   }
   if (file.size > props.maxSize * 1024 * 1024) {
-    alert(`File size exceeds ${props.maxSize} MB`)
+    alert(localizeUi('File size exceeds {size} MB', { size: props.maxSize }))
     return
   }
 
@@ -124,39 +125,73 @@ onMounted(() => {
   emit('update:modelValue', props.modelValue)
 })
 
-watch(() => props.modelValue, (val) => {
-  emit('update:modelValue', val)
-})
+watch(
+  () => props.modelValue,
+  (val) => {
+    emit('update:modelValue', val)
+  },
+)
 </script>
 
 <template>
   <div class="file-append">
-    <input type="file" hidden :id="`file-${props.index}`" accept="image/*" @change="handleFileChange" />
+    <input
+      type="file"
+      hidden
+      :id="`file-${props.index}`"
+      accept="image/*"
+      @change="handleFileChange"
+    />
 
     <!-- Upload area -->
-    <label :for="`file-${props.index}`" v-if="!modelValue"
-      class="flex justify-center gap-4 file-label items-center cursor-pointer">
+    <label
+      :for="`file-${props.index}`"
+      v-if="!modelValue"
+      class="flex justify-center gap-4 file-label items-center cursor-pointer"
+    >
       <UploadAppend />
-      <p class="text-gray-500">Attach an image no larger than {{ props.maxSize }}MB.</p>
+      <p class="text-gray-500">
+        {{ $t('Attach an image no larger than') }} {{ props.maxSize }}{{ $t('MB.') }}
+      </p>
     </label>
 
     <!-- Preview -->
     <div v-if="modelValue" class="file-preview">
       <div class="file-info flex justify-between items-center">
-        <div class="file-name text-[#242424]">Image selected</div>
+        <div class="file-name text-[#242424]">{{ $t('Image selected') }}</div>
         <RemoveImageIcon @click="removeImage" class="cursor-pointer close-icon" />
       </div>
 
-      <img v-if="typeof modelValue === 'string'" :src="modelValue" alt="Preview" class="mt-2 max-h-48 rounded" />
-      <img v-else-if="modelValue instanceof File" :src="URL.createObjectURL(modelValue)" alt="Preview"
-        class="mt-2 max-h-48 rounded" />
+      <img
+        v-if="typeof modelValue === 'string'"
+        :src="modelValue"
+        :alt="$t('Preview')"
+        class="mt-2 max-h-48 rounded"
+      />
+      <img
+        v-else-if="modelValue instanceof File"
+        :src="URL.createObjectURL(modelValue)"
+        :alt="$t('Preview')"
+        class="mt-2 max-h-48 rounded"
+      />
     </div>
 
     <!-- Dialog for crop -->
-    <Dialog v-if="props.isCrop" v-model:visible="visible" dismissableMask modal :style="{ width: '40rem' }">
+    <Dialog
+      v-if="props.isCrop"
+      v-model:visible="visible"
+      dismissableMask
+      modal
+      :style="{ width: '40rem' }"
+    >
       <div>
-        <img :id="`cropper-image-${props.index}`" :src="imageSrc" alt="Cropper" class="w-full" />
-        <button @click="cropImage" class="btn btn-primary mt-4">Crop</button>
+        <img
+          :id="`cropper-image-${props.index}`"
+          :src="imageSrc"
+          :alt="$t('Cropper')"
+          class="w-full"
+        />
+        <button @click="cropImage" class="btn btn-primary mt-4">{{ $t('crop') }}</button>
       </div>
     </Dialog>
   </div>

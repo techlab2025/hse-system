@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import CertificateModel from '@/features/setting/Certificate/Data/models/CertificateModel'
 
@@ -8,7 +9,13 @@ export default class HierarchyCertificateModel extends TitleInterface {
   public children: HierarchyCertificateModel[]
   public certificates: CertificateModel[]
 
-  constructor(id: number, title: string, parent_id: number, children: HierarchyCertificateModel[] , certificates: CertificateModel[]) {
+  constructor(
+    id: number,
+    title: string,
+    parent_id: number,
+    children: HierarchyCertificateModel[],
+    certificates: CertificateModel[],
+  ) {
     super({ id })
     this.id = id
     this.title = title
@@ -18,7 +25,15 @@ export default class HierarchyCertificateModel extends TitleInterface {
   }
 
   static fromMap(data: any): HierarchyCertificateModel {
-    return new HierarchyCertificateModel(data.id, data.title, data.parent_id, data.children , data.certificates.map((cert: any) => CertificateModel.fromMap(cert)))
+    return localizedRecord(
+      new HierarchyCertificateModel(
+        data.id,
+        data.title,
+        data.parent_id,
+        data.children,
+        data.certificates.map((cert: any) => CertificateModel.fromMap(cert)),
+      ),
+      data,
+    )
   }
 }
-

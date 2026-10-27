@@ -1,10 +1,10 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import type MangementChangeTopicTypeModel from '../../Data/models/MangementChangeTopicTypeModel'
 import IndexMangementChangeTopicTypeUseCase from '../../Domain/useCase/indexMangementChangeTopicTypeUseCase'
-
 
 export default class IndexMangementChangeTopicTypeController extends SelectControllerInterface<
   MangementChangeTopicTypeModel[]
@@ -33,7 +33,7 @@ export default class IndexMangementChangeTopicTypeController extends SelectContr
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

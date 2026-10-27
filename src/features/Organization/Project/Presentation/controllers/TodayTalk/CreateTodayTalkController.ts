@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
@@ -29,7 +30,7 @@ export default class CreateTodayTalkController extends ControllerInterface<Today
     if (this.isDataSuccess()) {
       DialogSelector.instance.successDialog.openDialog({
         dialogName: 'dialog-success',
-        titleContent: "Today's talk was saved successfully",
+        titleContent: localizeUi("Today's talk was saved successfully"),
         imageElement: successImage,
         messageContent: null,
       })

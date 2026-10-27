@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -6,9 +7,7 @@ import type HashtagModel from '../../Data/models/TermModel'
 import IndexHashtagUseCase from '../../Domain/useCase/indexHashtagUseCase'
 // import TitleInterface from '@/base/Data/Models/title_interface'
 
-export default class IndexHashtagController extends SelectControllerInterface<
-  HashtagModel[]
-> {
+export default class IndexHashtagController extends SelectControllerInterface<HashtagModel[]> {
   private static instance: IndexHashtagController
   private constructor() {
     super()
@@ -26,14 +25,13 @@ export default class IndexHashtagController extends SelectControllerInterface<
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<HashtagModel[]> =
-      await this.IndexHashtagUseCase.call(params)
+    const dataState: DataState<HashtagModel[]> = await this.IndexHashtagUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

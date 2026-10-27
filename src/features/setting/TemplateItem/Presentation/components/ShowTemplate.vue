@@ -44,14 +44,14 @@ watch(
         <div class="preview-glow preview-glow-blue"></div>
         <div class="preview-glow preview-glow-green"></div>
         <div class="left-header-background" aria-hidden="true">
-          <img class="left-blue-background" :src="EmployeeBg" alt="bg" />
-          <img class="left-yellow-background" :src="Yellowback" alt="bg" />
+          <img class="left-blue-background" :src="EmployeeBg" alt="" aria-hidden="true" />
+          <img class="left-yellow-background" :src="Yellowback" alt="" aria-hidden="true" />
         </div>
         <div class="template-title">
           <div class="template-title-copy">
-            <span class="preview-kicker">Live template</span>
-            <h2 class="title">Template preview</h2>
-            <p class="subtitle">Live preview of the saved template structure</p>
+            <span class="preview-kicker">{{ $t('Live template') }}</span>
+            <h2 class="title">{{ $t('Template preview') }}</h2>
+            <p class="subtitle">{{ $t('Live preview of the saved template structure') }}</p>
           </div>
           <div class="preview-icon">
             <ShowTemplateIcon />
@@ -62,8 +62,8 @@ watch(
         </div>
 
         <div class="right-header-background" aria-hidden="true">
-          <img class="right-yellow-background" :src="Yellowback" alt="bg" />
-          <img class="right-blue-background" :src="EmployeeBg" alt="bg" />
+          <img class="right-yellow-background" :src="Yellowback" alt="" aria-hidden="true" />
+          <img class="right-blue-background" :src="EmployeeBg" alt="" aria-hidden="true" />
         </div>
       </div>
     </template>
@@ -82,9 +82,21 @@ watch(
   border: 1px solid color-mix(in srgb, var(--brand-primary-200) 74%, transparent);
   border-radius: 26px;
   background:
-    radial-gradient(circle at 12% 8%, color-mix(in srgb, var(--brand-primary-500) 12%, transparent), transparent 28%),
-    radial-gradient(circle at 88% 4%, color-mix(in srgb, var(--status-success) 12%, transparent), transparent 30%),
-    linear-gradient(145deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 96%, transparent));
+    radial-gradient(
+      circle at 12% 8%,
+      color-mix(in srgb, var(--brand-primary-500) 12%, transparent),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 88% 4%,
+      color-mix(in srgb, var(--status-success) 12%, transparent),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--surface-1) 98%, transparent),
+      color-mix(in srgb, var(--brand-primary-50) 96%, transparent)
+    );
   box-shadow:
     0 24px 55px color-mix(in srgb, var(--brand-primary-900) 10%, transparent),
     inset 0 1px 0 color-mix(in srgb, var(--shadow-color) 90%, transparent);
@@ -96,10 +108,21 @@ watch(
   pointer-events: none;
   content: '';
   background-image:
-    linear-gradient(color-mix(in srgb, var(--brand-primary-500) 4.5%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 4.5%, transparent) 1px, transparent 1px);
+    linear-gradient(
+      color-mix(in srgb, var(--brand-primary-500) 4.5%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--brand-primary-500) 4.5%, transparent) 1px,
+      transparent 1px
+    );
   background-size: 28px 28px;
-  mask-image: linear-gradient(180deg, color-mix(in srgb, var(--text-strong) 72%, transparent), transparent 72%);
+  mask-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--text-strong) 72%, transparent),
+    transparent 72%
+  );
 }
 
 .preview-glow {

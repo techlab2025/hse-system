@@ -17,7 +17,7 @@ import FileUpload from '@/features/Organization/OrganizationEmployee/Presentatio
 import PPEActivityModel from '../../Data/models/PPEActivityModel'
 import AddPPEActivityController from '../controllers/addPPEActivityController'
 import AddPPEActivityExcelParams from '../../Core/params/addPPEActivityExcelParams'
-import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum';
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const sheetData = ref<PPEActivityModel[] | null>(null)
@@ -193,7 +193,9 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
           <div class="table-container">
             <div class="table-header">
               <h3 class="table-title">{{ $t('mapped_data_preview') }}</h3>
-              <span class="table-badge">{{ $t('row_count', { count: mappedData.length - 1 }) }}</span>
+              <span class="table-badge">{{
+                $t('row_count', { count: mappedData.length - 1 })
+              }}</span>
             </div>
             <div class="table-responsive">
               <table class="main-table">
@@ -227,7 +229,9 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
             </div>
           </div>
 
-          <button class="btn-confirm" @click="addPPEActivities">{{ $t('confirm_and_submit') }}</button>
+          <button class="btn-confirm" @click="addPPEActivities">
+            {{ $t('confirm_and_submit') }}
+          </button>
         </template>
       </template>
     </div>
@@ -481,7 +485,7 @@ kbd {
 
 .main-table th {
   padding: 12px 16px;
-  text-align: left;
+  text-align: start;
   color: var(--brand-primary-500);
   border-bottom: 2px solid var(--brand-primary-100);
 }

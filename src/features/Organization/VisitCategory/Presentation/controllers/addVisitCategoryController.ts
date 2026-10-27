@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import type { LookupIndustryFields } from '@/shared/utils/lookupIndustryScope'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
@@ -32,7 +33,7 @@ export default class AddVisitCategoryController extends ControllerInterface<Visi
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })
@@ -62,14 +63,18 @@ export default class AddVisitCategoryController extends ControllerInterface<Visi
     return this.state
   }
 
-  async importVisitCategories(titles: string[], router: Router, industryScope?: LookupIndustryFields) {
+  async importVisitCategories(
+    titles: string[],
+    router: Router,
+    industryScope?: LookupIndustryFields,
+  ) {
     try {
       const data = titles
         .map((title) => ({ title: String(title ?? '').trim() }))
         .filter((item) => item.title)
 
       if (!data.length) {
-        throw new Error('At least one row is required')
+        throw new Error(localizeUi('At least one row is required'))
       }
 
       const dataState: DataState<VisitCategoryModel> = await this.useCase.call(
@@ -82,7 +87,7 @@ export default class AddVisitCategoryController extends ControllerInterface<Visi
 
       DialogSelector.instance.successDialog.openDialog({
         dialogName: 'dialog-success',
-        titleContent: 'Imported was successful',
+        titleContent: localizeUi('Imported was successful'),
         imageElement: successImage,
         messageContent: null,
       })
@@ -107,7 +112,7 @@ export default class AddVisitCategoryController extends ControllerInterface<Visi
         .filter((item) => item.title)
 
       if (!data.length) {
-        throw new Error('Visit Category title is missing')
+        throw new Error(localizeUi('Visit Category title is missing'))
       }
 
       const dataState: DataState<VisitCategoryModel> = await this.useCase.call(
@@ -123,7 +128,7 @@ export default class AddVisitCategoryController extends ControllerInterface<Visi
 
       DialogSelector.instance.successDialog.openDialog({
         dialogName: 'dialog-success',
-        titleContent: 'Added was successful',
+        titleContent: localizeUi('Added was successful'),
         imageElement: successImage,
         messageContent: null,
       })

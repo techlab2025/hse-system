@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
@@ -31,8 +32,7 @@ export default class TemplateModel extends TitleInterface {
     templateItems: TemplateItemDetailsModel[] = [],
     requireImage: number = 0,
     action: TitleInterface | null = null,
-    templateItemTags: TemplateItemTagModel[]
-
+    templateItemTags: TemplateItemTagModel[],
   ) {
     super({ id, title, subtitle })
 
@@ -49,21 +49,26 @@ export default class TemplateModel extends TitleInterface {
   }
 
   static fromMap(data: any): TemplateModel {
-    return new TemplateModel(
-      data.id,
-      data.title,
-      data.subtitle,
-      // data.has_certificate,
-      data.all_industries,
-      data.industries?.length > 0
-        ? data.industries?.map((industry) => TitleModel.fromMap(industry))
-        : [],
-      data.parent_id,
-      data.image,
-      data.template_items?.length > 0 ? data.template_items.map((item) => TemplateItemDetailsModel.fromMap(item)) : [],
-      data.require_image,
-      this.getTemplateItemsAction(data.action),
-      data.template_item_tags?.map((el:any)=>TemplateItemTagModel.fromMap(el))
+    return localizedRecord(
+      new TemplateModel(
+        data.id,
+        data.title,
+        data.subtitle,
+        // data.has_certificate,
+        data.all_industries,
+        data.industries?.length > 0
+          ? data.industries?.map((industry) => TitleModel.fromMap(industry))
+          : [],
+        data.parent_id,
+        data.image,
+        data.template_items?.length > 0
+          ? data.template_items.map((item) => TemplateItemDetailsModel.fromMap(item))
+          : [],
+        data.require_image,
+        this.getTemplateItemsAction(data.action),
+        data.template_item_tags?.map((el: any) => TemplateItemTagModel.fromMap(el)),
+      ),
+      data,
     )
   }
 
@@ -73,16 +78,16 @@ export default class TemplateModel extends TitleInterface {
         return new TitleInterface({
           id: ActionsEnum.CheckBox,
           title: 'Checkbox',
+          translationKey: 'Checkbox',
           subtitle: '',
         })
       default:
         return new TitleInterface({
           id: ActionsEnum.CheckBox,
           title: 'Unknown',
+          translationKey: 'Unknown',
           subtitle: '',
         })
     }
   }
-
-
 }

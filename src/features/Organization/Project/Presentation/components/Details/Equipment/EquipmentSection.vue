@@ -53,8 +53,8 @@ watch(
     <div class="equipment-section-header">
       <HeaderSection
         :img="Equipment"
-        title="Equipment_tools_&_devices_by_zone"
-        subtitle="view_and_manage_all_equipment_assigned_to_each_operational_zone"
+        :title="$t('Equipment_tools_&amp;_devices_by_zone')"
+        :subtitle="$t('view_and_manage_all_equipment_assigned_to_each_operational_zone')"
       />
       <div class="equipment-header-actions">
         <div class="equipment-summary">

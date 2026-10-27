@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translateMessage } from '@/localization/messages'
 import LikeIcon from '@/shared/icons/LikeIcon.vue'
 import AvtiveTimeLineIcon from '@/shared/icons/AvtiveTimeLineIcon.vue'
 import { nextTick, onMounted, ref, watch, type ComponentPublicInstance } from 'vue'
@@ -301,7 +302,9 @@ const AllPagesToView = ref([
           <div class="count">{{ index + 1 > 9 ? `` : 0 }}{{ index + 1 }}</div>
           <div class="timeline-content" v-if="!item.progress">
             <div class="timeline-content-header">
-              <p class="time-line-title" @click="scrollToTop()">{{ item.title }}</p>
+              <p class="time-line-title" @click="scrollToTop()">
+                {{ translateMessage(item.title) }}
+              </p>
               <router-link
                 v-if="AllPagesToView.find((el) => el.id == item.id)?.link"
                 class="timeline-link"
@@ -312,13 +315,15 @@ const AllPagesToView = ref([
               </router-link>
             </div>
             <p class="time-line-description" @click="scrollToTop()">
-              {{ AllPagesToView.find((el) => el.id == item.id)?.description }}
+              {{ translateMessage(AllPagesToView.find((el) => el.id == item.id)?.description) }}
             </p>
           </div>
           <div class="timeline-content" v-else>
             <!-- <h2>{{0}}{{ index }}</h2> -->
             <div class="timeline-content-header">
-              <p class="first-item-title" @click="scrollToTop()">{{ item.title }}</p>
+              <p class="first-item-title" @click="scrollToTop()">
+                {{ translateMessage(item.title) }}
+              </p>
               <router-link
                 v-if="AllPagesToView.find((el) => el.id == item.id)?.link"
                 class="timeline-link"
@@ -329,7 +334,7 @@ const AllPagesToView = ref([
               </router-link>
             </div>
             <p class="first-item-description" @click="scrollToTop()">
-              {{ AllPagesToView.find((el) => el.id == item.id)?.description }}
+              {{ translateMessage(AllPagesToView.find((el) => el.id == item.id)?.description) }}
             </p>
           </div>
         </div>
@@ -340,7 +345,7 @@ const AllPagesToView = ref([
 <style scoped>
 .count_Organization .count {
   font-family: 'bold';
-  padding-left: 14px;
+  padding-inline-start: 14px;
 }
 
 .overlay-focus {

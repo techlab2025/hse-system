@@ -18,7 +18,7 @@ const updateData = () => {
   <div class="expired-certificate">
     <div class="expired">
       <!-- <ExpiredIcon /> -->
-      <span class="expired-title">Expired </span>
+      <span class="expired-title">{{ $t('Expired') }} </span>
     </div>
     <!-- <p class="expired-date">Renew</p> -->
     <CertificateImageDialog

@@ -90,16 +90,15 @@ const showMore = ref(false)
         <p class="header-title" v-else>{{ allData?.title }}</p>
         <div class="template-details">
           <p>
-            Id : <span>{{ allData?.id }}</span>
+            {{ $t('Id :') }} <span>{{ allData?.id }}</span>
           </p>
           <!-- <p>location :<span>example</span></p> -->
           <!-- <p>Zone :<span>example</span></p> -->
         </div>
       </div>
-      <img :src="DocumnetHeader" alt="header" />
+      <img :src="DocumnetHeader" :alt="$t('header')" />
     </div>
     <div class="template-document-content-container">
-      
       <div
         v-for="(tag, index) in route.path.includes('equipment-mangement/inspection/add')
           ? showMore
@@ -178,7 +177,7 @@ const showMore = ref(false)
         "
         @click="showMore = !showMore"
       >
-        <span>{{ showMore ? 'Show Less' : 'Show More' }}</span>
+        <span>{{ showMore ? $t('Show Less') : $t('Show More') }}</span>
         <IconArrowDownNav :class="showMore ? 'rotate' : ''" />
       </button>
     </div>
@@ -238,8 +237,16 @@ const showMore = ref(false)
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 84%, transparent);
   border-radius: 18px;
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 96%, transparent), color-mix(in srgb, var(--brand-primary-50) 95%, transparent)),
-    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 3.5%, transparent), color-mix(in srgb, var(--status-success) 3.5%, transparent));
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface-1) 96%, transparent),
+      color-mix(in srgb, var(--brand-primary-50) 95%, transparent)
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--brand-primary-500) 3.5%, transparent),
+      color-mix(in srgb, var(--status-success) 3.5%, transparent)
+    );
   box-shadow: 0 12px 28px color-mix(in srgb, var(--brand-primary-900) 5.5%, transparent);
 }
 

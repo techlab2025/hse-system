@@ -98,6 +98,7 @@ watch(
         <Search />
       </span>
       <input
+        dir="auto"
         v-model="word"
         :placeholder="$t('search')"
         class="input"
@@ -141,10 +142,10 @@ watch(
                     >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="Start Time">{{ item.startTime }}</td>
-                <td data-label="End Time">{{ item.endTime }}</td>
-                <td data-label="Actions">
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('start_time')">{{ item.startTime }}</td>
+                <td :data-label="$t('end_time')">{{ item.endTime }}</td>
+                <td :data-label="$t('Actions')">
                   <DropList
                     :actionList="actionList(item.id, deleteShift)"
                     @delete="deleteShift(item.id)"
@@ -170,9 +171,13 @@ watch(
         <PermissionBuilder :code="[PermissionsEnum?.ORG_SHIFT_CREATE]">
           <DataEmpty
             :link="`/organization/shifts/add`"
-            addText="Add Shifts"
-            description="You have no Shifts .. All your joined customers will appear here when you add your customer data"
-            title="You have No Shifts"
+            :addText="$t('auditUi.add_shift')"
+            :description="
+              $t(
+                'You have no Shifts .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Shifts')"
           />
         </PermissionBuilder>
       </template>
@@ -180,9 +185,13 @@ watch(
         <PermissionBuilder :code="[PermissionsEnum?.ORG_SHIFT_CREATE]">
           <DataFailed
             :link="`/organization/shifts/add`"
-            addText="Add Shifts"
-            description="You have no Shifts .. All your joined customers will appear here when you add your customer data"
-            title="You have No Shifts"
+            :addText="$t('auditUi.add_shift')"
+            :description="
+              $t(
+                'You have no Shifts .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Shifts')"
           />
         </PermissionBuilder>
       </template>
@@ -190,8 +199,8 @@ watch(
 
     <template #notPermitted>
       <DataFailed
-        addText="Have not  Permission"
-        description="You have no Shifts permission."
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="$t('You have no Shifts permission.')"
         link=""
       />
     </template>

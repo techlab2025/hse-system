@@ -94,7 +94,9 @@ const changePageSize = (limit: number) => {
   fetchmanagementChangeTopicTypes(word.value, currentPage.value, limit)
 }
 const deleteManagementChangeTopicType = async (id: number) => {
-  await DeleteMangementChangeTopicTypeController.getInstance().deleteMangementChangeTopicType(new DeleteMangementChangeTopicTypeParams(id))
+  await DeleteMangementChangeTopicTypeController.getInstance().deleteMangementChangeTopicType(
+    new DeleteMangementChangeTopicTypeParams(id),
+  )
   await fetchmanagementChangeTopicTypes(word.value, currentPage.value, countPerPage.value)
 }
 
@@ -141,10 +143,7 @@ const exportExcel = () =>
     'management_change_topic_types.xlsx',
   )
 const downloadExample = () =>
-  saveWorkbook(
-    [{ title: 'Safety helmet' }],
-    'management_change_topic_type_template.xlsx',
-  )
+  saveWorkbook([{ title: 'Safety helmet' }], 'management_change_topic_type_template.xlsx')
 
 const showUploadDialog = ref(false)
 const pendingFile = ref<File | null>(null)
@@ -199,11 +198,18 @@ const headerActions = () => [
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchmanagementChangeTopicTypes())"><Search /></span>
-      <input v-model="word" :placeholder="$t('search')" class="input" @input="searchmanagementChangeTopicTypes" />
+      <span class="icon-remove" @click="((word = ''), searchmanagementChangeTopicTypes())"
+        ><Search
+      /></span>
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        @input="searchmanagementChangeTopicTypes"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2 items-center">
-       
       <ActionsList
         feature-name="action management types"
         :show-actions="true"
@@ -212,9 +218,8 @@ const headerActions = () => [
       >
         <template #custom><ExportPdf :is-drop-list="true" /></template>
       </ActionsList>
-
     </div>
-  <SystemMangementChangeTopicType
+    <SystemMangementChangeTopicType
       v-if="user?.type !== OrganizationTypeEnum.ADMIN"
       :is-header-tap="true"
     />
@@ -255,7 +260,7 @@ const headerActions = () => [
           :add-text="$t('add_management_change_topic_type')"
           :description="$t('no_management_change_topic_types_description')"
           :title="$t('no_management_change_topic_types')"
-        /> 
+        />
       </template>
       <template #failed>
         <DataFailed
@@ -267,7 +272,7 @@ const headerActions = () => [
       </template>
     </DataStatus>
     <template #notPermitted>
-      <DataFailed add-text="Have not Permission" description="" link="" />
+      <DataFailed :add-text="$t('auditUi.you_do_not_have_permission')" description="" link="" />
     </template>
   </PermissionBuilder>
 
@@ -278,10 +283,7 @@ const headerActions = () => [
     :header="$t('import management change topic types')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <UploadMangementChangeTopicTypeExcelSheet
-      :initial-file="pendingFile"
-      @uploaded="onUploaded"
-    />
+    <UploadMangementChangeTopicTypeExcelSheet :initial-file="pendingFile" @uploaded="onUploaded" />
   </Dialog>
   <input
     ref="fileInputRef"

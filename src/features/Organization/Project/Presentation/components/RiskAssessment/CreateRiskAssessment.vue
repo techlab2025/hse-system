@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, ref } from 'vue'
@@ -64,7 +66,7 @@ async function create() {
     return
   }
   if (!serialIsAuto.value && !serial.value.trim()) {
-    error.value = 'Serial number is required when manual serial numbering is enabled.'
+    error.value = localizeUi('Serial number is required when manual serial numbering is enabled.')
     return
   }
   const params = new CreateRiskAssessmentParams(
@@ -89,7 +91,7 @@ async function create() {
     if (controller.isDataSuccess()) await router.push(listPath.value)
     else error.value = state.value.error?.title ?? 'Could not create risk assessment'
   } catch {
-    error.value = 'Could not create risk assessment'
+    error.value = localizeUi('Could not create risk assessment')
   } finally {
     saving.value = false
   }
@@ -117,8 +119,10 @@ async function create() {
           </span>
           <div>
             <!-- <span class="eyebrow">Project safety · new record</span> -->
-            <h1>Create risk assessment</h1>
-            <p>Build a clear safety record with the activity, approval, and evidence.</p>
+            <h1>{{ $t('Create risk assessment') }}</h1>
+            <p>
+              {{ $t('Build a clear safety record with the activity, approval, and evidence.') }}
+            </p>
           </div>
         </div>
       </header>
@@ -141,11 +145,12 @@ async function create() {
                 ><FieldHelpIcon
                   :text="
                     serialIsAuto
-                      ? 'The serial will be generated automatically.'
-                      : 'Enter the serial number.'
+                      ? $t('The serial will be generated automatically.')
+                      : $t('Enter the serial number.')
                   "
               /></span>
               <input
+                dir="auto"
                 class="hse-project-input"
                 v-model="serial"
                 :disabled="serialIsAuto"
@@ -162,42 +167,44 @@ async function create() {
               :auto-select-first="canSelectProject"
             />
 
-
-            
             <label class="hse-project-field-label hse-project-field field">
               <span class="hse-project-field field-label"
                 ><span class="hse-project-field field-icon" aria-hidden="true">◇</span
-                ><span>Activity <b>*</b></span></span
+                ><span>{{ $t('Activity') }} <b>*</b></span></span
               >
               <input
+                dir="auto"
                 class="hse-project-input"
                 v-model="form.activity"
                 required
-                placeholder="e.g. Working at height"
+                :placeholder="$t('e.g. Working at height')"
               />
             </label>
             <label class="hse-project-field-label hse-project-field field full">
               <span class="hse-project-field field-label"
                 ><span class="hse-project-field field-icon" aria-hidden="true">≡</span
-                ><span>Activity description </span> <span class="optional">(optional)</span></span
+                ><span>{{ $t('Activity description') }} </span>
+                <span class="optional">{{ $t('(optional)') }}</span></span
               >
               <textarea
+                dir="auto"
                 class="hse-project-input"
                 v-model="form.desctiprion"
                 rows="5"
-                placeholder="Describe the work, hazards, and planned controls"
+                :placeholder="$t('Describe the work, hazards, and planned controls')"
               />
             </label>
             <label class="hse-project-field-label hse-project-field field">
               <span class="hse-project-field field-label"
                 ><span class="hse-project-field field-icon" aria-hidden="true">⌖</span
-                ><span>Work area <b>*</b></span></span
+                ><span>{{ $t('Work area') }} <b>*</b></span></span
               >
               <input
+                dir="auto"
                 class="hse-project-input"
                 v-model="form.workAreaStrign"
                 required
-                placeholder="e.g. North building"
+                :placeholder="$t('e.g. North building')"
               />
             </label>
             <UpdatedCustomInputSelect
@@ -206,7 +213,7 @@ async function create() {
               :controller="indexOrganizatoinEmployeeController"
               :params="indexOrganizatoinEmployeeParams"
               id="risk-assessment-approver"
-              placeholder="Select an approver"
+              :placeholder="$t('Select an approver')"
               required
               :has-header="true"
               @update:model-value="setEmployee"
@@ -214,14 +221,14 @@ async function create() {
               <template #Header>
                 <span class="hse-project-field field-label"
                   ><span class="hse-project-field field-icon" aria-hidden="true">✓</span
-                  ><span>Prepared By <b>*</b></span></span
+                  ><span>{{ $t('Prepared By') }} <b>*</b></span></span
                 >
               </template>
             </UpdatedCustomInputSelect>
             <label class="hse-project-field-label hse-project-field field">
               <span class="hse-project-field field-label"
                 ><span class="hse-project-field field-icon" aria-hidden="true">◷</span
-                ><span>Date <b>*</b></span></span
+                ><span>{{ $t('Date') }} <b>*</b></span></span
               >
               <DatePicker
                 panel-class="hse-project-overlay hse-project-assurance"
@@ -230,7 +237,7 @@ async function create() {
                 date-format="yy-mm-dd"
                 show-icon
                 fluid
-                placeholder="Select assessment date"
+                :placeholder="$t('Select assessment date')"
                 @update:model-value="setAssessmentDate"
               />
             </label>
@@ -242,20 +249,20 @@ async function create() {
             <span class="step-number">02</span>
             <div>
               <!-- <span class="eyebrow">Supporting evidence</span> -->
-              <h2>Add an assessment file</h2>
+              <h2>{{ $t('Add an assessment file') }}</h2>
               <!-- <p>Attach the document that supports this safety record.</p> -->
             </div>
           </div>
           <div class="evidence-layout">
             <div class="hse-project-field field upload-field">
               <HandleFIlesUpload
-                label=" Documents and images "
+                :label="$t('Documents and images')"
                 accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
                 :max-files="6"
                 :multiple="true"
                 @change="handleFilesChange"
               />
-              <small>PDF, Word, Excel, or image · One file maximum</small>
+              <small>{{ $t('PDF, Word, Excel, or image · One file maximum') }}</small>
             </div>
             <!-- <aside class="evidence-note">
               <span class="evidence-note__icon" aria-hidden="true">i</span>
@@ -271,22 +278,22 @@ async function create() {
           <div class="footer-note">
             <span aria-hidden="true">✓</span>
             <p>
-              <strong>Ready to save?</strong
-              ><small>Required fields are marked with an asterisk.</small>
+              <strong>{{ $t('Ready to save?') }}</strong
+              ><small>{{ $t('Required fields are marked with an asterisk.') }}</small>
             </p>
           </div>
           <div class="footer-actions">
             <RouterLink
               class="hse-project-button hse-project-button--ghost cancel-button"
               :to="listPath"
-              >Cancel</RouterLink
+              >{{ $t('Cancel') }}</RouterLink
             >
             <button
               class="hse-project-button hse-project-button--primary"
               type="submit"
               :disabled="saving"
             >
-              {{ saving ? 'Creating…' : 'Create assessment' }}
+              {{ saving ? $t('Creating…') : $t('Create Assessment') }}
               <span v-if="!saving" aria-hidden="true">→</span>
             </button>
           </div>

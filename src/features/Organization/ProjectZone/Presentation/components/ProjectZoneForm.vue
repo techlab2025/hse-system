@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { markRaw, onMounted, ref, watch } from 'vue'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
@@ -72,15 +74,15 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  console.log(SelectedState.value, "SelectedState.value?.id");
+  console.log(SelectedState.value, 'SelectedState.value?.id')
   const params = props.data?.id
     ? new EditProjectZoneParams(props?.data?.id, translationsParams, SelectedLocation.value?.id)
     : new AddProjectZoneParams(
-      translationsParams,
-      SelectedArea.value?.id,
-      // SerialNumber.value?.SerialNumber,
-      // SelectedArea.value?.id,
-    )
+        translationsParams,
+        SelectedArea.value?.id,
+        // SerialNumber.value?.SerialNumber,
+        // SelectedArea.value?.id,
+      )
 
   emit('update:data', params)
 }
@@ -127,11 +129,10 @@ const SetCountrySelection = (data: TitleInterface) => {
     data.id,
   ])
   if (SelectedCountry.value == null) {
-    SelectedState.value = new TitleInterface({ id: 0, title: "" })
-    SelectedCity.value = new TitleInterface({ id: 0, title: "" })
-    SelectedArea.value = new TitleInterface({ id: 0, title: "" })
+    SelectedState.value = new TitleInterface({ id: 0, title: '' })
+    SelectedCity.value = new TitleInterface({ id: 0, title: '' })
+    SelectedArea.value = new TitleInterface({ id: 0, title: '' })
     updateData()
-
   }
   updateData()
 }
@@ -139,12 +140,11 @@ const SetCountrySelection = (data: TitleInterface) => {
 const SelectedState = ref<TitleInterface>()
 const SetStateSelection = (data: TitleInterface) => {
   SelectedState.value = data
-  console.log(SelectedState.value, "SelectedState")
+  console.log(SelectedState.value, 'SelectedState')
   if (SelectedState.value == null) {
-    SelectedCity.value = new TitleInterface({ id: 0, title: "" })
-    SelectedArea.value = new TitleInterface({ id: 0, title: "" })
+    SelectedCity.value = new TitleInterface({ id: 0, title: '' })
+    SelectedArea.value = new TitleInterface({ id: 0, title: '' })
     updateData()
-
   }
   indexLocationCityParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.CITY, null, [
     data.id,
@@ -159,11 +159,10 @@ const SetCitySelection = (data: TitleInterface) => {
     data.id,
   ])
   if (SelectedCity.value == null) {
-    SelectedArea.value = new TitleInterface({ id: 0, title: "" })
+    SelectedArea.value = new TitleInterface({ id: 0, title: '' })
     updateData()
-
   }
-  console.log(SelectedCity.value, "SelectedCity")
+  console.log(SelectedCity.value, 'SelectedCity')
   updateData()
 }
 
@@ -183,8 +182,10 @@ const SerialNumber = ref()
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
@@ -193,8 +194,13 @@ const fields = ref([
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :label="`${$t('zone_name')}`" type="text" :langs="langDefault" :modelValue="langs"
-      @update:modelValue="setLangs" />
+    <LangTitleInput
+      :label="`${$t('zone_name')}`"
+      type="text"
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="setLangs"
+    />
   </div>
 
   <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
@@ -208,26 +214,53 @@ const fields = ref([
   </div> -->
 
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
-      :params="indexLocationCountriesParams" :label="$t('Country')" id="Location" :placeholder="$t('Select Country')"
-      @update:modelValue="SetCountrySelection" />
+    <CustomSelectInput
+      :modelValue="SelectedCountry"
+      :controller="indexLocationCountriesController"
+      :params="indexLocationCountriesParams"
+      :label="$t('Country')"
+      id="Location"
+      :placeholder="$t('Select Country')"
+      @update:modelValue="SetCountrySelection"
+    />
   </div>
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="SelectedState" v-if="SelectedCountry" :controller="indexLocationStatesController"
-      :params="indexLocationStatesParams" :label="$t('State')" id="Location" :placeholder="$t('Select State')"
-      @update:modelValue="SetStateSelection" />
+    <CustomSelectInput
+      :modelValue="SelectedState"
+      v-if="SelectedCountry"
+      :controller="indexLocationStatesController"
+      :params="indexLocationStatesParams"
+      :label="$t('State')"
+      id="Location"
+      :placeholder="$t('Select State')"
+      @update:modelValue="SetStateSelection"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="SelectedCity" v-if="SelectedState" :controller="indexLocationCityController"
-      :params="indexLocationCityParams" :label="$t('City')" id="City" :placeholder="$t('Select City')"
-      @update:modelValue="SetCitySelection" />
+    <CustomSelectInput
+      :modelValue="SelectedCity"
+      v-if="SelectedState"
+      :controller="indexLocationCityController"
+      :params="indexLocationCityParams"
+      :label="$t('City')"
+      id="City"
+      :placeholder="$t('Select City')"
+      @update:modelValue="SetCitySelection"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="SelectedArea" v-if="SelectedCity && SelectedState && SelectedCountry"
-      :controller="indexLocationAreasController" :params="indexLocationAreasParams" :label="$t('Location')" id="Area"
-      :placeholder="$t('Select Location')" @update:modelValue="SetAreaSelection" />
+    <CustomSelectInput
+      :modelValue="SelectedArea"
+      v-if="SelectedCity && SelectedState && SelectedCountry"
+      :controller="indexLocationAreasController"
+      :params="indexLocationAreasParams"
+      :label="$t('Location')"
+      id="Area"
+      :placeholder="$t('Select Location')"
+      @update:modelValue="SetAreaSelection"
+    />
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2">

@@ -1,6 +1,9 @@
 import { expect, test } from '@playwright/test'
+import { readFileSync } from 'node:fs'
+import { useIdentityCodeFlag } from './fixtures/system-identity-api-mode.mjs'
 import { installFixtures } from '../src/features/Organization/Project/tests/project-fixtures.mjs'
 
+test.beforeEach(async ({ page }) => useIdentityCodeFlag(page, false))
 const baseURL = process.env.PROJECT_TEST_URL || 'http://127.0.0.1:5186'
 
 test('identity colors and sidebar orders preview, save, reload, disable, and reset', async ({
@@ -11,18 +14,21 @@ test('identity colors and sidebar orders preview, save, reload, disable, and res
   await page.goto(`${baseURL}/organization/system-identity`, { waitUntil: 'domcontentloaded' })
   await expect(page.getByRole('heading', { name: 'System Identity', exact: true })).toBeVisible()
   const groups = page.getByRole('list', { name: 'Sidebar group order', exact: true })
-  for (let index = 0; index < 3; index++) {
-    await groups.getByRole('button', { name: 'Move reports earlier', exact: true }).click()
-  }
-  await expect(groups.locator(':scope > li').first()).toHaveAttribute('data-field', 'reports')
+  const moveReports = groups.getByRole('button', { name: 'Move reports earlier', exact: true })
+  while (await moveReports.isEnabled()) await moveReports.click()
+  await expect(groups.locator(':scope > li').first()).toHaveAttribute('data-field', 'overview')
+  await expect(groups.locator(':scope > li').nth(1)).toHaveAttribute('data-field', 'reports')
   await groups.locator('[data-field="operations"] > details > summary').click()
-  const operations = page.getByRole('list', { name: 'operations menu order', exact: true })
-  for (let index = 0; index < 4; index++) {
-    await operations.getByRole('button', { name: 'Move Inspection earlier', exact: true }).click()
-  }
-  const equipment = page.getByRole('list', { name: 'equipment submenu order', exact: true })
-  await equipment.getByRole('button', { name: 'Move Machines earlier', exact: true }).click()
-  await equipment.getByRole('button', { name: 'Move Machines earlier', exact: true }).click()
+  const operations = page.getByRole('list', { name: 'Project Management menu order', exact: true })
+  const moveInspection = operations.getByRole('button', {
+    name: 'Move Inspection earlier',
+    exact: true,
+  })
+  while (await moveInspection.isEnabled()) await moveInspection.click()
+  await operations.locator('[data-field="equipment"] > details > summary').click()
+  const equipment = page.getByRole('list', { name: 'equipment menu order', exact: true })
+  const moveMachines = equipment.getByRole('button', { name: 'Move Machines earlier', exact: true })
+  while (await moveMachines.isEnabled()) await moveMachines.click()
 
   for (const [key, value] of Object.entries({
     sectionBackground: '#eef2f6',
@@ -43,10 +49,12 @@ test('identity colors and sidebar orders preview, save, reload, disable, and res
 
   await page.getByRole('button', { name: 'Save and apply identity', exact: true }).click()
   await expect(page.getByRole('status')).toHaveText('System identity has been saved and applied.')
-  await expect(page.locator('.side-rail-btn').first()).toHaveAttribute('title', /reports/i)
+  await expect(page.locator('.side-rail-btn').first()).toHaveAttribute('title', /overview/i)
+  await expect(page.locator('.side-rail-btn').nth(1)).toHaveAttribute('title', /reports/i)
   await page.reload({ waitUntil: 'domcontentloaded' })
   await expect(page.locator('#appearance-tagText')).toHaveValue('#fedcba')
-  await expect(page.locator('.side-rail-btn').first()).toHaveAttribute('title', /reports/i)
+  await expect(page.locator('.side-rail-btn').first()).toHaveAttribute('title', /overview/i)
+  await expect(page.locator('.side-rail-btn').nth(1)).toHaveAttribute('title', /reports/i)
   await page.locator('.side-rail-btn[title="Project Management"]').hover()
   const pane = page.locator('#organization-sidebar-pane')
   await expect(pane).toBeVisible()
@@ -99,6 +107,9 @@ for (const locale of ['en', 'ar']) {
   test(`Google Fonts and typography preview, persist, and reset: ${locale}`, async ({ page }) => {
     page.setDefaultTimeout(15000)
     await installFixtures(page, { locale })
+    const messages = JSON.parse(
+      readFileSync(new URL(`../src/locales/${locale}.json`, import.meta.url), 'utf8'),
+    )
     await page.route('https://fonts.googleapis.com/**', (route) => {
       if (route.request().url().includes('Missing+Font'))
         return route.fulfill({ status: 400, body: 'Unknown font' })
@@ -128,7 +139,9 @@ for (const locale of ['en', 'ar']) {
       /family=Cairo:wght@400;700&display=swap/,
     )
     await page.locator('.identity-page .save-button').click()
-    await expect(page.getByRole('status')).toHaveText('System identity has been saved and applied.')
+    await expect(page.getByRole('status')).toHaveText(
+      messages['System identity has been saved and applied.'],
+    )
     await expect(page.locator('html')).toHaveAttribute('data-identity-fontfamily')
     await expect(page.locator('.identity-page > header h1')).toHaveCSS('font-family', /Cairo/)
     await expect(page.locator('.identity-page > header h1')).toHaveCSS('font-size', '32px')
@@ -143,10 +156,17 @@ for (const locale of ['en', 'ar']) {
       /family=Cairo/,
     )
     await page.locator('#identity-custom-font').fill('Missing Font')
-    await page.getByRole('button', { name: 'Add font', exact: true }).click()
-    await expect(page.getByRole('alert').filter({ hasText: 'could not be loaded' })).toBeVisible()
+    await page.getByRole('button', { name: messages['Add font'], exact: true }).click()
+    await expect(
+      page.getByRole('alert').filter({
+        hasText:
+          messages[
+            'This font could not be loaded from Google. Check its family name or your connection. The system fallback font is being used.'
+          ],
+      }),
+    ).toBeVisible()
     await page.locator('#identity-custom-font').fill('Noto Sans')
-    await page.getByRole('button', { name: 'Add font', exact: true }).click()
+    await page.getByRole('button', { name: messages['Add font'], exact: true }).click()
     await expect(page.locator('#identity-font-family')).toHaveValue('Noto Sans')
     await expect(page.locator('.identity-page > header h1')).toHaveCSS('font-family', /Cairo/)
     await expect(sample).toHaveCSS('font-family', /Noto Sans/)
@@ -156,7 +176,9 @@ for (const locale of ['en', 'ar']) {
         await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
       ).toBe(true)
     }
-    await page.getByRole('button', { name: 'Restore default typography', exact: true }).click()
+    await page
+      .getByRole('button', { name: messages['Restore default typography'], exact: true })
+      .click()
     await expect(page.locator('#identity-font-family')).toHaveValue('')
     await expect(page.locator('#identity-google-font-preview')).toHaveCount(0)
     await expect(page.locator('html')).toHaveAttribute('data-identity-fontfamily')

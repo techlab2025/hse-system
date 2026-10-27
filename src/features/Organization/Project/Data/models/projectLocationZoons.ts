@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class projectLocationZoonsModel extends TitleInterface {
@@ -15,11 +16,14 @@ export default class projectLocationZoonsModel extends TitleInterface {
   }
 
   static fromMap(data: any): projectLocationZoonsModel {
-    return new projectLocationZoonsModel(
-      data.project_location_id,
-      data.project_zoon_id,
-      data.title,
-      data.zoon_id,
+    return localizedRecord(
+      new projectLocationZoonsModel(
+        data.project_location_id,
+        data.project_zoon_id,
+        data.title,
+        data.zoon_id,
+      ),
+      data,
     )
   }
   static example = new projectLocationZoonsModel(1, 1, 'Zone A', 1)

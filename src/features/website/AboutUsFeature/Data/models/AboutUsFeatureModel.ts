@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
 
@@ -15,8 +16,7 @@ export default class AboutUsFeatureModel extends TitleInterface {
     subtitle: string,
     image: string,
     alt: string,
-    is_active: number
-
+    is_active: number,
   ) {
     super({ id })
     this.id = id
@@ -28,14 +28,16 @@ export default class AboutUsFeatureModel extends TitleInterface {
   }
 
   static fromMap(data: any): AboutUsFeatureModel {
-    return new AboutUsFeatureModel(
-      data.id,
-      data.title,
-      data.subtitle,
-      data.image,
-      data.alt,
-      data.is_active
-
+    return localizedRecord(
+      new AboutUsFeatureModel(
+        data.id,
+        data.title,
+        data.subtitle,
+        data.image,
+        data.alt,
+        data.is_active,
+      ),
+      data,
     )
   }
 }

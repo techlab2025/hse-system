@@ -14,8 +14,8 @@ import ZoneInspectionCollapse from './ZoneInspectionCollapse.vue'
 const visible = ref(false)
 
 const AssignToOptions = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'Employee' }),
-  new TitleInterface({ id: 2, title: 'Zone' }),
+  new TitleInterface({ id: 1, title: 'Employee', translationKey: 'Employee' }),
+  new TitleInterface({ id: 2, title: 'Zone', translationKey: 'Zone' }),
 ])
 
 const activeInspection = ref<number>(1)

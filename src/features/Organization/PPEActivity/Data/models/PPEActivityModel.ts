@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class PPEActivityModel extends TitleInterface {
@@ -6,7 +7,7 @@ export default class PPEActivityModel extends TitleInterface {
   }
 
   static fromMap(data: any): PPEActivityModel {
-    return new PPEActivityModel(data.id, data.title)
+    return localizedRecord(new PPEActivityModel(data.id, data.title), data)
   }
 
   static example: PPEActivityModel[] = [

@@ -67,11 +67,7 @@ const createPermissions = [
   PermissionsEnum.ORG_DRILL_TYPE_CREATE,
 ]
 
-const fetchDrillTypes = async (
-  query: string = '',
-  page: number = 1,
-  limit: number = 10,
-) => {
+const fetchDrillTypes = async (query: string = '', page: number = 1, limit: number = 10) => {
   await controller.getData(new IndexDrillTypeParams(query, page, limit, 1))
 }
 
@@ -201,7 +197,13 @@ const headerActions = () => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <span class="icon-remove" @click="((word = ''), searchDrillTypes())"><Search /></span>
-      <input v-model="word" :placeholder="$t('search')" class="input" @input="searchDrillTypes" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        @input="searchDrillTypes"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ActionsList
@@ -213,10 +215,7 @@ const headerActions = () => [
         <template #custom><ExportPdf :is-drop-list="true" /></template>
       </ActionsList>
     </div>
-    <SystemDrillTypes
-      v-if="user?.type !== OrganizationTypeEnum.ADMIN"
-      :is-header-tap="true"
-    />
+    <SystemDrillTypes v-if="user?.type !== OrganizationTypeEnum.ADMIN" :is-header-tap="true" />
   </div>
 
   <PermissionBuilder :code="featurePermissions">
@@ -268,7 +267,7 @@ const headerActions = () => [
       </template>
     </DataStatus>
     <template #notPermitted>
-      <DataFailed add-text="Have not Permission" description="" link="" />
+      <DataFailed :add-text="$t('auditUi.you_do_not_have_permission')" description="" link="" />
     </template>
   </PermissionBuilder>
 
@@ -279,10 +278,7 @@ const headerActions = () => [
     :header="$t('import_drill_types')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <UploadDrillTypeExcelSheet
-      :initial-file="pendingFile"
-      @uploaded="onUploaded"
-    />
+    <UploadDrillTypeExcelSheet :initial-file="pendingFile" @uploaded="onUploaded" />
   </Dialog>
   <input
     ref="fileInputRef"

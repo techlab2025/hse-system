@@ -1,3 +1,4 @@
+import { getCurrentLocale } from '@/localization/i18n'
 // import type TitleModel from "@/base/core/Models/title_model";
 import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
@@ -14,7 +15,7 @@ export default class CatalogDetailsModel {
   public industries: TitleModel<string>[]
   // public descriptions: DescriptionLocale[]
 
-  constructor( 
+  constructor(
     id: number,
     titles: TitleLocale[],
     allIndustries: number,
@@ -28,7 +29,6 @@ export default class CatalogDetailsModel {
     this.industries = industries
     this.parentId = parentId
     this.image = image
-
   }
 
   static fromMap(data: any): CatalogDetailsModel {
@@ -45,11 +45,12 @@ export default class CatalogDetailsModel {
   }
 
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data.titles,
     })
   }
 }

@@ -1,3 +1,4 @@
+import { i18n, translate, translateKeyOrLiteral } from '@/localization/i18n'
 import DialogSelector from '../Dialogs/dialog_selector'
 import warning from '@/assets/images/warning.png'
 import { formValidation, requestValidation } from '@/shared/config/formValidation'
@@ -86,9 +87,11 @@ export class ClassValidation {
 
     rules.forEach((rule, field) => {
       const value = obj ? (obj as Record<string, unknown>)[field] : undefined
+      const labelKey = field.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase()
+      const label = i18n.global.te(labelKey) ? translate(labelKey) : translate('validation.field')
 
       if (rule.required && this.isEmpty(value)) {
-        errors.push({ field, message: `${field} is required` })
+        errors.push({ field, message: translate('validation.required', { field: label }) })
         return
       }
 
@@ -101,7 +104,10 @@ export class ClassValidation {
         typeof value === 'string' &&
         value.length < rule.minLength
       ) {
-        errors.push({ field, message: `${field} must be at least ${rule.minLength} characters` })
+        errors.push({
+          field,
+          message: translate('validation.minLength', { field: label, min: rule.minLength }),
+        })
       }
 
       if (
@@ -109,22 +115,31 @@ export class ClassValidation {
         typeof value === 'string' &&
         value.length > rule.maxLength
       ) {
-        errors.push({ field, message: `${field} must be at most ${rule.maxLength} characters` })
+        errors.push({
+          field,
+          message: translate('validation.maxLength', { field: label, max: rule.maxLength }),
+        })
       }
 
       if (rule.min !== undefined && typeof value === 'number' && value < rule.min) {
-        errors.push({ field, message: `${field} must be at least ${rule.min}` })
+        errors.push({
+          field,
+          message: translate('validation.min', { field: label, min: rule.min }),
+        })
       }
 
       if (rule.max !== undefined && typeof value === 'number' && value > rule.max) {
-        errors.push({ field, message: `${field} must be at most ${rule.max}` })
+        errors.push({
+          field,
+          message: translate('validation.max', { field: label, max: rule.max }),
+        })
       }
 
       if (rule.pattern && typeof value === 'string') {
         rule.pattern.lastIndex = 0
 
         if (!rule.pattern.test(value)) {
-          errors.push({ field, message: `${field} format is invalid` })
+          errors.push({ field, message: translate('validation.format', { field: label }) })
         }
       }
 
@@ -134,7 +149,10 @@ export class ClassValidation {
         if (result !== true) {
           errors.push({
             field,
-            message: typeof result === 'string' ? result : `${field} is invalid`,
+            message:
+              typeof result === 'string'
+                ? result
+                : translate('validation.invalid', { field: label }),
           })
         }
       }
@@ -143,7 +161,7 @@ export class ClassValidation {
     // A configured message overrides every failed constraint for that field.
     for (const error of errors) {
       const rule = rules.get(error.field)
-      if (rule?.message) error.message = rule.message
+      if (rule?.message) error.message = translateKeyOrLiteral(rule.message)
     }
 
     return {
@@ -189,7 +207,7 @@ export class ClassValidation {
 
 export class ValidationError extends Error {
   constructor(public errors: ValidationFieldError[]) {
-    super(`Validation failed: ${errors.map((e) => `${e.field}: ${e.message}`).join(', ')}`)
+    super(`Validation failed: ${errors.map((e) => e.message).join(', ')}`)
     this.name = 'ValidationError'
   }
 
@@ -198,7 +216,7 @@ export class ValidationError extends Error {
       dialogName: 'dialog-error',
       titleContent: ``, //Validation failed
       imageElement: warning,
-      messageContent: `  ${this.errors.map((e) => `${e.field}: ${e.message}`).join(' - ')}`,
+      messageContent: `  ${this.errors.map((e) => e.message).join(' - ')}`,
     })
   }
 }

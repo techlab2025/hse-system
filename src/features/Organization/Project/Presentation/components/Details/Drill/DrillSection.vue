@@ -114,7 +114,7 @@ const toggleShowDrills = () => {
         class="hse-project-button show-more-btn"
         @click="toggleShowDrills"
       >
-        {{ $t(showAllDrills ? 'Show less' : 'Show more') }}
+        {{ $t(showAllDrills ? 'Show Less' : 'Show More') }}
       </button>
       <!-- </article> -->
     </div>

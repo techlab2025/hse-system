@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import * as XLSX from 'xlsx'
@@ -74,13 +76,13 @@ const readFile = async (files: File | File[] | null) => {
       defval: '',
       blankrows: false,
     })
-    if (parsed.length < 2) throw new Error('The spreadsheet has no document rows.')
+    if (parsed.length < 2) throw new Error(localizeUi('The spreadsheet has no document rows.'))
     const normalizedHeaders = parsed[0].map((header) => String(header).trim())
     if (
       new Set(normalizedHeaders).size !== normalizedHeaders.length ||
       normalizedHeaders.some((header) => !header)
     ) {
-      throw new Error('Spreadsheet columns must have unique, non-empty headers.')
+      throw new Error(localizeUi('Spreadsheet columns must have unique, non-empty headers.'))
     }
     sheetData.value = [normalizedHeaders, ...parsed.slice(1)]
     const knownColumns = new Map(normalizedHeaders.map((header) => [header.toLowerCase(), header]))
@@ -162,7 +164,7 @@ const submit = async () => {
 <template>
   <form class="page-wrapper" @submit.prevent="submit">
     <p>{{ $t('organization_documents_import_help') }}</p>
-    <p v-if="busy" role="status">Processing…</p>
+    <p v-if="busy" role="status">{{ $t('Processing…') }}</p>
     <p v-if="error" class="text-red-500" role="alert">{{ error }}</p>
     <FileUpload
       v-if="!sheetData.length && !busy"
@@ -182,8 +184,8 @@ const submit = async () => {
     <template v-if="mappedRows">
       <div class="table-container">
         <div class="table-header">
-          <h3 class="table-title">Mapped Data Preview</h3>
-          <span class="table-badge">{{ mappedRows.length }} rows</span>
+          <h3 class="table-title">{{ $t('Mapped Data Preview') }}</h3>
+          <span class="table-badge">{{ mappedRows.length }} {{ $t('rows') }}</span>
         </div>
         <div class="table-responsive">
           <table class="main-table">
@@ -217,7 +219,7 @@ const submit = async () => {
         {{ $t('upload_excel') }}
       </button>
       <button type="submit" class="btn-confirm" :disabled="busy || !mappedRows.length">
-        Confirm &amp; Submit
+        {{ $t('Confirm & Submit') }}
       </button>
     </template>
   </form>

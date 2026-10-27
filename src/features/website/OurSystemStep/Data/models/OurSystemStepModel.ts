@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientOurSystemStepModel from "@/features/dashboard/settings/clientOurSystemStep/Data/models/index_client_blog_model";
@@ -11,8 +12,7 @@ export default class OurSystemStepModel extends TitleInterface {
   public image: string
   public titles: string
   public descriptions: string
-    public is_active: number
-
+  public is_active: number
 
   constructor(
     id: number,
@@ -25,7 +25,7 @@ export default class OurSystemStepModel extends TitleInterface {
     image: string,
     titles: string,
     descriptions: string,
-    is_active: number
+    is_active: number,
   ) {
     super({ id, title, subtitle })
 
@@ -41,20 +41,23 @@ export default class OurSystemStepModel extends TitleInterface {
   }
 
   static fromMap(data: any): OurSystemStepModel {
-    return new OurSystemStepModel(
-      data.id,
-      data.title,
-      data.subtitle,
-      data.has_blog,
-      data.all_industries,
-      data.industries?.length > 0
-        ? data.industries?.map((industry) => TitleModel.fromMap(industry))
-        : [],
-      data.parent_id,
-      data.image,
-      data.titles,
-      data.descriptions,
-      data.is_active
+    return localizedRecord(
+      new OurSystemStepModel(
+        data.id,
+        data.title,
+        data.subtitle,
+        data.has_blog,
+        data.all_industries,
+        data.industries?.length > 0
+          ? data.industries?.map((industry) => TitleModel.fromMap(industry))
+          : [],
+        data.parent_id,
+        data.image,
+        data.titles,
+        data.descriptions,
+        data.is_active,
+      ),
+      data,
     )
   }
 }

@@ -163,10 +163,14 @@ watch(
                   :controller="fetchOriganizatioEmployeeController"
                   :params="fetchOrganizationEmployeeParams"
                   v-model="item.employee"
-                  placeholder="Select Witness name"
+                  :placeholder="$t('Select Witness name')"
                   class="mt-4 mr-2 input"
                   :label="$t('Witness name')"
-                  help-text="Select the witness from the employee list, or enter their name manually if they are not an employee."
+                  :help-text="
+                    $t(
+                      'Select the witness from the employee list, or enter their name manually if they are not an employee.',
+                    )
+                  "
                   :excludedOptionIds="getSelectedEmployeeIds(index)"
                   @update:model-value="UpdateData"
                   :hascontent="isSelectHasContent[index]"
@@ -192,10 +196,11 @@ watch(
                   </template>
                   <template #content>
                     <input
+                      dir="auto"
                       type="text"
                       v-model="item.employee.title"
                       class="input"
-                      placeholder="Select Employee"
+                      :placeholder="$t('Select Employee')"
                       @input="UpdateData"
                     />
                   </template>
@@ -205,15 +210,16 @@ watch(
                 <div class="flex items-center gap-2">
                   <label :for="`witness-text-${index}`">{{ $t('Witness statement') }}</label>
                   <FieldHelpIcon
-                    text="Record what this witness saw, heard, or knows about the event."
+                    :text="$t('Record what this witness saw, heard, or knows about the event.')"
                   />
                 </div>
                 <input
+                  dir="auto"
                   type="text"
                   :id="`witness-text-${index}`"
                   v-model="item.text"
                   class="input"
-                  placeholder="add your title"
+                  :placeholder="$t('add your title')"
                   @input="UpdateData"
                 />
               </div>
@@ -272,7 +278,7 @@ watch(
 
 @media (max-width: 768px) {
   .timeline-wrapper {
-    padding-left: 0;
+    padding-inline-start: 0;
     padding-inline-start: 0;
   }
 

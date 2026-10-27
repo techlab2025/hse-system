@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { computed, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
@@ -150,13 +152,13 @@ function initializeForm(details?: InternalAuditNcrDetailsModel | null) {
 function validate(): boolean {
   const today = new Date().toISOString().slice(0, 10)
   if (!areaUnderReviews.value.length || !auditStandard.value) {
-    feedback.value = 'Area under review and audit standard are required.'
+    feedback.value = localizeUi('Area under review and audit standard are required.')
   } else if (!requirementReference.value.trim() || !description.value.trim()) {
-    feedback.value = 'Requirement reference and description are required.'
+    feedback.value = localizeUi('Requirement reference and description are required.')
   } else if (!immediateAction.value.trim()) {
-    feedback.value = 'Correction / immediate action is required.'
+    feedback.value = localizeUi('Correction / immediate action is required.')
   } else if (!rootCauses.value.length) {
-    feedback.value = 'Select at least one root cause.'
+    feedback.value = localizeUi('Select at least one root cause.')
   } else if (
     capas.value.some(
       (capa) =>
@@ -168,8 +170,9 @@ function validate(): boolean {
         !capa.preventive.targetDate,
     )
   ) {
-    feedback.value =
-      'Complete corrective and preventive actions, assigned employees, and target dates.'
+    feedback.value = localizeUi(
+      'Complete corrective and preventive actions, assigned employees, and target dates.',
+    )
   } else if (
     capas.value.some(
       (capa) =>
@@ -177,7 +180,7 @@ function validate(): boolean {
         (capa.preventive.actualDate && capa.preventive.actualDate > today),
     )
   ) {
-    feedback.value = 'Actual dates cannot be later than today.'
+    feedback.value = localizeUi('Actual dates cannot be later than today.')
   } else {
     feedback.value = ''
     return true
@@ -265,14 +268,15 @@ watch(() => props.details, initializeForm, { immediate: true })
       <div class="section-heading">
         <span>01</span>
         <div>
-          <h3>NCR details</h3>
-          <p>Record the finding and applicable requirement.</p>
+          <h3>{{ $t('NCR Details') }}</h3>
+          <p>{{ $t('Record the finding and applicable requirement.') }}</p>
         </div>
       </div>
       <div class="form-grid">
         <label v-if="isExisting" class="field">
-          <span>Serial Number</span>
+          <span>{{ $t('serial_number') }}</span>
           <input
+            dir="auto"
             :value="details?.serialName || details?.ncr || `NCR-${details?.id}`"
             type="text"
             disabled
@@ -280,12 +284,18 @@ watch(() => props.details, initializeForm, { immediate: true })
         </label>
 
         <label class="field">
-          <span>Audit No.</span>
-          <input :value="auditSerialName" type="text" disabled placeholder="Audit serial name" />
+          <span>{{ $t('audit_number') }}</span>
+          <input
+            dir="auto"
+            :value="auditSerialName"
+            type="text"
+            disabled
+            :placeholder="$t('Audit serial name')"
+          />
         </label>
         <label class="field">
-          <span>NCR Date</span>
-          <input :value="formatJoinDate(new Date())" type="text" disabled />
+          <span>{{ $t('NCR Date') }}</span>
+          <input dir="auto" :value="formatJoinDate(new Date())" type="text" disabled />
         </label>
         <!-- <label class="field">
           <span>Serial Number</span>
@@ -301,15 +311,15 @@ watch(() => props.details, initializeForm, { immediate: true })
           />
         </label> -->
         <label class="field">
-          <span>Category <b>*</b></span>
+          <span>{{ $t('category') }} <b>*</b></span>
           <select v-model="category" :disabled="isReadOnly">
-            <option :value="NcrCategoryEnum.MINOR_NC">Minor NC</option>
-            <option :value="NcrCategoryEnum.MAJOR_NC">Major NC</option>
+            <option :value="NcrCategoryEnum.MINOR_NC">{{ $t('Minor NC') }}</option>
+            <option :value="NcrCategoryEnum.MAJOR_NC">{{ $t('Major NC') }}</option>
           </select>
         </label>
         <label v-if="isReadOnly" class="field">
-          <span>Area under review</span>
-          <input :value="titles(areaUnderReviews)" type="text" disabled />
+          <span>{{ $t('Area under review') }}</span>
+          <input dir="auto" :value="titles(areaUnderReviews)" type="text" disabled />
         </label>
         <UpdatedCustomInputSelect
           v-else
@@ -317,14 +327,14 @@ watch(() => props.details, initializeForm, { immediate: true })
           :model-value="areaUnderReviews"
           :static-options="areaOptions"
           type="multiselect"
-          label="Area under review"
-          placeholder="Select departments"
+          :label="$t('Area under review')"
+          :placeholder="$t('Select departments')"
           required
           @update:model-value="areaUnderReviews = normalizeMultiple($event)"
         />
 
         <label v-if="isReadOnly" class="field">
-          <span>Audit standard</span>
+          <span>{{ $t('audit_standard_title') }}</span>
           <select disabled>
             <option>{{ auditStandard?.title || '—' }}</option>
           </select>
@@ -334,41 +344,46 @@ watch(() => props.details, initializeForm, { immediate: true })
           class="field"
           :static-options="standardOptions"
           :model-value="auditStandard"
-          label="Audit standard"
-          placeholder="Select audit standard"
+          :label="$t('audit_standard_title')"
+          :placeholder="$t('Select audit standard')"
           required
           @update:model-value="auditStandard = normalizeSingle($event)"
         />
         <label class="field field-wide">
-          <span>Requirement reference <strong>(optional)</strong></span>
+          <span
+            >{{ $t('Requirement reference') }} <strong>{{ $t('(optional)') }}</strong></span
+          >
           <input
+            dir="auto"
             v-model="requirementReference"
             type="text"
             :disabled="isReadOnly"
-            placeholder="Enter requirement reference"
+            :placeholder="$t('Enter requirement reference')"
           />
         </label>
         <label class="field field-wide">
-          <span>Description <b>*</b></span>
+          <span>{{ $t('Description') }} <b>*</b></span>
           <textarea
+            dir="auto"
             v-model="description"
             rows="4"
             :disabled="isReadOnly"
-            placeholder="Describe the non-conformance"
+            :placeholder="$t('Describe the non-conformance')"
           ></textarea>
         </label>
         <label class="field field-wide">
-          <span>Correction / Immediate action <b>*</b></span>
+          <span>{{ $t('Correction / Immediate action') }} <b>*</b></span>
           <textarea
+            dir="auto"
             v-model="immediateAction"
             rows="3"
             :disabled="isReadOnly"
-            placeholder="Describe the immediate action taken"
+            :placeholder="$t('Describe the immediate action taken')"
           ></textarea>
         </label>
         <label v-if="isReadOnly" class="field field-wide">
-          <span>Root causes</span>
-          <input :value="titles(rootCauses)" type="text" disabled />
+          <span>{{ $t('organization_setup_steps.root_causes.title') }}</span>
+          <input dir="auto" :value="titles(rootCauses)" type="text" disabled />
         </label>
         <UpdatedCustomInputSelect
           v-else
@@ -377,8 +392,8 @@ watch(() => props.details, initializeForm, { immediate: true })
           :controller="rootCauseController"
           :params="rootCauseParams"
           type="multiselect"
-          label="Root causes"
-          placeholder="Select root causes"
+          :label="$t('organization_setup_steps.root_causes.title')"
+          :placeholder="$t('Select root causes')"
           @update:model-value="rootCauses = normalizeMultiple($event)"
         />
       </div>
@@ -387,7 +402,9 @@ watch(() => props.details, initializeForm, { immediate: true })
     <section class="form-section">
       <div class="section-heading">
         <span>02</span>
-        <div><h3>Add corrective and preventive actions.</h3></div>
+        <div>
+          <h3>{{ $t('Add corrective and preventive actions.') }}</h3>
+        </div>
       </div>
       <article v-for="(capa, index) in capas" :key="index" class="capa-card">
         <header>
@@ -398,23 +415,24 @@ watch(() => props.details, initializeForm, { immediate: true })
             class="remove-button"
             @click="capas.splice(index, 1)"
           >
-            Remove
+            {{ $t('Remove') }}
           </button>
         </header>
         <div class="action-block">
-          <h4>Corrective action</h4>
+          <h4>{{ $t('corrective_action') }}</h4>
           <div class="form-grid">
             <label class="field field-wide">
-              <span>Corrective action <b>*</b></span>
+              <span>{{ $t('corrective_action') }} <b>*</b></span>
               <textarea
+                dir="auto"
                 v-model="capa.corrective.correction"
                 rows="3"
                 :disabled="isReadOnly"
-                placeholder="Describe the corrective action"
+                :placeholder="$t('Describe the corrective action')"
               ></textarea>
             </label>
             <label v-if="isReadOnly" class="field">
-              <span>Assigned to</span>
+              <span>{{ $t('Assigned to') }}</span>
               <select disabled>
                 <option>{{ capa.corrective.assignedTo?.title || '—' }}</option>
               </select>
@@ -425,14 +443,19 @@ watch(() => props.details, initializeForm, { immediate: true })
               :model-value="capa.corrective.assignedTo"
               :controller="employeeController"
               :params="employeeParams"
-              label="Assigned to"
-              placeholder="Select employee"
+              :label="$t('Assigned to')"
+              :placeholder="$t('Select employee')"
               required
               @update:model-value="setCorrectiveAssignee(index, $event)"
             />
             <label class="field">
-              <span>Target date <b>*</b></span>
-              <input v-model="capa.corrective.targetDate" type="date" :disabled="isReadOnly" />
+              <span>{{ $t('Target date') }} <b>*</b></span>
+              <input
+                dir="auto"
+                v-model="capa.corrective.targetDate"
+                type="date"
+                :disabled="isReadOnly"
+              />
             </label>
             <!-- <label class="field disabled">
               <span>Actual date</span>
@@ -446,19 +469,20 @@ watch(() => props.details, initializeForm, { immediate: true })
           </div>
         </div>
         <div class="action-block preventive">
-          <h4>Preventive action</h4>
+          <h4>{{ $t('preventive_action') }}</h4>
           <div class="form-grid">
             <label class="field field-wide">
-              <span>Preventive action <b>*</b></span>
+              <span>{{ $t('preventive_action') }} <b>*</b></span>
               <textarea
+                dir="auto"
                 v-model="capa.preventive.correction"
                 rows="3"
                 :disabled="isReadOnly"
-                placeholder="Describe the preventive action"
+                :placeholder="$t('Describe the preventive action')"
               ></textarea>
             </label>
             <label v-if="isReadOnly" class="field">
-              <span>Assigned to</span>
+              <span>{{ $t('Assigned to') }}</span>
               <select disabled>
                 <option>{{ capa.preventive.assignedTo?.title || '—' }}</option>
               </select>
@@ -469,14 +493,19 @@ watch(() => props.details, initializeForm, { immediate: true })
               :model-value="capa.preventive.assignedTo"
               :controller="employeeController"
               :params="employeeParams"
-              label="Assigned to"
-              placeholder="Select employee"
+              :label="$t('Assigned to')"
+              :placeholder="$t('Select employee')"
               required
               @update:model-value="setPreventiveAssignee(index, $event)"
             />
             <label class="field">
-              <span>Target date <b>*</b></span>
-              <input v-model="capa.preventive.targetDate" type="date" :disabled="isReadOnly" />
+              <span>{{ $t('Target date') }} <b>*</b></span>
+              <input
+                dir="auto"
+                v-model="capa.preventive.targetDate"
+                type="date"
+                :disabled="isReadOnly"
+              />
             </label>
             <!--      <label class="field disabled">
               <span>Actual date</span>
@@ -496,8 +525,8 @@ watch(() => props.details, initializeForm, { immediate: true })
       <div class="section-heading">
         <span>03</span>
         <div>
-          <h3> Attachments</h3>
-          <p>Add supporting evidence files.</p>
+          <h3>{{ $t('Attachments') }}</h3>
+          <p>{{ $t('Add supporting evidence files.') }}</p>
         </div>
       </div>
       <ul v-if="isReadOnly && details?.media.length" class="attachment-list">
@@ -508,10 +537,10 @@ watch(() => props.details, initializeForm, { immediate: true })
           </a> -->
         </li>
       </ul>
-      <p v-else-if="isReadOnly" class="empty-attachments">No attachments.</p>
+      <p v-else-if="isReadOnly" class="empty-attachments">{{ $t('No attachments.') }}</p>
       <HandleFIlesUpload
         v-else
-        label="Attachments (optional)"
+        :label="$t('Attachments (optional)')"
         accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
         :multiple="true"
         :max-files="10"
@@ -523,11 +552,17 @@ watch(() => props.details, initializeForm, { immediate: true })
 
     <footer v-if="!embedded" class="form-actions">
       <button class="secondary-button" type="button" :disabled="isSaving" @click="emit('close')">
-        {{ isExisting ? 'Close' : 'Cancel' }}
+        {{ isExisting ? $t('Close') : $t('Cancel') }}
       </button>
       <button v-if="!isReadOnly" class="primary-button" type="submit" :disabled="isSaving">
         {{
-          isSaving ? (isExisting ? 'Saving…' : 'Creating…') : isExisting ? 'Edit NCR' : 'Submit NCR'
+          isSaving
+            ? isExisting
+              ? $t('emailSettings.saving')
+              : $t('Creating…')
+            : isExisting
+              ? $t('Edit NCR')
+              : $t('Submit NCR')
         }}
       </button>
     </footer>

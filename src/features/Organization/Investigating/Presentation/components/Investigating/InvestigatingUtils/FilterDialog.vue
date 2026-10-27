@@ -19,7 +19,7 @@ const controller = ProjectCustomLocationController.getInstance()
   <div class="card flex justify-center">
     <button class="btn btn-filter" @click="visible = true">
       <span>{{ $t('Filter') }}</span>
-      <img :src="Filter" alt="Filter" />
+      <img :src="Filter" :alt="$t('Filter')" />
     </button>
 
     <Dialog

@@ -176,8 +176,8 @@ watch(
   <main class="tasks-index-page investegation-result-answer-container">
     <section class="tasks-index-toolbar">
       <div class="toolbar-copy">
-        <span>Actions</span>
-        <h1>All corrective and preventive actions</h1>
+        <span>{{ $t('Actions') }}</span>
+        <h1>{{ $t('All corrective and preventive actions') }}</h1>
       </div>
 
       <!-- <div class="input-search tasks-search">
@@ -201,12 +201,10 @@ watch(
             <div class="tasks-board-header">
               <div>
                 <!-- <span>Action board</span> -->
-                <h2>{{ state.data?.length || 0 }} actions</h2>
+                <h2>{{ state.data?.length || 0 }} {{ $t('actions') }}</h2>
               </div>
               <!-- <p>Review assignments, due dates, status, and action answers.</p> -->
             </div>
-
-
 
             <div class="tasks-index-grid">
               <InvestegaionResultTasksAnswerCard
@@ -235,9 +233,13 @@ watch(
             :link="`/${
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/add/EquipmentType`"
-            addText="Add EquipmentType"
-            description="You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
-            title="You have No EquipmentTypes"
+            :addText="$t('Add_EquipmentType')"
+            :description="
+              $t(
+                'You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No EquipmentTypes')"
           />
         </template>
         <template #failed>
@@ -245,17 +247,25 @@ watch(
             :link="`/${
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/add/EquipmentType`"
-            addText="Add EquipmentType"
-            description="You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
-            title="You have No EquipmentTypes"
+            :addText="$t('Add_EquipmentType')"
+            :description="
+              $t(
+                'You have no EquipmentType .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No EquipmentTypes')"
           />
         </template>
       </DataStatus>
 
       <template #notPermitted>
         <DataFailed
-          addText="Have not  Permission"
-          description="You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no EquipmentType .. All your joined customers will appear here when you add your customer data',
+            )
+          "
         />
       </template>
     </PermissionBuilder>
@@ -263,7 +273,7 @@ watch(
 </template>
 
 <style scoped lang="scss">
-.tasks-index-toolbar + div{
+.tasks-index-toolbar + div {
   width: 100%;
 }
 .tasks-index-page {
@@ -274,8 +284,7 @@ watch(
 }
 .tasks-index-toolbar,
 .tasks-index-toolbar div,
-.tasks-index-toolbardiv div
-{
+.tasks-index-toolbardiv div {
   width: 100%;
 }
 .tasks-index-toolbar,
@@ -283,7 +292,12 @@ watch(
   border: 1px solid var(--brand-primary-100);
   border-radius: 8px;
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--brand-primary-50) 92%, transparent), color-mix(in srgb, var(--surface-1) 96%, transparent)), var(--surface-1);
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--brand-primary-50) 92%, transparent),
+      color-mix(in srgb, var(--surface-1) 96%, transparent)
+    ),
+    var(--surface-1);
   box-shadow: 0 16px 34px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
 }
 

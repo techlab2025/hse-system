@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import { ProjectProgressEnum } from '../../Core/Enum/ProjectProgressEnum'
 
 export default class ProjectProgressItemModel {
@@ -22,12 +23,15 @@ export default class ProjectProgressItemModel {
   }
 
   static fromMap(data: any): ProjectProgressItemModel {
-    return new ProjectProgressItemModel(
-      data.id,
-      data.title,
-      Boolean(data.progress),
-      Number(data.count ?? 0),
-      Boolean(data.required),
+    return localizedRecord(
+      new ProjectProgressItemModel(
+        data.id,
+        data.title,
+        Boolean(data.progress),
+        Number(data.count ?? 0),
+        Boolean(data.required),
+      ),
+      data,
     )
   }
 

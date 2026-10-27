@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -32,7 +33,7 @@ export default class DeleteAuditStandardController extends ControllerInterface<A
       if (this.isDataSuccess()) {
         // useLoaderStore().endLoadingWithDialog();
       } else {
-        throw new Error('Error while addServices')
+        throw new Error(localizeUi('Error while addServices'))
       }
     } catch (error: any) {
       console.log(error)
@@ -43,7 +44,7 @@ export default class DeleteAuditStandardController extends ControllerInterface<A
         'An Error Occurred'
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',
-        titleContent: 'An Error Occurred',
+        titleContent: localizeUi('An Error Occurred'),
         imageElement: errorImage,
         messageContent: errorMessage,
       })

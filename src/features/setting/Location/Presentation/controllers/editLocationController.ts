@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
@@ -32,13 +33,13 @@ export default class EditLocationController extends ControllerInterface<Location
     // useLoaderStore().setLoadingWithDialog();
     try {
       if (!params?.ParentId && params?.type === LocationEnum.AREA) {
-        new OpenWarningDilaog('Please Select City').openDialog()
+        new OpenWarningDilaog(localizeUi('Please Select City')).openDialog()
         return
       } else if (!params?.ParentId && params?.type === LocationEnum.STATE) {
-        new OpenWarningDilaog('Please Select Country').openDialog()
+        new OpenWarningDilaog(localizeUi('Please Select Country')).openDialog()
         return
       } else if (!params?.ParentId && params?.type === LocationEnum.CITY) {
-        new OpenWarningDilaog('Please Select State').openDialog()
+        new OpenWarningDilaog(localizeUi('Please Select State')).openDialog()
         return
       }
       const dataState: DataState<LocationModel> = await this.editLocationUseCase.call(params)

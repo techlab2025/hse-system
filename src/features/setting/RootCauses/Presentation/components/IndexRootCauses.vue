@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
 import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import IndexRootCausesParams from '@/features/setting/RootCauses/Core/params/indexRootCausesParams'
 import IndexRootCausesController from '@/features/setting/RootCauses/Presentation/controllers/indexRootCausesController'
@@ -184,7 +185,7 @@ watch(
 )
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert('No data available to export')
+    alert(localizeUi('No data available to export'))
     return
   }
   const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
@@ -252,8 +253,9 @@ const IndexRootCausesactionList = () => [
         <Search />
       </span>
       <input
+        dir="auto"
         v-model="word"
-        :placeholder="'search'"
+        :placeholder="$t('search')"
         class="input"
         type="text"
         @input="searchRootCauses"
@@ -339,11 +341,17 @@ const IndexRootCausesactionList = () => [
                 <td data-label="#">
                   {{ index + 1 }}
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                <td
+                  :data-label="$t('all_industries')"
+                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                >
                   {{ item.allIndustries ? $t('yes') : $t('no') }}
                 </td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                <td
+                  :data-label="$t('all_industries')"
+                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                >
                   {{
                     item.industries.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')
@@ -351,7 +359,7 @@ const IndexRootCausesactionList = () => [
                   }}
                 </td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusRootCauses-->
                   <!--                  v-if="item.RootCausesStatus === RootCausesStatusEnum.Draft"-->
                   <!--                  :RootCausesId="item.id"-->
@@ -391,9 +399,13 @@ const IndexRootCausesactionList = () => [
             :link="`/${
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/root-causes/add`"
-            addText="Add RootCauses"
-            description="You have no Root Causess .. All your joined customers will appear here when you add your customer data"
-            title="You have No Root Causess"
+            :addText="$t('auditUi.add_root_cause')"
+            :description="
+              $t(
+                'You have no Root Causess .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Root Causess')"
           />
         </PermissionBuilder>
       </template>
@@ -409,9 +421,13 @@ const IndexRootCausesactionList = () => [
             :link="`/${
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/root-causes/add`"
-            addText="Add RootCauses"
-            description="You have no RootCauses .. All your joined customers will appear here when you add your customer data"
-            title="You have No Root Causess"
+            :addText="$t('auditUi.add_root_cause')"
+            :description="
+              $t(
+                'You have no RootCauses .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Root Causess')"
           />
         </PermissionBuilder>
       </template>
@@ -419,8 +435,12 @@ const IndexRootCausesactionList = () => [
 
     <template #notPermitted>
       <DataFailed
-        addText="Have not  Permission"
-        description="You have no RootCauses .. All your joined customers will appear here when you add your customer data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no RootCauses .. All your joined customers will appear here when you add your customer data',
+          )
+        "
       />
     </template>
   </PermissionBuilder>
@@ -435,9 +455,11 @@ const IndexRootCausesactionList = () => [
     <UploadRootCausesExeclSheet
       :initial-file="pendingFile"
       @uploaded="
-        showUploadDialog = false;
-        pendingFile = null;
-        fetchRootCauses();
+        () => {
+          showUploadDialog = false
+          pendingFile = null
+          fetchRootCauses()
+        }
       "
     />
   </Dialog>

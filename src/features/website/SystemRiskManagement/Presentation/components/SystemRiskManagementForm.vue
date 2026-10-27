@@ -109,13 +109,13 @@ watch(
   [() => props.data, () => langDefault.value],
   ([newData, newDefault]) => {
     if (newDefault.length) {
-      langs.value = newData.titles ?
-        newData.titles.map((t) => ({ locale: t.locale, title: t.title })) :
-        newDefault.map((l) => ({ locale: l.locale, title: '' }))
+      langs.value = newData.titles
+        ? newData.titles.map((t) => ({ locale: t.locale, title: t.title }))
+        : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
-      langsSub.value = newData.subtitles ?
-        newData.subtitles.map((t) => ({ locale: t.locale, subtitle: t.subtitle })) :
-        newDefault.map((l) => ({ locale: l.locale, subtitle: '' }))
+      langsSub.value = newData.subtitles
+        ? newData.subtitles.map((t) => ({ locale: t.locale, subtitle: t.subtitle }))
+        : newDefault.map((l) => ({ locale: l.locale, subtitle: '' }))
 
       alt.value = newData?.alt ?? ''
       image.value = newData?.image ?? ''
@@ -158,11 +158,12 @@ const setImage = async (data: File | string) => {
       {{ $t('alt_image') }}
     </label>
     <input
+      dir="auto"
       id="rate"
       v-model="alt"
       type="text"
       class="input"
-      placeholder="alt"
+      :placeholder="$t('alt_image')"
       @input="updateData"
     />
   </div>
@@ -171,9 +172,9 @@ const setImage = async (data: File | string) => {
     <SingleFileUpload
       v-model="image"
       @update:modelValue="setImage"
-      label="Image"
+      :label="$t('image')"
       id="image"
-      placeholder="Select image"
+      :placeholder="$t('Select image')"
       :isCrop="true"
       :aspectRatio="1 / 1"
     />

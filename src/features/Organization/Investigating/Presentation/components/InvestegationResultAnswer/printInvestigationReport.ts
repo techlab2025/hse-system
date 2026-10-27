@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import printStyles from './investigation-report-print.css?raw'
 
 /** Print a snapshot of the report without the surrounding application. */
@@ -24,8 +25,11 @@ export async function printInvestigationReport(report: HTMLElement, title: strin
       .join('')
     const loaded = new Promise<void>((resolve, reject) => {
       frame.onload = () => resolve()
-      frame.onerror = () => reject(new Error('Unable to load the print preview.'))
-      loadTimeout = setTimeout(() => reject(new Error('Print preview timed out.')), 30_000)
+      frame.onerror = () => reject(new Error(localizeUi('Unable to load the print preview.')))
+      loadTimeout = setTimeout(
+        () => reject(new Error(localizeUi('Print preview timed out.'))),
+        30_000,
+      )
     })
     frame.srcdoc = `<!doctype html><html><head><meta charset="utf-8">${styles}
       <style>${printStyles}</style></head><body class="investigation-print">
@@ -34,7 +38,7 @@ export async function printInvestigationReport(report: HTMLElement, title: strin
     await loaded
     clearTimeout(loadTimeout)
     const printWindow = frame.contentWindow
-    if (!printWindow) throw new Error('Unable to open the print preview.')
+    if (!printWindow) throw new Error(localizeUi('Unable to open the print preview.'))
     printWindow.document.title = title
     printWindow.document.documentElement.lang = report.lang || document.documentElement.lang || 'en'
     printWindow.document.documentElement.dir = getComputedStyle(report).direction

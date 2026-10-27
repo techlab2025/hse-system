@@ -1,9 +1,9 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import type HeaderDetailsModel from '../../Data/models/HeaderDetailsModel'
 import ShowHeaderUseCase from '../../Domain/useCase/showHeaderUseCase'
-
 
 export default class ShowHeaderController extends ControllerInterface<HeaderDetailsModel> {
   private static instance: ShowHeaderController
@@ -32,7 +32,7 @@ export default class ShowHeaderController extends ControllerInterface<HeaderDeta
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

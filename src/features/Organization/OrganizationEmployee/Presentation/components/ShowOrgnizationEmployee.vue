@@ -40,12 +40,12 @@ const hiddenTasksCount = computed(() => Math.max(tasks.value.length - 1, 0))
   <section class="employee-show-page">
     <div class="employee-page-topbar">
       <div>
-        <span class="page-kicker">Employee profile</span>
-        <h1> employee details</h1>
+        <span class="page-kicker">{{ $t('Employee profile') }}</span>
+        <h1>{{ $t('employee details') }}</h1>
       </div>
       <!-- <button class="print-page-btn" type="button" @click="printPage">Print</button> -->
-        <router-link :to="`/organization/organization-employee-tasks/${route.params.id}`" >
-         <button class="print-page-btn" type="button">show tasks</button>
+      <router-link :to="`/organization/organization-employee-tasks/${route.params.id}`">
+        <button class="print-page-btn" type="button">{{ $t('show tasks') }}</button>
       </router-link>
     </div>
 
@@ -56,14 +56,14 @@ const hiddenTasksCount = computed(() => Math.max(tasks.value.length - 1, 0))
         <section class="tasks-panel">
           <div class="tasks-panel-header">
             <div>
-              <span class="panel-kicker">Assigned work</span>
-              <h2>Employee tasks</h2>
+              <span class="panel-kicker">{{ $t('Assigned work') }}</span>
+              <h2>{{ $t('Employee tasks') }}</h2>
             </div>
-            <span class="tasks-count">{{ tasks.length }} tasks</span>
+            <span class="tasks-count">{{ tasks.length }} {{ $t('tasks') }}</span>
           </div>
 
           <div class="tasks-empty" v-if="!tasks.length">
-            No tasks assigned to this employee yet.
+            {{ $t('No tasks assigned to this employee yet.') }}
           </div>
 
           <div class="all-emp-tasks" v-for="task in visibleTasks" :key="task.id">
@@ -77,7 +77,9 @@ const hiddenTasksCount = computed(() => Math.max(tasks.value.length - 1, 0))
             v-if="tasks.length > 1"
           >
             <span>{{
-              isShowAllTasks ? 'View Less Tasks' : `View All Tasks (${hiddenTasksCount} more)`
+              isShowAllTasks
+                ? $t('View Less Tasks')
+                : $t('uiDynamic.moreTasks', { p0: hiddenTasksCount })
             }}</span>
             <Emptask />
           </button>
@@ -113,8 +115,16 @@ const hiddenTasksCount = computed(() => Math.max(tasks.value.length - 1, 0))
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 76%, transparent);
   border-radius: 24px;
   background:
-    radial-gradient(circle at 0 0, color-mix(in srgb, var(--brand-primary-500) 13%, transparent), transparent 30%),
-    radial-gradient(circle at 100% 20%, color-mix(in srgb, var(--status-success) 13%, transparent), transparent 32%),
+    radial-gradient(
+      circle at 0 0,
+      color-mix(in srgb, var(--brand-primary-500) 13%, transparent),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 100% 20%,
+      color-mix(in srgb, var(--status-success) 13%, transparent),
+      transparent 32%
+    ),
     linear-gradient(135deg, var(--surface-1), var(--brand-primary-50));
   box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
 }
@@ -202,7 +212,11 @@ const hiddenTasksCount = computed(() => Math.max(tasks.value.length - 1, 0))
   padding: 16px;
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 78%, transparent);
   border-radius: 24px;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 96%, transparent));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--surface-1) 98%, transparent),
+    color-mix(in srgb, var(--brand-primary-50) 96%, transparent)
+  );
   box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
 }
 

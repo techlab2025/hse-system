@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -32,19 +33,18 @@ export default class DeleteMeetingTypeController extends ControllerInterface<Mee
       this.setState(dataState)
       if (this.isDataSuccess()) {
         // useLoaderStore().endLoadingWithDialog();
-          // this.
+        // this.
         //  DistatealogSelector.instance.successDialog.openDialog({
         //   dialogName: 'dialog-success',
         //   titleContent: 'deleted was successful',
         //   imageElement: successImage,
         //   messageContent: null,
         // })
-      }
-       else {
-        throw new Error('Error while addServices')
+      } else {
+        throw new Error(localizeUi('Error while addServices'))
       }
     } catch (error: any) {
-      console.log( this.state.value.error?.title, "this.state")
+      console.log(this.state.value.error?.title, 'this.state')
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? 'An Error Occurred',

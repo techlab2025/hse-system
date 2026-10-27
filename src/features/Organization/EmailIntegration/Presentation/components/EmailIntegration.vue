@@ -223,7 +223,7 @@ onBeforeUnmount(() => {
                   <LangTitleInput
                     :langs="languages"
                     :model-value="titles"
-                    label="emailSettings.fromName"
+                    :label="$t('emailSettings.fromName')"
                     :placeholder="text('fromName')"
                     :maxlength="160"
                     :required="!titles.some((item) => item.title.trim())"

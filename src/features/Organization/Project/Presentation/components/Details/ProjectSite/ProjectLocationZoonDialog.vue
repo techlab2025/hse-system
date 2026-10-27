@@ -67,8 +67,8 @@ const setProjectLocationZoon = (data: TitleInterface) => {
     <template #header>
       <HeaderSection
         :img="ZoneDialog"
-        title="Select Zones"
-        subtitle="At least 1 zone required for every location"
+        :title="$t('Select Zones')"
+        :subtitle="$t('At least 1 zone required for every location')"
       />
     </template>
 
@@ -87,7 +87,7 @@ const setProjectLocationZoon = (data: TitleInterface) => {
           :modelValue="SelectedProjectZone"
           :controller="indexProjectZoneController"
           :params="indexProjectZoneParams"
-          label="zone"
+          :label="$t('zone')"
           id="project-zone"
           :placeholder="$t('Select Zoon')"
           @update:modelValue="setProjectLocationZoon"

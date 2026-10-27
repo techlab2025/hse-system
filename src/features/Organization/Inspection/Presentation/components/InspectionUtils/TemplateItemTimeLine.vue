@@ -94,8 +94,12 @@ onMounted(() => {
     >
       <span class="answer-index">{{ index + 1 }}</span>
 
-      <div class="input-wrapper answer-text-input" :data-template-validation-error="Boolean(answerError(index))">
+      <div
+        class="input-wrapper answer-text-input"
+        :data-template-validation-error="Boolean(answerError(index))"
+      >
         <input
+          dir="auto"
           type="text"
           :id="`result-${index}-${itemindex}`"
           v-model="item.text"

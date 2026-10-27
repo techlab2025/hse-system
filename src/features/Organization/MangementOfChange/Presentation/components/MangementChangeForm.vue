@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
 
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
@@ -29,7 +31,8 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('MangementChangeForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('MangementChangeForm')
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddMangementChangeParams | EditMangementChangeParams): void
@@ -102,10 +105,12 @@ const ChangeTypeMangementList = computed<TitleInterface[]>(() => [
   new TitleInterface({
     id: ChangeTypeMangementEnum.temp,
     title: t('temporary'),
+    translationKey: 'temporary',
   }),
   new TitleInterface({
     id: ChangeTypeMangementEnum.permenent,
     title: t('permanent'),
+    translationKey: 'permanent',
   }),
 ])
 
@@ -119,10 +124,12 @@ const ChangeApprovalMangementList = computed<TitleInterface[]>(() => [
   new TitleInterface({
     id: ChangeApprovalMangementEnum.approve,
     title: t('approve'),
+    translationKey: 'approve',
   }),
   new TitleInterface({
     id: ChangeApprovalMangementEnum.reject,
     title: t('reject'),
+    translationKey: 'reject',
   }),
 ])
 
@@ -160,7 +167,7 @@ const formParams = computed(
 const updateData = () => {
   error.value = ''
   if (!serialIsAuto.value && !serial.value.trim()) {
-    error.value = 'Serial number is required when manual serial numbering is enabled.'
+    error.value = localizeUi('Serial number is required when manual serial numbering is enabled.')
     return
   }
   emit(
@@ -392,9 +399,12 @@ const requiredFields = computed(() => [
     isMissing: () => !approvalBy.value,
   },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const validateRequiredFields = async () => {
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = Object.fromEntries(
     missedFields.map((field) => [field.key, field.message]),
   )
@@ -450,12 +460,13 @@ onMounted(updateData)
           ><FieldHelpIcon
             :text="
               serialIsAuto
-                ? 'The serial will be generated automatically.'
-                : 'Enter the serial number.'
+                ? $t('The serial will be generated automatically.')
+                : $t('Enter the serial number.')
             "
           />
         </div>
         <input
+          dir="auto"
           id="management_change_serial"
           v-model="serial"
           class="input"
@@ -470,7 +481,7 @@ onMounted(updateData)
           :model-value="Selectedinitiatoremployeeid"
           :controller="indexOrganizatoinEmployeeController"
           :params="indexOrganizatoinEmployeeidParams"
-          label="Change Initiator"
+          :label="$t('Change Initiator')"
           id="initiator-employee"
           :placeholder="$t('Select an initiator employee')"
           required
@@ -488,6 +499,7 @@ onMounted(updateData)
           <!-- <span class="management-change-required-mark">*</span> -->
         </label>
         <input
+          dir="auto"
           id="facilty"
           v-model="facilty"
           :placeholder="$t('Enter the facility')"
@@ -504,6 +516,7 @@ onMounted(updateData)
           <span class="management-change-required-mark">*</span>
         </label>
         <input
+          dir="auto"
           id="area"
           v-model="area"
           :placeholder="$t('Enter the area')"
@@ -530,7 +543,7 @@ onMounted(updateData)
         <UpdatedCustomInputSelect
           :model-value="selectedChangeTypeMangement"
           :static-options="ChangeTypeMangementList"
-          label="change type"
+          :label="$t('change type')"
           id="change-type"
           :placeholder="$t('Select change type')"
           required
@@ -549,7 +562,7 @@ onMounted(updateData)
           :model-value="Selectedmangement"
           :controller="indexMangementChangeTopicTypeController"
           :params="indexMangementChangeTopicTypeParams"
-          label="Description of Proposed Change/Modification"
+          :label="$t('Description of Proposed Change/Modification')"
           id="management"
           :placeholder="$t('Select Proposed Change/Modification')"
           required
@@ -572,7 +585,7 @@ onMounted(updateData)
           :model-value="Selectedemployeeid"
           :controller="indexOrganizatoinEmployeeController"
           :params="indexOrganizatoinEmployeeidParams"
-          label="employee"
+          :label="$t('employee')"
           id="project-employee"
           :placeholder="$t('Select an employee')"
           required
@@ -593,7 +606,7 @@ onMounted(updateData)
           :model-value="Selectedequipment"
           :controller="indexEquipmentController"
           :params="indexEquipmentParams"
-          label="equipment"
+          :label="$t('equipment')"
           id="equipment"
           :placeholder="$t('Select equipment')"
           required
@@ -614,6 +627,7 @@ onMounted(updateData)
           <span class="management-change-required-mark">*</span>
         </label>
         <input
+          dir="auto"
           id="topic-text"
           v-model="topicText"
           class="input"
@@ -634,7 +648,7 @@ onMounted(updateData)
         <UpdatedCustomInputSelect
           :model-value="selectedChangeApprovalMangement"
           :static-options="ChangeApprovalMangementList"
-          label="change approval"
+          :label="$t('change approval')"
           id="change-approval"
           :placeholder="$t('Select approval status')"
           required
@@ -650,7 +664,7 @@ onMounted(updateData)
           :model-value="Selectedemployee"
           :controller="indexOrganizatoinEmployeeController"
           :params="indexOrganizatoinEmployeeParams"
-          label="Approved / Rejected By "
+          :label="$t('Approved / Rejected By ')"
           id="approval-by"
           :placeholder="$t('Select an employee')"
           required

@@ -51,7 +51,7 @@ watch(
   (val) => {
     hazerd.value = val ?? null
   },
-  { immediate: true }
+  { immediate: true },
 )
 
 // Emit updated data
@@ -87,7 +87,7 @@ const updateEmitData = () => {
           :params="hazerdParams"
           id="Hazerd"
           :Llabel="$t('Hazard Type')"
-          placeholder="Select Hazard"
+          :placeholder="$t('Select Hazard')"
           @update:modelValue="setHazerd"
         />
       </div>
@@ -132,6 +132,7 @@ const updateEmitData = () => {
         <div class="input-wrapper">
           <label>{{ $t('action Description') }}</label>
           <input
+            dir="auto"
             class="input"
             :placeholder="$t('add your description')"
             type="text"

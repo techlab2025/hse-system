@@ -1,3 +1,5 @@
+import { getCurrentLocale } from '@/localization/i18n'
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 type LocaleTitle = { locale?: string; title?: string }
@@ -42,7 +44,7 @@ export default class InductionProjectZoneModel extends TitleInterface {
 
   static fromMap(data: Record<string, unknown>): InductionProjectZoneModel {
     const zone = data as InductionProjectZoneResponse
-    const locale = (typeof localStorage !== 'undefined' && localStorage.getItem('lang')) || 'en'
+    const locale = (typeof localStorage !== 'undefined' && getCurrentLocale()) || 'en'
     const projectZoneId = Number(
       zone.project_zone_id ?? zone.project_zoon_id ?? zone.project_location_zone_id ?? zone.id ?? 0,
     )
@@ -50,13 +52,16 @@ export default class InductionProjectZoneModel extends TitleInterface {
       ? (zone.zone_title.find((item) => item.locale === locale)?.title ?? zone.zone_title[0]?.title)
       : zone.zone_title
 
-    return new InductionProjectZoneModel(
-      projectZoneId,
-      projectZoneId,
-      Number(zone.zone_id ?? zone.zoon_id ?? 0),
-      Number(zone.project_location_id ?? 0),
-      Number(zone.project_id ?? 0),
-      zone.title ?? zone.zoon_title ?? zoneTitle ?? '',
+    return localizedRecord(
+      new InductionProjectZoneModel(
+        projectZoneId,
+        projectZoneId,
+        Number(zone.zone_id ?? zone.zoon_id ?? 0),
+        Number(zone.project_location_id ?? 0),
+        Number(zone.project_id ?? 0),
+        zone.title ?? zone.zoon_title ?? zoneTitle ?? '',
+      ),
+      data,
     )
   }
 }

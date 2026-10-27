@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import TitleInterface from '@/base/Data/Models/title_interface'
 import PartnerModel from '@/features/Organization/Partner/Data/models/PartnerModel'
@@ -126,7 +127,7 @@ export default class ProjectModel extends TitleInterface {
         )
       : []
 
-    return project
+    return localizedRecord(project, data)
   }
 
   static example: ProjectModel = new ProjectModel(

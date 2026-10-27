@@ -99,10 +99,10 @@ const updateField = (field: string, value: any) => {
 }
 
 const Options = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'name' }),
-  new TitleInterface({ id: 2, title: 'name' }),
-  new TitleInterface({ id: 3, title: 'name' }),
-  new TitleInterface({ id: 4, title: 'name' }),
+  new TitleInterface({ id: 1, title: 'name', translationKey: 'name' }),
+  new TitleInterface({ id: 2, title: 'name', translationKey: 'name' }),
+  new TitleInterface({ id: 3, title: 'name', translationKey: 'name' }),
+  new TitleInterface({ id: 4, title: 'name', translationKey: 'name' }),
 ])
 const UpdateOption = (data: TitleInterface) => {
   SelectedOption.value = data

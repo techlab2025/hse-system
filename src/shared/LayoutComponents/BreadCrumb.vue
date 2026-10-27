@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { translateNavigationLabel } from '@/localization/navigation'
 import Breadcrumb from 'primevue/breadcrumb'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -103,7 +104,7 @@ const items = computed(() => {
 
   return breadcrumb.map((item) => ({
     ...item,
-    label: t(item.label),
+    label: translateNavigationLabel(item.label),
   }))
 })
 
@@ -157,11 +158,11 @@ const ShowBackBtn = computed(() => {
         :aria-label="$t('back')"
         @click="RouterBack"
       >
-        <BackIcon aria-hidden="true" />
+        <BackIcon class="locale-directional-icon" aria-hidden="true" />
         <span>{{ $t('back') }}</span>
       </button>
 
-      <Breadcrumb :model="items" class="hse-breadcrumb" aria-label="Breadcrumb">
+      <Breadcrumb :model="items" class="hse-breadcrumb" :aria-label="$t('Breadcrumb')">
         <template #item="{ item, props }">
           <a v-if="item.url" v-bind="props.action" :href="item.url" class="hse-breadcrumb-link">
             {{ item.label }}
@@ -182,10 +183,6 @@ const ShowBackBtn = computed(() => {
   width: 100%;
   min-width: 0;
   margin-bottom: 16px;
-}
-/* Keep the whole trail on the left as requested, including in Arabic. */
-.hse-breadcrumb-bar:dir(rtl) {
-  justify-content: flex-end;
 }
 .hse-breadcrumb-trail {
   display: flex;

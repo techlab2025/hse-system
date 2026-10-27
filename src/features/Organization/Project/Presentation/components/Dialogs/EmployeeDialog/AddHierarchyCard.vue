@@ -7,9 +7,9 @@ import LocationIcon from '@/shared/icons/LocationIcon.vue'
 import { ref } from 'vue'
 const employee = ref<TitleInterface>()
 const employees = ref<TitleInterface[]>([
-  new TitleInterface({ id: 1, title: 'Employee 1', subtitle: '' }),
-  new TitleInterface({ id: 2, title: 'Employee 2', subtitle: '' }),
-  new TitleInterface({ id: 3, title: 'Employee 3', subtitle: '' }),
+  new TitleInterface({ id: 1, title: 'Employee 1', translationKey: 'Employee 1', subtitle: '' }),
+  new TitleInterface({ id: 2, title: 'Employee 2', translationKey: 'Employee 2', subtitle: '' }),
+  new TitleInterface({ id: 3, title: 'Employee 3', translationKey: 'Employee 3', subtitle: '' }),
 ])
 const setEmployee = (data: TitleInterface) => {
   employee.value = data
@@ -21,7 +21,7 @@ const setEmployee = (data: TitleInterface) => {
       <div class="add-employee-card">
         <div class="add-employee-card-header">
           <LocationIcon />
-          <p class="title">Alexandria</p>
+          <p class="title">{{ $t('Alexandria') }}</p>
         </div>
         <div class="hse-project-field input-wrapper">
           <CustomSelectInput
@@ -39,7 +39,7 @@ const setEmployee = (data: TitleInterface) => {
       <div class="add-employee-card">
         <div class="add-employee-card-header">
           <LocationIcon />
-          <p class="title">Cairo</p>
+          <p class="title">{{ $t('Cairo') }}</p>
         </div>
         <div class="hse-project-field input-wrapper">
           <CustomSelectInput
@@ -57,7 +57,7 @@ const setEmployee = (data: TitleInterface) => {
       <div class="add-employee-card">
         <div class="add-employee-card-header">
           <LocationIcon />
-          <p class="title">Cairo</p>
+          <p class="title">{{ $t('Cairo') }}</p>
         </div>
         <div class="hse-project-field input-wrapper">
           <CustomSelectInput

@@ -1,11 +1,13 @@
 <!-- ExportExcel.vue -->
 <template>
   <button class="btn btn-secondary ms-2" type="button" @click="handleExport">
-    Export Excel <SaveIcon />
+    {{ $t('Export Excel') }} <SaveIcon />
   </button>
 </template>
 
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { ref, computed, watch, nextTick } from 'vue'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
@@ -161,7 +163,7 @@ const handleExport = async () => {
     emit('export-start')
 
     if (!hasData.value) {
-      throw new Error('No data available to export')
+      throw new Error(localizeUi('No data available to export'))
     }
 
     const columnsToExport = props.showAdvanced
@@ -169,7 +171,7 @@ const handleExport = async () => {
       : availableColumns.value
 
     if (columnsToExport.length === 0) {
-      throw new Error('Please select at least one column to export')
+      throw new Error(localizeUi('Please select at least one column to export'))
     }
 
     // Prepare data for export

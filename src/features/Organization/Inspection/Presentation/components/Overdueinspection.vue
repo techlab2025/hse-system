@@ -17,7 +17,6 @@ import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enu
 
 import { useUserStore } from '@/stores/user'
 
-
 // import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
 // import ViewIcon from '@/shared/icons/ViewIcon.vue'
 import IndexInspectionController from '../controllers/indexInspectionController'
@@ -191,7 +190,7 @@ const setSelectedProjectFilter = (data) => {
       >
         <div>
           <IndexInspectionHeader
-            :title="`Inspection`"
+            :title="$t('Inspection')"
             :length="state?.pagination?.total || 0"
             :projects="Projects"
             @update:data="setSelectedProjectFilter"
@@ -201,7 +200,7 @@ const setSelectedProjectFilter = (data) => {
             :filters="Filters"
             @update:data="ApplayFilter"
             :link="'/organization/equipment-mangement/inspection/add'"
-            :linkTitle="'Create Inspection'"
+            :linkTitle="$t('Create Inspection')"
           />
         </div>
         <DataStatus :controller="state">
@@ -264,25 +263,37 @@ const setSelectedProjectFilter = (data) => {
           <template #empty>
             <DataEmpty
               :link="`/organization/equipment-mangement/inspection/add`"
-              addText="Add Inspection"
-              description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
-              title="You have No Inspection"
+              :addText="$t('add_inspection')"
+              :description="
+                $t(
+                  'You have no Inspection .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Inspection')"
             />
           </template>
           <template #failed>
             <DataFailed
               :link="`/organization/equipment-mangement/inspection/add`"
-              addText="Add Inspection"
-              description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
-              title="You have No Inspection"
+              :addText="$t('add_inspection')"
+              :description="
+                $t(
+                  'You have no Inspection .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Inspection')"
             />
           </template>
         </DataStatus>
 
         <template #notPermitted>
           <DataFailed
-            addText="Have not  Permission"
-            description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
+            :addText="$t('auditUi.you_do_not_have_permission')"
+            :description="
+              $t(
+                'You have no Inspection .. All your joined customers will appear here when you add your customer data',
+              )
+            "
           />
         </template>
       </PermissionBuilder>

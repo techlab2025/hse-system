@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
 import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import IndexObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/indexObserverationTypeParams'
 import IndexObserverationTypeController from '@/features/setting/ObserverationType/Presentation/controllers/indexObserverationTypeController'
@@ -26,7 +27,7 @@ import Search from '@/shared/icons/Search.vue'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
-import * as XLSX from "xlsx";
+import * as XLSX from 'xlsx'
 import SystemObservationTypes from '../supcomponents/SystemObservationTypes.vue'
 import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
@@ -55,7 +56,13 @@ const fetchObserverationType = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteObserverationTypeParams = new IndexObserverationTypeParams(query, pageNumber, perPage, withPage, id)
+  const deleteObserverationTypeParams = new IndexObserverationTypeParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    id,
+  )
   await indexObserverationTypeController.getData(deleteObserverationTypeParams)
 }
 
@@ -69,7 +76,9 @@ const searchObserverationType = debounce(() => {
 
 const deleteObserverationType = async (id: number) => {
   const deleteObserverationTypeParams = new DeleteObserverationTypeParams(id)
-  await DeleteObserverationTypeController.getInstance().deleteObserverationType(deleteObserverationTypeParams)
+  await DeleteObserverationTypeController.getInstance().deleteObserverationType(
+    deleteObserverationTypeParams,
+  )
   await fetchObserverationType()
 }
 
@@ -160,22 +169,20 @@ const actionList = (id: number, deleteObserverationType: (id: number) => void) =
 
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert("No data available to export");
-    return;
+    alert(localizeUi('No data available to export'))
+    return
   }
-  const worksheetData = state.value.data.map(
-    (item: Record<string, unknown>) => {
-      const it = item as any;
-      return {
-        "title": it.title || "N/A",
-      };
-    },
-  );
-  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
-  return downloadLookupWorkbook(workbook, "observeration-type.xlsx")
-};
+  const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
+    const it = item as any
+    return {
+      title: it.title || 'N/A',
+    }
+  })
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Invoices')
+  return downloadLookupWorkbook(workbook, 'observeration-type.xlsx')
+}
 
 const DownloadExample = () => {
   const worksheetData = [
@@ -206,30 +213,21 @@ const IndexObservationTypesactionList = () => [
     icon: ActionsListAddIcon,
     primary: true,
     type: ActionItemsTypeEnum.Info,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.OBSERVATION_TYPE_CREATE
-    ],
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.OBSERVATION_TYPE_CREATE],
   },
   {
     text: t('upload_complated_template'),
     type: ActionItemsTypeEnum.Warning,
     action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.OBSERVATION_TYPE_CREATE
-    ],
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.OBSERVATION_TYPE_CREATE],
   },
   {
     text: t('download_excel_template'),
     icon: ExceIcon,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.OBSERVATION_TYPE_CREATE
-    ],
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.OBSERVATION_TYPE_CREATE],
   },
 ]
 </script>
@@ -241,7 +239,14 @@ const IndexObservationTypesactionList = () => [
       <span class="icon-remove" @click="((word = ''), searchObserverationType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchObserverationType" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchObserverationType"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
@@ -291,23 +296,24 @@ const IndexObservationTypesactionList = () => [
       :isHeaderTap="true"
       @confirmed="fetchObserverationType('', currentPage, countPerPage)"
     />
-
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.OBSERVATION_TYPE_ALL,
-    PermissionsEnum.OBSERVATION_TYPE_DELETE,
-    PermissionsEnum.OBSERVATION_TYPE_FETCH,
-    PermissionsEnum.OBSERVATION_TYPE_UPDATE,
-    PermissionsEnum.OBSERVATION_TYPE_CREATE,
-    PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
-    PermissionsEnum.ORG_OBSERVATION_TYPE_DELETE,
-    PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
-    PermissionsEnum.ORG_OBSERVATION_TYPE_UPDATE,
-    PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.OBSERVATION_TYPE_ALL,
+      PermissionsEnum.OBSERVATION_TYPE_DELETE,
+      PermissionsEnum.OBSERVATION_TYPE_FETCH,
+      PermissionsEnum.OBSERVATION_TYPE_UPDATE,
+      PermissionsEnum.OBSERVATION_TYPE_CREATE,
+      PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
+      PermissionsEnum.ORG_OBSERVATION_TYPE_DELETE,
+      PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
+      PermissionsEnum.ORG_OBSERVATION_TYPE_UPDATE,
+      PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive mt-2">
@@ -317,8 +323,12 @@ const IndexObservationTypesactionList = () => [
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('all_industries') }}</th>
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('industries') }}</th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                  {{ $t('all_industries') }}
+                </th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                  {{ $t('industries') }}
+                </th>
                 <!-- <th scope="col">{{ $t('image') }}</th> -->
 
                 <!-- <th scope="col">{{ $t('actions') }}</th> -->
@@ -329,14 +339,21 @@ const IndexObservationTypesactionList = () => [
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/${item.id}`">{{
-                      index + 1 }}
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/${item.id}`"
+                    >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ item.allIndustries
-                  ? $t('yes') : $t('no') }}</td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                <td
+                  :data-label="$t('all_industries')"
+                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                >
+                  {{ item.allIndustries ? $t('yes') : $t('no') }}
+                </td>
+                <td
+                  :data-label="$t('all_industries')"
+                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                >
                   {{
                     item.industries.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')
@@ -347,21 +364,27 @@ const IndexObservationTypesactionList = () => [
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td> -->
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusObserverationType-->
                   <!--                  v-if="item.ObserverationTypeStatus === ObserverationTypeStatusEnum.Draft"-->
                   <!--                  :ObserverationTypeId="item.id"-->
                   <!--                  @ObserverationTypeChangeStatus="fetchObserverationType"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteObserverationType)"
-                    @delete="deleteObserverationType(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteObserverationType)"
+                    @delete="deleteObserverationType(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -370,38 +393,58 @@ const IndexObservationTypesactionList = () => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <PermissionBuilder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.OBSERVATION_TYPE_CREATE,
-          PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
-        ]">
+        <PermissionBuilder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.OBSERVATION_TYPE_CREATE,
+            PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
+          ]"
+        >
           <DataEmpty
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/add`"
-            addText="Add ObserverationType"
-            description="You have no ObserverationType .. All your joined customers will appear here when you add your customer data"
-            title="You have No ObserverationType" />
+            :addText="$t('auditUi.add_observation_type')"
+            :description="
+              $t(
+                'You have no ObserverationType .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No ObserverationType')"
+          />
         </PermissionBuilder>
       </template>
       <template #failed>
-        <PermissionBuilder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.OBSERVATION_TYPE_CREATE,
-          PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
-        ]">
+        <PermissionBuilder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.OBSERVATION_TYPE_CREATE,
+            PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
+          ]"
+        >
           <DataFailed
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/add`"
-            addText="Add ObserverationType"
-            description="You have no ObserverationType .. All your joined customers will appear here when you add your customer data"
-            title="You have No ObserverationType" />
+            :addText="$t('auditUi.add_observation_type')"
+            :description="
+              $t(
+                'You have no ObserverationType .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No ObserverationType')"
+          />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no ObserverationType .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no ObserverationType .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+      />
     </template>
   </PermissionBuilder>
 
@@ -415,9 +458,11 @@ const IndexObservationTypesactionList = () => [
     <UploadObservationTypeExeclSheet
       :initial-file="pendingFile"
       @uploaded="
-        showUploadDialog = false;
-        pendingFile = null;
-        fetchObserverationType()
+        () => {
+          showUploadDialog = false
+          pendingFile = null
+          fetchObserverationType()
+        }
       "
     />
   </Dialog>

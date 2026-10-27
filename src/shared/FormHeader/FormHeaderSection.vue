@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import HeaderEditIcon from '../icons/HeaderEditIcon.vue';
+import HeaderEditIcon from '../icons/HeaderEditIcon.vue'
 
 const props = defineProps<{
-  title: string,
-  subtitle: string,
+  title: string
+  subtitle: string
   editLink: string
 }>()
 </script>
@@ -16,7 +16,7 @@ const props = defineProps<{
     </div>
     <router-link :to="editLink" class="edit">
       <HeaderEditIcon class="icon" />
-      <span>Edit</span>
+      <span>{{ $t('Edit') }}</span>
     </router-link>
   </div>
 </template>
@@ -25,6 +25,6 @@ const props = defineProps<{
   background-size: cover;
   background-position: bottom;
   background-repeat: no-repeat;
-  background-image: url("../../assets/images/HeaderBack.png");
+  background-image: url('../../assets/images/HeaderBack.png');
 }
 </style>

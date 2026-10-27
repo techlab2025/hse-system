@@ -8,7 +8,7 @@
   .top-teams-header {
     @include flex-column(nowrap, flex-start, flex-start);
     gap: 4px;
-    padding-left: 25px;
+    padding-inline-start: 25px;
 
     .static {
       color: var(--text-soft);
@@ -72,7 +72,7 @@
   .top-teams-names {
     @include flex-row(nowrap, center, center);
     gap: $XlSize4;
-    // padding-left: 25px;
+    // padding-inline-start: 25px;
 
     p {
       font-size: $XsSize;

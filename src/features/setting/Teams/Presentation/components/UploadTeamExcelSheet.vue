@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
 import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
 
@@ -38,7 +40,7 @@ const readExcelFile = async (file: File) => {
     if (data.length < 2) {
       rows.value = []
       mappedRows.value = null
-      errorMessage.value = 'No data available'
+      errorMessage.value = localizeUi('No data available')
       return
     }
 
@@ -48,7 +50,7 @@ const readExcelFile = async (file: File) => {
     console.error('Failed to read Team Excel file:', error)
     rows.value = []
     mappedRows.value = null
-    errorMessage.value = 'Failed to process the file.'
+    errorMessage.value = localizeUi('failed_to_process_file')
   } finally {
     isLoading.value = false
   }
@@ -93,7 +95,7 @@ const submitTeams = async () => {
   const titleIndex = headers.indexOf('title')
 
   if (titleIndex === -1) {
-    errorMessage.value = 'Please map the Team Title column.'
+    errorMessage.value = localizeUi('Please map the Team Title column.')
     mappedRows.value = null
     return
   }
@@ -104,7 +106,7 @@ const submitTeams = async () => {
     .filter((row) => row.title)
 
   if (!data.length) {
-    errorMessage.value = 'No data available'
+    errorMessage.value = localizeUi('No data available')
     return
   }
 
@@ -123,7 +125,7 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
   <LookupIndustryScope v-model="industryScope" />
   <div class="upload-team-sheet">
     <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-    <p v-if="isLoading" class="loading-message">Processing file…</p>
+    <p v-if="isLoading" class="loading-message">{{ $t('processing_file') }}</p>
 
     <FileUpload
       v-if="!isLoading && rows.length === 0"
@@ -143,8 +145,8 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
 
     <template v-if="mappedRows?.length">
       <div class="preview-header">
-        <h3>Mapped Data Preview</h3>
-        <span>{{ mappedRows.length - 1 }} rows</span>
+        <h3>{{ $t('Mapped Data Preview') }}</h3>
+        <span>{{ mappedRows.length - 1 }} {{ $t('rows') }}</span>
       </div>
 
       <div class="table-responsive">
@@ -167,7 +169,7 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
       </div>
 
       <button type="button" class="confirm-button" :disabled="isSubmitting" @click="submitTeams">
-        {{ isSubmitting ? 'Submitting…' : 'Confirm & Submit' }}
+        {{ isSubmitting ? $t('Submitting…') : $t('Confirm & Submit') }}
       </button>
     </template>
   </div>

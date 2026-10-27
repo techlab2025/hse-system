@@ -116,14 +116,12 @@ watch(
   ([newData, newDefault]) => {
     if (!newDefault.length) return
 
-
-    if(newData?.title?.length){
+    if (newData?.title?.length) {
       langsTitle.value = newData.title.map((item: any) => ({
         locale: item.locale,
         title: item.title,
       }))
-
-    }else {
+    } else {
       langsTitle.value = newDefault.map((lang) => ({
         locale: lang.locale,
         title: '',
@@ -154,9 +152,9 @@ watch(
       :modelValue="SelectedService"
       :controller="indexServiceController"
       :params="indexServiceParams"
-      label="Service"
+      :label="$t('Service')"
       id="Service"
-      placeholder="Select Service"
+      :placeholder="$t('Select Service')"
       @update:modelValue="setServiceSelection"
     />
   </div>

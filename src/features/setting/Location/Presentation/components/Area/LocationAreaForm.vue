@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
@@ -24,7 +26,12 @@ const route = useRoute()
 const ParentId = ref(route?.params.parent_id)
 
 const TypesSelection = ref([
-  new TitleInterface({ id: LocationEnum.COUNTRY, title: 'Country', subtitle: '' }),
+  new TitleInterface({
+    id: LocationEnum.COUNTRY,
+    title: 'Country',
+    translationKey: 'Country',
+    subtitle: '',
+  }),
   // new TitleInterface({ id: LocationEnum.STATE, title: 'State', subtitle: '' }),
   // new TitleInterface({ id: LocationEnum.CITY, title: 'City', subtitle: '' }),
   // new TitleInterface({ id: LocationEnum.AREA, title: 'Area', subtitle: '' }),
@@ -222,8 +229,10 @@ const SerialNumber = ref()
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
@@ -241,13 +250,14 @@ const fields = ref([
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="code">Code</label>
+    <label for="code">{{ $t('Code') }}</label>
     <input
+      dir="auto"
       type="text"
       id="code"
       v-model="Code"
       class="input"
-      placeholder="Enter The Code"
+      :placeholder="$t('Enter The Code')"
       @input="UpdateCode"
     />
   </div>
@@ -257,9 +267,9 @@ const fields = ref([
       :modelValue="SelectedCountry"
       :controller="indexLocationCountriesController"
       :params="indexLocationCountriesParams"
-      label="Country "
+      :label="$t('Country')"
       id="Location"
-      placeholder="Select Country"
+      :placeholder="$t('Select Country')"
       :type="2"
       @update:modelValue="SetCountrySelection"
     />
@@ -278,9 +288,9 @@ const fields = ref([
       :modelValue="SelectedState"
       :controller="indexLocationStatesController"
       :params="indexLocationStatesParams"
-      label="State"
+      :label="$t('State')"
       id="Location"
-      placeholder="Select State"
+      :placeholder="$t('Select State')"
       :type="2"
       @update:modelValue="SetStateSelection"
     />
@@ -290,9 +300,9 @@ const fields = ref([
       :modelValue="SelectedCity"
       :controller="indexLocationAreasController"
       :params="indexLocationAreasParams"
-      label="City"
+      :label="$t('City')"
       id="City"
-      placeholder="Select City"
+      :placeholder="$t('Select City')"
       @update:modelValue="SetCitySelection"
     />
   </div>

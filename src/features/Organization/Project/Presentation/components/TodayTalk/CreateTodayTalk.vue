@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getCurrentLocale } from '@/localization/i18n'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -203,17 +205,19 @@ onMounted(getEmployees)
         class="hse-project-button back-link"
       >
         <span aria-hidden="true">←</span>
-        {{ isProjectTalk ? 'Back to project' : 'Back to today talks' }}
+        {{ isProjectTalk ? $t('Back to project') : $t('Back to today talks') }}
       </RouterLink>
       <div class="heading-row">
         <div>
-          <span class="eyebrow">Daily field briefing</span>
-          <h1>Create Today’s Talk</h1>
-          <p>Capture the safety conversation and confirm every team member’s attendance.</p>
+          <span class="eyebrow">{{ $t('Daily field briefing') }}</span>
+          <h1>{{ $t('Create Today’s Talk') }}</h1>
+          <p>
+            {{ $t('Capture the safety conversation and confirm every team member’s attendance.') }}
+          </p>
         </div>
         <div class="today-badge">
           <span>{{
-            new Intl.DateTimeFormat(undefined, { weekday: 'short' }).format(new Date())
+            new Intl.DateTimeFormat(getCurrentLocale(), { weekday: 'short' }).format(new Date())
           }}</span>
           <strong>{{ new Date().getDate() }}</strong>
         </div>
@@ -225,18 +229,25 @@ onMounted(getEmployees)
         <div class="section-heading">
           <span class="step-number">01</span>
           <div>
-            <h2>What did the team discuss?</h2>
-            <p>Record the key safety topic, decisions, and actions from today’s talk.</p>
+            <h2>{{ $t('What did the team discuss?') }}</h2>
+            <p>
+              {{ $t('Record the key safety topic, decisions, and actions from today’s talk.') }}
+            </p>
           </div>
         </div>
         <div class="hse-project-field content-field" :class="{ invalid: contentError }">
           <textarea
+            dir="auto"
             class="hse-project-input"
             id="today-talk-content"
             v-model="content"
             rows="7"
             maxlength="3000"
-            placeholder="Example: We reviewed safe lifting practices, the day’s high-risk activities, and the stop-work procedure..."
+            :placeholder="
+              $t(
+                'Example: We reviewed safe lifting practices, the day’s high-risk activities, and the stop-work procedure...',
+              )
+            "
             :aria-invalid="Boolean(contentError)"
           ></textarea>
           <div class="hse-project-field field-meta">
@@ -246,8 +257,9 @@ onMounted(getEmployees)
         </div>
         <div class="schedule-grid">
           <label class="hse-project-field-label" :class="{ invalid: dateError }">
-            <span>Talk date</span>
+            <span>{{ $t('Talk date') }}</span>
             <input
+              dir="auto"
               class="hse-project-input"
               v-model="date"
               type="date"
@@ -256,8 +268,9 @@ onMounted(getEmployees)
             <small class="error-message">{{ dateError }}</small>
           </label>
           <label class="hse-project-field-label" :class="{ invalid: timeError }">
-            <span>Talk time</span>
+            <span>{{ $t('Talk time') }}</span>
             <input
+              dir="auto"
               class="hse-project-input"
               v-model="time"
               type="time"
@@ -273,16 +286,17 @@ onMounted(getEmployees)
           <div class="heading-copy">
             <span class="step-number">02</span>
             <div>
-              <h2>Who attended?</h2>
-              <p>Switch attendance on for each employee who joined today’s talk.</p>
+              <h2>{{ $t('Who attended?') }}</h2>
+              <p>{{ $t('Switch attendance on for each employee who joined today’s talk.') }}</p>
             </div>
           </div>
           <div class="attendance-actions">
             <span
-              ><strong>{{ attendingCount }}</strong> / {{ attendance.length }} attending</span
+              ><strong>{{ attendingCount }}</strong> / {{ attendance.length }}
+              {{ $t('attending') }}</span
             >
             <button v-if="attendance.length" type="button" class="select-all" @click="toggleAll">
-              {{ allAttending ? 'Clear all' : 'Mark all attending' }}
+              {{ allAttending ? $t('Clear all') : $t('Mark all attending') }}
             </button>
           </div>
         </div>
@@ -305,14 +319,17 @@ onMounted(getEmployees)
             </span>
             <span class="employee-copy">
               <strong>{{ employee.name }}</strong>
-              <small>{{ employee.email || `Employee #${employee.organizationEmployeeId}` }}</small>
+              <small>{{
+                employee.email ||
+                $t('uiDynamic.employeeReference', { p0: employee.organizationEmployeeId })
+              }}</small>
             </span>
             <span class="attendance-control">
               <ToggleSwitch
                 v-model="employee.isAttend"
                 :input-id="`attendance-${employee.organizationEmployeeId}`"
               />
-              <small>{{ employee.isAttend ? 'Attending' : 'Absent' }}</small>
+              <small>{{ employee.isAttend ? $t('attending') : $t('Absent') }}</small>
             </span>
           </label>
         </div>
@@ -320,16 +337,20 @@ onMounted(getEmployees)
         <div v-else class="employees-empty">
           <span aria-hidden="true">!</span>
           <div>
-            <h3>{{ hasEmployeeError ? 'Employees could not be loaded' : 'No employees found' }}</h3>
+            <h3>
+              {{
+                hasEmployeeError ? $t('Employees could not be loaded') : $t('No employees found')
+              }}
+            </h3>
             <p>
               {{
                 isProjectTalk
-                  ? 'Add employees to this project or retry loading the project workforce.'
-                  : 'Add organization employees or retry loading the employee list.'
+                  ? $t('Add employees to this project or retry loading the project workforce.')
+                  : $t('Add organization employees or retry loading the employee list.')
               }}
             </p>
           </div>
-          <button type="button" class="retry" @click="getEmployees">Retry</button>
+          <button type="button" class="retry" @click="getEmployees">{{ $t('retry') }}</button>
         </div>
         <p v-if="employeesError" class="error-message employees-error">{{ employeesError }}</p>
       </section>
@@ -343,7 +364,7 @@ onMounted(getEmployees)
           "
           class="hse-project-button hse-project-button--ghost cancel-button"
         >
-          Cancel
+          {{ $t('Cancel') }}
         </RouterLink>
         <button
           type="button"
@@ -352,7 +373,7 @@ onMounted(getEmployees)
           @click.prevent="saveAndNew"
         >
           <span v-if="isSaving" class="button-spinner" aria-hidden="true"></span>
-          {{ isSaving ? 'Saving talk…' : $t('save and new') }}
+          {{ isSaving ? $t('Saving talk…') : $t('save and new') }}
         </button>
         <button
           type="submit"
@@ -360,7 +381,7 @@ onMounted(getEmployees)
           :disabled="isSaving"
         >
           <span v-if="isSaving" class="button-spinner" aria-hidden="true"></span>
-          {{ isSaving ? 'Saving talk…' : 'Save today’s talk' }}
+          {{ isSaving ? $t('Saving talk…') : $t('Save today’s talk') }}
         </button>
       </footer>
     </form>

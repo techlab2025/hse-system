@@ -363,12 +363,12 @@ const canCreateRecord = computed(() =>
         <div class="incident-control-center hse-operations-command">
           <div class="incident-control-header">
             <IndexHazardHeader
-              :title="'incident'"
+              :title="$t('incident')"
               :length="state?.pagination?.total"
               :projects="Projects"
               :selected-project-id="selectedProjctesFilters"
               :isProjectsLoading="isProjectsLoading"
-              subtitle="Manage, filter, and review workplace incidents"
+              :subtitle="$t('Manage, filter, and review workplace incidents')"
               variant="incident"
               @update:data="setSelectedProjectFilter"
             >
@@ -426,7 +426,7 @@ const canCreateRecord = computed(() =>
                 :selected-zone-ids="SelectedZonesFilter"
                 @update:data="ApplayFilter"
                 :link="incidentCreateLink"
-                :linkText="'Create incedant'"
+                :linkText="$t('Create incedant')"
               />
             </div>
           </div>
@@ -608,18 +608,18 @@ const canCreateRecord = computed(() =>
             <DataEmpty
               :withbtn="canCreateRecord"
               :link="incidentCreateLink"
-              addText="Report incident"
+              :addText="$t('Report incident')"
               description=" "
-              title="You have No incident"
+              :title="$t('You have No incident')"
             />
           </template>
           <template #failed>
             <DataFailed
               :withbtn="canCreateRecord"
               :link="incidentCreateLink"
-              addText="Report incident "
+              :addText="$t('Report incident')"
               description=" "
-              title="You have No incident"
+              :title="$t('You have No incident')"
             />
           </template>
         </DataStatus>
@@ -628,7 +628,7 @@ const canCreateRecord = computed(() =>
         v-else
         :title="$t('have_not_permission')"
         :withbtn="false"
-        description="You do not have permission to view incidents."
+        :description="$t('You do not have permission to view incidents.')"
       />
     </div>
   </div>

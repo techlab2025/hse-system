@@ -162,7 +162,7 @@ const updatetabValue = (value: any) => {
               </p>
             </div>
           </div>
-          <div class="workforce-summary" aria-label="Workforce totals">
+          <div class="workforce-summary" :aria-label="$t('Workforce totals')">
             <span
               ><strong>{{ employeeCount }}</strong> {{ $t('Employees') }}</span
             >

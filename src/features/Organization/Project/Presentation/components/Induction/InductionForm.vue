@@ -28,7 +28,8 @@ import IndexProjectController from '@/features/Organization/Project/Presentation
 import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
 import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('InductionForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('InductionForm')
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddInductionParams | EditInductionParams): void
@@ -484,9 +485,12 @@ const requiredFields = computed(() => {
   ]
   return fields
 })
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const validateRequiredFields = async () => {
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = Object.fromEntries(
     missedFields.map((field) => [field.key, field.message]),
   )
@@ -517,7 +521,7 @@ onMounted(() => {
 
 <template>
   <div data-hse-project v-project-panels class="hse-project-root induction-form-shell col-span-4">
-    <section class="induction-overview" aria-label="Induction form status">
+    <section class="induction-overview" :aria-label="$t('Induction form status')">
       <div class="induction-overview__main">
         <span class="induction-overview__icon" aria-hidden="true">
           <Icon icon="uil:book-open" />
@@ -563,7 +567,7 @@ onMounted(() => {
           <UpdatedCustomInputSelect
             :model-value="instractor"
             :static-options="employeeOptions"
-            label="Instructor Name "
+            :label="$t('Instructor Name')"
             id="induction-instractor"
             :placeholder="$t('Select instructor')"
             :reload="false"
@@ -607,7 +611,7 @@ onMounted(() => {
             :model-value="selectedProject"
             :controller="projectController"
             :params="projectParams"
-            label="Project"
+            :label="$t('Project')"
             id="induction-project"
             :placeholder="$t('Select project')"
             optional
@@ -620,7 +624,7 @@ onMounted(() => {
             <UpdatedCustomInputSelect
               :model-value="selectedProjectLocation"
               :static-options="projectLocationOptions"
-              label="location"
+              :label="$t('location')"
               id="induction-project-location"
               :placeholder="$t('Select location')"
               :reload="false"
@@ -637,7 +641,7 @@ onMounted(() => {
             <UpdatedCustomInputSelect
               :model-value="selectedProjectZone"
               :static-options="projectZoneOptions"
-              label="ZOON"
+              :label="$t('ZOON')"
               id="induction-project-zone"
               :placeholder="$t('Select ZOON')"
               :reload="false"
@@ -660,7 +664,7 @@ onMounted(() => {
           <UpdatedCustomInputSelect
             :model-value="selectedOrganisationEmployees"
             :static-options="employeeOptions"
-            label="Add Employee "
+            :label="$t('Add Employee')"
             id="induction-organisation-employee"
             :placeholder="$t('Select employees')"
             :type="2"
@@ -677,6 +681,7 @@ onMounted(() => {
             </label>
             <div class="manual-employee-entry__control">
               <input
+                dir="auto"
                 id="induction-manual-organisation-employee"
                 v-model="manualOrganisationEmployeeName"
                 class="hse-project-input manual-employee-entry__input"
@@ -703,7 +708,7 @@ onMounted(() => {
                 {{ name }}
                 <button
                   type="button"
-                  :aria-label="`Remove ${name}`"
+                  :aria-label="$t('uiDynamic.removeItem', { p0: name })"
                   @click.prevent="removeManualOrganisationEmployee(index)"
                 >
                   <Icon icon="uil:times" />
@@ -795,9 +800,7 @@ onMounted(() => {
       </p>
     </section>
 
-    <section
-      class="hse-project-panel induction-section induction-section--evidence"
-    >
+    <section class="hse-project-panel induction-section induction-section--evidence">
       <header class="induction-section__header">
         <span class="induction-section__icon" aria-hidden="true">
           <Icon icon="uil:image-upload" />
@@ -1003,7 +1006,7 @@ onMounted(() => {
   justify-content: flex-start;
   width: fit-content;
   margin: 0;
-  text-align: left;
+  text-align: start;
 }
 
 .induction-date-field.input-wrapper {
@@ -1225,14 +1228,14 @@ onMounted(() => {
 
 .topic-selection__header > div {
   justify-self: start;
-  text-align: left;
+  text-align: start;
 }
 
 .topic-selection__header p {
   margin: 4px 0 0;
   color: var(--text-soft);
   font-size: 0.82rem;
-  text-align: left;
+  text-align: start;
 }
 
 .topic-selection__toggle {

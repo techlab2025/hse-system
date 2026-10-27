@@ -30,7 +30,6 @@ import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum'
 const { t } = useI18n()
 const route = useRoute()
 
-
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
@@ -45,7 +44,14 @@ const fetchHazardType = async (
   parent_id?: number = route.query.hazardType || null,
   parent_type?: HazardTypeParentEnum = HazardTypeParentEnum.Child,
 ) => {
-  const deleteHazardTypeParams = new IndexHazardTypeParams(query, pageNumber, perPage, withPage, Number(route.query.hazardType), parent_type)
+  const deleteHazardTypeParams = new IndexHazardTypeParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    Number(route.query.hazardType),
+    parent_type,
+  )
   await indexHazardTypeController.getData(deleteHazardTypeParams)
 }
 
@@ -54,7 +60,14 @@ onMounted(() => {
 })
 
 const searchHazardType = debounce(() => {
-  fetchHazardType(word.value, currentPage.value, countPerPage.value, 1, null, HazardTypeParentEnum.Child)
+  fetchHazardType(
+    word.value,
+    currentPage.value,
+    countPerPage.value,
+    1,
+    null,
+    HazardTypeParentEnum.Child,
+  )
 })
 
 const deleteHazardType = async (id: number) => {
@@ -89,7 +102,6 @@ watch(
 
 const { user } = useUserStore()
 
-
 const HazardactionList = (id: number, deleteHazardType: (id: number) => void) => [
   {
     text: t('edit'),
@@ -116,12 +128,13 @@ const HazardactionList = (id: number, deleteHazardType: (id: number) => void) =>
   },
 ]
 
-watch(() => route.params.parent_id, (newVal) => {
-  // ParentId = newVal
-  fetchHazardType('', currentPage.value, countPerPage.value, 1, null, HazardTypeParentEnum?.Child)
-})
-
-
+watch(
+  () => route.params.parent_id,
+  (newVal) => {
+    // ParentId = newVal
+    fetchHazardType('', currentPage.value, countPerPage.value, 1, null, HazardTypeParentEnum?.Child)
+  },
+)
 </script>
 
 <template>
@@ -130,34 +143,47 @@ watch(() => route.params.parent_id, (newVal) => {
       <span class="icon-remove" @click="((word = ''), searchHazardType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchHazardType" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchHazardType"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-      <PermissionBuilder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.ORG_HAZARD_CREATE,
-        PermissionsEnum.ORG_HAZARD_ALL,
-      ]">
-        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard/add`"
-          class="btn btn-primary">
+      <PermissionBuilder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.ORG_HAZARD_CREATE,
+          PermissionsEnum.ORG_HAZARD_ALL,
+        ]"
+      >
+        <router-link
+          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard/add`"
+          class="btn btn-primary"
+        >
           {{ $t('add_risk') }}
         </router-link>
       </PermissionBuilder>
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.ORG_HAZARD_ALL,
-    PermissionsEnum.ORG_HAZARD_DELETE,
-    PermissionsEnum.ORG_HAZARD_FETCH,
-    PermissionsEnum.ORG_HAZARD_UPDATE,
-    PermissionsEnum.ORG_HAZARD_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_HAZARD_ALL,
+      PermissionsEnum.ORG_HAZARD_DELETE,
+      PermissionsEnum.ORG_HAZARD_FETCH,
+      PermissionsEnum.ORG_HAZARD_UPDATE,
+      PermissionsEnum.ORG_HAZARD_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -167,8 +193,12 @@ watch(() => route.params.parent_id, (newVal) => {
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('all_industries') }}</th>
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('industries') }}</th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                  {{ $t('all_industries') }}
+                </th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                  {{ $t('industries') }}
+                </th>
                 <th scope="col">{{ $t('hazard_type') }}</th>
 
                 <!-- <th scope="col">{{ $t('actions') }}</th> -->
@@ -179,14 +209,21 @@ watch(() => route.params.parent_id, (newVal) => {
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${item.id}`">{{
-                      index + 1 }}
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${item.id}`"
+                    >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ item.allIndustries
-                  ? $t('yes') : $t('no') }}</td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                <td
+                  :data-label="$t('all_industries')"
+                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                >
+                  {{ item.allIndustries ? $t('yes') : $t('no') }}
+                </td>
+                <td
+                  :data-label="$t('all_industries')"
+                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                >
                   {{
                     item.industries.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')
@@ -197,25 +234,30 @@ watch(() => route.params.parent_id, (newVal) => {
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td> -->
 
-                <td data-label="hazard_type">
+                <td :data-label="$t('hazard_type')">
                   {{ item?.parent?.title }}
                 </td>
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusHazardType-->
                   <!--                  v-if="item.HazardTypeStatus === HazardTypeStatusEnum.Draft"-->
                   <!--                  :HazardTypeId="item.id"-->
                   <!--                  @HazardTypeChangeStatus="fetchHazardType"-->
                   <!--                />-->
 
-
-                  <DropList :actionList="HazardactionList(item.id, deleteHazardType)"
-                    @delete="deleteHazardType(item.id)" />
+                  <DropList
+                    :actionList="HazardactionList(item.id, deleteHazardType)"
+                    @delete="deleteHazardType(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -224,36 +266,58 @@ watch(() => route.params.parent_id, (newVal) => {
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <PermissionBuilder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.ORG_HAZARD_CREATE,
-          PermissionsEnum.ORG_HAZARD_ALL,
-        ]">
-          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard/add`"
-            addText="add_risk"
-            description="You have no Risk .. All your joined customers will appear here when you add your customer data"
-            title="You have No Risk" />
+        <PermissionBuilder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.ORG_HAZARD_CREATE,
+            PermissionsEnum.ORG_HAZARD_ALL,
+          ]"
+        >
+          <DataEmpty
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard/add`"
+            :addText="$t('add_risk')"
+            :description="
+              $t(
+                'You have no Risk .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Risk')"
+          />
         </PermissionBuilder>
       </template>
       <template #failed>
-        <PermissionBuilder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.ORG_HAZARD_CREATE,
-          PermissionsEnum.ORG_HAZARD_ALL,
-        ]">
-          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard/add`"
-            addText="add_risk"
-            description="You have no Risk .. All your joined customers will appear here when you add your customer data"
-            title="You have No Risk" />
+        <PermissionBuilder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.ORG_HAZARD_CREATE,
+            PermissionsEnum.ORG_HAZARD_ALL,
+          ]"
+        >
+          <DataFailed
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard/add`"
+            :addText="$t('add_risk')"
+            :description="
+              $t(
+                'You have no Risk .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Risk')"
+          />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no Hazard .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Hazard .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+      />
     </template>
   </PermissionBuilder>
 </template>

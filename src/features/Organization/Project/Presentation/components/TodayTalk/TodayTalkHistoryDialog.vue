@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getCurrentLocale } from '@/localization/i18n'
+
 import '../../../styles/project.css'
 
 import Dialog from 'primevue/dialog'
@@ -22,7 +24,7 @@ const formatDate = (date: string) => {
   const parsed = new Date(`${date}T00:00:00`)
   return Number.isNaN(parsed.getTime())
     ? date
-    : new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(parsed)
+    : new Intl.DateTimeFormat(getCurrentLocale(), { dateStyle: 'medium' }).format(parsed)
 }
 </script>
 
@@ -43,9 +45,11 @@ const formatDate = (date: string) => {
           <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2" /></svg>
         </span>
         <div>
-          <span>Safety conversation archive</span>
-          <h2>Previous today talks</h2>
-          <small>{{ projectName || 'This project' }} · {{ talks.length }} records</small>
+          <span>{{ $t('Safety conversation archive') }}</span>
+          <h2>{{ $t('Previous today talks') }}</h2>
+          <small
+            >{{ projectName || $t('This project') }} · {{ talks.length }} {{ $t('records') }}</small
+          >
         </div>
       </div>
     </template>
@@ -64,19 +68,22 @@ const formatDate = (date: string) => {
         <header>
           <div>
             <strong>{{ formatDate(talk.date) }}</strong>
-            <span>{{ talk.time || 'No time' }}</span>
+            <span>{{ talk.time || $t('No time') }}</span>
           </div>
-          <span class="talk-serial">{{ talk.serialName || `Talk #${talk.id}` }}</span>
+          <span class="talk-serial">{{
+            talk.serialName || $t('uiDynamic.talkReference', { p0: talk.id })
+          }}</span>
         </header>
 
         <p>{{ talk.content }}</p>
 
         <footer>
           <div class="attendance-copy">
-            <strong>{{ attendingCount(talk) }}</strong>
-            <span>of {{ talk.employees.length }} attended</span>
+            <strong>{{
+              $t('attendanceSummary', { count: attendingCount(talk), total: talk.employees.length })
+            }}</strong>
           </div>
-          <div class="history-employees" aria-label="Talk employees">
+          <div class="history-employees" :aria-label="$t('Talk employees')">
             <RouterLink
               v-for="employee in talk.employees.slice(0, 7)"
               :key="employee.id || employee.organizationEmployeeId"
@@ -90,7 +97,7 @@ const formatDate = (date: string) => {
             <small v-if="talk.employees.length > 7">+{{ talk.employees.length - 7 }}</small>
           </div>
           <span class="open-details">
-            Full details
+            {{ $t('Full details') }}
             <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6" /></svg>
           </span>
         </footer>

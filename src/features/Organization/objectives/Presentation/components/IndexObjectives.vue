@@ -151,6 +151,7 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
           <Search />
         </span>
         <input
+          dir="auto"
           v-model="word"
           :placeholder="$t('search')"
           class="input"

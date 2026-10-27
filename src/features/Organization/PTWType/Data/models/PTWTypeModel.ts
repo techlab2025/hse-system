@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class PTWTypeModel extends TitleInterface {
@@ -6,7 +7,10 @@ export default class PTWTypeModel extends TitleInterface {
   }
 
   static fromMap(data: any): PTWTypeModel {
-    return new PTWTypeModel(data.id, data.title, data.ptw_color ?? data.color)
+    return localizedRecord(
+      new PTWTypeModel(data.id, data.title, data.ptw_color ?? data.color),
+      data,
+    )
   }
 
   static example: PTWTypeModel[] = [

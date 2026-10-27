@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import LocationModel from '@/features/setting/Location/Data/models/LocationModel'
 import SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
 import ShowProjectDetailsModel from '@/features/Organization/Project/Data/models/ShowProjectDeatilsModel'
@@ -127,47 +128,50 @@ export default class InvestigatingModel {
       data.corrective_tasks ?? data.correctiveTasks ?? data.coorevtive_tasks ?? []
     const preventiveTask =
       data.preventive_tasks ?? data.preventiveTasks ?? data.previtive_tasks ?? []
-    return new InvestigatingModel(
-      data.id || data.investigation_id,
-      data.title,
-      data.description,
-      data.image,
-      data.is_action,
-      data.task_result_item,
-      data.type,
-      data.type_id,
-      data.type_model,
-      data.equipment,
-      data.location,
-      data.zoon,
-      data.project,
-      data.is_result,
-      data.risk_level,
-      data.save_status,
-      data.action,
-      data.is_near_miss,
-      data.capa_status,
-      data.investigation_date,
-      data.serial,
-      // OvserverModel.fromMap(data.observer),
-      // OvserverModel.fromMap(data.creator),
-      data.observer,
-      data.creator,
-      data.capa,
-      data.status,
-      data.observation ? HazardDetailsModel?.fromMap(data.observation) : undefined,
-      data.latest_investigation_meeting_id,
-      data.has_results,
-      data.investigation_team_leader
-        ? TeamLeaderModel?.fromMap(data.investigation_team_leader)
-        : undefined,
-      data.investigation_team_members_count,
-      data.investigation_meeting_date,
-      data.investigation_meeting_time,
-      data.lesson_learnt ?? data.lessonLearnt ?? '',
-      correctiveTask.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
-      preventiveTask.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
-      data.serial_name,
+    return localizedRecord(
+      new InvestigatingModel(
+        data.id || data.investigation_id,
+        data.title,
+        data.description,
+        data.image,
+        data.is_action,
+        data.task_result_item,
+        data.type,
+        data.type_id,
+        data.type_model,
+        data.equipment,
+        data.location,
+        data.zoon,
+        data.project,
+        data.is_result,
+        data.risk_level,
+        data.save_status,
+        data.action,
+        data.is_near_miss,
+        data.capa_status,
+        data.investigation_date,
+        data.serial,
+        // OvserverModel.fromMap(data.observer),
+        // OvserverModel.fromMap(data.creator),
+        data.observer,
+        data.creator,
+        data.capa,
+        data.status,
+        data.observation ? HazardDetailsModel?.fromMap(data.observation) : undefined,
+        data.latest_investigation_meeting_id,
+        data.has_results,
+        data.investigation_team_leader
+          ? TeamLeaderModel?.fromMap(data.investigation_team_leader)
+          : undefined,
+        data.investigation_team_members_count,
+        data.investigation_meeting_date,
+        data.investigation_meeting_time,
+        data.lesson_learnt ?? data.lessonLearnt ?? '',
+        correctiveTask.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
+        preventiveTask.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
+        data.serial_name,
+      ),
+      data,
     )
   }
 

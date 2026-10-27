@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import * as XLSX from 'xlsx'
@@ -33,7 +35,7 @@ const parseFile = async (file?: File | null) => {
     })
 
     if (rows.length < 2) {
-      errorMessage.value = 'The Excel file must contain a header and at least one row.'
+      errorMessage.value = localizeUi('The Excel file must contain a header and at least one row.')
       return
     }
 
@@ -48,10 +50,10 @@ const parseFile = async (file?: File | null) => {
       .filter(Boolean)
 
     if (!titles.value.length) {
-      errorMessage.value = 'No titles were found in the Excel file.'
+      errorMessage.value = localizeUi('No titles were found in the Excel file.')
     }
   } catch {
-    errorMessage.value = 'Failed to process the Excel file.'
+    errorMessage.value = localizeUi('Failed to process the Excel file.')
   } finally {
     isLoading.value = false
   }
@@ -74,7 +76,7 @@ const deleteRow = (rowIndex: number) => {
       <span class="loading-dot" />
       <span class="loading-dot" />
       <span class="loading-dot" />
-      <span class="loading-label">Processing file...</span>
+      <span class="loading-label">{{ $t('Processing file...') }}</span>
     </div>
     <p v-else-if="errorMessage" class="error-message">{{ errorMessage }}</p>
 
@@ -185,7 +187,7 @@ const deleteRow = (rowIndex: number) => {
 
 .main-table th {
   padding: 12px 16px;
-  text-align: left;
+  text-align: start;
   color: var(--brand-primary-500);
   border-bottom: 2px solid var(--brand-primary-100);
 }

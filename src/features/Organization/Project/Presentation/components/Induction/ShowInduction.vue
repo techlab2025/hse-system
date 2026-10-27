@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -65,19 +67,25 @@ const instructorValue = computed(
 const heroMetrics = computed(() => [
   {
     icon: 'uil:list-ul',
-    label: 'training_topics',
+    get label() {
+      return localizeUi('training_topics')
+    },
     value: trainingTopicCount.value,
     tone: 'blue',
   },
   {
     icon: 'uil:users-alt',
-    label: 'attendees',
+    get label() {
+      return localizeUi('attendees')
+    },
     value: attendeeCount.value,
     tone: 'green',
   },
   {
     icon: 'uil:image-v',
-    label: 'Evidence',
+    get label() {
+      return localizeUi('Evidence')
+    },
     value: evidenceCount.value,
     tone: 'amber',
   },
@@ -86,25 +94,33 @@ const heroMetrics = computed(() => [
 const detailItems = computed(() => [
   {
     icon: 'uil:user-check',
-    label: 'instractor',
+    get label() {
+      return localizeUi('instractor')
+    },
     value: instructorValue.value,
     tone: 'blue',
   },
   {
     icon: 'uil:briefcase-alt',
-    label: 'project',
+    get label() {
+      return localizeUi('project')
+    },
     value: induction.value?.projectTitle || '-',
     tone: 'violet',
   },
   {
     icon: 'uil:calendar-alt',
-    label: 'date',
+    get label() {
+      return localizeUi('date')
+    },
     value: induction.value?.date || '-',
     tone: 'green',
   },
   {
     icon: 'uil:map-marker',
-    label: 'location',
+    get label() {
+      return localizeUi('location')
+    },
     value:
       induction.value?.projectLocationTitle ||
       (induction.value?.projectLocationId ? '#' + induction.value.projectLocationId : '-'),
@@ -112,7 +128,9 @@ const detailItems = computed(() => [
   },
   {
     icon: 'uil:map-pin-alt',
-    label: 'zone',
+    get label() {
+      return localizeUi('zone')
+    },
     value:
       induction.value?.projectZoneTitle ||
       (induction.value?.projectZoonId ? '#' + induction.value.projectZoonId : '-'),
@@ -120,7 +138,9 @@ const detailItems = computed(() => [
   },
   {
     icon: 'uil:clock',
-    label: 'created_at',
+    get label() {
+      return localizeUi('created_at')
+    },
     value: induction.value?.createdAt || '-',
     tone: 'slate',
   },

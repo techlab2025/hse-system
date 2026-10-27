@@ -139,8 +139,8 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
 <template>
   <div class="col-span-6 md:col-span-6">
     <HeaderPage
-      :title="'create Investigating'"
-      :subtitle="'Document what you observe to improve workplace safety'"
+      :title="$t('create Investigating')"
+      :subtitle="$t('Document what you observe to improve workplace safety')"
       :img="fingerprintInvestigation"
     />
   </div>
@@ -149,7 +149,7 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
   </div> -->
   <div class="investigationMeeting-form col-span-6 md:col-span-6">
     <div class="investigationMeeting-form-header">
-      <p class="title">Investigating form <span>( #001 )</span></p>
+      <p class="title">{{ $t('Investigating form') }} <span>( #001 )</span></p>
     </div>
   </div>
 
@@ -159,9 +159,9 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
       class="input"
       :controller="indexEquipmentController"
       :params="indexEquipmentParams"
-      label="Investigation team"
+      :label="$t('Investigation team')"
       id="machine"
-      placeholder="select your machine"
+      :placeholder="$t('select your machine')"
       @update:modelValue="setMachine"
     />
   </div>
@@ -171,9 +171,9 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
       class="input"
       :controller="indexEquipmentController"
       :params="indexEquipmentParams"
-      label="assign leader "
+      :label="$t('assign leader')"
       id="machine"
-      placeholder="select your machine"
+      :placeholder="$t('select your machine')"
       @update:modelValue="setMachine"
     />
   </div>
@@ -181,16 +181,16 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
   <div class="meeting-investigation col-span-6 md:col-span-6">
     <img :src="meetingImage" alt="" class="meeting-icon" />
 
-    <p>Investigation Meeting</p>
+    <p>{{ $t('Investigation Meeting') }}</p>
   </div>
 
   <div class="col-span-6 md:col-span-3 input-wrapper">
-    <label for="date">Date</label>
-    <DatePicker v-model="date" placeholder="Add your date" />
+    <label for="date">{{ $t('Date') }}</label>
+    <DatePicker v-model="date" :placeholder="$t('Add your date')" />
   </div>
   <div class="col-span-6 md:col-span-3 input-wrapper">
-    <label for="time">Time</label>
-    <DatePicker v-model="time" timeOnly hourFormat="24" placeholder="Add your time" />
+    <label for="time">{{ $t('Time') }}</label>
+    <DatePicker v-model="time" timeOnly hourFormat="24" :placeholder="$t('Add your time')" />
   </div>
 
   <!-- <FactorInvestigating /> -->
@@ -200,9 +200,9 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
       class="input"
       :controller="indexEquipmentController"
       :params="indexEquipmentParams"
-      label="meeting platform "
+      :label="$t('meeting platform')"
       id="machine"
-      placeholder="select meeting platform"
+      :placeholder="$t('select meeting platform')"
       @update:modelValue="setMachine"
     />
   </div>

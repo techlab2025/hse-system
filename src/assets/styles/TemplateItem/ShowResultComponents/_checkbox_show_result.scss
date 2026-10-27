@@ -17,7 +17,7 @@
       padding-bottom: $XsSize;
       gap: $XsSize2;
       position: relative;
-      padding-left: 15px;
+      padding-inline-start: 15px;
       .asnwers-container {
         @include flex-row(nowrap, flex-end, center);
         // &::before {
@@ -58,7 +58,7 @@
   .textarea-conatneir {
     background-color: var(--surface-1);
     @include flex-column(nowrap, flex-start, flex-start);
-    padding-left: 15px;
+    padding-inline-start: 15px;
     width: 100%;
     padding: 10px;
     border-radius: 12px;

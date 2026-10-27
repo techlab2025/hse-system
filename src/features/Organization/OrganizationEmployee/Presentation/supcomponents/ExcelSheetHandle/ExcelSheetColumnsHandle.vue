@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import Dialog from 'primevue/dialog';
+import { translateMessage } from '@/localization/messages'
+import Dialog from 'primevue/dialog'
 
 const props = defineProps<{
   columns: string[]
@@ -8,7 +9,8 @@ const props = defineProps<{
   sentData: string[]
   sentDataLabels?: Record<string, string>
 }>()
-const getLabel = (key: string) => props.sentDataLabels?.[key] ?? key
+const getLabel = (key: string) =>
+  props.sentDataLabels?.[key] ? translateMessage(props.sentDataLabels[key]) : key
 const emit = defineEmits<{
   (e: 'update:columnMapping', mapping: Record<string, string>): void
   (e: 'close'): void
@@ -23,13 +25,19 @@ const orderedColumns = ref<string[]>([...props.columns])
 const draggedIndex = ref<number | null>(null)
 const dragOverIndex = ref<number | null>(null)
 
-watch(() => props.visable, (val) => {
-  visible.value = val
-})
+watch(
+  () => props.visable,
+  (val) => {
+    visible.value = val
+  },
+)
 
-watch(() => props.columns, (val) => {
-  orderedColumns.value = [...val]
-})
+watch(
+  () => props.columns,
+  (val) => {
+    orderedColumns.value = [...val]
+  },
+)
 
 const onDragStart = (index: number) => {
   draggedIndex.value = index
@@ -101,17 +109,22 @@ const getMappedSentKey = (colIndex: number): string => {
 
 <template>
   <div class="excel-select-dialog">
-    <Dialog v-model:visible="visible" modal :dismissable-mask="false" :style="{ width: '56rem' }"
-      header="Map Excel Columns" @hide="onHide">
+    <Dialog
+      v-model:visible="visible"
+      modal
+      :dismissable-mask="false"
+      :style="{ width: '56rem' }"
+      :header="$t('Map Excel Columns')"
+      @hide="onHide"
+    >
       <div class="instructions">
-        <span>Drag the <strong>Excel columns</strong> (right) to align them with the <strong>target fields</strong>
-          (left).</span>
+        <span>{{ $t('excelMapping.instructions') }}</span>
       </div>
 
       <div class="mapping-container">
         <!-- Sent Data (target fields) -->
         <div class="column-list">
-          <p class="column-list__title">Target Fields</p>
+          <p class="column-list__title">{{ $t('Target Fields') }}</p>
           <div class="column-list__items" :style="{ gap: '12px' }">
             <!-- <label class="sent-columns" v-for="(data, i) in sentData" :key="data">
               {{ data }}
@@ -125,8 +138,21 @@ const getMappedSentKey = (colIndex: number): string => {
         <!-- Arrow indicator -->
         <div class="arrow-column">
           <div v-for="(_, i) in sentData" :key="i" class="arrow-row">
-            <svg viewBox="0 0 40 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <line x1="0" y1="8" x2="32" y2="8" stroke="#1D4ED8" stroke-width="2" stroke-dasharray="4 3" />
+            <svg
+              class="locale-directional-icon"
+              viewBox="0 0 40 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <line
+                x1="0"
+                y1="8"
+                x2="32"
+                y2="8"
+                stroke="#1D4ED8"
+                stroke-width="2"
+                stroke-dasharray="4 3"
+              />
               <path d="M32 4L40 8L32 12V4Z" fill="#1D4ED8" />
             </svg>
           </div>
@@ -134,14 +160,26 @@ const getMappedSentKey = (colIndex: number): string => {
 
         <!-- Excel Columns (draggable) -->
         <div class="column-list">
-          <p class="column-list__title">Excel Columns <span class="drag-hint">(drag to reorder)</span></p>
+          <p class="column-list__title">
+            {{ $t('Excel Columns') }} <span class="drag-hint">{{ $t('(drag to reorder)') }}</span>
+          </p>
           <div class="column-list__items">
-            <label v-for="(column, index) in orderedColumns" :key="column" class="excel-columns" :class="{
-              'is-dragging': draggedIndex === index,
-              'is-drag-over': dragOverIndex === index && draggedIndex !== index,
-              'hide-column': column === ' ' || column === ''
-            }" draggable="true" @dragstart="onDragStart(index)" @dragover="onDragOver($event, index)"
-              @drop="onDrop(index)" @dragend="onDragEnd" @dragleave="onDragLeave">
+            <label
+              v-for="(column, index) in orderedColumns"
+              :key="column"
+              class="excel-columns"
+              :class="{
+                'is-dragging': draggedIndex === index,
+                'is-drag-over': dragOverIndex === index && draggedIndex !== index,
+                'hide-column': column === ' ' || column === '',
+              }"
+              draggable="true"
+              @dragstart="onDragStart(index)"
+              @dragover="onDragOver($event, index)"
+              @drop="onDrop(index)"
+              @dragend="onDragEnd"
+              @dragleave="onDragLeave"
+            >
               <span class="drag-handle">⠿</span>
               {{ column }}
             </label>
@@ -150,7 +188,7 @@ const getMappedSentKey = (colIndex: number): string => {
       </div>
 
       <template #footer>
-        <button class="confirm-btn" @click="onConfirm">Confirm Mapping</button>
+        <button class="confirm-btn" @click="onConfirm">{{ $t('Confirm Mapping') }}</button>
       </template>
     </Dialog>
   </div>
@@ -242,7 +280,10 @@ const getMappedSentKey = (colIndex: number): string => {
   align-items: center;
   gap: 10px;
   cursor: grab;
-  transition: transform 0.15s, box-shadow 0.15s, background-color 0.15s;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s,
+    background-color 0.15s;
   user-select: none;
 }
 

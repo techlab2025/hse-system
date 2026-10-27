@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import TraningTopicModel from '@/features/Organization/TraningTopic/Data/models/TraningTopicModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -33,7 +34,7 @@ export default class IndexTraningTopicController extends SelectControllerInterfa
     if (this.isDataSuccess()) {
       // success state is already stored
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
 
     super.handleResponseDialogs()

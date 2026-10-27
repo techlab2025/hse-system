@@ -1,0 +1,117 @@
+/* Direction comes from html, including content teleported to body. */
+html {
+  text-align: start;
+}
+input[type='email'],
+input[type='url'],
+input[type='tel'],
+input[autocomplete='one-time-code'] {
+  direction: ltr;
+  unicode-bidi: isolate;
+  text-align: start;
+}
+.locale-directional-icon {
+  display: inline-block;
+}
+/* Opt in only for semantically directional navigation; do not mirror every icon. */
+:dir(rtl) .locale-directional-icon {
+  transform: scaleX(-1);
+}
+.p-dialog,
+.p-confirmdialog,
+.p-popover,
+.p-menu,
+.p-select-overlay,
+.p-multiselect-overlay,
+.p-autocomplete-overlay,
+.p-toast-message,
+.p-tooltip {
+  text-align: start;
+}
+bdi,
+[dir='auto'] {
+  unicode-bidi: isolate;
+}
+@font-face {
+  font-family: 'HseArabic';
+  src: url('../assets/fonts/Cairo/Cairo-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HseArabic';
+  src: url('../assets/fonts/Cairo/Cairo-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+html:lang(ar):not([data-identity-fontfamily]) {
+  --hse-control-font: 'HseArabic', 'Regular', sans-serif;
+}
+html:lang(ar):not([data-identity-fontfamily]) body {
+  font-family: 'HseArabic', 'Regular', sans-serif;
+}
+/* Preserve the user's paragraph direction; localize only editor chrome. */
+html [data-localized-editor] .ql-editor {
+  unicode-bidi: plaintext;
+  text-align: start;
+}
+html [data-localized-editor] .ql-header .ql-picker-label::before,
+html [data-localized-editor] .ql-header .ql-picker-item::before,
+html [data-localized-editor] .ql-font .ql-picker-label::before,
+html [data-localized-editor] .ql-font .ql-picker-item::before {
+  content: attr(data-label) !important;
+}
+html [data-localized-editor] .ql-tooltip::before {
+  content: var(--editor-visit-label) !important;
+}
+html [data-localized-editor] .ql-tooltip a.ql-action::after {
+  content: var(--editor-edit-label) !important;
+  border-inline-end: 1px solid #ccc;
+  margin-inline-start: 1rem;
+}
+html [data-localized-editor] .ql-tooltip a.ql-remove::before {
+  content: var(--editor-remove-label) !important;
+}
+html [data-localized-editor] .ql-tooltip.ql-editing a.ql-action::after {
+  content: var(--editor-save-label) !important;
+}
+html [data-localized-editor] .ql-tooltip[data-mode='link']::before {
+  content: var(--editor-enterLink-label) !important;
+}
+html [data-localized-editor] .ql-tooltip[data-mode='formula']::before {
+  content: var(--editor-formula-label) !important;
+}
+html [data-localized-editor] .ql-tooltip[data-mode='video']::before {
+  content: var(--editor-video-label) !important;
+}
+
+html [data-localized-editor] .ql-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  font-family: inherit;
+}
+html [data-localized-editor] .ql-toolbar .ql-formats {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  margin-inline-end: 15px;
+}
+html [data-localized-editor] .ql-toolbar button,
+html [data-localized-editor] .ql-toolbar .ql-picker {
+  float: none;
+}
+html [data-localized-editor] .ql-container {
+  font-family: inherit;
+}
+html [data-localized-editor] .ql-tooltip a.ql-action::after {
+  border: 0;
+  border-inline-end: 1px solid #ccc;
+  margin: 0;
+  margin-inline-start: 1rem;
+  padding: 0;
+  padding-inline-end: 0.5rem;
+}
+html [data-localized-editor] .ql-tooltip.ql-editing a.ql-action::after {
+  border: 0;
+  padding: 0;
+}

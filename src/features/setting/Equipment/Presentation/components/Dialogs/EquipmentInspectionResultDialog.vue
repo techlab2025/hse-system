@@ -17,9 +17,9 @@ import TemplateDocument from '@/features/Organization/Inspection/Presentation/co
 const visible = ref(false)
 
 const { templateId = 0, taskId } = defineProps<{
-  templateId?: number,
-  taskId: number,
-  status?: number,
+  templateId?: number
+  taskId: number
+  status?: number
   all_document?: TaskFullResponseModel
 }>()
 
@@ -28,27 +28,27 @@ const route = useRoute()
 const AllDocument = ref<TemplateDetailsModel>()
 const showTemplateController = ShowTemplateController.getInstance()
 const state = ref(showTemplateController.state.value)
-const Actionbtn = computed(() => route.path.includes("inspection/result"))
+const Actionbtn = computed(() => route.path.includes('inspection/result'))
 
 watch(
   () => showTemplateController.state.value,
-  newState => {
+  (newState) => {
     if (newState) state.value = newState
   },
-  { deep: true }
+  { deep: true },
 )
 
 const { locale } = useI18n()
 const title = ref('')
 const getTitle = () => {
-  title.value = state.value?.data?.titles?.find(item => item?.locale === locale?.value)?.title
+  title.value = state.value?.data?.titles?.find((item) => item?.locale === locale?.value)?.title
 }
 
 const TaskAnswer = ref({
   check: [],
   radio: [],
   select: [],
-  textarea: []
+  textarea: [],
 })
 
 const UpdateData = (data) => {
@@ -66,7 +66,7 @@ const formatTaskAnswer = () => {
         template_item_id: id,
         result: null,
         item_answers: [],
-        files: []
+        files: [],
       })
     }
 
@@ -77,25 +77,23 @@ const formatTaskAnswer = () => {
     if (answers !== null && answers !== undefined) {
       const arr = Array.isArray(answers) ? answers : [answers]
 
-      arr.forEach(val => {
-        if (typeof val === "string") {
-          const exists = entry.item_answers.some(a => a.answer === val)
+      arr.forEach((val) => {
+        if (typeof val === 'string') {
+          const exists = entry.item_answers.some((a) => a.answer === val)
 
           if (!exists) {
             entry.item_answers.push({
               answer: val,
-              template_item_option_id: null
+              template_item_option_id: null,
             })
           }
-        }
-
-        else {
-          const exists = entry.item_answers.some(a => a.template_item_option_id === val)
+        } else {
+          const exists = entry.item_answers.some((a) => a.template_item_option_id === val)
 
           if (!exists) {
             entry.item_answers.push({
               answer: null,
-              template_item_option_id: val
+              template_item_option_id: val,
             })
           }
         }
@@ -103,7 +101,7 @@ const formatTaskAnswer = () => {
     }
 
     if (imgs && imgs.length) {
-      imgs.forEach(img => {
+      imgs.forEach((img) => {
         if (!entry.files.includes(img)) {
           entry.files.push(img)
         }
@@ -112,24 +110,24 @@ const formatTaskAnswer = () => {
   }
 
   // textarea
-  answer.textarea?.forEach(item => {
+  answer.textarea?.forEach((item) => {
     addToMap(item.itemid, null, item.value, item.img || [])
   })
 
   // select
-  answer.select?.forEach(item => {
+  answer.select?.forEach((item) => {
     addToMap(item.itemId, null, item.selected, item.img || [])
   })
 
   // check
-  answer.check?.forEach(group => {
-    group.selected.forEach(val => {
+  answer.check?.forEach((group) => {
+    group.selected.forEach((val) => {
       addToMap(group.itemid, null, val, group.img || [])
     })
   })
 
   // radio
-  answer.radio?.forEach(item => {
+  answer.radio?.forEach((item) => {
     if (item.value && item.value !== 0) {
       addToMap(item.itemid, null, item.value, item.img || [])
     }
@@ -138,28 +136,26 @@ const formatTaskAnswer = () => {
   return Array.from(tempMap.values())
 }
 
-
 const CreateAnswer = async () => {
   const formatted = formatTaskAnswer()
-  const UpdatedFormat = formatted.map(item => {
+  const UpdatedFormat = formatted.map((item) => {
     return new ItemResultParams(item.result, item.template_item_id, item.files, item.item_answers)
   })
-  const createTaskResultParams = new CreateTaskResultParams(
-    taskId,
-    templateId,
-    UpdatedFormat
-  )
+  const createTaskResultParams = new CreateTaskResultParams(taskId, templateId, UpdatedFormat)
   const createTaskAnswerController = CreateTaskAnswerController.getInstance()
-  const state = await createTaskAnswerController.CreateTaskAnswer(createTaskResultParams, router, true)
+  const state = await createTaskAnswerController.CreateTaskAnswer(
+    createTaskResultParams,
+    router,
+    true,
+  )
 
   visible.value = false
 }
 
-
 const GetData = async () => {
   visible.value = true
   // await FetchTemplateDocument();
-  await GetTaskDetails();
+  await GetTaskDetails()
   getTitle()
 }
 
@@ -175,13 +171,14 @@ const GetTaskDetails = async () => {
   }
 }
 
-watch(() => fetchTaskResultController.state.value, (newState) => {
-  if (newState) {
-    TaskResults.value = newState
-  }
-})
-
-
+watch(
+  () => fetchTaskResultController.state.value,
+  (newState) => {
+    if (newState) {
+      TaskResults.value = newState
+    }
+  },
+)
 </script>
 
 <template>
@@ -189,18 +186,23 @@ watch(() => fetchTaskResultController.state.value, (newState) => {
     <!-- v-if="status == InspectionStatus.NOT_FINISHED" -->
     <button v-if="!Actionbtn" class="card-info-status" @click="GetData">
       <div class="view-inspection-container">
-        <p class="view-inspection">view inspection details</p>
+        <p class="view-inspection">{{ $t('view inspection details') }}</p>
         <ViewInspectionArrow />
       </div>
     </button>
 
     <button v-if="Actionbtn" @click="GetData">
       <!-- <ActionsIcon /> -->
-show
-
+      {{ $t('show') }}
     </button>
 
-    <Dialog v-model:visible="visible" :header="title" modal :dismissable-mask="true" :style="{ width: '60vw' }">
+    <Dialog
+      v-model:visible="visible"
+      :header="title"
+      modal
+      :dismissable-mask="true"
+      :style="{ width: '60vw' }"
+    >
       <!-- <div class="template-document-container">
         <div class="template-document-header">
           <div class="template-header">
@@ -220,16 +222,17 @@ show
         </div>
       </div> -->
 
-
-
       <!-- Without Result -->
       <!-- <TemplateDocument :allData="AllDocument" @update:data="UpdateData"
         :task_results="TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1]" /> -->
 
       <!-- With Result -->
-      <TemplateDocument :allData="AllDocument" @update:data="UpdateData"
-        :task_results="TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1]" :isOverlay="true" />
-
+      <TemplateDocument
+        :allData="AllDocument"
+        @update:data="UpdateData"
+        :task_results="TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1]"
+        :isOverlay="true"
+      />
 
       <!-- <button class="btn btn-primary w-full mt-4" @click="CreateAnswer">
         {{ $t('confirm') }}

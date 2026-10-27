@@ -153,13 +153,13 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditBlogParams(
-      props.data.id,
-      translationsParams,
-      image.value,
-      alt.value,
-      hashtagsArray,
-      categoriesArray,
-    )
+        props.data.id,
+        translationsParams,
+        image.value,
+        alt.value,
+        hashtagsArray,
+        categoriesArray,
+      )
     : new AddBlogParams(translationsParams, image.value, alt.value, hashtagsArray, categoriesArray)
 
   emit('update:data', params)
@@ -241,35 +241,72 @@ const setImage = async (data: File | string) => {
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
+    <LangTitleInput
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="(val) => (langs = val)"
+    />
   </div>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :label="$t('subtitle')" :langs="langDefaultSubtitle" :modelValue="langsSubtitle"
-      @update:modelValue="(val) => (langsSubtitle = val)" field-type="subtitle" />
+    <LangTitleInput
+      :label="$t('subtitle')"
+      :langs="langDefaultSubtitle"
+      :modelValue="langsSubtitle"
+      @update:modelValue="(val) => (langsSubtitle = val)"
+      field-type="subtitle"
+    />
   </div>
   <div class="col-span-4 md:col-span-4">
-    <LangTitleInput :label="$t('description')" :langs="langDefaultDescription" :modelValue="langsDescription"
-      @update:modelValue="(val) => (langsDescription = val)" field-type="description" type="textarea" />
+    <LangTitleInput
+      :label="$t('description')"
+      :langs="langDefaultDescription"
+      :modelValue="langsDescription"
+      @update:modelValue="(val) => (langsDescription = val)"
+      field-type="description"
+      type="textarea"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-4">
-    <SingleFileUpload v-model="image" @update:modelValue="setImage" label="Image" id="image" :isCrop="true"
-      :aspectRatio="872 / 433" placeholder="Select image" />
+    <SingleFileUpload
+      v-model="image"
+      @update:modelValue="setImage"
+      :label="$t('image')"
+      id="image"
+      :isCrop="true"
+      :aspectRatio="872 / 433"
+      :placeholder="$t('Select image')"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-4 input-wrapper">
-    <label> Image Alt Text </label>
-    <input type="text" v-model="alt" placeholder="Enter image alt text" />
+    <label> {{ $t('Image Alt Text') }} </label>
+    <input dir="auto" type="text" v-model="alt" :placeholder="$t('Enter image alt text')" />
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :controller="indexHashtagController" :params="indexHashtagParams" label="Hashtag" id="Hashtag"
-      placeholder="Selected Hashtag" :type="2" :modelValue="SelectedHashtag" @update:modelValue="SetHashtagSelection" />
+    <CustomSelectInput
+      :controller="indexHashtagController"
+      :params="indexHashtagParams"
+      :label="$t('Hashtag')"
+      id="Hashtag"
+      :placeholder="$t('Selected Hashtag')"
+      :type="2"
+      :modelValue="SelectedHashtag"
+      @update:modelValue="SetHashtagSelection"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :controller="indexCategoryController" :params="indexCategoryParams" label="Category"
-      id="Category" placeholder="Selected Category" :type="2" :modelValue="SelectedCategory"
-      @update:modelValue="SetCategorySelection" />
+    <CustomSelectInput
+      :controller="indexCategoryController"
+      :params="indexCategoryParams"
+      :label="$t('category')"
+      id="Category"
+      :placeholder="$t('Selected Category')"
+      :type="2"
+      :modelValue="SelectedCategory"
+      @update:modelValue="SetCategorySelection"
+    />
   </div>
 </template>

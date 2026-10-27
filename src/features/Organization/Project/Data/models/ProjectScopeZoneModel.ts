@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class ProjectScopeZoneModel extends TitleInterface {
@@ -17,12 +18,15 @@ export default class ProjectScopeZoneModel extends TitleInterface {
     )
     const zoonTitle = String(data.zoon_title ?? data.zone_title ?? data.title ?? '')
 
-    return new ProjectScopeZoneModel(
-      projectZoonId,
-      Number(data.project_location_id ?? 0),
-      Number(data.project_id ?? 0),
-      Number(data.zoon_id ?? data.zone_id ?? 0),
-      zoonTitle,
+    return localizedRecord(
+      new ProjectScopeZoneModel(
+        projectZoonId,
+        Number(data.project_location_id ?? 0),
+        Number(data.project_id ?? 0),
+        Number(data.zoon_id ?? data.zone_id ?? 0),
+        zoonTitle,
+      ),
+      data,
     )
   }
 }

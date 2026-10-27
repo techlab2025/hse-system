@@ -31,7 +31,7 @@ const { ProgressValue } = defineProps<{
         <HomeRoutesCard
           :icon="HomeProjectIcon"
           :title="`${$t('project')}`"
-          :description="`Manage projects, locations, and tasks.`"
+          :description="$t('Manage projects, locations, and tasks.')"
         />
       </router-link>
     </PermissionBuilder>
@@ -51,7 +51,7 @@ const { ProgressValue } = defineProps<{
         <HomeRoutesCard
           :icon="HomeOperationIcon"
           :title="`${$t('operations')}`"
-          :description="`Manage inspections, observations, and incidents.`"
+          :description="$t('Manage inspections, observations, and incidents.')"
         />
       </router-link>
     </PermissionBuilder>
@@ -69,7 +69,7 @@ const { ProgressValue } = defineProps<{
         <HomeRoutesCard
           :icon="HomeEquipmentIcon"
           :title="`${$t('equipment')}`"
-          :description="`Manage equipment, assignments, and inspections.`"
+          :description="$t('Manage equipment, assignments, and inspections.')"
         />
       </router-link>
     </PermissionBuilder>
@@ -88,7 +88,7 @@ const { ProgressValue } = defineProps<{
         <HomeRoutesCard
           :icon="HomeEmployeeIcon"
           :title="`${$t('employee')}`"
-          :description="`Manage employees, roles, and assignments.`"
+          :description="$t('Manage employees, roles, and assignments.')"
         />
       </router-link>
     </PermissionBuilder>

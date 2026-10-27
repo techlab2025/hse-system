@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
@@ -23,7 +24,7 @@ export function usePdfExport() {
     exportError.value = ''
     try {
       const target = document.querySelector<HTMLElement>(options.targetSelector)
-      if (!target) throw new Error('No report content is available to export.')
+      if (!target) throw new Error(localizeUi('No report content is available to export.'))
       const title =
         options.title ||
         target.dataset.pdfTitle ||

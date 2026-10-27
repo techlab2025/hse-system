@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -141,7 +143,7 @@ const submit = async () => {
   errorMessage.value = ''
   successMessage.value = ''
   if (!selectedActivityId.value) {
-    errorMessage.value = 'Select an activity first.'
+    errorMessage.value = localizeUi('Select an activity first.')
     return
   }
   // if (!rows.value.length || rows.value.some((row) => !row.employeeId || !row.ppeToolIds.length)) {
@@ -149,7 +151,7 @@ const submit = async () => {
   //   return
   // }
   if (new Set(rows.value.map((row) => row.employeeId)).size !== rows.value.length) {
-    errorMessage.value = 'Select each employee only once.'
+    errorMessage.value = localizeUi('Select each employee only once.')
     return
   }
   try {
@@ -163,12 +165,12 @@ const submit = async () => {
         Number(selectedShift.value?.id) || null,
       ),
     )
-    if (!deliveryController.isDataSuccess()) throw new Error('Delivery failed')
+    if (!deliveryController.isDataSuccess()) throw new Error(localizeUi('Delivery failed'))
     selectedEmployees.value = []
     rows.value = []
-    successMessage.value = 'PPE delivery saved.'
+    successMessage.value = localizeUi('PPE delivery saved.')
   } catch {
-    errorMessage.value = 'Unable to save PPE delivery. Please try again.'
+    errorMessage.value = localizeUi('Unable to save PPE delivery. Please try again.')
   }
 }
 
@@ -184,23 +186,23 @@ onMounted(async () => {
   <main data-hse-project v-project-panels class="hse-project-root hse-project-page delivery-page">
     <header data-hse-project-head class="hse-project-page-head delivery-header">
       <div>
-        <span class="eyebrow">Project PPE</span>
-        <h1>PPE delivery</h1>
+        <span class="eyebrow">{{ $t('Project PPE') }}</span>
+        <h1>{{ $t('PPE delivery') }}</h1>
         <!-- <p>Select one activity, then choose the tools delivered to each employee.</p> -->
       </div>
-      <RouterLink to="/organization/ppe-matrix">← Activity and tool matrix</RouterLink>
+      <RouterLink to="/organization/ppe-matrix">{{ $t('← Activity and tool matrix') }}</RouterLink>
     </header>
     <p v-if="errorMessage" class="notice notice--error" role="alert">{{ errorMessage }}</p>
     <!-- <p v-if="successMessage" class="notice notice--success" role="status">{{ successMessage }}</p> -->
 
     <section class="hse-project-panel card">
-      <h2>1. Project scope</h2>
+      <h2>{{ $t('1. Project scope') }}</h2>
       <div class="scope-grid">
         <UpdatedCustomInputSelect
           id="delivery-project"
           :model-value="selectedProject"
-          label="Project"
-          placeholder="Select project"
+          :label="$t('Project')"
+          :placeholder="$t('Select project')"
           :controller="projectController"
           :params="projectParams"
           optional
@@ -209,8 +211,8 @@ onMounted(async () => {
         <UpdatedCustomInputSelect
           id="delivery-project-location"
           :model-value="selectedProjectLocation"
-          label="Location"
-          placeholder="Select location"
+          :label="$t('Location')"
+          :placeholder="$t('Select location')"
           :static-options="projectLocationOptions"
           :reload="false"
           optional
@@ -219,8 +221,8 @@ onMounted(async () => {
         <UpdatedCustomInputSelect
           id="delivery-project-zone"
           :model-value="selectedProjectZone"
-          label="Zone"
-          placeholder="Select zone"
+          :label="$t('Zone')"
+          :placeholder="$t('Select ZOON')"
           :static-options="projectZoneOptions"
           :reload="false"
           optional
@@ -232,9 +234,9 @@ onMounted(async () => {
           v-model:dialogVisible="shiftsDialog"
           :controller="shiftsController"
           :params="shiftsParams"
-          placeholder="Select Shift"
+          :placeholder="$t('Select Shift')"
           :label="$t('work shift')"
-          help-text="The work shift during which the PPE delivery occurred."
+          :help-text="$t('The work shift during which the PPE delivery occurred.')"
           :reload="true"
           :isDialog="true"
           :type="1"
@@ -255,7 +257,7 @@ onMounted(async () => {
     </section>
 
     <section class="hse-project-panel card">
-      <h2>2. Activities</h2>
+      <h2>{{ $t('2. Activities') }}</h2>
       <div class="activity-list">
         <label
           v-for="activity in activities"
@@ -271,31 +273,31 @@ onMounted(async () => {
           <span>{{ activity.title }}</span>
         </label>
       </div>
-      <p v-if="!activities.length" class="muted">No PPE activities available.</p>
+      <p v-if="!activities.length" class="muted">{{ $t('No PPE activities available.') }}</p>
     </section>
 
     <section v-if="selectedActivityId" class="hse-project-panel card delivery-matrix-panel">
       <div class="section-heading">
         <div>
-          <h2>3. Assign PPE tools to employees</h2>
-          <p>Select employees, then check the PPE tools delivered to each employee.</p>
+          <h2>{{ $t('3. Assign PPE tools to employees') }}</h2>
+          <p>{{ $t('Select employees, then check the PPE tools delivered to each employee.') }}</p>
         </div>
       </div>
 
       <p v-if="toolsController.isDataLoading()" class="muted" role="status">
-        Loading activity tools…
+        {{ $t('Loading activity tools…') }}
       </p>
       <p v-else-if="toolsController.isDataFailed()" class="notice notice--error" role="alert">
-        Unable to load this activity’s PPE tools.
+        {{ $t('Unable to load this activity’s PPE tools.') }}
       </p>
       <p v-else-if="!availableTools.length" class="muted">
-        This activity has no PPE tools. Add them in the matrix first.
+        {{ $t('This activity has no PPE tools. Add them in the matrix first.') }}
       </p>
       <template v-else>
         <UpdatedCustomInputSelect
           id="delivery-employees"
-          label="Employees"
-          placeholder="Select employees"
+          :label="$t('Employees')"
+          :placeholder="$t('Select employees')"
           type="multiselect"
           :required="true"
           :reload="false"
@@ -309,17 +311,17 @@ onMounted(async () => {
           v-if="rows.length"
           class="tool-table-wrap matrix-scroll"
           role="region"
-          aria-label="PPE delivery matrix"
+          :aria-label="$t('PPE delivery matrix')"
           tabindex="0"
         >
           <table class="hse-project-table main-table tool-table delivery-matrix">
             <thead>
               <tr>
-                <th scope="col" class="recipient-col">Recipient</th>
+                <th scope="col" class="recipient-col">{{ $t('Recipient') }}</th>
                 <th v-for="tool in availableTools" :key="tool.id" scope="col" class="tool-col">
                   {{ tool.title }}
                 </th>
-                <th scope="col" class="action-col">Action</th>
+                <th scope="col" class="action-col">{{ $t('Action') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -327,7 +329,7 @@ onMounted(async () => {
                 <th scope="row" class="recipient-col">
                   {{
                     selectedEmployees.find((employee) => employee.id === row.employeeId)?.title ??
-                    `Employee ${index + 1}`
+                    $t('uiDynamic.employeeNumber', { p0: index + 1 })
                   }}
                 </th>
                 <td v-for="tool in availableTools" :key="tool.id" class="tool-col">
@@ -335,7 +337,14 @@ onMounted(async () => {
                     :input-id="`delivery-tool-${row.key}-${tool.id}`"
                     :model-value="hasTool(row, tool.id)"
                     binary
-                    :aria-label="`${tool.title} delivered to ${selectedEmployees.find((employee) => employee.id === row.employeeId)?.title ?? `Employee ${index + 1}`}`"
+                    :aria-label="
+                      $t('uiDynamic.toolsDelivered', {
+                        p0: tool.title,
+                        p1:
+                          selectedEmployees.find((employee) => employee.id === row.employeeId)
+                            ?.title ?? `Employee ${index + 1}`,
+                      })
+                    "
                     @update:model-value="(checked) => setTool(row, tool.id, Boolean(checked))"
                   />
                 </td>
@@ -343,17 +352,23 @@ onMounted(async () => {
                   <button
                     type="button"
                     class="hse-project-button hse-project-button--danger remove-button matrix-remove"
-                    :aria-label="`Remove employee ${selectedEmployees.find((employee) => employee.id === row.employeeId)?.title ?? index + 1}`"
+                    :aria-label="
+                      $t('uiDynamic.removeEmployee', {
+                        p0:
+                          selectedEmployees.find((employee) => employee.id === row.employeeId)
+                            ?.title ?? index + 1,
+                      })
+                    "
                     @click="removeEmployee(row.employeeId)"
                   >
-                    Remove
+                    {{ $t('Remove') }}
                   </button>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p v-else class="muted">Select employees to start assigning PPE tools.</p>
+        <p v-else class="muted">{{ $t('Select employees to start assigning PPE tools.') }}</p>
 
         <button
           type="button"
@@ -361,13 +376,17 @@ onMounted(async () => {
           :disabled="deliveryController.isDataLoading() || !rows.length"
           @click="submit"
         >
-          {{ deliveryController.isDataLoading() ? 'Saving…' : 'Save PPE delivery' }}
+          {{
+            deliveryController.isDataLoading()
+              ? $t('emailSettings.saving')
+              : $t('Save PPE delivery')
+          }}
         </button>
       </template>
     </section>
     <section v-else class="hse-project-panel card empty">
       <div class="section-heading">
-        <h2>Select an activity to view its PPE matrix</h2>
+        <h2>{{ $t('Select an activity to view its PPE matrix') }}</h2>
       </div>
     </section>
     <Dialog

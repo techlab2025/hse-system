@@ -23,7 +23,6 @@ const fetchTermDetails = async () => {
 onMounted(() => {
   fetchTermDetails()
   // console.log('fetchTermDetails');
-
 })
 
 const EditTerm = async (draft: boolean) => {
@@ -59,7 +58,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditTerm">
         <TermForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">Edit</button>
+          <button type="submit" class="btn btn-primary">{{ $t('Edit') }}</button>
         </div>
       </form>
     </template>

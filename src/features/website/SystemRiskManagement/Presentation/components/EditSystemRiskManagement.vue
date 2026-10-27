@@ -28,9 +28,15 @@ onMounted(() => {
 
 const EditSystemRiskManagement = async (draft: boolean) => {
   if (draft) {
-    await EditSystemRiskManagementController.getInstance().editSystemRiskManagement(params.value!, router)
+    await EditSystemRiskManagementController.getInstance().editSystemRiskManagement(
+      params.value!,
+      router,
+    )
   } else {
-    await EditSystemRiskManagementController.getInstance().editSystemRiskManagement(params.value!, router)
+    await EditSystemRiskManagementController.getInstance().editSystemRiskManagement(
+      params.value!,
+      router,
+    )
   }
 }
 
@@ -56,10 +62,13 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditSystemRiskManagement">
+      <form
+        class="grid grid-cols-1 md:grid-cols-4 gap-4"
+        @submit.prevent="EditSystemRiskManagement"
+      >
         <SystemRiskManagementForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">Edit</button>
+          <button type="submit" class="btn btn-primary">{{ $t('Edit') }}</button>
         </div>
       </form>
     </template>

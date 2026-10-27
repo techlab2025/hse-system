@@ -161,7 +161,7 @@
             object-fit: cover;
             border: 2px solid var(--surface-1);
             position: relative;
-            margin-left: -10px;
+            margin-inline-start: -10px;
             transition: transform 0.6s;
             border: 2px solid color-mix(in srgb, var(--text-soft) 34.9%, transparent);
             background-color: var(--surface-1);
@@ -170,7 +170,7 @@
               z-index: 10;
             }
             img:first-child {
-              margin-left: 0;
+              margin-inline-start: 0;
             }
           }
         }
@@ -319,7 +319,7 @@
       object-fit: cover;
       border: 2px solid var(--surface-1);
       position: relative;
-      margin-left: -10px;
+      margin-inline-start: -10px;
       transition: transform 0.6s;
       border: 2px solid color-mix(in srgb, var(--text-soft) 34.9%, transparent);
       background-color: var(--surface-1);
@@ -328,7 +328,7 @@
         z-index: 10;
       }
       img:first-child {
-        margin-left: 0;
+        margin-inline-start: 0;
       }
     }
   }

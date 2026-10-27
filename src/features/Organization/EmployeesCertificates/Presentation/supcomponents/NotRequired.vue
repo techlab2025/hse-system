@@ -16,7 +16,7 @@ const updateData = () => {
   <div class="invalid-certificate not-required-container">
     <div class="invalid">
       <!-- <NotValidIcon /> -->
-      <span class="not-req-span">Not Required</span>
+      <span class="not-req-span">{{ $t('Not Required') }}</span>
     </div>
     <CertificateImageDialog
       @update:data="updateData"

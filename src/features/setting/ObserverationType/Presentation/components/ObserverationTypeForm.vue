@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { useRequiredFields, hasSelectedValue } from '@/composables/useRequiredFields'
 
 import { markRaw, onMounted, ref, watch } from 'vue'
@@ -187,8 +189,10 @@ const SerialNumber = ref()
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
@@ -198,10 +202,24 @@ const updateAllIndustries = (data) => {
   updateData()
 }
 
-const { requiredFieldErrors, validateRequiredFields: validateFields } = useRequiredFields('ObserverationTypeForm', () => [
-  { key: 'langs', message: '', isMissing: () => !langs.value.some((item) => String(item.title ?? '').trim().length > 0) },
-  { key: 'industry', message: '', isMissing: () => user.user?.type === OrganizationTypeEnum.ADMIN && !allIndustries.value && !hasSelectedValue(industry.value) },
-])
+const { requiredFieldErrors, validateRequiredFields: validateFields } = useRequiredFields(
+  'ObserverationTypeForm',
+  () => [
+    {
+      key: 'langs',
+      message: '',
+      isMissing: () => !langs.value.some((item) => String(item.title ?? '').trim().length > 0),
+    },
+    {
+      key: 'industry',
+      message: '',
+      isMissing: () =>
+        user.user?.type === OrganizationTypeEnum.ADMIN &&
+        !allIndustries.value &&
+        !hasSelectedValue(industry.value),
+    },
+  ],
+)
 const validateRequiredFields = async () => {
   updateData()
   return validateFields()
@@ -213,6 +231,7 @@ defineExpose({ validateRequiredFields })
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
     <label for="serialNumber">{{ $t('serial_number') }}</label>
     <input
+      dir="auto"
       type="text"
       v-model="SerialNumber"
       @input="UpdateSerial"
@@ -220,15 +239,17 @@ defineExpose({ validateRequiredFields })
       :disabled="projtecStateus.isSerialNumberAuto()"
       :placeholder="
         projtecStateus.isSerialNumberAuto()
-          ? 'You can leave it (auto-generated)'
-          : 'Enter Your Serial Number'
+          ? $t('You can leave it (auto-generated)')
+          : $t('Enter Your Serial Number')
       "
     />
   </div>
 
   <div data-required-field="langs" class="col-span-4 md:col-span-2">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
-    <p v-if="requiredFieldErrors.langs" class="required-field-message" role="alert">{{ requiredFieldErrors.langs }}</p>
+    <p v-if="requiredFieldErrors.langs" class="required-field-message" role="alert">
+      {{ requiredFieldErrors.langs }}
+    </p>
   </div>
 
   <!--  <div class="col-span-4 md:col-span-2 input-wrapper check-box">-->
@@ -265,12 +286,13 @@ defineExpose({ validateRequiredFields })
   >
     <CustomCheckbox
       :index="3"
-      :title="`all_industries`"
+      :title="$t('all_industries')"
       :checked="allIndustries"
       @update:checked="updateAllIndustries"
     />
   </div>
-  <div data-required-field="industry"
+  <div
+    data-required-field="industry"
     class="col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
   >
@@ -278,13 +300,15 @@ defineExpose({ validateRequiredFields })
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
-      label="industry"
+      :label="$t('industry')"
       id="AccidentsType"
-      placeholder="Select industry"
+      :placeholder="$t('Select industry')"
       :type="2"
       @update:modelValue="setIndustry"
     />
-    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">{{ requiredFieldErrors.industry }}</p>
+    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">
+      {{ requiredFieldErrors.industry }}
+    </p>
   </div>
   <!--  <div class="col-span-4 md:col-span-4">-->
   <!--    <FileUpload-->
@@ -299,5 +323,10 @@ defineExpose({ validateRequiredFields })
 </template>
 
 <style scoped>
-.required-field-message { margin-top: .35rem; color: var(--status-danger); font-size: .82rem; font-weight: 700; }
+.required-field-message {
+  margin-top: 0.35rem;
+  color: var(--status-danger);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
 </style>

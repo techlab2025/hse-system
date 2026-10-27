@@ -144,7 +144,14 @@ const changeStatusCategory = async (id: number) => {
       <span class="icon-remove" @click="((word = ''), searchCategory())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchCategory" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchCategory"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
@@ -157,14 +164,16 @@ const changeStatusCategory = async (id: number) => {
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.WEBSITE,
-    PermissionsEnum.EQUIPMENT_TYPE_ALL,
-    PermissionsEnum.EQUIPMENT_TYPE_DELETE,
-    PermissionsEnum.EQUIPMENT_TYPE_FETCH,
-    PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-    PermissionsEnum.EQUIPMENT_TYPE_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.WEBSITE,
+      PermissionsEnum.EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
+      PermissionsEnum.EQUIPMENT_TYPE_FETCH,
+      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -186,35 +195,47 @@ const changeStatusCategory = async (id: number) => {
                 <td data-label="#">
                   <router-link :to="`/admin/Category/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
 
-                <td data-label="image">
+                <td :data-label="$t('image')">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
-                <td data-label="status">
-                  <PermissionBuilder :code="[
-                    PermissionsEnum.WEBSITE,
-                    PermissionsEnum.HOME_VIEW_PRICING_ALL,
-                    PermissionsEnum.HOME_VIEW_PRICING_CHANGE_STATUS,
-                  ]">
-                    <ToggleSwitch :modelValue="item.isActive === 1" binary
-                      @update:model-value="changeStatusCategory(item.id)" />
+                <td :data-label="$t('status')">
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.WEBSITE,
+                      PermissionsEnum.HOME_VIEW_PRICING_ALL,
+                      PermissionsEnum.HOME_VIEW_PRICING_CHANGE_STATUS,
+                    ]"
+                  >
+                    <ToggleSwitch
+                      :modelValue="item.isActive === 1"
+                      binary
+                      @update:model-value="changeStatusCategory(item.id)"
+                    />
                   </PermissionBuilder>
                 </td>
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusCategory-->
                   <!--                  v-if="item.CategoryStatus === CategoryStatusEnum.Draft"-->
                   <!--                  :CategoryId="item.id"-->
                   <!--                  @CategoryChangeStatus="fetchCategory"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteCategory)" @delete="deleteCategory(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteCategory)"
+                    @delete="deleteCategory(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -223,20 +244,40 @@ const changeStatusCategory = async (id: number) => {
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/admin/category/add`" addText="Add category"
-          description="You have no Category .. All your joined customers will appear here when you add your customer data"
-          title="You have No Category" />
+        <DataEmpty
+          :link="`/admin/category/add`"
+          :addText="$t('add_category')"
+          :description="
+            $t(
+              'You have no Category .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Category')"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/admin/category/add`" addText="Add Category"
-          description="You have no Category .. All your joined customers will appear here when you add your customer data"
-          title="You have No Category" />
+        <DataFailed
+          :link="`/admin/category/add`"
+          :addText="$t('add_category')"
+          :description="
+            $t(
+              'You have no Category .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Category')"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no Category .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Category .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+      />
     </template>
   </PermissionBuilder>
 </template>

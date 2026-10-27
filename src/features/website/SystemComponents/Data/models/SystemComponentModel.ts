@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class SystemComponentModel extends TitleInterface {
@@ -10,7 +11,7 @@ export default class SystemComponentModel extends TitleInterface {
   constructor(
     id: number,
     title: string,
-    subtitle:string,
+    subtitle: string,
     isActive: number,
     order: number,
     features: TitleInterface[],
@@ -24,13 +25,16 @@ export default class SystemComponentModel extends TitleInterface {
   }
 
   static fromMap(data: any): SystemComponentModel {
-    return new SystemComponentModel(
-      data.id,
-      data.title,
-      data.subtitle,
-      data.is_active,
-      data.order,
-      data.features,
+    return localizedRecord(
+      new SystemComponentModel(
+        data.id,
+        data.title,
+        data.subtitle,
+        data.is_active,
+        data.order,
+        data.features,
+      ),
+      data,
     )
   }
 }

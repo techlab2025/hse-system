@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -6,7 +7,9 @@ import IndexObjectivesUseCase from '../../Domain/useCase/indexObjectivesUseCase'
 import type ObjectivesModel from '../../Data/models/objectivesModel'
 // import TitleInterface from '@/base/Data/Models/title_interface'
 
-export default class IndexObjectivesController extends SelectControllerInterface<ObjectivesModel[]> {
+export default class IndexObjectivesController extends SelectControllerInterface<
+  ObjectivesModel[]
+> {
   private static instance: IndexObjectivesController
   private constructor() {
     super()
@@ -30,7 +33,7 @@ export default class IndexObjectivesController extends SelectControllerInterface
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

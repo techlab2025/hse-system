@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { formatDisplayDate } from '@/localization/formatters'
+
 import { computed, ref, watch } from 'vue'
 // import Notification from '../../icons/Notification.vue'
 import { useIntegratedNotifications } from '@/composables/useIntegratedNotifications'
@@ -216,7 +218,7 @@ const formatNotificationTime = (value?: Date | string | number) => {
   const date = value instanceof Date ? value : new Date(value)
   if (Number.isNaN(date.getTime())) return ''
 
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  return formatDisplayDate(date, { hour: '2-digit', minute: '2-digit' })
 }
 
 const navigateToNotification = (notificationType: number, typeId?: number) => {

@@ -237,6 +237,7 @@ onMounted(() => fetchLessons())
         <label class="lessons-search">
           <Search aria-hidden="true" />
           <input
+            dir="auto"
             v-model="word"
             type="search"
             :placeholder="$t('lessons_search_placeholder')"

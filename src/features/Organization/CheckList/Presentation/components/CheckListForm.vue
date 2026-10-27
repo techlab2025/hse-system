@@ -99,11 +99,13 @@ const updateData = () => {
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
   console.log(translationsParams, 'langs')
   const params = props.data?.id
-    ? new EditCheckListParams(props.data.id, translationsParams, AllIndustry,
-      industry.value?.map((item) => item.id) ?? [],)
+    ? new EditCheckListParams(
+        props.data.id,
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id) ?? [],
+      )
     : new AddCheckListParams({ translation: translationsParams })
-
-
 
   emit('update:data', params)
 }
@@ -159,7 +161,6 @@ const industry = ref<TitleInterface[]>([])
 const industryParams = new IndexIndustryParams('', 0, 10, 1)
 const industryController = IndexIndustryController.getInstance()
 
-
 const setIndustry = (data: TitleInterface[]) => {
   industry.value = data
   updateData()
@@ -177,15 +178,37 @@ const updateAllIndustries = (data) => {
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
+    <LangTitleInput
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="(val) => (langs = val)"
+    />
   </div>
-  <div class="input-wrapper col-span-4 md:col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomCheckbox :index="3" :title="`all_industries`" :checked="allIndustries"
-      @update:checked="updateAllIndustries" />
+  <div
+    class="input-wrapper col-span-4 md:col-span-2"
+    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
+    <CustomCheckbox
+      :index="3"
+      :title="$t('all_industries')"
+      :checked="allIndustries"
+      @update:checked="updateAllIndustries"
+    />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
-    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
-      id="AccidentsType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
+  >
+    <CustomSelectInput
+      :modelValue="industry"
+      :controller="industryController"
+      :params="industryParams"
+      :label="$t('industry')"
+      id="AccidentsType"
+      :placeholder="$t('Select industry')"
+      :type="2"
+      @update:modelValue="setIndustry"
+    />
   </div>
   <!-- <div class="col-span-4 md:col-span-2" v-if="!data?.id">
     <SwitchInput

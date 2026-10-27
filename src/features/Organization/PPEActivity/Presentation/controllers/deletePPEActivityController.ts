@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -32,16 +33,18 @@ export default class DeletePPEActivityController extends ControllerInterface<PPE
       if (this.isDataSuccess()) {
         // useLoaderStore().endLoadingWithDialog();
       } else {
-        throw new Error('Error while addServices')
+        throw new Error(localizeUi('Error while addServices'))
       }
     } catch (error: any) {
       console.log(error)
       const errorMessage =
         this.state.value.error?.title ??
-        this.state.value.message ?? error?.message ??'An Error Occurred'
+        this.state.value.message ??
+        error?.message ??
+        'An Error Occurred'
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',
-        titleContent: 'An Error Occurred',
+        titleContent: localizeUi('An Error Occurred'),
         imageElement: errorImage,
         messageContent: errorMessage,
       })

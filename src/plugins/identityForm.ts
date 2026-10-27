@@ -1,6 +1,6 @@
 import type { App, ComponentPublicInstance } from 'vue'
 
-const FORM_COMPONENT_NAME = /form/i
+const FORM_COMPONENT_NAME = /Form(?:Page|Step)?$/
 
 const formatComponentName = (name: string) =>
   name
@@ -35,24 +35,17 @@ const markElement = (node: Node | null | undefined) => {
 
 const markShell = (node: Node | null | undefined, componentName: string) => {
   if (!(node instanceof HTMLElement)) return
+  if (node.matches('.login-form, .hse-form-bare')) return
 
   node.classList.add('identity-form-shell')
   node.setAttribute('data-form-component', componentName)
   const formKind = formatComponentName(componentName)
   node.setAttribute('data-form-kind', formKind)
-
-  const hasVisualHeader = Boolean(
-    node.querySelector(
-      ':scope > .employee-header, :scope > .form-header, :scope > h1, :scope > h2, :scope > * .employee-header, :scope > * .form-header',
-    ),
-  )
-  node.classList.toggle('identity-form-shell--generated-title', !hasVisualHeader)
-
 }
 
 /**
  * Adds a styling hook to the rendered root of every component whose name
- * contains "Form". Fragment components are supported by marking each of their
+ * ends in "Form" (or FormPage/FormStep). Fragment components mark each of their
  * top-level elements, so existing templates do not need structural wrappers.
  */
 const markFormRoots = (component: FormComponentInstance) => {
@@ -70,19 +63,22 @@ const markFormRoots = (component: FormComponentInstance) => {
   const lastNode = instance?.subTree?.anchor
 
   if (firstNode instanceof HTMLElement || firstNode instanceof SVGElement) {
+    if (firstNode.closest('.login-form, .hse-form-bare')) return
     markElement(firstNode)
-    if (firstNode instanceof HTMLFormElement) markShell(firstNode, componentName)
+    const host = firstNode.closest('form')
+    if (host) markShell(host, componentName)
     return
   }
 
   // Vue renders fragments between two text anchors. Mark every element in the
   // range so forms with multiple template roots receive the same visual skin.
   if (firstNode && lastNode && firstNode.parentNode === lastNode.parentNode) {
+    const parent = firstNode.parentElement
+    if (parent?.closest('.login-form, .hse-form-bare')) return
     // A fragment-based Form component is usually rendered directly inside the
     // real semantic <form>. Elevate that host into the composed form surface.
-    if (firstNode.parentNode instanceof HTMLFormElement) {
-      markShell(firstNode.parentNode, componentName)
-    }
+    const host = parent?.closest('form')
+    if (host) markShell(host, componentName)
 
     let node = firstNode.nextSibling
 

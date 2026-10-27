@@ -66,7 +66,7 @@ const {
 
     <div class="col-span-12">
       <template v-if="canViewRecords">
-        <nav v-if="!isAuditPage" class="task-tabs" :aria-label="$t('Inspection tasks')">
+        <nav v-if="!isAuditPage" class="task-tabs" :aria-label="$t('Inspection Tasks')">
           <button
             v-for="tab in taskTabs"
             :key="tab.type"
@@ -85,7 +85,7 @@ const {
 
         <div v-if="!isAuditPage" class="inspection-controls-panel hse-operations-command">
           <IndexInspectionHeader
-            :title="`Inspection`"
+            :title="$t('Inspection')"
             :length="
               (inspectionType === InspectionPageType.InspectionForm
                 ? allTasksState?.pagination?.total
@@ -197,7 +197,7 @@ const {
                 :selected-zone-ids="selectedZoneIds"
                 @update:data="applyZones"
                 link=""
-                :linkTitle="'Create Inspection'"
+                :linkTitle="$t('Create Inspection')"
               />
             </PermissionBuilder>
           </div>
@@ -281,8 +281,8 @@ const {
             <DataFailed
               :withbtn="canCreateRecord"
               :link="auditCreateRoute"
-              addText="Create Audit"
-              title="You have No Audit"
+              :addText="$t('Create Audit')"
+              :title="$t('You have No Audit')"
               description=""
             />
           </template>
@@ -291,8 +291,8 @@ const {
             <DataFailed
               :withbtn="canCreateRecord"
               :link="auditCreateRoute"
-              addText="Create Audit"
-              title="You have No Audit"
+              :addText="$t('Create Audit')"
+              :title="$t('You have No Audit')"
               description=""
             />
           </template>
@@ -328,13 +328,17 @@ const {
           </template>
 
           <template #empty>
-            <DataEmpty title="You have No Audit" description="You have no Audit" :withbtn="false" />
+            <DataEmpty
+              :title="$t('You have No Audit')"
+              :description="$t('You have no Audit')"
+              :withbtn="false"
+            />
           </template>
 
           <template #failed>
             <DataFailed
-              title="You have No Audit"
-              description="You have no Audit"
+              :title="$t('You have No Audit')"
+              :description="$t('You have no Audit')"
               :withbtn="false"
             />
           </template>

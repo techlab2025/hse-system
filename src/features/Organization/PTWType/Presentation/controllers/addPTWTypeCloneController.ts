@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
@@ -31,14 +32,13 @@ export default class AddPTWTypeCloneController extends ControllerInterface<PTWTy
         params.validateOrThrow()
         return
       }
-      const dataState: DataState<PTWTypeModel> =
-        await this.addPTWTypeCloneUseCase.call(params)
+      const dataState: DataState<PTWTypeModel> = await this.addPTWTypeCloneUseCase.call(params)
       this.setLoading()
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })
@@ -47,9 +47,7 @@ export default class AddPTWTypeCloneController extends ControllerInterface<PTWTy
         // }
 
         // useLoaderStore().endLoadingWithDialog();
-        await IndexPTWTypeController.getInstance().getData(
-          new IndexPTWTypeParams('', 1, 10, 1),
-        )
+        await IndexPTWTypeController.getInstance().getData(new IndexPTWTypeParams('', 1, 10, 1))
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',

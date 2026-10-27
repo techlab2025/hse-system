@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
@@ -172,7 +173,7 @@ const onFileSelected = (e: Event) => {
 
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert('No data available to export')
+    alert(localizeUi('No data available to export'))
     return
   }
   const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
@@ -255,7 +256,7 @@ const IndexHerikalyactionList = () => [
               >
 
               <button type="button" class="btn btn-secondary" @click="exportExcel">
-                Export Excel
+                {{ $t('Export Excel') }}
               </button>
               <ActionsList
                 feature-name="action_feature_positions"
@@ -291,9 +292,13 @@ const IndexHerikalyactionList = () => [
         >
           <DataEmpty
             :link="`/organization/herikaly/add`"
-            addText="Add Position   "
-            description="You have no Position .. All your Position will appear here when you add your Position data"
-            title="You have No Position"
+            :addText="$t('Add Position')"
+            :description="
+              $t(
+                'You have no Position .. All your Position will appear here when you add your Position data',
+              )
+            "
+            :title="$t('You have No Position')"
           />
         </PermissionBuilder>
       </template>
@@ -303,9 +308,13 @@ const IndexHerikalyactionList = () => [
         >
           <DataFailed
             :link="`/organization/herikaly/add`"
-            addText="Add Position   "
-            description="You have no Position .. All your Position will appear here when you add your Position data"
-            title="You have No Position"
+            :addText="$t('Add Position')"
+            :description="
+              $t(
+                'You have no Position .. All your Position will appear here when you add your Position data',
+              )
+            "
+            :title="$t('You have No Position')"
           />
         </PermissionBuilder>
       </template>
@@ -313,8 +322,12 @@ const IndexHerikalyactionList = () => [
 
     <template #notPermitted>
       <DataFailed
-        addText="Have not  Permission"
-        description="You have no Position .. All your Position will appear here when you add your Position data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Position .. All your Position will appear here when you add your Position data',
+          )
+        "
       />
     </template>
   </PermissionBuilder>
@@ -329,9 +342,11 @@ const IndexHerikalyactionList = () => [
     <UploadHierarachyExeclSheet
       :initial-file="pendingFile"
       @uploaded="
-        showUploadDialog = false;
-        pendingFile = null;
-        fetchHerikaly()
+        () => {
+          showUploadDialog = false
+          pendingFile = null
+          fetchHerikaly()
+        }
       "
     />
   </Dialog>
@@ -346,7 +361,7 @@ const IndexHerikalyactionList = () => [
 </template>
 
 <style scoped lang="scss">
-:deep(.employee-header){
+:deep(.employee-header) {
   background-color: color-mix(in srgb, var(--brand-primary-500) 5.1%, transparent);
 }
 .functional_hierarchy_parent {

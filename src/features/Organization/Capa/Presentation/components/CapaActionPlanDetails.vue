@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import type { CapaTaskDetailsModel } from '../../Data/models/CapaTasksModel'
 import { computed, ref } from 'vue'
 import Dialog from 'primevue/dialog'
@@ -27,19 +29,25 @@ const isSavingStatus = ref(false)
 const taskStatusOptions = [
   {
     value: InvestegationTaskEnum.NotStarted,
-    label: 'Not Started',
+    get label() {
+      return localizeUi('Not Started')
+    },
     description: 'Work has not yet begun.',
     color: 'var(--text-muted)',
   },
   {
     value: InvestegationTaskEnum.InProgress,
-    label: 'In Progress',
+    get label() {
+      return localizeUi('In Progress')
+    },
     description: 'Active work is underway.',
     color: 'var(--PrimaryColor)',
   },
   {
     value: InvestegationTaskEnum.PendingOnHold,
-    label: 'Pending / On Hold',
+    get label() {
+      return localizeUi('Pending / On Hold')
+    },
     description: 'Work is temporarily suspended, for example awaiting resources.',
     color: 'var(--status-warning)',
   },
@@ -57,7 +65,9 @@ const taskStatusOptions = [
   },
   {
     value: InvestegationTaskEnum.Cancelled,
-    label: 'Cancelled',
+    get label() {
+      return localizeUi('project_status_cancelled')
+    },
     description: 'The action will not be implemented due to process changes or redundancy.',
     color: 'var(--identity-accent)',
   },
@@ -137,16 +147,16 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
 <template>
   <section class="saved-action-plan">
     <div class="section-heading">
-      <span>Saved action plan</span>
-      <h2>Current corrective and preventive Actions</h2>
+      <span>{{ $t('Saved action plan') }}</span>
+      <h2>{{ $t('Current corrective and preventive Actions') }}</h2>
     </div>
 
     <div class="saved-action-grid">
       <article class="saved-task-lane corrective">
         <div class="lane-header">
           <div>
-            <span class="lane-kicker">Corrective</span>
-            <h3>Corrective Actions</h3>
+            <span class="lane-kicker">{{ $t('Corrective') }}</span>
+            <h3>{{ $t('Corrective Actions') }}</h3>
           </div>
           <strong>{{ correctiveTasks.length }}</strong>
         </div>
@@ -154,7 +164,7 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
         <div v-if="correctiveTasks.length" class="task-list">
           <div v-for="task in correctiveTasks" :key="task.id" class="task-card">
             <div class="task-card-header">
-              <h4>{{ task.title || 'Untitled Actions' }}</h4>
+              <h4>{{ task.title || $t('Untitled Actions') }}</h4>
               <div
                 class="task-status-wrap"
                 :class="{ 'has-reason': task.reason }"
@@ -164,44 +174,44 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
                   {{ statusLabel(taskStatus(task)) }}
                 </span>
                 <div v-if="task.reason" class="task-reason-popover" role="tooltip">
-                  <strong>Status reason</strong>
+                  <strong>{{ $t('Status reason') }}</strong>
                   <p>{{ task.reason }}</p>
                 </div>
               </div>
             </div>
             <div class="task-meta" :class="{ 'ncr-task-meta': task.isInternalAuditTask }">
               <p>
-                <span>{{ task.isInternalAuditTask ? 'Date' : 'Due date' }}</span>
+                <span>{{ task.isInternalAuditTask ? $t('Date') : $t('task_due_date') }}</span>
                 <strong>{{ task.dueDate || 'N/A' }}</strong>
               </p>
               <p>
-                <span>Assigned to</span>
+                <span>{{ $t('Assigned to') }}</span>
                 <strong>{{ task.assignedToName || 'N/A' }}</strong>
               </p>
               <p v-if="!task.isInternalAuditTask">
-                <span>Responsible</span>
+                <span>{{ $t('task_responsible') }}</span>
                 <strong>{{ task.responsiblePersonName || 'N/A' }}</strong>
               </p>
             </div>
             <div class="task-actions" :class="task.isVerification ? `disabled` : ``">
               <button class="change-status-btn" @click="openStatusDialog(task)">
-                Change status
+                {{ $t('task_change_status') }}
               </button>
               <button class="verification-task-btn" @click="openVerificationDialog(task)">
-                Verify effectiveness
+                {{ $t('Verify effectiveness') }}
               </button>
             </div>
           </div>
         </div>
 
-        <p v-else class="empty-lane">No corrective Actions yet.</p>
+        <p v-else class="empty-lane">{{ $t('No corrective Actions yet.') }}</p>
       </article>
 
       <article class="saved-task-lane preventive">
         <div class="lane-header">
           <div>
-            <span class="lane-kicker">Preventive</span>
-            <h3>Preventive Actions</h3>
+            <span class="lane-kicker">{{ $t('Preventive') }}</span>
+            <h3>{{ $t('Preventive Actions') }}</h3>
           </div>
           <strong>{{ preventiveTasks.length }}</strong>
         </div>
@@ -209,7 +219,7 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
         <div v-if="preventiveTasks.length" class="task-list">
           <div v-for="task in preventiveTasks" :key="task.id" class="task-card">
             <div class="task-card-header">
-              <h4>{{ task.title || 'Untitled task' }}</h4>
+              <h4>{{ task.title || $t('task_untitled') }}</h4>
               <div
                 class="task-status-wrap"
                 :class="{ 'has-reason': task.reason }"
@@ -219,37 +229,37 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
                   {{ statusLabel(taskStatus(task)) }}
                 </span>
                 <div v-if="task.reason" class="task-reason-popover" role="tooltip">
-                  <strong>Status reason</strong>
+                  <strong>{{ $t('Status reason') }}</strong>
                   <p>{{ task.reason }}</p>
                 </div>
               </div>
             </div>
             <div class="task-meta" :class="{ 'ncr-task-meta': task.isInternalAuditTask }">
               <p>
-                <span>{{ task.isInternalAuditTask ? 'Date' : 'Due date' }}</span>
+                <span>{{ task.isInternalAuditTask ? $t('Date') : $t('task_due_date') }}</span>
                 <strong>{{ task.dueDate || 'N/A' }}</strong>
               </p>
               <p>
-                <span>Assigned to</span>
+                <span>{{ $t('Assigned to') }}</span>
                 <strong>{{ task.assignedToName || 'N/A' }}</strong>
               </p>
               <p v-if="!task.isInternalAuditTask">
-                <span>Responsible</span>
+                <span>{{ $t('task_responsible') }}</span>
                 <strong>{{ task.responsiblePersonName || 'N/A' }}</strong>
               </p>
             </div>
             <div class="task-actions" :class="task.isVerification ? `disabled` : ``">
               <button class="change-status-btn" @click="openStatusDialog(task)">
-                Change status
+                {{ $t('task_change_status') }}
               </button>
               <button class="verification-task-btn" @click="openVerificationDialog(task)">
-                Verify effectiveness
+                {{ $t('Verify effectiveness') }}
               </button>
             </div>
           </div>
         </div>
 
-        <p v-else class="empty-lane">No preventive Actions yet.</p>
+        <p v-else class="empty-lane">{{ $t('No preventive Actions yet.') }}</p>
       </article>
     </div>
 
@@ -261,8 +271,8 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
     >
       <template #header>
         <div class="status-dialog-header">
-          <span>Task status</span>
-          <h3>{{ selectedStatusTask?.title || 'Change task status' }}</h3>
+          <span>{{ $t('task_status') }}</span>
+          <h3>{{ selectedStatusTask?.title || $t('change task status') }}</h3>
         </div>
       </template>
 
@@ -288,11 +298,12 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
         </label>
 
         <label v-if="isReasonRequired" class="status-reason-field">
-          <span>Reason</span>
+          <span>{{ $t('task_reason') }}</span>
           <textarea
+            dir="auto"
             v-model="selectedStatusReason"
             rows="4"
-            placeholder="Add the reason for this status"
+            :placeholder="$t('task_reason_placeholder')"
           ></textarea>
         </label>
       </div>
@@ -301,11 +312,13 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
         <button
           class="status-save-btn"
           :disabled="
-            isSavingStatus || !isSelectableStatus || (isReasonRequired && !selectedStatusReason.trim())
+            isSavingStatus ||
+            !isSelectableStatus ||
+            (isReasonRequired && !selectedStatusReason.trim())
           "
           @click="saveTaskStatus"
         >
-          {{ isSavingStatus ? 'Saving...' : 'Save status' }}
+          {{ isSavingStatus ? $t('Saving...') : $t('task_save_status') }}
         </button>
       </template>
     </Dialog>
@@ -319,9 +332,9 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
     >
       <template #header>
         <div class="verification-dialog-header">
-          <span>Action effectiveness</span>
-          <h3>{{ selectedVerificationTask?.title || 'Verify task effectiveness' }}</h3>
-          <p>Document the methodology, findings, and final verification decision.</p>
+          <span>{{ $t('Action effectiveness') }}</span>
+          <h3>{{ selectedVerificationTask?.title || $t('Verify task effectiveness') }}</h3>
+          <p>{{ $t('Document the methodology, findings, and final verification decision.') }}</p>
         </div>
       </template>
 
@@ -587,9 +600,9 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
     bottom: 100%;
     width: 0;
     height: 0;
-    border-right: 7px solid transparent;
+    border-inline-end: 7px solid transparent;
     border-bottom: 7px solid var(--BgWhite);
-    border-left: 7px solid transparent;
+    border-inline-start: 7px solid transparent;
     content: '';
   }
 

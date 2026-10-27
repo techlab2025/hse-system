@@ -76,12 +76,12 @@ onMounted(async () => {
   <section class="capa-action-plan">
     <div class="action-plan-header">
       <div>
-        <span class="eyebrow">Action plan</span>
-        <h3>Corrective and preventive Actions timeline</h3>
+        <span class="eyebrow">{{ $t('Action plan') }}</span>
+        <h3>{{ $t('Corrective and preventive Actions timeline') }}</h3>
       </div>
       <div class="task-total">
         <span>{{ totals.all }}</span>
-        <small>Total Actions</small>
+        <small>{{ $t('Total Actions') }}</small>
       </div>
     </div>
 
@@ -89,13 +89,17 @@ onMounted(async () => {
       <article class="task-lane corrective">
         <div class="lane-header">
           <div>
-            <span class="lane-kicker">Fix now</span>
-            <h4>Corrective Actions</h4>
+            <span class="lane-kicker">{{ $t('Fix now') }}</span>
+            <h4>{{ $t('Corrective Actions') }}</h4>
           </div>
           <span class="task-count">{{ totals.corrective }}</span>
         </div>
         <p class="lane-copy">
-          Actions that remove the current nonconformity and bring the case back under control.
+          {{
+            $t(
+              'Actions that remove the current nonconformity and bring the case back under control.',
+            )
+          }}
         </p>
         <TimeLineTasks
           v-if="isEmployeeOptionsLoaded"
@@ -112,13 +116,13 @@ onMounted(async () => {
       <article class="task-lane preventive">
         <div class="lane-header">
           <div>
-            <span class="lane-kicker">Stop repeat</span>
-            <h4>Preventive Actions</h4>
+            <span class="lane-kicker">{{ $t('Stop repeat') }}</span>
+            <h4>{{ $t('Preventive Actions') }}</h4>
           </div>
           <span class="task-count">{{ totals.preventive }}</span>
         </div>
         <p class="lane-copy">
-          Actions that strengthen the process so the same issue does not return.
+          {{ $t('Actions that strengthen the process so the same issue does not return.') }}
         </p>
         <TimeLineTasks
           v-if="isEmployeeOptionsLoaded"

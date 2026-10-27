@@ -180,7 +180,13 @@ const headerActions = () => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <span class="icon-remove" @click="((word = ''), searchPPETools())"><Search /></span>
-      <input v-model="word" :placeholder="$t('search')" class="input" @input="searchPPETools" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        @input="searchPPETools"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ActionsList

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { printInvestigationReport } from './printInvestigationReport'
@@ -34,7 +36,7 @@ const printReport = async () => {
       `Investigation report - ${investigationData.value?.serialName || id}`,
     )
   } catch {
-    printError.value = 'Unable to prepare the report. Please try printing again.'
+    printError.value = localizeUi('Unable to prepare the report. Please try printing again.')
   } finally {
     printing.value = false
   }
@@ -240,9 +242,9 @@ const getObservationType = (type: number | undefined) => {
       <div class="investigation-report-page" :dir="locale.startsWith('ar') ? 'rtl' : 'ltr'">
         <div class="report-toolbar" data-report-no-print>
           <div>
-            <span class="report-eyebrow">HSE / INVESTIGATION</span>
-            <h1>Investigation results</h1>
-            <p>Findings, evidence and actions in one complete report.</p>
+            <span class="report-eyebrow">{{ $t('HSE / INVESTIGATION') }}</span>
+            <h1>{{ $t('Investigation results') }}</h1>
+            <p>{{ $t('Findings, evidence and actions in one complete report.') }}</p>
           </div>
           <div class="report-print-actions">
             <button
@@ -262,41 +264,45 @@ const getObservationType = (type: number | undefined) => {
               </svg>
               {{
                 printing
-                  ? 'Preparing report…'
+                  ? $t('Preparing report…')
                   : similarObservationsLoading
-                    ? 'Loading report…'
-                    : 'Print / Save PDF'
+                    ? $t('Loading report…')
+                    : $t('Print / Save PDF')
               }}
             </button>
-            <small>Choose “Save as PDF” in the print dialog.</small>
+            <small>{{ $t('Choose “Save as PDF” in the print dialog.') }}</small>
           </div>
         </div>
         <p v-if="printError" class="report-print-error" role="alert">{{ printError }}</p>
         <main ref="reportContent" class="investegation-result-answer-container" :lang="locale">
           <header class="investigation-report-cover">
             <div class="report-cover-intro">
-              <span class="report-eyebrow">INVESTIGATION REPORT</span>
-              <h2>{{ observation?.title || 'Investigation findings' }}</h2>
+              <span class="report-eyebrow">{{ $t('investigation_report') }}</span>
+              <h2>{{ observation?.title || $t('Investigation findings') }}</h2>
               <p>
-                A complete record of the incident, its causes and the actions to prevent recurrence.
+                {{
+                  $t(
+                    'A complete record of the incident, its causes and the actions to prevent recurrence.',
+                  )
+                }}
               </p>
               <div class="report-cover-meta">
                 <div>
-                  <span>Report reference</span
+                  <span>{{ $t('Report reference') }}</span
                   ><strong>{{ investigationData?.serialName || `#${id}` }}</strong>
                 </div>
                 <div>
-                  <span>Incident reference</span
+                  <span>{{ $t('Incident reference') }}</span
                   ><strong>{{ observation?.serial_name || observation?.serial || '—' }}</strong>
                 </div>
                 <div>
-                  <span>Investigation date</span
+                  <span>{{ $t('Investigation date') }}</span
                   ><strong>{{
                     investigationData?.date || investigationData?.createdAt || '—'
                   }}</strong>
                 </div>
                 <div>
-                  <span>Team leader</span
+                  <span>{{ $t('Team Leader') }}</span
                   ><strong>{{ investigationData?.investigationTeamLeader?.name || '—' }}</strong>
                 </div>
               </div>
@@ -304,15 +310,15 @@ const getObservationType = (type: number | undefined) => {
             <div class="report-summary">
               <div class="report-summary-item">
                 <strong>{{ String(teamMembers.length).padStart(2, '0') }}</strong
-                ><span>Team members</span>
+                ><span>{{ $t('Team members') }}</span>
               </div>
               <div class="report-summary-item">
                 <strong>{{ String(allTasks.length).padStart(2, '0') }}</strong
-                ><span>Action items</span>
+                ><span>{{ $t('Action items') }}</span>
               </div>
               <div class="report-summary-item">
                 <strong>{{ String(meetings.length).padStart(2, '0') }}</strong
-                ><span>Meetings</span>
+                ><span>{{ $t('meetings') }}</span>
               </div>
               <div class="report-summary-item">
                 <strong>{{
@@ -321,22 +327,22 @@ const getObservationType = (type: number | undefined) => {
                     '0',
                   )
                 }}</strong
-                ><span>Evidence records</span>
+                ><span>{{ $t('Evidence records') }}</span>
               </div>
             </div>
           </header>
           <section class="final-answer-section">
             <div class="final-section-heading">
               <span>01</span>
-              <h2>{{ getObservationType(observation?.type) }} Identification</h2>
+              <h2>{{ getObservationType(observation?.type) }} {{ $t('Identification') }}</h2>
             </div>
             <div class="answer-info-grid">
               <article>
-                <span>Incident title</span>
+                <span>{{ $t('incident Title') }}</span>
                 <strong>{{ observation?.title || '-' }}</strong>
               </article>
               <article>
-                <span>Incident reference</span>
+                <span>{{ $t('Incident reference') }}</span>
                 <strong>{{
                   observation?.serial_name ||
                   observation?.serial ||
@@ -345,28 +351,28 @@ const getObservationType = (type: number | undefined) => {
                 }}</strong>
               </article>
               <article>
-                <span>Investigation reference</span>
+                <span>{{ $t('Investigation reference') }}</span>
                 <strong>{{ state.data?.serialName ?? '-' }}</strong>
               </article>
               <article>
-                <span>Incident type</span>
+                <span>{{ $t('Incident type') }}</span>
                 <strong>{{ getTitle(observation?.type_model) }}</strong>
               </article>
               <article>
-                <span>Work Area / Facility</span>
+                <span>{{ $t('Work Area / Facility') }}</span>
                 <strong>{{ observation?.place || '-' }}</strong>
               </article>
               <article>
-                <span>Equipment</span>
+                <span>{{ $t('Equipment') }}</span>
                 <strong>{{ getTitle(observation?.equipment) }}</strong>
               </article>
               <article>
-                <span>Shift</span>
+                <span>{{ $t('Shift') }}</span>
                 <strong>{{ getTitle(observation?.work_shift) }}</strong>
               </article>
             </div>
             <div v-if="incidentDescription" class="incident-description">
-              <span>Incident description</span>
+              <span>{{ $t('Incident description') }}</span>
               <p>{{ incidentDescription }}</p>
             </div>
           </section>
@@ -374,15 +380,15 @@ const getObservationType = (type: number | undefined) => {
           <section class="final-answer-section">
             <div class="final-section-heading">
               <span>02</span>
-              <h2>Investigation Team Setup</h2>
+              <h2>{{ $t('Investigation Team Setup') }}</h2>
             </div>
             <div class="answer-info-grid">
               <article>
-                <span>Investigation team leader</span>
+                <span>{{ $t('Investigation team leader') }}</span>
                 <strong>{{ investigationData?.investigationTeamLeader?.name || '-' }}</strong>
               </article>
               <article>
-                <span>Team members</span>
+                <span>{{ $t('Team members') }}</span>
                 <strong>{{ teamMembers.length }}</strong>
               </article>
               <!-- <article>
@@ -414,7 +420,7 @@ const getObservationType = (type: number | undefined) => {
                       member?.organizationEmployee ?? member?.organization_employee ?? member,
                     )
                   }}</strong>
-                  <span>{{ member?.is_leader ? 'Team leader' : 'Team member' }}</span>
+                  <span>{{ member?.is_leader ? $t('team_leader') : $t('Team Member') }}</span>
                 </div>
               </article>
             </div>
@@ -423,11 +429,11 @@ const getObservationType = (type: number | undefined) => {
           <section class="final-answer-section">
             <div class="final-section-heading">
               <span>03</span>
-              <h2>Immediate Action Evaluation</h2>
+              <h2>{{ $t('Immediate Action Evaluation') }}</h2>
             </div>
             <div class="answer-info-grid">
               <article class="wide">
-                <span>Immediate Action Retrieval</span>
+                <span>{{ $t('Immediate Action Retrieval') }}</span>
                 <strong>{{ observation?.action || '-' }}</strong>
               </article>
               <!-- <article>
@@ -449,19 +455,19 @@ const getObservationType = (type: number | undefined) => {
           <section class="final-answer-section">
             <div class="final-section-heading">
               <span>04</span>
-              <h2>Witness statements</h2>
+              <h2>{{ $t('Witness statements') }}</h2>
             </div>
             <InvestegationResultViewersAnswer
               v-if="viewerResults.length > 0"
               :viewers="viewerResults"
             />
-            <p v-else class="answer-empty">No witnesses statements were added.</p>
+            <p v-else class="answer-empty">{{ $t('No witnesses statements were added.') }}</p>
           </section>
 
           <section class="final-answer-section">
             <div class="final-section-heading">
               <span>05</span>
-              <h2>Sequence of events</h2>
+              <h2>{{ $t('Sequence of events') }}</h2>
             </div>
             <div class="answer-timeline" v-if="eventTimelines.length">
               <article v-for="(event, index) in eventTimelines" :key="index">
@@ -472,44 +478,44 @@ const getObservationType = (type: number | undefined) => {
                 </div>
               </article>
             </div>
-            <p v-else class="answer-empty">No timeline events were added.</p>
+            <p v-else class="answer-empty">{{ $t('No timeline events were added.') }}</p>
           </section>
 
           <section class="final-answer-section">
             <div class="final-section-heading">
               <span>06</span>
-              <h2>Health impact</h2>
+              <h2>{{ $t('Health impact') }}</h2>
             </div>
             <div v-if="healthImpactItems.length" class="answer-card-grid">
               <article v-for="item in healthImpactItems" :key="`${item.impactType}-${item.id}`">
                 <span> {{ item.impactType }}</span>
-                <strong>name : {{ getEmployeeName(item) }}</strong>
-                <p>description : {{ item.note || '-' }}</p>
-                <small>injury type : {{ getTitle(item.injury_type, '') }}</small>
+                <strong>{{ $t('name :') }} {{ getEmployeeName(item) }}</strong>
+                <p>{{ $t('description :') }} {{ item.note || '-' }}</p>
+                <small>{{ $t('injury type :') }} {{ getTitle(item.injury_type, '') }}</small>
               </article>
             </div>
-            <p v-else class="answer-empty">No health impact records were added.</p>
+            <p v-else class="answer-empty">{{ $t('No health impact records were added.') }}</p>
           </section>
 
           <section class="final-answer-section">
             <div class="final-section-heading">
               <span>07</span>
-              <h2>Root Analysis (5 Whys)</h2>
+              <h2>{{ $t('Root Analysis (5 Whys)') }}</h2>
             </div>
             <div v-if="fiveWhyQuestions.length" class="answer-card-grid">
               <article v-for="question in fiveWhyQuestions" :key="question.id">
-                <span>Question</span>
+                <span>{{ $t('question') }}</span>
                 <strong>{{ question.question || '-' }}</strong>
                 <p>{{ question.answer || '-' }}</p>
               </article>
             </div>
-            <p v-else class="answer-empty">No root analysis questions were added.</p>
+            <p v-else class="answer-empty">{{ $t('No root analysis questions were added.') }}</p>
           </section>
 
           <section class="final-answer-section">
             <div class="final-section-heading">
               <span>08</span>
-              <h2>Root Causes</h2>
+              <h2>{{ $t('Root Causes') }}</h2>
             </div>
             <div v-if="rootCauses.length" class="answer-tags">
               <span v-for="rootCause in rootCauses" :key="rootCause.id">{{
@@ -526,7 +532,7 @@ const getObservationType = (type: number | undefined) => {
           <section class="final-answer-section">
             <div class="final-section-heading">
               <span>09</span>
-              <h2>Corrective &amp; preventive actions</h2>
+              <h2>{{ $t('Corrective & preventive actions') }}</h2>
             </div>
             <InvestegationResultTasksAnswer
               v-if="hasActionPlan"
@@ -535,22 +541,22 @@ const getObservationType = (type: number | undefined) => {
               :tasks="legacyTasks"
               @answered="GetInvestegationDetails"
             />
-            <p v-else class="answer-empty">No CAPA actions were added.</p>
+            <p v-else class="answer-empty">{{ $t('No CAPA actions were added.') }}</p>
           </section>
 
           <section class="final-answer-section">
             <div class="final-section-heading">
               <span>10</span>
-              <h2>Lessons Learned</h2>
+              <h2>{{ $t('Lessons Learned') }}</h2>
             </div>
-            <p class="answer-note">{{ lessonLearnt || 'No lesson learnt was added.' }}</p>
+            <p class="answer-note">{{ lessonLearnt || $t('No lesson learnt was added.') }}</p>
             <p v-if="recommendation" class="answer-note subtle">{{ recommendation }}</p>
           </section>
 
           <section class="final-answer-section">
             <div class="final-section-heading">
               <span>11</span>
-              <h2>Related incidents</h2>
+              <h2>{{ $t('Related incidents') }}</h2>
             </div>
             <!-- <p class="answer-empty"> -->
             <section class="similar-observations-section">
@@ -569,12 +575,14 @@ const getObservationType = (type: number | undefined) => {
                   class="similar-observation-card"
                 >
                   <span>#{{ observation.serialName || observation.serial || 'N/A' }}</span>
-                  <strong>{{ observation.title || 'Untitled observation' }}</strong>
+                  <strong>{{ observation.title || $t('Untitled observation') }}</strong>
                   <small>{{ observation.date || 'N/A' }}</small>
                 </article>
               </div>
 
-              <p v-else class="similar-observations-empty">No similar incidents found.</p>
+              <p v-else class="similar-observations-empty">
+                {{ $t('No similar incidents found.') }}
+              </p>
             </section>
             <!-- </p> -->
           </section>
@@ -582,19 +590,19 @@ const getObservationType = (type: number | undefined) => {
           <section class="final-answer-section">
             <div class="final-section-heading">
               <span>12</span>
-              <h2>Attachments</h2>
+              <h2>{{ $t('Attachments') }}</h2>
             </div>
             <InvestegationResultAttachmentAnswer
               v-if="state.data?.investigationDocumentations?.length > 0"
               :attachments="state.data?.investigationDocumentations"
             />
-            <p v-else class="answer-empty">No attachments were added.</p>
+            <p v-else class="answer-empty">{{ $t('No attachments were added.') }}</p>
           </section>
 
           <section class="final-answer-section">
             <div class="final-section-heading">
               <span>13</span>
-              <h2>Investigation meetings</h2>
+              <h2>{{ $t('Investigation Meetings') }}</h2>
             </div>
             <!-- <div class="answer-info-grid"> -->
             <!-- <article>
@@ -607,11 +615,11 @@ const getObservationType = (type: number | undefined) => {
             </article> -->
             <!-- </div> -->
             <MeetingOverviewAnswer v-if="meetings.length > 0" :meetings="meetings" />
-            <p v-else class="answer-empty">No investigation meetings were added.</p>
+            <p v-else class="answer-empty">{{ $t('No investigation meetings were added.') }}</p>
           </section>
           <footer class="report-footer">
-            <strong>HSE · Investigation report</strong>
-            <span>{{ investigationData?.serialName || `#${id}` }} · End of report</span>
+            <strong>{{ $t('HSE · Investigation report') }}</strong>
+            <span>{{ investigationData?.serialName || `#${id}` }} {{ $t('· End of report') }}</span>
           </footer>
         </main>
       </div>
@@ -625,24 +633,36 @@ const getObservationType = (type: number | undefined) => {
     <template #empty>
       <DataEmpty
         :link="`/organization/hazard/add`"
-        addText="Add Hazard"
-        description="You have no Hazard .. All your joined customers will appear here when you add your customer data"
-        title="You have No Hazard"
+        :addText="$t('Add Hazard')"
+        :description="
+          $t(
+            'You have no Hazard .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+        :title="$t('You have No Hazard')"
       />
     </template>
     <template #failed>
       <DataFailed
         :link="`/organization/hazard/add`"
-        addText="Add Hazard"
-        description="You have no Hazard .. All your joined customers will appear here when you add your customer data"
-        title="You have No Hazard"
+        :addText="$t('Add Hazard')"
+        :description="
+          $t(
+            'You have no Hazard .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+        :title="$t('You have No Hazard')"
       />
     </template>
 
     <template #notPermitted>
       <DataFailed
-        addText="Have not Permission"
-        description="You have no Hazard .. All your joined customers will appear here when you add your customer data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Hazard .. All your joined customers will appear here when you add your customer data',
+          )
+        "
       />
     </template>
   </DataStatus>

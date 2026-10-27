@@ -27,7 +27,7 @@ const props = withDefaults(
       :style="{ width: '50rem' }"
       :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
     >
-      <img :src="props.certificateImage" alt="demo card training image" class="demo-img" />
+      <img :src="props.certificateImage" :alt="$t('demo card training image')" class="demo-img" />
     </Dialog>
   </div>
 </template>

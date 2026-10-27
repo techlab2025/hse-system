@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleModel from '@/base/Data/Models/title_model'
 
 export interface NotificationPlanActionModel {
@@ -56,18 +57,21 @@ export default class NotificationPlanModel {
   static fromMap(data: any): NotificationPlanModel {
     const isActive = data?.is_active ?? data?.isActive ?? false
 
-    return new NotificationPlanModel(
-      data?.notification_plan_id ?? data?.id ?? 0,
-      data?.title ?? '',
-      isActive === true || isActive === 1 || isActive === '1',
-      (data?.actions ?? []).map((action: any) => ({
-        value: action?.value ?? 0,
-        name: action?.name ?? '',
-        label: action?.label ?? '',
-        sub_action: action?.sub_action ?? null,
-      })),
-      (data?.employees ?? []).map((employee: any) => TitleModel.fromMap<string>(employee)),
-      (data?.hierarchies ?? []).map((hierarchy: any) => TitleModel.fromMap<string>(hierarchy)),
+    return localizedRecord(
+      new NotificationPlanModel(
+        data?.notification_plan_id ?? data?.id ?? 0,
+        data?.title ?? '',
+        isActive === true || isActive === 1 || isActive === '1',
+        (data?.actions ?? []).map((action: any) => ({
+          value: action?.value ?? 0,
+          name: action?.name ?? '',
+          label: action?.label ?? '',
+          sub_action: action?.sub_action ?? null,
+        })),
+        (data?.employees ?? []).map((employee: any) => TitleModel.fromMap<string>(employee)),
+        (data?.hierarchies ?? []).map((hierarchy: any) => TitleModel.fromMap<string>(hierarchy)),
+      ),
+      data,
     )
   }
 }

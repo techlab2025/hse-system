@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
@@ -22,7 +23,7 @@ export default class EmployeeModel extends TitleInterface {
     parentId: number,
     image: string,
     titles: string,
-    equipmentType: TitleModel<string> | null
+    equipmentType: TitleModel<string> | null,
   ) {
     super({ id, title, subtitle })
 
@@ -37,19 +38,22 @@ export default class EmployeeModel extends TitleInterface {
   }
 
   static fromMap(data: any): EmployeeModel {
-    return new EmployeeModel(
-      data.id,
-      data.title,
-      data.subtitle,
-      data.has_certificate,
-      data.all_industries,
-      data.industries.length > 0
-        ? data.industries.map((industry) => TitleModel.fromMap(industry))
-        : [],
-      data.parent_id,
-      data.image,
-      data.titles,
-      data.equipmentType ? TitleModel.fromMap(data.equipmentType) : null,
+    return localizedRecord(
+      new EmployeeModel(
+        data.id,
+        data.title,
+        data.subtitle,
+        data.has_certificate,
+        data.all_industries,
+        data.industries.length > 0
+          ? data.industries.map((industry) => TitleModel.fromMap(industry))
+          : [],
+        data.parent_id,
+        data.image,
+        data.titles,
+        data.equipmentType ? TitleModel.fromMap(data.equipmentType) : null,
+      ),
+      data,
     )
   }
 }

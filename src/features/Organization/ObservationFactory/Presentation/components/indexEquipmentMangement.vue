@@ -29,13 +29,13 @@ const Routes = ref([
     <ul>
       <router-link v-for="(route, index) in Routes" :key="index" :to="route.route">
         <div class="left-back-img">
-          <img :src="BlueBack" alt="blue" />
-          <img class="left-yellow" :src="yelloecircle" alt="yellow" />
+          <img :src="BlueBack" alt="" aria-hidden="true" />
+          <img class="left-yellow" :src="yelloecircle" alt="" aria-hidden="true" />
         </div>
         <li>{{ route?.name }}</li>
         <div class="right-back-img">
-          <img :src="BlueBack" alt="blue" />
-          <img class="right-yellow" :src="yelloecircle" alt="blue" />
+          <img :src="BlueBack" alt="" aria-hidden="true" />
+          <img class="right-yellow" :src="yelloecircle" alt="" aria-hidden="true" />
         </div>
       </router-link>
     </ul>
@@ -43,7 +43,5 @@ const Routes = ref([
 </template> -->
 
 <template>
-  <div>
-
-  </div>
+  <div></div>
 </template>

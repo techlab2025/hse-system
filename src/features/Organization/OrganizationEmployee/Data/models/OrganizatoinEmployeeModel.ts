@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import CertificateItemsModel from './CertificateItemsModel'
 import { CertificateStatusEnum } from '../../Core/Enum/CertificateStatusEnum'
@@ -54,21 +55,24 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
   }
 
   static fromMap(data: any): OrganizatoinEmployeeModel {
-    return new OrganizatoinEmployeeModel(
-      data.id,
-      data.name,
-      data.name,
-      data.phone,
-      data.email,
-      data.is_master,
-      typeof data.image === 'string' && data.image ? data.image : null,
-      data.certificates,
-      data.hierarchy,
-      data.employee_certificates,
-      data.validation_status,
-      data.password,
-      data?.hierarchies?.map((item: any) => HierarchyIdModel.fromMap(item)),
-      data.has_all_permission,
+    return localizedRecord(
+      new OrganizatoinEmployeeModel(
+        data.id,
+        data.name,
+        data.name,
+        data.phone,
+        data.email,
+        data.is_master,
+        typeof data.image === 'string' && data.image ? data.image : null,
+        data.certificates,
+        data.hierarchy,
+        data.employee_certificates,
+        data.validation_status,
+        data.password,
+        data?.hierarchies?.map((item: any) => HierarchyIdModel.fromMap(item)),
+        data.has_all_permission,
+      ),
+      data,
     )
   }
 

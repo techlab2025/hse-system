@@ -41,12 +41,12 @@ watch(
           <UploadImage class="icon" />
         </span>
         <div>
-          <p class="title">Do you want to upload photo</p>
-          <p class="subtitle">Ask inspectors to attach image evidence for this item.</p>
+          <p class="title">{{ $t('Do you want to upload photo') }}</p>
+          <p class="subtitle">{{ $t('Ask inspectors to attach image evidence for this item.') }}</p>
         </div>
       </div>
       <label class="template-upload-switch">
-        <span>{{ isUpdloadImage ? 'Enabled' : 'Off' }}</span>
+        <span>{{ isUpdloadImage ? $t('Enabled') : $t('Off') }}</span>
         <Checkbox
           binary
           type="checkbox"
@@ -63,8 +63,8 @@ watch(
         :class="{ selected: ImageType === '2' }"
         @click="updateImageType('2')"
       >
-        <label :for="`requierd-${IdIndex}`">Required</label>
-        <span class="type-hint">Must attach image</span>
+        <label :for="`requierd-${IdIndex}`">{{ $t('Required') }}</label>
+        <span class="type-hint">{{ $t('Must attach image') }}</span>
         <RadioButton
           type="radio"
           value="2"
@@ -79,8 +79,8 @@ watch(
         :class="{ selected: ImageType === '1' }"
         @click="updateImageType('1')"
       >
-        <label :for="`optional-${IdIndex}`">Optional</label>
-        <span class="type-hint">Attach when needed</span>
+        <label :for="`optional-${IdIndex}`">{{ $t('home_setup_optional') }}</label>
+        <span class="type-hint">{{ $t('Attach when needed') }}</span>
         <RadioButton
           type="radio"
           value="1"
@@ -110,7 +110,11 @@ watch(
   border: 1px solid var(--brand-primary-100);
   border-radius: 16px;
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 96%, transparent), color-mix(in srgb, var(--brand-primary-50) 96%, transparent)),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface-1) 96%, transparent),
+      color-mix(in srgb, var(--brand-primary-50) 96%, transparent)
+    ),
     var(--surface-1);
   box-shadow: 0 14px 34px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
   transition:

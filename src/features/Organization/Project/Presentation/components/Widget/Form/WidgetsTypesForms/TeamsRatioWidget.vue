@@ -73,7 +73,7 @@ const UpdateTitle = (data) => {
   <ZoneTitlesForm @update:value="UpdateTitle" />
 
   <RadioSection
-    title="Choose the number of teams you want"
+    :title="$t('Choose the number of teams you want')"
     :selections="[
       'The two biggest teams',
       'The 3 biggest teams',
@@ -84,17 +84,17 @@ const UpdateTitle = (data) => {
     @update:value="(v) => updateField('NumberOfTeams', v)"
   />
   <ColorSelection
-    title="chart color"
+    :title="$t('chart color')"
     :colors="colors"
     @update:value="(v) => updateField('SelectedColor', v)"
   />
   <RadioSection
-    title="choose progress ui"
+    :title="$t('choose progress ui')"
     :images_selections="[Pogress2, EquipmentProgress2, EquipmentProgress3]"
     @update:value="(v) => updateField('Progress', v)"
   />
   <RadioSection
-    title="Available to"
+    :title="$t('Available to')"
     :selections="['anyone', 'only me']"
     @update:value="(v) => updateField('SelectedAvailable', v)"
   />

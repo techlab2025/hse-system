@@ -1,3 +1,4 @@
+import { getCurrentLocale } from '@/localization/i18n'
 // import type TitleModel from "@/base/core/Models/title_model";
 import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
@@ -12,8 +13,6 @@ export default class HomeContactUsDetailsModel {
   public alt: string
   public image: string
 
-
-
   constructor(
     id: number,
     titles: TitleLocale[],
@@ -21,7 +20,6 @@ export default class HomeContactUsDetailsModel {
     buttonTitles: TitleLocale[],
     alt: string,
     image: string,
-
   ) {
     this.id = id
 
@@ -30,7 +28,6 @@ export default class HomeContactUsDetailsModel {
     this.buttonTitles = buttonTitles
     this.alt = alt
     this.image = image
-
   }
 
   static fromMap(data: any): HomeContactUsDetailsModel {
@@ -41,18 +38,16 @@ export default class HomeContactUsDetailsModel {
       TranslationsParams.fromMap([], [], data.button_titles).langLocale,
       data.alt,
       data.image,
-
     )
   }
 
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data.titles,
     })
   }
 }
-
-

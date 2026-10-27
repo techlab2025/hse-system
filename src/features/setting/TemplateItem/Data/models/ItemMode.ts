@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class ItemModel extends TitleInterface {
@@ -22,13 +23,16 @@ export default class ItemModel extends TitleInterface {
   }
 
   static fromMap(data: any): ItemModel {
-    return new ItemModel(
-      data.id,
-      data.title,
-      data.is_danger,
-      data.textarea_type,
-      data.has_auto_observation,
-      data.is_upload ?? data.isUpload ?? false,
+    return localizedRecord(
+      new ItemModel(
+        data.id,
+        data.title,
+        data.is_danger,
+        data.textarea_type,
+        data.has_auto_observation,
+        data.is_upload ?? data.isUpload ?? false,
+      ),
+      data,
     )
   }
 }

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, onMounted, ref } from 'vue'
@@ -72,11 +74,11 @@ const submit = async () => {
   if (!visit.value || visit.value.reportAdded || controller.isDataLoading()) return
   errorMessage.value = ''
   if (!topic.value.trim() || !discussion.value.trim() || !observations.value.trim()) {
-    errorMessage.value = 'Complete the topic, discussion, and observations.'
+    errorMessage.value = localizeUi('Complete the topic, discussion, and observations.')
     return
   }
   if (!improvements.value.length) {
-    errorMessage.value = 'Add at least one improvement row.'
+    errorMessage.value = localizeUi('Add at least one improvement row.')
     return
   }
   if (
@@ -88,7 +90,7 @@ const submit = async () => {
         item.visitCategoryId <= 0,
     )
   ) {
-    errorMessage.value = 'Complete every improvement row.'
+    errorMessage.value = localizeUi('Complete every improvement row.')
     return
   }
   try {
@@ -108,7 +110,7 @@ const submit = async () => {
       errorMessage.value = controller.state.value.error?.title ?? 'Unable to submit the report.'
     }
   } catch {
-    errorMessage.value = 'Unable to submit the report.'
+    errorMessage.value = localizeUi('Unable to submit the report.')
   }
 }
 
@@ -179,39 +181,42 @@ onMounted(async () => {
             <div class="section-title">
               <span>01</span>
               <div>
-                <h2>Visit details</h2>
-                <p>Describe what happened during the visit.</p>
+                <h2>{{ $t('Visit details') }}</h2>
+                <p>{{ $t('Describe what happened during the visit.') }}</p>
               </div>
             </div>
             <div class="fields">
               <label class="hse-project-field-label hse-project-field field field--wide">
-                <span class="field__label">Topic <b>*</b></span>
+                <span class="field__label">{{ $t('topic') }} <b>*</b></span>
                 <input
+                  dir="auto"
                   class="hse-project-input"
                   v-model="topic"
                   type="text"
                   required
-                  placeholder="Enter the visit topic"
+                  :placeholder="$t('Enter the visit topic')"
                 />
               </label>
               <label class="hse-project-field-label hse-project-field field field--wide">
-                <span class="field__label">Discussion <b>*</b></span>
+                <span class="field__label">{{ $t('Discussion') }} <b>*</b></span>
                 <textarea
+                  dir="auto"
                   class="hse-project-input"
                   v-model="discussion"
                   rows="5"
                   required
-                  placeholder="Summarize what was discussed"
+                  :placeholder="$t('Summarize what was discussed')"
                 />
               </label>
               <label class="hse-project-field-label hse-project-field field field--wide">
-                <span class="field__label">Positive Observations <b>*</b></span>
+                <span class="field__label">{{ $t('Positive Observations') }} <b>*</b></span>
                 <textarea
+                  dir="auto"
                   class="hse-project-input"
                   v-model="observations"
                   rows="5"
                   required
-                  placeholder="Record the key observations"
+                  :placeholder="$t('Record the key observations')"
                 />
               </label>
             </div>
@@ -222,8 +227,8 @@ onMounted(async () => {
               <div class="section-title__copy">
                 <span>02</span>
                 <div>
-                  <h2>Improvements</h2>
-                  <p>Add each intervention as a separate action.</p>
+                  <h2>{{ $t('Improvements') }}</h2>
+                  <p>{{ $t('Add each intervention as a separate action.') }}</p>
                 </div>
               </div>
               <button
@@ -231,7 +236,7 @@ onMounted(async () => {
                 class="hse-project-button add-button"
                 @click="improvements.push(newImprovement())"
               >
-                <span aria-hidden="true">＋</span> Add improvement
+                <span aria-hidden="true">＋</span> {{ $t('Add improvement') }}
               </button>
             </div>
             <div class="improvement-list">
@@ -242,8 +247,8 @@ onMounted(async () => {
                       String(index + 1).padStart(2, '0')
                     }}</span>
                     <div>
-                      <strong>Improvement {{ index + 1 }}</strong
-                      ><small>Capture the issue and action taken</small>
+                      <strong>{{ $t('Improvement') }} {{ index + 1 }}</strong
+                      ><small>{{ $t('Capture the issue and action taken') }}</small>
                     </div>
                   </div>
                   <button
@@ -253,34 +258,36 @@ onMounted(async () => {
                     :disabled="improvements.length === 1"
                     @click="improvements.splice(index, 1)"
                   >
-                    <span aria-hidden="true">×</span> Remove
+                    <span aria-hidden="true">×</span> {{ $t('Remove') }}
                   </button>
                 </div>
                 <div class="fields">
                   <label class="hse-project-field-label hse-project-field field">
-                    <span class="field__label">Area <b>*</b></span>
+                    <span class="field__label">{{ $t('Area') }} <b>*</b></span>
                     <input
+                      dir="auto"
                       class="hse-project-input"
                       v-model="item.areas"
                       type="text"
                       required
-                      placeholder="Affected area"
+                      :placeholder="$t('Affected area')"
                     />
                   </label>
                   <label class="hse-project-field-label hse-project-field field">
-                    <span class="field__label">Intervention carried out <b>*</b></span>
+                    <span class="field__label">{{ $t('Intervention carried out') }} <b>*</b></span>
                     <input
+                      dir="auto"
                       class="hse-project-input"
                       v-model="item.interventionCarriedOut"
                       type="text"
                       required
-                      placeholder="Action taken"
+                      :placeholder="$t('Action taken')"
                     />
                   </label>
                   <UpdatedCustomInputSelect
                     :id="`unsafe-type-${index}`"
-                    label="UA / UC"
-                    placeholder="Select UA / UC"
+                    :label="$t('UA / UC')"
+                    :placeholder="$t('Select UA / UC')"
                     :required="true"
                     :reload="false"
                     :static-options="unsafeTypeOptions"
@@ -289,8 +296,8 @@ onMounted(async () => {
                   />
                   <UpdatedCustomInputSelect
                     :id="`visit-theme-${index}`"
-                    label="Visit theme"
-                    placeholder="Select theme"
+                    :label="$t('Visit theme')"
+                    :placeholder="$t('Select theme')"
                     :required="true"
                     :reload="false"
                     :controller="visitThemeController"
@@ -300,8 +307,8 @@ onMounted(async () => {
                   />
                   <UpdatedCustomInputSelect
                     :id="`visit-category-${index}`"
-                    label="Visit category"
-                    placeholder="Select category"
+                    :label="$t('Visit category')"
+                    :placeholder="$t('Select category')"
                     :required="true"
                     :reload="false"
                     :controller="visitCategoryController"
@@ -319,14 +326,14 @@ onMounted(async () => {
               <div class="section-title__copy">
                 <span>03</span>
                 <div>
-                  <h2>Attachments</h2>
-                  <p>Upload supporting evidence for this leadership visit.</p>
+                  <h2>{{ $t('Attachments') }}</h2>
+                  <p>{{ $t('Upload supporting evidence for this leadership visit.') }}</p>
                 </div>
               </div>
             </div>
             <div class="hse-project-field report-upload-field">
               <HandleFIlesUpload
-                label="Visit report attachment"
+                :label="$t('Visit report attachment')"
                 accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
                 :max-files="1"
                 :multiple="false"
@@ -338,15 +345,15 @@ onMounted(async () => {
           </section>
 
           <footer class="form-footer">
-            <RouterLink :to="visitsPath" class="hse-project-button button button--quiet"
-              >Cancel</RouterLink
-            >
+            <RouterLink :to="visitsPath" class="hse-project-button button button--quiet">{{
+              $t('Cancel')
+            }}</RouterLink>
             <button
               type="submit"
               class="hse-project-button hse-project-button--primary button button--primary"
               :disabled="controller.isDataLoading()"
             >
-              {{ controller.isDataLoading() ? 'Submitting…' : 'Submit visit report' }}
+              {{ controller.isDataLoading() ? $t('Submitting…') : $t('Submit visit report') }}
               <span v-if="!controller.isDataLoading()" aria-hidden="true">→</span>
             </button>
           </footer>
@@ -354,15 +361,15 @@ onMounted(async () => {
 
         <section v-else-if="visit?.reportAdded" class="page-state">
           <span aria-hidden="true">✓</span>
-          <h2>This visit already has a report</h2>
-          <p>Return to the visit register to review its report details.</p>
-          <RouterLink :to="visitsPath">View leadership visits</RouterLink>
+          <h2>{{ $t('This visit already has a report') }}</h2>
+          <p>{{ $t('Return to the visit register to review its report details.') }}</p>
+          <RouterLink :to="visitsPath">{{ $t('View leadership visits') }}</RouterLink>
         </section>
         <section v-else class="page-state page-state--error">
           <span aria-hidden="true">!</span>
-          <h2>Visit not found</h2>
-          <p>The selected visit does not exist in this project.</p>
-          <RouterLink :to="visitsPath">Back to leadership visits</RouterLink>
+          <h2>{{ $t('Visit not found') }}</h2>
+          <p>{{ $t('The selected visit does not exist in this project.') }}</p>
+          <RouterLink :to="visitsPath">{{ $t('Back to leadership visits') }}</RouterLink>
         </section>
       </template>
       <template #loader>
@@ -378,8 +385,8 @@ onMounted(async () => {
       <template #failed>
         <section class="page-state page-state--error">
           <span>!</span>
-          <h2>Unable to load this visit</h2>
-          <RouterLink :to="visitsPath">Back to leadership visits</RouterLink>
+          <h2>{{ $t('Unable to load this visit') }}</h2>
+          <RouterLink :to="visitsPath">{{ $t('Back to leadership visits') }}</RouterLink>
         </section>
       </template>
     </DataStatus>

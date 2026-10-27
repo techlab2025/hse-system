@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { translateMessage } from '@/localization/messages'
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useOrganizationOnboarding } from '@/composables/useOrganizationOnboarding'
@@ -143,7 +146,7 @@ const getProjectProgress = async () => {
         result.error?.title || 'Unable to load department and position progress.'
     }
   } catch {
-    hierarchyError.value = 'Unable to load department and position progress.'
+    hierarchyError.value = localizeUi('Unable to load department and position progress.')
   }
   const params = new IndexProjectProgressParams('', 1, 10, 0)
   await indexProjectProgressController.getData(params)
@@ -423,15 +426,16 @@ const closeOnboarding = () => {
 
     <div class="project-progress-actions">
       <div class="back" @click="routerBack">
-        <ProgressBackIcon />
-        <span>Back</span>
+        <ProgressBackIcon class="locale-directional-icon" aria-hidden="true" />
+        <span>{{ $t('back') }}</span>
       </div>
     </div>
 
     <DataStatus :controller="state">
       <template #success>
         <p v-if="hierarchyError" role="alert">
-          {{ hierarchyError }} <button type="button" @click="getProjectProgress">Retry</button>
+          {{ hierarchyError }}
+          <button type="button" @click="getProjectProgress">{{ $t('retry') }}</button>
         </p>
         <ProjectProgressHeader :progressValue="setupProgress" />
 
@@ -448,25 +452,28 @@ const closeOnboarding = () => {
             />
 
             <div v-if="showOverlay && !startNextNote" class="overlay-note sidebar-note">
-              <span class="tip-kicker">Step 2 of 3</span>
-              <h3>The Roadmap</h3>
+              <span class="tip-kicker">{{ $t('Step 2 of 3') }}</span>
+              <h3>{{ $t('The Roadmap') }}</h3>
               <p>
-                This list contains all the forms you need to complete. Start from the top to set up
-                your system correctly.
+                {{
+                  $t(
+                    'This list contains all the forms you need to complete. Start from the top to set up your system correctly.',
+                  )
+                }}
               </p>
               <div class="tip-progress" aria-hidden="true">
                 <span class="done"></span>
                 <span class="active"></span>
                 <span></span>
               </div>
-              <button @click="goToContentNote" class="ok-btn">Next Tip</button>
+              <button @click="goToContentNote" class="ok-btn">{{ $t('Next Tip') }}</button>
             </div>
           </div>
 
           <div class="lottie-container" v-if="setupProgress === 100">
             <div class="lottie-header">
-              <h2 class="title">Data Completed Successfully</h2>
-              <p class="text">You can now start using the system</p>
+              <h2 class="title">{{ $t('Data Completed Successfully') }}</h2>
+              <p class="text">{{ $t('You can now start using the system') }}</p>
               <!-- <router-link class="btn btn-primary" to="/organization">Home</router-link> -->
             </div>
             <div class="completed-mark"></div>
@@ -478,24 +485,27 @@ const closeOnboarding = () => {
             :class="{ 'highlight-active': showOverlay && startNextNote }"
           >
             <div v-if="showOverlay && startNextNote" class="overlay-note content-tip">
-              <span class="tip-kicker">Step 3 of 3</span>
-              <h3>Configuration</h3>
+              <span class="tip-kicker">{{ $t('Step 3 of 3') }}</span>
+              <h3>{{ $t('Configuration') }}</h3>
               <p>
-                Fill in the details for each section here. Once saved, your progress will update
-                automatically.
+                {{
+                  $t(
+                    'Fill in the details for each section here. Once saved, your progress will update automatically.',
+                  )
+                }}
               </p>
               <div class="tip-progress" aria-hidden="true">
                 <span class="done"></span>
                 <span class="done"></span>
                 <span class="active"></span>
               </div>
-              <button @click="closeOnboarding" class="ok-btn">Let's Start!</button>
+              <button @click="closeOnboarding" class="ok-btn">{{ $t("Let's Start!") }}</button>
             </div>
 
             <div class="content-header">
               <div class="flex items-center justify-between gap-2">
                 <div class="flex items-center gap-2">
-                  <h2 class="title">{{ selectedPage.title }}</h2>
+                  <h2 class="title">{{ translateMessage(selectedPage.title) }}</h2>
                   <ProgressPageHeaderIcon />
                 </div>
                 <component
@@ -503,7 +513,7 @@ const closeOnboarding = () => {
                   v-if="selectedPage.actionsComponent"
                 />
               </div>
-              <p class="description">{{ selectedPage.description }}</p>
+              <p class="description">{{ translateMessage(selectedPage.description) }}</p>
             </div>
 
             <div v-if="selectedPage.id === ProjectProgressEnum.PresetData" class="preset-data-step">
@@ -559,7 +569,7 @@ const closeOnboarding = () => {
         </div>
 
         <ProjectProgreesDialog
-          title="Add Your Own Data To Start Using System Easily"
+          :title="$t('Add Your Own Data To Start Using System Easily')"
           :index="6"
           :visible="
             setupProgress === 0 &&
@@ -788,7 +798,7 @@ const closeOnboarding = () => {
   height: 18px;
   background: var(--surface-1);
   border-top: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
-  border-left: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
+  border-inline-start: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
   transform: rotate(45deg);
 }
 
@@ -811,10 +821,10 @@ const closeOnboarding = () => {
 .content-tip::before {
   top: 42px;
   right: -10px;
-  border-right: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
+  border-inline-end: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
   border-bottom: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
   border-top: 0;
-  border-left: 0;
+  border-inline-start: 0;
 }
 
 .overlay-note h3 {
@@ -904,8 +914,8 @@ const closeOnboarding = () => {
 
 .project-progress-body-content {
   width: 100%;
-  margin-left: 0;
-  margin-right: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
   padding: clamp(16px, 2vw, 28px);
   transition: all 0.3s ease;
 }
@@ -992,8 +1002,8 @@ const closeOnboarding = () => {
     left: 50%;
     right: auto;
     border-top: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
-    border-left: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
-    border-right: 0;
+    border-inline-start: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
+    border-inline-end: 0;
     border-bottom: 0;
   }
 }

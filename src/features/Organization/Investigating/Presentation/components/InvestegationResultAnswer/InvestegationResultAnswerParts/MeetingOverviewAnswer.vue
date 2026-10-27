@@ -53,8 +53,8 @@ const props = defineProps<{
   <div class="meeting-overview-answer">
     <div class="header">
       <HeaderPage
-        :title="`Meetings Overview`"
-        :subtitle="`A complete list of your past and upcoming meetings.`"
+        :title="$t('Meetings Overview')"
+        :subtitle="$t('A complete list of your past and upcoming meetings.')"
         :img="investigationImg"
         class="title-header answer-header border-top"
       />

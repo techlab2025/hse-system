@@ -86,16 +86,20 @@ watch(
       <label class="flex gap-2 factot-title">
         <FactorItemIcon />
         <div class="flex flex-col gap-1">
-          <span>Factors</span>
-          <span class="subtitle">Select the main factor</span>
+          <span>{{ $t('organization_setup_steps.factors.title') }}</span>
+          <span class="subtitle">{{ $t('Select the main factor') }}</span>
         </div>
         <FieldHelpIcon
-          text="Select each contributing factor, then choose the specific sub-factors supported by the investigation evidence."
+          :text="
+            $t(
+              'Select each contributing factor, then choose the specific sub-factors supported by the investigation evidence.',
+            )
+          "
         />
       </label>
 
       <span v-if="selectedCount()" class="selected-summary" aria-live="polite">
-        {{ selectedCount() }} Selected
+        {{ selectedCount() }} {{ $t('Selected') }}
       </span>
     </div>
 
@@ -116,12 +120,12 @@ watch(
               name="factors"
               @change="handleFactorChange(factor.id)"
             />
-            <span>{{ isFactorSelected(factor.id) ? 'Selected' : 'Select' }}</span>
+            <span>{{ isFactorSelected(factor.id) ? $t('Selected') : $t('Select') }}</span>
           </span>
         </label>
 
         <div v-if="isFactorSelected(factor.id)" class="sub-radio-group">
-          <span class="subfactor-heading">Sub-factors</span>
+          <span class="subfactor-heading">{{ $t('Sub-factors') }}</span>
           <label
             class="sub-radio-item"
             v-for="(subfactor, subindex) in subfactors?.filter(
@@ -144,7 +148,7 @@ watch(
 
       <div class="radio-column other-factor" :class="{ 'is-selected': isOtherSelected }">
         <label class="radio-item" for="factor-other">
-          <span class="radio-label">Other</span>
+          <span class="radio-label">{{ $t('Other') }}</span>
           <span class="selection-state">
             <Checkbox
               v-model="isOtherSelected"
@@ -153,22 +157,23 @@ watch(
               name="factors"
               @change="handleOtherChange"
             />
-            <span>{{ isOtherSelected ? 'Selected' : 'Select' }}</span>
+            <span>{{ isOtherSelected ? $t('Selected') : $t('Select') }}</span>
           </span>
         </label>
 
         <div v-if="isOtherSelected" class="other-factor-field">
-          <label for="other-factor-text">Other factor</label>
+          <label for="other-factor-text">{{ $t('Other factor') }}</label>
           <input
+            dir="auto"
             id="other-factor-text"
             v-model="otherFactorText"
             class="input"
             type="text"
-            placeholder="Enter another factor"
+            :placeholder="$t('Enter another factor')"
             autocomplete="off"
           />
           <p v-if="!otherFactorText.trim()" class="required-field-message">
-            Other factor is required
+            {{ $t('Other factor is required') }}
           </p>
         </div>
       </div>

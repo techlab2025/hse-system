@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 type InductionEmployeeResponse = {
@@ -51,7 +52,7 @@ export default class InductionEmployeeModel extends TitleInterface {
         ? row.organization_employee_id
         : typeof row.organisation_employee_id === 'object' && row.organisation_employee_id
           ? row.organisation_employee_id
-          : row.organization_employee ?? row.organisation_employee ?? row
+          : (row.organization_employee ?? row.organisation_employee ?? row)
     const id = Number(
       (typeof row.organization_employee_id === 'number' ? row.organization_employee_id : null) ??
         (typeof row.organisation_employee_id === 'number' ? row.organisation_employee_id : null) ??
@@ -61,12 +62,15 @@ export default class InductionEmployeeModel extends TitleInterface {
     )
     const name = row.name ?? nestedEmployee.name ?? nestedEmployee.title ?? (id ? '#' + id : '')
 
-    return new InductionEmployeeModel(
-      id,
-      name ?? '',
-      nestedEmployee.phone ?? row.phone ?? '',
-      row.email ?? nestedEmployee.email ?? '',
-      nestedEmployee.organization_name ?? row.organization_name ?? '',
+    return localizedRecord(
+      new InductionEmployeeModel(
+        id,
+        name ?? '',
+        nestedEmployee.phone ?? row.phone ?? '',
+        row.email ?? nestedEmployee.email ?? '',
+        nestedEmployee.organization_name ?? row.organization_name ?? '',
+      ),
+      data,
     )
   }
 }

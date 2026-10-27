@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class PermitToWorkModel extends TitleInterface {
@@ -11,7 +12,7 @@ export default class PermitToWorkModel extends TitleInterface {
   }
 
   static fromMap(data: any): PermitToWorkModel {
-    return new PermitToWorkModel(data.id, data.title)
+    return localizedRecord(new PermitToWorkModel(data.id, data.title), data)
   }
 
   static example: PermitToWorkModel = new PermitToWorkModel(

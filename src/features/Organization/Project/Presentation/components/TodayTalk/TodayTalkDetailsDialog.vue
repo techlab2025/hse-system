@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getCurrentLocale } from '@/localization/i18n'
+
 import '../../../styles/project.css'
 
 import { computed } from 'vue'
@@ -41,7 +43,7 @@ const formatDate = (date: string) => {
   const parsed = new Date(`${date}T00:00:00`)
   return Number.isNaN(parsed.getTime())
     ? date
-    : new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(parsed)
+    : new Intl.DateTimeFormat(getCurrentLocale(), { dateStyle: 'medium' }).format(parsed)
 }
 
 const formatDateTime = (dateTime: string | null | undefined) => {
@@ -49,7 +51,7 @@ const formatDateTime = (dateTime: string | null | undefined) => {
   const parsed = new Date(dateTime.replace(' ', 'T'))
   return Number.isNaN(parsed.getTime())
     ? dateTime
-    : new Intl.DateTimeFormat(undefined, {
+    : new Intl.DateTimeFormat(getCurrentLocale(), {
         dateStyle: 'medium',
         timeStyle: 'short',
       }).format(parsed)
@@ -76,8 +78,8 @@ const formatDateTime = (dateTime: string | null | undefined) => {
           </svg>
         </span>
         <div>
-          <span class="dialog-eyebrow">Today talk details</span>
-          <h2>Talk {{ talk.serialName || `#${talk.id}` }}</h2>
+          <span class="dialog-eyebrow">{{ $t('Today talk details') }}</span>
+          <h2>{{ $t('Talk') }} {{ talk.serialName || `#${talk.id}` }}</h2>
         </div>
       </div>
     </template>
@@ -85,19 +87,23 @@ const formatDateTime = (dateTime: string | null | undefined) => {
     <div v-if="talk" class="talk-details">
       <section class="details-hero">
         <div class="details-meta">
-          <span class="assignment-badge">{{ projectName || `Project #${talk.projectId}` }}</span>
+          <span class="assignment-badge">{{
+            projectName || $t('uiDynamic.projectReference', { p0: talk.projectId })
+          }}</span>
           <span>{{ formatDate(talk.date) }}</span>
           <i aria-hidden="true"></i>
-          <span>{{ talk.time || 'No time' }}</span>
+          <span>{{ talk.time || $t('No time') }}</span>
         </div>
         <p>{{ talk.content }}</p>
         <div class="talk-identifiers">
           <!-- <span><small>Talk ID</small><strong>#{{ talk.id }}</strong></span> -->
           <span
-            ><small>Serial number</small><strong>{{ talk.serialNumber || '—' }}</strong></span
+            ><small>{{ $t('Serial number') }}</small
+            ><strong>{{ talk.serialNumber || '—' }}</strong></span
           >
           <span
-            ><small>Created</small><strong>{{ formatDateTime(talk.createdAt) }}</strong></span
+            ><small>{{ $t('Created') }}</small
+            ><strong>{{ formatDateTime(talk.createdAt) }}</strong></span
           >
         </div>
       </section>
@@ -120,10 +126,10 @@ const formatDateTime = (dateTime: string | null | undefined) => {
       <section class="employee-roster">
         <header>
           <div>
-            <span>Attendance roster</span>
-            <h3>Employees and attendance</h3>
+            <span>{{ $t('Attendance roster') }}</span>
+            <h3>{{ $t('Employees and attendance') }}</h3>
           </div>
-          <span class="roster-count">{{ talk.employees.length }} employees</span>
+          <span class="roster-count">{{ talk.employees.length }} {{ $t('employees') }}</span>
         </header>
 
         <div v-if="talk.employees.length" class="employee-list">
@@ -139,12 +145,12 @@ const formatDateTime = (dateTime: string | null | undefined) => {
             </span>
             <div class="employee-identity">
               <strong>{{ employeeName(employee.title, employee.organizationEmployeeId) }}</strong>
-              <span>Employee ID #{{ employee.organizationEmployeeId }}</span>
+              <span>{{ $t('Employee ID #') }}{{ employee.organizationEmployeeId }}</span>
             </div>
             <div class="attendance-result">
               <span :class="['status-pill', { attended: employee.isAttend }]">
                 <i aria-hidden="true"></i>
-                {{ employee.isAttend ? 'Attended' : 'Absent' }}
+                {{ employee.isAttend ? $t('attended') : $t('Absent') }}
               </span>
               <small v-if="employee.isAttend">{{ formatDateTime(employee.attendAt) }}</small>
             </div>
@@ -153,7 +159,7 @@ const formatDateTime = (dateTime: string | null | undefined) => {
             </svg>
           </RouterLink>
         </div>
-        <div v-else class="no-employees">No employees were assigned to this talk.</div>
+        <div v-else class="no-employees">{{ $t('No employees were assigned to this talk.') }}</div>
       </section>
     </div>
   </Dialog>

@@ -14,12 +14,12 @@ import InfoIcon from '@/shared/icons/infoIcon.vue'
             <Clock />
           </div>
           <div class="date-title">
-            <h5>inspection</h5>
-            <span>22 july / 10 : 30 AM</span>
+            <h5>{{ $t('inspection') }}</h5>
+            <span>{{ $t('22 july / 10 : 30 AM') }}</span>
           </div>
           <div class="items">
             <div class="item" v-for="i in 3" :key="i">
-              <span>false checks :</span>
+              <span>{{ $t('false checks :') }}</span>
               <p>2</p>
             </div>
           </div>
@@ -27,7 +27,11 @@ import InfoIcon from '@/shared/icons/infoIcon.vue'
         <div class="notes">
           <span>{{ $t('notes') }}: </span>
           <p>
-            it is a long established fact that a reader will be distracted by the readable content
+            {{
+              $t(
+                'it is a long established fact that a reader will be distracted by the readable content',
+              )
+            }}
           </p>
         </div>
         <div class="buttons">
@@ -52,8 +56,8 @@ import InfoIcon from '@/shared/icons/infoIcon.vue'
       <div class="user">
         <img src="@/assets/images/Rectangle 39930.png" alt="" />
         <div class="name">
-          <p>Abdallah Mohamed</p>
-          <span class="text-[#9CA3AF]">manager</span>
+          <p>{{ $t('Abdallah Mohamed') }}</p>
+          <span class="text-[#9CA3AF]">{{ $t('manager') }}</span>
         </div>
       </div>
     </div>

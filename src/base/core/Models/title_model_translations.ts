@@ -1,4 +1,5 @@
-import TitleLangModel from "@/base/core/Models/title_lang_model";
+import { getCurrentLocale } from '@/localization/i18n'
+import TitleLangModel from '@/base/core/Models/title_lang_model'
 
 export default class TitleModelTranslations {
   public id: number
@@ -11,9 +12,12 @@ export default class TitleModelTranslations {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static fromMap(data: any): TitleModelTranslations {
-    const lang = localStorage.getItem("lang") ? localStorage.getItem("lang") : "en"
-    const currentLang = lang ; // Replace with your logic to get the current language
+    const lang = getCurrentLocale() ? getCurrentLocale() : 'en'
+    const currentLang = lang // Replace with your logic to get the current language
 
-    return new TitleModelTranslations(data.id, data.titles.find((t) => t.locale === currentLang)?.title || "")
+    return new TitleModelTranslations(
+      data.id,
+      data.titles.find((t) => t.locale === currentLang)?.title || '',
+    )
   }
 }

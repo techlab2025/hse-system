@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class ScopeModel extends TitleInterface {
@@ -9,6 +10,6 @@ export default class ScopeModel extends TitleInterface {
     this.title = title
   }
   static fromMap(data: any): ScopeModel {
-    return new ScopeModel(data.id, data.title)
+    return localizedRecord(new ScopeModel(data.id, data.title), data)
   }
 }

@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type OrganizationDetailsModel from '@/features/setting/Organization/Data/models/OrganizationDetailsModel'
 import type SubscriptionTypeDetailsModel from '@/features/setting/SubscriptionType/Data/models/SubscriptionTypeDetailsModel'
@@ -47,19 +48,22 @@ export default class SubscriptionModel extends TitleInterface {
   }
 
   static fromMap(data: any): SubscriptionModel {
-    return new SubscriptionModel(
-      data.id,
-      data.notes,
-      data.discount_price,
-      data.final_price,
-      data.from_date,
-      data.has_discount,
-      data.organization,
-      data.payment_method_id,
-      data.requested_price,
-      data.status,
-      data.subscription_type,
-      data.to_date,
+    return localizedRecord(
+      new SubscriptionModel(
+        data.id,
+        data.notes,
+        data.discount_price,
+        data.final_price,
+        data.from_date,
+        data.has_discount,
+        data.organization,
+        data.payment_method_id,
+        data.requested_price,
+        data.status,
+        data.subscription_type,
+        data.to_date,
+      ),
+      data,
     )
   }
 }

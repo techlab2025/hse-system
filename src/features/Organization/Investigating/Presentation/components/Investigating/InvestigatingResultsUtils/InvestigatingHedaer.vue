@@ -121,33 +121,34 @@ const getObservationType = (type: number | undefined) => {
     </div> -->
     <div class="meeting-info-container">
       <h2 class="observation-container-content">
-        {{ getObservationType(observationType!) }} report
+        {{ getObservationType(observationType!) }} {{ $t('report') }}
       </h2>
       <div class="meeting-info">
         <p v-if="hasValue(serial)">
-          Incident serial : <span class="meet-date">{{ serial }} </span>
+          {{ $t('Incident serial :') }} <span class="meet-date">{{ serial }} </span>
         </p>
         <p v-if="hasValue(serialName)">
-          Investigation serial : <span class="meet-date">{{ serialName }} </span>
+          {{ $t('Investigation serial :') }} <span class="meet-date">{{ serialName }} </span>
         </p>
         <p v-if="hasValue(title)">
-          Incident title : <span class="team-leader">{{ title }}</span>
+          {{ $t('Incident title :') }} <span class="team-leader">{{ title }}</span>
         </p>
         <p v-if="hasValue(incidantType?.title)">
-          Incident Classification : <span class="incidant-type">{{ incidantType?.title }}</span>
+          {{ $t('Incident Classification :') }}
+          <span class="incidant-type">{{ incidantType?.title }}</span>
         </p>
         <p v-if="hasValue(observationCreator)">
-          Created By : <span class="incidant-type">{{ observationCreator }}</span>
+          {{ $t('Created By :') }} <span class="incidant-type">{{ observationCreator }}</span>
         </p>
         <p v-if="hasValue(dateTimeShift)">
-          date & time & shift :
+          {{ $t('date & time & shift :') }}
           <span class="incidant-type">{{ dateTimeShift }}</span>
         </p>
         <p v-if="hasValue(place)">
-          Work Area / Facility : <span class="team-number">{{ place }}</span>
+          {{ $t('Work Area / Facility :') }} <span class="team-number">{{ place }}</span>
         </p>
         <p v-if="hasValue(equipment?.serial_name)">
-          Equipment / Tag No :
+          {{ $t('Equipment / Tag No :') }}
           <span class="team-number"
             >{{ equipment?.title }}
             {{
@@ -177,7 +178,11 @@ const getObservationType = (type: number | undefined) => {
             :controller="indexDocumentRefrencesController"
             :params="indexDocumentRefrencesParams"
             :label="$t('Regulatory/Legal Compliance Reference')"
-            help-text="Select any regulation, standard, procedure, or legal reference relevant to this investigation."
+            :help-text="
+              $t(
+                'Select any regulation, standard, procedure, or legal reference relevant to this investigation.',
+              )
+            "
             id="DocumentRefrence"
             :placeholder="$t('select your Regulatory/Legal Compliance Reference')"
             @update:modelValue="setDocumentRefrences"

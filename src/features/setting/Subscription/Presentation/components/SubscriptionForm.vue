@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import EditorToolbar from '@/shared/localization/EditorToolbar.vue'
+import { localizeEditorChrome } from '@/localization/editor'
+
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
@@ -19,7 +22,7 @@ import IndexSubscriptionTypeController from '@/features/setting/SubscriptionType
 import IndexSubscriptionTypeParams from '@/features/setting/SubscriptionType/Core/params/indexSubscriptionTypeParams'
 import IndexOrganizationController from '@/features/setting/Organization/Presentation/controllers/indexOrganizationController'
 import IndexOrganizationParams from '@/features/setting/Organization/Core/params/indexOrganizationParams'
-import DatePicker from 'primevue/datepicker';
+import DatePicker from 'primevue/datepicker'
 import Editor from 'primevue/editor'
 
 const emit = defineEmits(['update:data'])
@@ -43,8 +46,6 @@ const langs = ref<{ locale: string; title: string }[]>([
     title: '',
   },
 ])
-
-
 
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 const user = useUserStore()
@@ -101,11 +102,8 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-
-
   const params = props.data?.id
-    ? new editSubscriptionParams(
-      {
+    ? new editSubscriptionParams({
         id: props.data?.id! ?? 0,
         organizationId: Organization.value?.id ?? 0,
         subscriptionTypeId: SubscriptionType.value?.id ?? 0,
@@ -113,26 +111,20 @@ const updateData = () => {
         requestedPrice: requested_price.value,
         hasDiscount: has_discount.value,
         discountPrice: discount_price.value,
-        notes: notes.value
-      }
-    )
-    : new AddSubscriptionParams(
-      {
+        notes: notes.value,
+      })
+    : new AddSubscriptionParams({
         organizationId: Organization.value?.id ?? 0,
         subscriptionTypeId: SubscriptionType.value?.id ?? 0,
         fromDate: FromDate.value,
         requestedPrice: requested_price.value,
         hasDiscount: has_discount.value,
         discountPrice: discount_price.value,
-        notes: notes.value
-      }
-
-    )
+        notes: notes.value,
+      })
 
   emit('update:data', params)
 }
-
-
 
 const setLangs = (data: { locale: string; title: string }[]) => {
   langs.value = data
@@ -160,14 +152,13 @@ watch(
       has_discount.value = newData?.has_discount
       discount_price.value = newData?.discount_price
       notes.value = newData?.notes
-
     }
   },
   { immediate: true },
 )
 
 const indexSubscriptionController = IndexSubscriptionTypeController.getInstance()
-const indexSubscriptionTypeParams = new IndexSubscriptionTypeParams("", 1, 10, 0)
+const indexSubscriptionTypeParams = new IndexSubscriptionTypeParams('', 1, 10, 0)
 const SubscriptionType = ref<TitleInterface>()
 const setSubscriptionType = (data: TitleInterface) => {
   SubscriptionType.value = data
@@ -175,7 +166,7 @@ const setSubscriptionType = (data: TitleInterface) => {
 }
 
 const indexOrganizationController = IndexOrganizationController.getInstance()
-const indexOrganizationParams = new IndexOrganizationParams("", 1, 10, 0)
+const indexOrganizationParams = new IndexOrganizationParams('', 1, 10, 0)
 const Organization = ref<TitleInterface>()
 const setOrganization = (data: TitleInterface) => {
   Organization.value = data
@@ -192,47 +183,86 @@ const setHasDiscount = (value: boolean) => {
 
 const discount_price = ref<number>()
 const notes = ref<string>()
-
-
 </script>
 
 <template>
-
   <div class="input-wrapper col-span-2">
-    <UpdatedCustomInputSelect :modelValue="Organization" :controller="indexOrganizationController"
-      :params="indexOrganizationParams" label="Organization" id="Organization" placeholder="Select Organization"
-      @update:modelValue="setOrganization" />
+    <UpdatedCustomInputSelect
+      :modelValue="Organization"
+      :controller="indexOrganizationController"
+      :params="indexOrganizationParams"
+      :label="$t('Organization')"
+      id="Organization"
+      :placeholder="$t('select_organization')"
+      @update:modelValue="setOrganization"
+    />
   </div>
   <div class="input-wrapper col-span-2">
-    <UpdatedCustomInputSelect :modelValue="SubscriptionType" :controller="indexSubscriptionController"
-      :params="indexSubscriptionTypeParams" label="Subscription Type" id="SubscriptionType"
-      placeholder="Select Subscription Type" @update:modelValue="setSubscriptionType" />
+    <UpdatedCustomInputSelect
+      :modelValue="SubscriptionType"
+      :controller="indexSubscriptionController"
+      :params="indexSubscriptionTypeParams"
+      :label="$t('subscription_type')"
+      id="SubscriptionType"
+      :placeholder="$t('Select Subscription Type')"
+      @update:modelValue="setSubscriptionType"
+    />
   </div>
 
   <div class="input-wrapper col-span-2 mt-10">
     <label for="">{{ $t('from_date') }}</label>
-    <DatePicker v-model="FromDate" class="input" label="select Start Date" id="Date" placeholder="select Start Date"
-      @update:modelValue="updateData" />
+    <DatePicker
+      v-model="FromDate"
+      class="input"
+      :label="$t('select Start Date')"
+      id="Date"
+      :placeholder="$t('select Start Date')"
+      @update:modelValue="updateData"
+    />
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper ">
+  <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="requested_price">{{ $t('requested_price') }}</label>
-    <input id="requested_price" type="text" v-model="requested_price" placeholder="Enter Price" class="input"
-      @input="updateData" />
+    <input
+      dir="auto"
+      id="requested_price"
+      type="text"
+      v-model="requested_price"
+      :placeholder="$t('Enter Price')"
+      class="input"
+      @input="updateData"
+    />
   </div>
   <div class="input-wrapper col-span-2">
-    <CustomCheckbox :index="3" :title="`has_discount`" :checked="has_discount" @update:checked="setHasDiscount" />
+    <CustomCheckbox
+      :index="3"
+      :title="$t('has_discount')"
+      :checked="has_discount"
+      @update:checked="setHasDiscount"
+    />
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper " v-if="has_discount">
+  <div class="col-span-4 md:col-span-2 input-wrapper" v-if="has_discount">
     <label for="discount_price">{{ $t('discount_price') }}</label>
-    <input id="discount_price" type="text" v-model="discount_price" placeholder="Enter Discount Price" class="input"
-      @input="updateData" />
+    <input
+      dir="auto"
+      id="discount_price"
+      type="text"
+      v-model="discount_price"
+      :placeholder="$t('Enter Discount Price')"
+      class="input"
+      @input="updateData"
+    />
   </div>
 
-  <div class="col-span-4 md:col-span-4 input-wrapper ">
-    <Editor v-model="notes" editorStyle="height: 320px" @update:modelValue="updateData" />
+  <div class="col-span-4 md:col-span-4 input-wrapper">
+    <Editor
+      @load="localizeEditorChrome"
+      :key="$i18n.locale"
+      data-localized-editor
+      v-model="notes"
+      editorStyle="height: 320px"
+      @update:modelValue="updateData"
+      ><template #toolbar><EditorToolbar /></template
+    ></Editor>
   </div>
-
-
-
 </template>

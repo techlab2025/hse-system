@@ -70,7 +70,7 @@ const showMore = ref(false)
                   $t('select')
                 }}</label>
               </div>
-              <img :src="DocumnetHeader" alt="header" />
+              <img :src="DocumnetHeader" :alt="$t('header')" />
             </div>
           </div>
         </div>

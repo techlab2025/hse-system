@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Select from 'primevue/select'
 
 type CountryCode = {
@@ -8,6 +9,9 @@ type CountryCode = {
   dialCode: string
 }
 
+const { locale } = useI18n()
+const countryLabel = (country: CountryCode) =>
+  new Intl.DisplayNames([locale.value], { type: 'region' }).of(country.iso) || country.name
 const countries = ref<CountryCode[]>([
   { name: 'Egypt', iso: 'EG', dialCode: '+20' },
   { name: 'Saudi Arabia', iso: 'SA', dialCode: '+966' },
@@ -52,10 +56,10 @@ const updatePhoneCode = (value: CountryCode | null) => {
   <Select
     v-model="selectedCountry"
     :options="countries"
-    optionLabel="name"
+    :optionLabel="countryLabel"
     filter
     input-id="phone-country-code"
-    placeholder="Country code"
+    :placeholder="$t('Country code')"
     class="w-full"
     @update:modelValue="updatePhoneCode"
   >
@@ -88,7 +92,7 @@ const updatePhoneCode = (value: CountryCode | null) => {
         />
 
         <span class="flex-1">
-          {{ option.name }}
+          {{ countryLabel(option) }}
         </span>
 
         <span class="text-gray-500">

@@ -1,4 +1,9 @@
 <script lang="ts" setup>
+import EditorToolbar from '@/shared/localization/EditorToolbar.vue'
+import { localizeEditorChrome } from '@/localization/editor'
+
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { ref, watch } from 'vue'
 import Editor from 'primevue/editor'
 import RadioButton from 'primevue/radiobutton'
@@ -34,11 +39,15 @@ const isSaving = ref(false)
 
 const statusOptions = [
   {
-    label: 'Effective',
+    get label() {
+      return localizeUi('Effective')
+    },
     value: VerificationEnum.Effective,
   },
   {
-    label: 'Ineffective',
+    get label() {
+      return localizeUi('Ineffective')
+    },
     value: VerificationEnum.NotEffective,
   },
   // {
@@ -113,33 +122,47 @@ const submitVerification = async () => {
 <template>
   <section class="verification-section">
     <div class="section-heading">
-      <span>Verification of effectiveness</span>
-      <h2>Make sure actions actually changed the risk</h2>
+      <span>{{ $t('Verification of effectiveness') }}</span>
+      <h2>{{ $t('Make sure actions actually changed the risk') }}</h2>
     </div>
 
     <div class="verification-form">
       <div class="editor-field">
-        <label for="verification_methodology">Verification methodology</label>
+        <label for="verification_methodology">{{ $t('Verification methodology') }}</label>
         <Editor
+          @load="localizeEditorChrome"
+          :key="$i18n.locale"
+          data-localized-editor
           id="verification_methodology"
           v-model="verificationMethodology"
           editorStyle="height: 220px"
-          placeholder="Describe how the verification will be performed, what evidence will be reviewed, and who will validate it."
-        />
+          :placeholder="
+            $t(
+              'Describe how the verification will be performed, what evidence will be reviewed, and who will validate it.',
+            )
+          "
+          ><template #toolbar><EditorToolbar /></template
+        ></Editor>
       </div>
 
       <div class="editor-field">
-        <label for="result_findings">Result & findings</label>
+        <label for="result_findings">{{ $t('Result & findings') }}</label>
         <Editor
+          @load="localizeEditorChrome"
+          :key="$i18n.locale"
+          data-localized-editor
           id="result_findings"
           v-model="resultFindings"
           editorStyle="height: 220px"
-          placeholder="Record the verification result, field notes, evidence summary, and remaining gaps."
-        />
+          :placeholder="
+            $t('Record the verification result, field notes, evidence summary, and remaining gaps.')
+          "
+          ><template #toolbar><EditorToolbar /></template
+        ></Editor>
       </div>
 
       <div class="status-field">
-        <label>Verification status</label>
+        <label>{{ $t('Verification status') }}</label>
         <div class="status-options">
           <label
             v-for="option in statusOptions"
@@ -165,7 +188,7 @@ const submitVerification = async () => {
       :disabled="isSaving || !taskId"
       @click="submitVerification"
     >
-      {{ isSaving ? 'Saving verification...' : 'Save verification' }}
+      {{ isSaving ? $t('Saving verification...') : $t('Save verification') }}
     </button>
   </section>
 </template>

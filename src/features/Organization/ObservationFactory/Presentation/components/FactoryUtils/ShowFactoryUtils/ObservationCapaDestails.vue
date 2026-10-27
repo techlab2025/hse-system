@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import EditorToolbar from '@/shared/localization/EditorToolbar.vue'
+import { localizeEditorChrome } from '@/localization/editor'
+
 import { ref } from 'vue'
 import CreateCapaResultController from '../../../controllers/CreateCapaResultController'
 import CapaParams from '@/features/Organization/ObservationFactory/Core/params/CapaParam'
@@ -34,17 +37,21 @@ const CreatCapaResult = async () => {
     </div>
     <div class="capa-content-container">
       <p class="capa-content-title">
-        {{ $t('Corrective And Preventive Actions') }} <span>(CAPA)</span>
+        {{ $t('Corrective And Preventive Actions') }} <span>{{ $t('(CAPA)') }}</span>
       </p>
-      <img :src="CapaArrows" alt="capa_arrows" />
+      <img :src="CapaArrows" alt="" aria-hidden="true" />
       <div class="capa-actions-container">
         <div class="capa-action" v-if="!data?.corrective">
           <span class="capa-action-title">{{ $t('Corrective') }} </span>
           <Editor
+            @load="localizeEditorChrome"
+            :key="$i18n.locale"
+            data-localized-editor
             v-model="corrective"
             editorStyle="height: 320px"
-            :placeholder="'enter What action should have been taken immediately'"
-          />
+            :placeholder="$t('enter What action should have been taken immediately')"
+            ><template #toolbar><EditorToolbar /></template
+          ></Editor>
           <button @click.prevent="CreatCapaResult" class="corrective-button">
             {{ $t('submit') }}
           </button>
@@ -58,11 +65,15 @@ const CreatCapaResult = async () => {
         <div class="capa-action preventive" v-if="!data?.preventive">
           <span class="capa-action-title">{{ $t('Preventive') }} </span>
           <Editor
+            @load="localizeEditorChrome"
+            :key="$i18n.locale"
+            data-localized-editor
             v-model="preventive"
             editorStyle="height: 320px"
-            :placeholder="'enter What action should have been taken immediately'"
+            :placeholder="$t('enter What action should have been taken immediately')"
             style="max-width: 100% !important"
-          />
+            ><template #toolbar><EditorToolbar /></template
+          ></Editor>
           <button @click.prevent="CreatCapaResult" class="corrective-button">
             {{ $t('submit') }}
           </button>

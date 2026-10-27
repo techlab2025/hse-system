@@ -127,7 +127,14 @@ const actionList = (id: number, deleteHeader: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchHeader())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchHeader" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchHeader"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
@@ -140,14 +147,16 @@ const actionList = (id: number, deleteHeader: (id: number) => void) => [
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.WEBSITE,
-    PermissionsEnum.HEADER_ALL,
-    PermissionsEnum.HEADER_DELETE,
-    PermissionsEnum.HEADER_FETCH,
-    PermissionsEnum.HEADER_UPDATE,
-    PermissionsEnum.HEADER_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.WEBSITE,
+      PermissionsEnum.HEADER_ALL,
+      PermissionsEnum.HEADER_DELETE,
+      PermissionsEnum.HEADER_FETCH,
+      PermissionsEnum.HEADER_UPDATE,
+      PermissionsEnum.HEADER_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -169,31 +178,43 @@ const actionList = (id: number, deleteHeader: (id: number) => void) => [
                 <td data-label="#">
                   <router-link :to="`/admin/header/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
-                <td data-label="title">{{ wordSlice(item.title, 15) }}</td>
-                <td data-label="subtitle">{{ wordSlice(item.subtitle, 20) }}</td>
+                <td :data-label="$t('title')">{{ wordSlice(item.title, 15) }}</td>
+                <td :data-label="$t('subtitle')">{{ wordSlice(item.subtitle, 20) }}</td>
 
-                <td data-label="image">
+                <td :data-label="$t('image')">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
-                <td data-label="status">
-                  <PermissionBuilder :code="[
-                    PermissionsEnum.WEBSITE,
-                    PermissionsEnum.HEADER_ALL,
-                    PermissionsEnum.HEADER_STATUS,
-                  ]">
-                    <ToggleSwitch :modelValue="item.is_active === 1" binary
-                      @update:model-value="changeStatusHeader(item.id)" />
+                <td :data-label="$t('status')">
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.WEBSITE,
+                      PermissionsEnum.HEADER_ALL,
+                      PermissionsEnum.HEADER_STATUS,
+                    ]"
+                  >
+                    <ToggleSwitch
+                      :modelValue="item.is_active === 1"
+                      binary
+                      @update:model-value="changeStatusHeader(item.id)"
+                    />
                   </PermissionBuilder>
                 </td>
 
-                <td data-label="Actions">
-                  <DropList :actionList="actionList(item.id, deleteHeader)" @delete="deleteHeader(item.id)" />
+                <td :data-label="$t('Actions')">
+                  <DropList
+                    :actionList="actionList(item.id, deleteHeader)"
+                    @delete="deleteHeader(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -202,20 +223,40 @@ const actionList = (id: number, deleteHeader: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/admin/header/add`" addText="Add Header"
-          description="You have no Header .. All your joined customers will appear here when you add your customer data"
-          title="You have No Header" />
+        <DataEmpty
+          :link="`/admin/header/add`"
+          :addText="$t('auditUi.add_header')"
+          :description="
+            $t(
+              'You have no Header .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Header')"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/admin/header/add`" addText="Add Header"
-          description="You have no Header .. All your joined customers will appear here when you add your customer data"
-          title="You have No Header" />
+        <DataFailed
+          :link="`/admin/header/add`"
+          :addText="$t('auditUi.add_header')"
+          :description="
+            $t(
+              'You have no Header .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Header')"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no Header .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Header .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+      />
     </template>
   </PermissionBuilder>
 </template>

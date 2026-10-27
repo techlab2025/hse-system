@@ -194,38 +194,41 @@ const updateAdminData = (status: boolean) => {
 
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="name">Organization Name</label>
+    <label for="name">{{ $t('organization_name') }}</label>
     <input
+      dir="auto"
       type="text"
       @input="updateData"
       id="name"
       v-model="name"
       class="input"
-      placeholder="Enter Your Name"
+      :placeholder="$t('Enter Your Name')"
     />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="email">Organization Email</label>
+    <label for="email">{{ $t('Organization Email') }}</label>
     <input
+      dir="ltr"
       type="email"
       id="email"
       @input="updateData"
       v-model="email"
       class="input"
-      placeholder="Enter Your Email"
+      :placeholder="$t('Enter Your Email')"
     />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="Phone">Organization Phone</label>
+    <label for="Phone">{{ $t('Organization Phone') }}</label>
     <input
+      dir="auto"
       type="phone"
       id="Phone"
       @input="updateData"
       v-model="Phone"
       class="input"
-      placeholder="Enter Your Phone"
+      :placeholder="$t('Enter Your Phone')"
     />
   </div>
 
@@ -234,9 +237,9 @@ const updateAdminData = (status: boolean) => {
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
-      label="Industry"
+      :label="$t('industry')"
       id="Organization"
-      placeholder="Select industry"
+      :placeholder="$t('Select industry')"
       @update:modelValue="setIndustry"
     />
   </div>
@@ -247,10 +250,10 @@ const updateAdminData = (status: boolean) => {
       :modelValue="lang"
       :controller="indexLangController"
       :params="indexLangParams"
-      label="Language"
+      :label="$t('Language')"
       id="lang"
       :type="2"
-      placeholder="Select Language"
+      :placeholder="$t('Select Language')"
       @update:modelValue="setLang"
       :required="true"
     />
@@ -262,10 +265,10 @@ const updateAdminData = (status: boolean) => {
       :modelValue="SelectedCountry"
       :controller="indexLocationCountriesController"
       :params="indexLocationCountriesParams"
-      label="Country"
+      :label="$t('Country')"
       id="Country"
       :type="2"
-      placeholder="Select Country"
+      :placeholder="$t('Select Country')"
       @update:modelValue="setCountry"
       :required="true"
     />
@@ -294,9 +297,9 @@ const updateAdminData = (status: boolean) => {
     <SingleFileUpload
       :modelValue="image"
       @update:modelValue="setImage"
-      label="Image"
+      :label="$t('image')"
       id="image"
-      placeholder="Select image"
+      :placeholder="$t('Select image')"
     />
   </div>
 </template>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
 import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
 
@@ -70,7 +72,7 @@ const fileUpload = async (file: File | null) => {
     mappedData.value = null
   } catch (error) {
     console.error('Error processing file:', error)
-    errorMsg.value = 'Failed to process the file.'
+    errorMsg.value = localizeUi('failed_to_process_file')
   } finally {
     isLoading.value = false
   }
@@ -89,7 +91,9 @@ watch(
 // ─── Column Mapping ───────────────────────────────────────────────────────────
 const SendData = ref<string[]>(['title'])
 const SendDataLabels: Record<string, string> = {
-  title: 'Permit To Work Type Title',
+  get title() {
+    return localizeUi('Permit To Work Type Title')
+  },
 }
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return
@@ -139,7 +143,6 @@ const deleteRow = (rowIndex: number) => {
     mappedData.value[0],
     ...mappedData.value.slice(1).filter((_, i) => i !== rowIndex),
   ]
-
 }
 
 const onMappingClose = () => {
@@ -162,7 +165,7 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
       <span class="loading-dot" />
       <span class="loading-dot" />
       <span class="loading-dot" />
-      <span class="loading-label">Processing file…</span>
+      <span class="loading-label">{{ $t('processing_file') }}</span>
     </div>
 
     <FileUpload
@@ -204,8 +207,8 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
 
         <div class="table-container">
           <div class="table-header">
-            <h3 class="table-title">Mapped Data Preview</h3>
-            <span class="table-badge">{{ mappedData.length - 1 }} rows</span>
+            <h3 class="table-title">{{ $t('Mapped Data Preview') }}</h3>
+            <span class="table-badge">{{ mappedData.length - 1 }} {{ $t('rows') }}</span>
           </div>
           <div class="table-responsive">
             <table class="main-table">
@@ -225,7 +228,11 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
                     <span>{{ value }}</span>
                   </td>
                   <td>
-                    <button class="btn-delete-row" @click="deleteRow(rowIndex)" title="Delete row">
+                    <button
+                      class="btn-delete-row"
+                      @click="deleteRow(rowIndex)"
+                      :title="$t('delete_row')"
+                    >
                       🗑
                     </button>
                   </td>
@@ -235,7 +242,7 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
           </div>
         </div>
 
-        <button class="btn-confirm" @click="addPTWTypes">Confirm & Submit</button>
+        <button class="btn-confirm" @click="addPTWTypes">{{ $t('Confirm & Submit') }}</button>
       </template>
     </template>
   </div>
@@ -386,7 +393,6 @@ a:hover {
   font-family: 'Regular';
   /* margin-bottom: 8px; */
 }
-
 
 .chips {
   display: flex;
@@ -546,7 +552,7 @@ kbd {
 
 .main-table th {
   padding: 12px 16px;
-  text-align: left;
+  text-align: start;
   color: var(--brand-primary-500);
   border-bottom: 2px solid var(--brand-primary-100);
 }

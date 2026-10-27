@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
 import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams'
 import IndexEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/indexEquipmentTypeController'
@@ -27,7 +28,7 @@ import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
-import * as XLSX from "xlsx";
+import * as XLSX from 'xlsx'
 import SystemEquipmentTypes from '../supcomponents/SystemEquipmentTypes.vue'
 import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
@@ -57,14 +58,14 @@ const fetchEquipmentType = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
-  withPage: number = 1
+  withPage: number = 1,
 ) => {
   const deleteEquipmentTypeParams = new IndexEquipmentTypeParams(
     query,
     pageNumber,
     perPage,
     withPage,
-    id.value ?? ''
+    id.value ?? '',
   )
   await indexEquipmentTypeController.getData(deleteEquipmentTypeParams)
 }
@@ -104,7 +105,7 @@ watch(
   },
   {
     deep: true,
-  }
+  },
 )
 
 const { user } = useUserStore()
@@ -124,8 +125,9 @@ const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
   {
     text: t('edit'),
     icon: ActionsTableEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-      }/equipment-type/${id}`,
+    link: `/${
+      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/equipment-type/${id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
       PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
@@ -185,35 +187,29 @@ watch(
   (Newvalue) => {
     // id = Newvalue
     fetchEquipmentType()
-  }
+  },
 )
 
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert("No data available to export");
-    return;
+    alert(localizeUi('No data available to export'))
+    return
   }
-  const worksheetData = state.value.data.map(
-    (item: Record<string, unknown>) => {
-      const it = item as any;
-      return {
-        "title": it.title || "N/A",
-        // "Type": it.type || "N/A",
-
-      };
-    },
-  );
-  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
-  return downloadLookupWorkbook(workbook, "Equipment-type.xlsx")
-};
+  const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
+    const it = item as any
+    return {
+      title: it.title || 'N/A',
+      // "Type": it.type || "N/A",
+    }
+  })
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Invoices')
+  return downloadLookupWorkbook(workbook, 'Equipment-type.xlsx')
+}
 
 const DownloadExample = () => {
-  const worksheetData = [
-    { title: 'Example Equipment Type' },
-    { title: 'Example Equipment Type 2' },
-  ]
+  const worksheetData = [{ title: 'Example Equipment Type' }, { title: 'Example Equipment Type 2' }]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'EquipmentTypes')
@@ -234,47 +230,44 @@ const IndexEquipmentTypeactionList = () => [
   },
   {
     text: t('add_equipment_type'),
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization' }/equipment-type/add`,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment-type/add`,
     icon: ActionsListAddIcon,
     primary: true,
     type: ActionItemsTypeEnum.Info,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.EQUIPMENT_TYPE_CREATE
-    ],
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.EQUIPMENT_TYPE_CREATE],
   },
   {
     text: t('upload_complated_template'),
     type: ActionItemsTypeEnum.Warning,
     action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.EQUIPMENT_TYPE_CREATE
-    ],
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.EQUIPMENT_TYPE_CREATE],
   },
   {
     text: t('download_excel_template'),
     icon: ExceIcon,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.EQUIPMENT_TYPE_CREATE
-    ],
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.EQUIPMENT_TYPE_CREATE],
   },
 ]
-
 </script>
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 mt-2">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="; (word = ''), searchEquipmentType()">
+      <span class="icon-remove" @click=";((word = ''), searchEquipmentType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchEquipmentType" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchEquipmentType"
+      />
     </div>
 
     <div class="col-span-2 flex justify-end gap-2">
@@ -309,7 +302,7 @@ const IndexEquipmentTypeactionList = () => [
         <SystemEquipmentTypes />
       </PermissionBuilder> -->
 
-       <ActionsList
+      <ActionsList
         feature-name="action_feature_equipment_types"
         :show-actions="true"
         :actionList="IndexEquipmentTypeactionList()"
@@ -324,20 +317,22 @@ const IndexEquipmentTypeactionList = () => [
     <SystemEquipmentTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.EQUIPMENT_TYPE_ALL,
-    PermissionsEnum.EQUIPMENT_TYPE_DELETE,
-    PermissionsEnum.EQUIPMENT_TYPE_FETCH,
-    PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-    PermissionsEnum.EQUIPMENT_TYPE_CREATE,
-    PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
-    PermissionsEnum.ORG_EQUIPMENT_TYPE_DELETE,
-    PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
-    PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
-    PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.EQUIPMENT_TYPE_DELETE,
+      PermissionsEnum.EQUIPMENT_TYPE_FETCH,
+      PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_DELETE,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
+      PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -347,7 +342,9 @@ const IndexEquipmentTypeactionList = () => [
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
                 <!-- <th scope="col">{{ $t('has_certificate') }}</th> -->
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('all_industries') }}</th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                  {{ $t('all_industries') }}
+                </th>
                 <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{ $t('industries') }}
                 </th>
@@ -362,36 +359,49 @@ const IndexEquipmentTypeactionList = () => [
                 <td data-label="#">
                   {{ index + 1 }}
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
                 <!-- <td data-label="certificate">{{ item.hasCertificate ? $t('yes') : $t('no') }}</td> -->
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ item.allIndustries
-                  ? $t('yes') : $t('no') }}</td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                <td
+                  :data-label="$t('all_industries')"
+                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                >
+                  {{ item.allIndustries ? $t('yes') : $t('no') }}
+                </td>
+                <td
+                  :data-label="$t('all_industries')"
+                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                >
                   {{
                     item.industries.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')
                       : $t('no')
                   }}
                 </td>
-                <td data-label="all_industries">
+                <td :data-label="$t('all_industries')">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusEquipmentType-->
                   <!--                  v-if="item.EquipmentTypeStatus === EquipmentTypeStatusEnum.Draft"-->
                   <!--                  :EquipmentTypeId="item.id"-->
                   <!--                  @EquipmentTypeChangeStatus="fetchEquipmentType"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteEquipmentType)"
-                    @delete="deleteEquipmentType(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteEquipmentType)"
+                    @delete="deleteEquipmentType(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -400,36 +410,62 @@ const IndexEquipmentTypeactionList = () => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <PermissionBuilder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.EQUIPMENT_TYPE_CREATE,
-          PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
-        ]">
-          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/equipment-type/add`" addText="Add EquipmentType"
-            description="You have no Equipment Types .. All your joined customers will appear here when you add your customer data"
-            title="You have No Equipment Types" />
+        <PermissionBuilder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+            PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
+          ]"
+        >
+          <DataEmpty
+            :link="`/${
+              user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+            }/equipment-type/add`"
+            :addText="$t('Add_EquipmentType')"
+            :description="
+              $t(
+                'You have no Equipment Types .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Equipment Types')"
+          />
         </PermissionBuilder>
       </template>
       <template #failed>
-        <PermissionBuilder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.EQUIPMENT_TYPE_CREATE,
-          PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
-        ]">
-          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/add/EquipmentType`" addText="Add EquipmentType"
-            description="You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
-            title="You have No Equipment Types" />
+        <PermissionBuilder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.EQUIPMENT_TYPE_CREATE,
+            PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
+          ]"
+        >
+          <DataFailed
+            :link="`/${
+              user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+            }/add/EquipmentType`"
+            :addText="$t('Add_EquipmentType')"
+            :description="
+              $t(
+                'You have no EquipmentType .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Equipment Types')"
+          />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no EquipmentType .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no EquipmentType .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+      />
     </template>
   </PermissionBuilder>
 
@@ -443,9 +479,11 @@ const IndexEquipmentTypeactionList = () => [
     <UploadEquipmentTypeExeclSheet
       :initial-file="pendingFile"
       @uploaded="
-        showUploadDialog = false;
-        pendingFile = null;
-        fetchEquipmentType()
+        () => {
+          showUploadDialog = false
+          pendingFile = null
+          fetchEquipmentType()
+        }
       "
     />
   </Dialog>

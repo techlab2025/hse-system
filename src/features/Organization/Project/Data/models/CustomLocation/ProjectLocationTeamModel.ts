@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleModel from '@/base/core/Models/title_model'
 import ProjectLocationEmployeeModel from './ProjectLocationEmployeeModel'
 
@@ -25,15 +26,18 @@ export default class ProjectLocationTeamModel extends TitleModel {
   static fromMap(data: any): ProjectLocationTeamModel {
     const projectTeamId =
       data.project_location_team_id ?? data.project_team_id ?? data.location_id ?? 0
-    return new ProjectLocationTeamModel(
-      projectTeamId,
-      data.team_title || data.title || data.location_title,
-      (data.project_location_team_employees || data.project_location_employees)?.map((item) =>
-        ProjectLocationEmployeeModel.fromMap(item),
-      ) ?? [],
-      projectTeamId,
-      data.team_id,
-      data.team_title || data.title,
+    return localizedRecord(
+      new ProjectLocationTeamModel(
+        projectTeamId,
+        data.team_title || data.title || data.location_title,
+        (data.project_location_team_employees || data.project_location_employees)?.map((item) =>
+          ProjectLocationEmployeeModel.fromMap(item),
+        ) ?? [],
+        projectTeamId,
+        data.team_id,
+        data.team_title || data.title,
+      ),
+      data,
     )
   }
 

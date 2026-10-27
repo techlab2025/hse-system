@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { defaultTypography, normalizeTypography, type Typography } from './typography'
 import {
   defaultSidebarLayout,
@@ -6,51 +7,166 @@ import {
 } from './sidebarLayout'
 
 export const colorFields = [
-  { key: 'sidebarBackground', label: 'Sidebar background', fallback: '#0b294c', group: 'Sidebar' },
-  { key: 'sidebarText', label: 'Sidebar text', fallback: '#c7d7eb', group: 'Sidebar' },
+  {
+    key: 'sidebarBackground',
+    get label() {
+      return localizeUi('Sidebar background')
+    },
+    fallback: '#0b294c',
+    group: 'Sidebar',
+  },
+  {
+    key: 'sidebarText',
+    get label() {
+      return localizeUi('Sidebar text')
+    },
+    fallback: '#c7d7eb',
+    group: 'Sidebar',
+  },
   {
     key: 'sidebarActiveBackground',
-    label: 'Active sidebar background',
+    get label() {
+      return localizeUi('Active sidebar background')
+    },
     fallback: '#256df4',
     group: 'Sidebar',
   },
-  { key: 'sidebarActiveText', label: 'Active sidebar text', fallback: '#ffffff', group: 'Sidebar' },
-  { key: 'headerBackground', label: 'Header background', fallback: '#ffffff', group: 'Header' },
-  { key: 'headerText', label: 'Header text', fallback: '#10243f', group: 'Header' },
-  { key: 'systemBackground', label: 'System background', fallback: '#f4f7fb', group: 'Sections' },
-  { key: 'sectionBackground', label: 'Section background', fallback: '#ffffff', group: 'Sections' },
-  { key: 'sectionText', label: 'Section text', fallback: '#10243f', group: 'Sections' },
-  { key: 'tagBackground', label: 'Tag background', fallback: '#e8f0ff', group: 'Tags' },
-  { key: 'tagText', label: 'Tag text', fallback: '#256df4', group: 'Tags' },
-  { key: 'inputBackground', label: 'Input background', fallback: '#ffffff', group: 'Inputs' },
-  { key: 'inputText', label: 'Input text', fallback: '#10243f', group: 'Inputs' },
-  { key: 'inputBorder', label: 'Input border', fallback: '#d9e3f0', group: 'Inputs' },
+  {
+    key: 'sidebarActiveText',
+    get label() {
+      return localizeUi('Active sidebar text')
+    },
+    fallback: '#ffffff',
+    group: 'Sidebar',
+  },
+  {
+    key: 'headerBackground',
+    get label() {
+      return localizeUi('Header background')
+    },
+    fallback: '#ffffff',
+    group: 'Header',
+  },
+  {
+    key: 'headerText',
+    get label() {
+      return localizeUi('Header text')
+    },
+    fallback: '#10243f',
+    group: 'Header',
+  },
+  {
+    key: 'systemBackground',
+    get label() {
+      return localizeUi('System background')
+    },
+    fallback: '#f4f7fb',
+    group: 'Sections',
+  },
+  {
+    key: 'sectionBackground',
+    get label() {
+      return localizeUi('Section background')
+    },
+    fallback: '#ffffff',
+    group: 'Sections',
+  },
+  {
+    key: 'sectionText',
+    get label() {
+      return localizeUi('Section text')
+    },
+    fallback: '#10243f',
+    group: 'Sections',
+  },
+  {
+    key: 'tagBackground',
+    get label() {
+      return localizeUi('Tag background')
+    },
+    fallback: '#e8f0ff',
+    group: 'Tags',
+  },
+  {
+    key: 'tagText',
+    get label() {
+      return localizeUi('Tag text')
+    },
+    fallback: '#256df4',
+    group: 'Tags',
+  },
+  {
+    key: 'inputBackground',
+    get label() {
+      return localizeUi('Input background')
+    },
+    fallback: '#ffffff',
+    group: 'Inputs',
+  },
+  {
+    key: 'inputText',
+    get label() {
+      return localizeUi('Input text')
+    },
+    fallback: '#10243f',
+    group: 'Inputs',
+  },
+  {
+    key: 'inputBorder',
+    get label() {
+      return localizeUi('Input border')
+    },
+    fallback: '#d9e3f0',
+    group: 'Inputs',
+  },
   {
     key: 'primaryButtonBackground',
-    label: 'Primary button background',
+    get label() {
+      return localizeUi('Primary button background')
+    },
     fallback: '#256df4',
     group: 'Buttons',
   },
-  { key: 'primaryButtonText', label: 'Primary button text', fallback: '#ffffff', group: 'Buttons' },
+  {
+    key: 'primaryButtonText',
+    get label() {
+      return localizeUi('Primary button text')
+    },
+    fallback: '#ffffff',
+    group: 'Buttons',
+  },
   {
     key: 'secondaryButtonBackground',
-    label: 'Secondary button background',
+    get label() {
+      return localizeUi('Secondary button background')
+    },
     fallback: '#ffffff',
     group: 'Buttons',
   },
   {
     key: 'secondaryButtonText',
-    label: 'Secondary button text',
+    get label() {
+      return localizeUi('Secondary button text')
+    },
     fallback: '#10243f',
     group: 'Buttons',
   },
   {
     key: 'breadcrumbBackground',
-    label: 'Breadcrumb background',
+    get label() {
+      return localizeUi('Breadcrumb background')
+    },
     fallback: '#ffffff',
     group: 'Breadcrumb',
   },
-  { key: 'breadcrumbText', label: 'Breadcrumb text', fallback: '#256df4', group: 'Breadcrumb' },
+  {
+    key: 'breadcrumbText',
+    get label() {
+      return localizeUi('Breadcrumb text')
+    },
+    fallback: '#256df4',
+    group: 'Breadcrumb',
+  },
 ] as const
 export const colorGroups = [
   'Sidebar',
@@ -63,14 +179,44 @@ export const colorGroups = [
 ] as const
 export type AppearanceColor = (typeof colorFields)[number]['key']
 export const headerFields = [
-  { key: 'brand', label: 'Logo & menu' },
-  { key: 'project', label: 'Project selector' },
-  { key: 'actions', label: 'Profile, notifications & language' },
+  {
+    key: 'brand',
+    get label() {
+      return localizeUi('Logo & menu')
+    },
+  },
+  {
+    key: 'project',
+    get label() {
+      return localizeUi('Project selector')
+    },
+  },
+  {
+    key: 'actions',
+    get label() {
+      return localizeUi('Profile, notifications & language')
+    },
+  },
 ] as const
 export const headerActionFields = [
-  { key: 'language', label: 'Language' },
-  { key: 'notifications', label: 'Notifications' },
-  { key: 'profile', label: 'Profile' },
+  {
+    key: 'language',
+    get label() {
+      return localizeUi('Language')
+    },
+  },
+  {
+    key: 'notifications',
+    get label() {
+      return localizeUi('notifications')
+    },
+  },
+  {
+    key: 'profile',
+    get label() {
+      return localizeUi('profile')
+    },
+  },
 ] as const
 export type HeaderActionField = (typeof headerActionFields)[number]['key']
 export type HeaderField = (typeof headerFields)[number]['key']

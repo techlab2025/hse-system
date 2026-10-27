@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
@@ -31,7 +32,7 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
       if (params?.data?.length > 0) {
         for (const el of params.data) {
           if (!el.title) {
-            new OpenWarningDilaog('title Is Required').openDialog()
+            new OpenWarningDilaog(localizeUi('Title Is Required')).openDialog()
             return
           }
         }
@@ -45,7 +46,7 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
       console.log(route?.path, 'route')
       if (route?.path?.includes('hazard/add') && !params?.ParentId) {
         console.log('inside')
-        new OpenWarningDilaog('Should Select Hazard Classification').openDialog()
+        new OpenWarningDilaog(localizeUi('Should Select Hazard Classification')).openDialog()
         return
       }
 
@@ -54,7 +55,7 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })

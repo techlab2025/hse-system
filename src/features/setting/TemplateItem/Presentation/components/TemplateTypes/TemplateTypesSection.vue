@@ -16,13 +16,13 @@ const UpdateData = () => {
   <div class="template-types-container">
     <div class="template-types-heading">
       <p class="template-title">{{ $t('result_type') }}</p>
-      <span class="template-title-note">Choose how inspectors answer this item.</span>
+      <span class="template-title-note">{{ $t('Choose how inspectors answer this item.') }}</span>
     </div>
 
     <div class="action-box drop-down" :class="{ selected: SelectedAction == ActionsEnum.DROPDOWN }">
       <label for="drop-down">
-        <span>drop-down select</span>
-        <img :src="DropDown" alt="dropdown" />
+        <span>{{ $t('drop-down select') }}</span>
+        <img :src="DropDown" :alt="$t('Dropdown')" />
       </label>
       <input
         type="radio"
@@ -35,8 +35,8 @@ const UpdateData = () => {
     </div>
     <div class="action-box text-area" :class="{ selected: SelectedAction == ActionsEnum.TEXTAREA }">
       <label for="text-area">
-        <span>text area</span>
-        <img :src="TextAreaAction" alt="text area" />
+        <span>{{ $t('text area') }}</span>
+        <img :src="TextAreaAction" :alt="$t('text area')" />
       </label>
       <input
         type="radio"
@@ -49,8 +49,8 @@ const UpdateData = () => {
     </div>
     <div class="action-box radio" :class="{ selected: SelectedAction == ActionsEnum.RADIOBUTTON }">
       <label for="radio">
-        <span>Single Choice</span>
-        <img :src="Radio" alt="radio button" />
+        <span>{{ $t('Single Choice') }}</span>
+        <img :src="Radio" :alt="$t('radio button')" />
       </label>
       <input
         type="radio"
@@ -63,8 +63,8 @@ const UpdateData = () => {
     </div>
     <div class="action-box checkbox" :class="{ selected: SelectedAction == ActionsEnum.CHECKBOX }">
       <label for="checkbox">
-        <span>Multiple Choice</span>
-        <img :src="Checkbox" alt="checkbox" />
+        <span>{{ $t('Multiple Choice') }}</span>
+        <img :src="Checkbox" :alt="$t('Checkbox')" />
       </label>
       <input
         type="radio"
@@ -141,7 +141,11 @@ const UpdateData = () => {
 
 .action-box.selected {
   border-color: color-mix(in srgb, var(--brand-primary-500) 38%, transparent);
-  background: linear-gradient(135deg, color-mix(in srgb, var(--brand-primary-500) 8%, transparent), color-mix(in srgb, var(--surface-1) 96%, transparent));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--brand-primary-500) 8%, transparent),
+    color-mix(in srgb, var(--surface-1) 96%, transparent)
+  );
   box-shadow: 0 14px 28px color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
 }
 

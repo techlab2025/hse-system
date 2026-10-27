@@ -91,15 +91,27 @@ const UploadCertificateImage = async () => {
   <button class="invalid-date" @click="visible = true" v-if="notRequired">
     <Addcertificates />
   </button>
-  <button class="not-required" @click="visible = true" v-if="status === CertificateStatusEnum.Invalid">
+  <button
+    class="not-required"
+    @click="visible = true"
+    v-if="status === CertificateStatusEnum.Invalid"
+  >
     <InVaildIcon />
   </button>
-  <button class="expired-certificate renew" @click="visible = true" v-if="status === CertificateStatusEnum.Expired">
-    {{ `Renew` }}
+  <button
+    class="expired-certificate renew"
+    @click="visible = true"
+    v-if="status === CertificateStatusEnum.Expired"
+  >
+    {{ $t('Renew') }}
     <Repeaticon />
   </button>
-  <button class="not-required" @click="visible = true" v-if="status === CertificateStatusEnum.Valid">
-    {{ `Valid` }}
+  <button
+    class="not-required"
+    @click="visible = true"
+    v-if="status === CertificateStatusEnum.Valid"
+  >
+    {{ $t('valid') }}
   </button>
   <Dialog v-model:visible="visible" :dismissable-mask="true" modal :style="{ width: '50rem' }">
     <template #header>
@@ -114,18 +126,36 @@ const UploadCertificateImage = async () => {
       <hr />
       <div class="dialog-content mt-10">
         <div class="input-wrapper">
-          <label for="Notes">Notes</label>
-          <input type="text" v-model="Notes" class="input" placeholder="Add notes ..." />
+          <label for="Notes">{{ $t('Notes') }}</label>
+          <input
+            dir="auto"
+            type="text"
+            v-model="Notes"
+            class="input"
+            :placeholder="$t('Add notes ...')"
+          />
         </div>
         <div class="input-wrapper mt-10" v-if="is_expire_date">
           <label for="">{{ $t('select_expire_date') }}</label>
-          <DatePicker v-model="SelectedData" class="input" label="select Expiry Date" id="Day"
-            placeholder="select Expiry Date" @update:modelValue="UpdateDate" />
+          <DatePicker
+            v-model="SelectedData"
+            class="input"
+            :label="$t('select Expiry Date')"
+            id="Day"
+            :placeholder="$t('select Expiry Date')"
+            @update:modelValue="UpdateDate"
+          />
         </div>
         <div class="input-wrapper mt-10">
           <label for="">{{ $t('select_issue_date') }}</label>
-          <DatePicker v-model="SelectedIssueData" class="input" label="select Issue Date" id="Day"
-            placeholder="select Issue Date" @update:modelValue="UpdateIssueDate" />
+          <DatePicker
+            v-model="SelectedIssueData"
+            class="input"
+            :label="$t('select Issue Date')"
+            id="Day"
+            :placeholder="$t('select Issue Date')"
+            @update:modelValue="UpdateIssueDate"
+          />
         </div>
 
         <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1 mt-10">
@@ -143,7 +173,9 @@ const UploadCertificateImage = async () => {
           />
         </div>
       </div>
-      <button class="btn btn-primary w-full mt-10" @click="UploadCertificateImage">Confirm</button>
+      <button class="btn btn-primary w-full mt-10" @click="UploadCertificateImage">
+        {{ $t('Confirm') }}
+      </button>
     </div>
   </Dialog>
 </template>

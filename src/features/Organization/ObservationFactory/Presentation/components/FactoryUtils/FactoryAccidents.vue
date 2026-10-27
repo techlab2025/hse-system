@@ -44,8 +44,8 @@ watch(
     <div class="another-meeting-header" v-if="!isOpen">
       <!-- <div class="section-title-with-help"> -->
       <HeaderPage
-        title="incident_injuries_question"
-        subtitle="incident_injuries_description"
+        :title="$t('incident_injuries_question')"
+        :subtitle="$t('incident_injuries_description')"
         :img="acc"
         class="title-header"
       />
@@ -102,6 +102,13 @@ watch(
     min-width: 0;
     background-color: transparent !important;
   }
+
+  /* html[lang="ar"]{
+    .meeting-status{
+    left: unset;
+    right:55% !important;
+  }
+  } */
 
   .meeting-status {
     display: flex !important;

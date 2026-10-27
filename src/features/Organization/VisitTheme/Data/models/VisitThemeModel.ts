@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class VisitThemeModel extends TitleInterface {
@@ -6,7 +7,7 @@ export default class VisitThemeModel extends TitleInterface {
   }
 
   static fromMap(data: any): VisitThemeModel {
-    return new VisitThemeModel(data.id, data.title)
+    return localizedRecord(new VisitThemeModel(data.id, data.title), data)
   }
 
   static example: VisitThemeModel[] = [

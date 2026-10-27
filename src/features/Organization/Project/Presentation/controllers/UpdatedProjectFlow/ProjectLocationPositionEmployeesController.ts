@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -30,7 +31,7 @@ export default class ProjectLocationPositionEmployeesController extends Controll
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Saved successfully',
+          titleContent: localizeUi('Saved successfully'),
           imageElement: successImage,
           messageContent: null,
         })

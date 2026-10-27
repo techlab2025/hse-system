@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { defaultAppearance, normalizeAppearance, type Appearance } from '../../appearance'
 
 export interface SystemIdentity {
@@ -52,10 +53,10 @@ export default class SystemIdentityModel {
 
   static fromMap(data: Record<string, unknown>): SystemIdentityModel {
     if (!Object.prototype.hasOwnProperty.call(data, 'identity'))
-      throw new Error('Invalid system identity response')
+      throw new Error(localizeUi('Invalid system identity response'))
     const value = data.identity
     if (value !== null && (!value || typeof value !== 'object' || Array.isArray(value)))
-      throw new Error('Invalid system identity response')
+      throw new Error(localizeUi('Invalid system identity response'))
     if (value !== null) {
       const candidate = value as Partial<SystemIdentity>
       if (
@@ -72,7 +73,7 @@ export default class SystemIdentityModel {
         typeof candidate.appearance !== 'object' ||
         Array.isArray(candidate.appearance)
       )
-        throw new Error('Invalid system identity settings')
+        throw new Error(localizeUi('Invalid system identity settings'))
     }
     return new SystemIdentityModel(
       value === null ? null : normalizeSystemIdentity(value as Partial<SystemIdentity>),

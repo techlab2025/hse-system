@@ -22,7 +22,6 @@ const params = ref<Params | null>(null)
 const showEquipmentController = ShowEquipmentController.getInstance()
 const state = ref(showEquipmentController.state.value)
 
-
 const fetchEquipmentDetails = async () => {
   const params = new ShowEquipmentParams(Number(id))
   await showEquipmentController.showEquipmentType(params)
@@ -61,10 +60,14 @@ const setParams = (data: Params) => {
 <template>
   <DataStatus :controller="state">
     <template #success>
-      <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditEquipment">
+      <form
+        novalidate
+        class="grid grid-cols-1 md:grid-cols-4 gap-4"
+        @submit.prevent="EditEquipment"
+      >
         <FullEquipmentFrom ref="validationFormRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">Edit</button>
+          <button type="submit" class="btn btn-primary">{{ $t('Edit') }}</button>
         </div>
       </form>
     </template>

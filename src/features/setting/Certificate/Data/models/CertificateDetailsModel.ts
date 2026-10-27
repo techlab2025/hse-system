@@ -1,7 +1,6 @@
+import { getCurrentLocale } from '@/localization/i18n'
 // import type TitleModel from "@/base/core/Models/title_model";
-import TranslationsParams, {
-  type TitleLocale,
-} from '@/base/core/params/translations_params.ts'
+import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
@@ -69,7 +68,7 @@ export default class CertificateDetailsModel {
   }
 
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     if (typeof data === 'number') {
       return new TitleInterface({ id: data })
@@ -78,6 +77,7 @@ export default class CertificateDetailsModel {
     return new TitleInterface({
       id: data?.id ?? 0,
       title: data?.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data?.titles,
     })
   }
 }

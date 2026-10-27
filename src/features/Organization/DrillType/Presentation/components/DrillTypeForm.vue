@@ -25,7 +25,8 @@ type LanguageOption = { locale: string; title: string; icon?: Component | string
 type LocalizedTitle = { locale: string; title: string }
 type LocalizedDescription = { locale: string; description: string }
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('DrillTypeForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('DrillTypeForm')
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddDrillTypeParams | EditDrillTypeParams): void
@@ -144,12 +145,23 @@ const requiredFields = computed(() => [
     message: 'Drill Type Description Is Required',
     isMissing: () => !descriptions.value.some((item) => hasText(item.description)),
   },
-  { key: 'industry', message: '', isMissing: () => user.user?.type === OrganizationTypeEnum.ADMIN && !allIndustries.value && !industry.value?.length },
+  {
+    key: 'industry',
+    message: '',
+    isMissing: () =>
+      user.user?.type === OrganizationTypeEnum.ADMIN &&
+      !allIndustries.value &&
+      !industry.value?.length,
+  },
 ])
+
 const requiredFieldErrors = ref<Record<string, string>>({})
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const validateRequiredFields = async () => {
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = Object.fromEntries(
     missedFields.map((field) => [field.key, field.message]),
   )
@@ -201,12 +213,13 @@ onMounted(fetchLanguages)
   >
     <CustomCheckbox
       :index="3"
-      title="all_industries"
+      :title="$t('all_industries')"
       :checked="allIndustries"
       @update:checked="updateAllIndustries"
     />
   </div>
-  <div data-required-field="industry"
+  <div
+    data-required-field="industry"
     v-if="!allIndustries && user.user?.type === OrganizationTypeEnum.ADMIN"
     class="col-span-4 md:col-span-2"
   >
@@ -214,13 +227,15 @@ onMounted(fetchLanguages)
       :model-value="industry"
       :controller="industryController"
       :params="industryParams"
-      label="industry"
+      :label="$t('industry')"
       id="drilltype-industry"
-      placeholder="Select industry"
+      :placeholder="$t('Select industry')"
       :type="2"
       @update:model-value="setIndustry"
     />
-    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">{{ requiredFieldErrors.industry }}</p>
+    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">
+      {{ requiredFieldErrors.industry }}
+    </p>
   </div>
 </template>
 

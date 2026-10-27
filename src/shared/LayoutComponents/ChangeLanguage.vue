@@ -1,25 +1,12 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
+import { setLocale } from '@/localization/i18n'
 import { useI18n } from 'vue-i18n'
 
 import IconSaudiArabia from '@/shared/icons/SA.vue'
 import IconEnglish from '@/shared/icons/IconEnglish.vue'
 
 const { locale, t } = useI18n({ useScope: 'global' })
-
-const applyLangToDOM = (langCode: string) => {
-  const direction = langCode === 'ar' ? 'rtl' : 'ltr'
-
-  document.documentElement.lang = langCode
-  document.documentElement.dir = direction
-
-  // Language direction must never transform the application canvas.
-  const applicationRoots = [document.documentElement, document.body, document.getElementById('app')]
-  applicationRoots.forEach((element) => {
-    element?.style.removeProperty('rotate')
-    element?.style.removeProperty('transform')
-  })
-}
 
 const targetLanguage = computed(() => (locale.value === 'ar' ? 'en' : 'ar'))
 const targetLanguageIcon = computed(() =>
@@ -29,25 +16,7 @@ const targetLanguageLabel = computed(() =>
   targetLanguage.value === 'ar' ? t('switch_to_arabic') : t('switch_to_english'),
 )
 
-const changeLang = (langCode: string) => {
-  if (locale.value === langCode) return
-
-  locale.value = langCode
-  localStorage.setItem('lang', langCode)
-  applyLangToDOM(langCode)
-  window.location.reload()
-}
-
-const initializeLang = () => {
-  const savedLang = localStorage.getItem('lang') || 'en'
-
-  locale.value = savedLang
-  applyLangToDOM(savedLang)
-}
-
-onMounted(() => {
-  initializeLang()
-})
+const changeLang = (langCode: string) => setLocale(langCode)
 </script>
 
 <template>

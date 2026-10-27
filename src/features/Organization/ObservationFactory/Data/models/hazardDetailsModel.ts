@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import ShowProjectDetailsModel from '@/features/Organization/Project/Data/models/ShowProjectDeatilsModel'
 import SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
 // import { LocationModel } from '@/features/setting/Location/Data/models/LocationModel'
@@ -61,10 +62,10 @@ export default class HazardDetailsModel {
   public work_shift: ShiftModel
   public hazardSubType: TitleInterface
   public hazardType: TitleInterface
-  public createdAt:string
+  public createdAt: string
   public ptwStatus: number
   public complianceNotification: number[]
-  
+
   constructor(
     id: number,
     title: string,
@@ -109,7 +110,7 @@ export default class HazardDetailsModel {
     work_shift: ShiftModel,
     hazardSubType: TitleInterface,
     hazardType: TitleInterface,
-    createdAt:string,
+    createdAt: string,
     ptwStatus: number = 0,
     complianceNotification: number[] = [],
   ) {
@@ -156,68 +157,71 @@ export default class HazardDetailsModel {
     this.work_shift = work_shift
     this.hazardSubType = hazardSubType
     this.hazardType = hazardType
-    this.createdAt=createdAt
+    this.createdAt = createdAt
     this.ptwStatus = ptwStatus
     this.complianceNotification = complianceNotification
   }
 
   static fromMap(data: any): HazardDetailsModel {
-    return new HazardDetailsModel(
-      data.id,
-      data.title,
-      data.description,
-      data.image,
-      data.is_action,
-      data.task_result_item,
-      data.type,
-      data.type_id,
-      data.type_model,
-      data.equipment,
-      data.location,
-      data.zoon,
-      data.project,
-      data.is_result,
-      data.risk_level,
-      data.save_status,
-      data.action,
-      data.is_near_miss,
-      data.capa_status,
-      data.date,
-      data.serial,
-      data.observer,
-      data.creator,
-      data.capa,
-      data.serial_number,
-      data?.media?.map((item: any) => FilesModel.fromMap(item)),
-      data?.injuries?.map((item: any) => InjuryDetailsModel.fromMap(item)),
-      data?.witness_statements?.map((item: any) => InjuryDetailsModel.fromMap(item)),
-      data?.deaths?.map((item: any) => InjuryDetailsModel.fromMap(item)),
-      data?.like_lihood,
-      data?.severity,
-      data?.task_result_item_answer,
-      data?.root_causes,
-      data?.investigation ? InvestegationResultDetailsModel?.fromMap(data?.investigation) : null,
-      data?.is_work_stopped,
-      data?.action_status,
-      data?.serial_name,
-      data?.time,
-      data?.lastest_inspection_result
-        ? InspectionObservatioModel.fromMap(data?.lastest_inspection_result)
-        : null,
-      data?.task,
-      data?.work_shift,
-      data?.hazard_sub_type,
-      data?.hazard_type,
-      data?.created_at,
-      Number(data?.ptw_status) || 0,
-      (Array.isArray(data?.compliance_notification)
-        ? data.compliance_notification
-        : data?.compliance_notification
-          ? [data.compliance_notification]
-          : []
-      )
-        .map((item: any) => Number(item?.id ?? item))
-        .filter(Boolean),
+    return localizedRecord(
+      new HazardDetailsModel(
+        data.id,
+        data.title,
+        data.description,
+        data.image,
+        data.is_action,
+        data.task_result_item,
+        data.type,
+        data.type_id,
+        data.type_model,
+        data.equipment,
+        data.location,
+        data.zoon,
+        data.project,
+        data.is_result,
+        data.risk_level,
+        data.save_status,
+        data.action,
+        data.is_near_miss,
+        data.capa_status,
+        data.date,
+        data.serial,
+        data.observer,
+        data.creator,
+        data.capa,
+        data.serial_number,
+        data?.media?.map((item: any) => FilesModel.fromMap(item)),
+        data?.injuries?.map((item: any) => InjuryDetailsModel.fromMap(item)),
+        data?.witness_statements?.map((item: any) => InjuryDetailsModel.fromMap(item)),
+        data?.deaths?.map((item: any) => InjuryDetailsModel.fromMap(item)),
+        data?.like_lihood,
+        data?.severity,
+        data?.task_result_item_answer,
+        data?.root_causes,
+        data?.investigation ? InvestegationResultDetailsModel?.fromMap(data?.investigation) : null,
+        data?.is_work_stopped,
+        data?.action_status,
+        data?.serial_name,
+        data?.time,
+        data?.lastest_inspection_result
+          ? InspectionObservatioModel.fromMap(data?.lastest_inspection_result)
+          : null,
+        data?.task,
+        data?.work_shift,
+        data?.hazard_sub_type,
+        data?.hazard_type,
+        data?.created_at,
+        Number(data?.ptw_status) || 0,
+        (Array.isArray(data?.compliance_notification)
+          ? data.compliance_notification
+          : data?.compliance_notification
+            ? [data.compliance_notification]
+            : []
+        )
+          .map((item: any) => Number(item?.id ?? item))
+          .filter(Boolean),
+      ),
+      data,
     )
   }
 

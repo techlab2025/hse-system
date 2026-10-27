@@ -113,8 +113,8 @@ const removeImage = () => {
       </label> -->
       <label class="flex flex-col items-center lable-container" :for="`images${index}`">
         <ExcelSheetIcon />
-        <p class="title">Upload Your File</p>
-        <p class="description">Drag & drop or click to upload your document securely</p>
+        <p class="title">{{ $t('Upload Your File') }}</p>
+        <p class="description">{{ $t('Drag & drop or click to upload your document securely') }}</p>
       </label>
       <input
         :id="`images${index}`"

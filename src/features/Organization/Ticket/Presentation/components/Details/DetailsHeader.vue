@@ -22,8 +22,6 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
       return 'unknown'
   }
 }
-
-
 </script>
 
 <template>
@@ -36,7 +34,7 @@ const getStatusLabel = (status: StatusEnum | undefined) => {
         {{ ticket.ticketType?.title }}
         <!-- <span>{{ ticket?.category?.name || 'FGt-9' }}</span> -->
       </p>
-      <h4>{{ ticket?.title || 'No Title ' }}</h4>
+      <h4>{{ ticket?.title || $t('No Title') }}</h4>
     </div>
   </div>
 </template>

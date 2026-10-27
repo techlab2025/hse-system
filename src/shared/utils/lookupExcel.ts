@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import * as XLSX from 'xlsx'
 import JSZip from 'jszip'
 import FileSaver from 'file-saver'
@@ -84,7 +85,8 @@ export async function createLookupExcelBuffer(
     const titleColumn = rows[0]!.findIndex(
       (value) => String(value).trim().toLowerCase() === 'title',
     )
-    if (titleColumn < 0) throw new Error('Lookup Excel files must contain a Title column.')
+    if (titleColumn < 0)
+      throw new Error(localizeUi('Lookup Excel files must contain a Title column.'))
     titleColumns.push(titleColumn)
     rows[0]![titleColumn] = 'Title'
     const hintText = options.allIndustries

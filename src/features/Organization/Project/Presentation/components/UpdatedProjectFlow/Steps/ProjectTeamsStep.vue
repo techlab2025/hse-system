@@ -151,21 +151,21 @@ watch(() => props.projectId, getProjectLocationsTeamsEmployees, { immediate: tru
     <div class="section-title">
       <span>04</span>
       <div>
-        <h2>Project teams</h2>
-        <p>Assign teams and their employees by location, or skip for now.</p>
+        <h2>{{ $t('Project teams') }}</h2>
+        <p>{{ $t('Assign teams and their employees by location, or skip for now.') }}</p>
       </div>
     </div>
-    <p v-if="isLoadingLocations" class="locations-status">Loading project locations…</p>
+    <p v-if="isLoadingLocations" class="locations-status">{{ $t('Loading project locations…') }}</p>
     <p v-else-if="locationsError" class="locations-status locations-error">
       {{ locationsError }}
     </p>
     <p v-else-if="!teams.length" class="locations-status">
-      No locations are assigned to this project.
+      {{ $t('No locations are assigned to this project.') }}
     </p>
     <div v-for="(location, locationIndex) in teams" :key="locationIndex" class="group-card">
       <div class="group-head">
         <div class="fixed-location">
-          <span>Project location</span>
+          <span>{{ $t('project_equipment_location') }}</span>
           <strong>{{ location.projectLocation?.title }}</strong>
         </div>
       </div>
@@ -174,8 +174,8 @@ watch(() => props.projectId, getProjectLocationsTeamsEmployees, { immediate: tru
           :model-value="selectedTeams(location)"
           :params="teamParams"
           :controller="teamController"
-          label="Teams"
-          placeholder="Select teams"
+          :label="$t('Teams')"
+          :placeholder="$t('Select teams')"
           :type="2"
           @update:model-value="setLocationTeams(location, $event)"
         />
@@ -186,8 +186,8 @@ watch(() => props.projectId, getProjectLocationsTeamsEmployees, { immediate: tru
           <UpdatedCustomInputSelect
             :model-value="team.employees"
             :static-options="projectEmployees(location)"
-            label="Project employees"
-            placeholder="Select project employees"
+            :label="$t('Project employees')"
+            :placeholder="$t('Select project employees')"
             :type="2"
             @update:model-value="setTeamEmployees(team, $event)"
           />
@@ -196,8 +196,8 @@ watch(() => props.projectId, getProjectLocationsTeamsEmployees, { immediate: tru
           <UpdatedCustomInputSelect
             :model-value="team.teamLeader"
             :static-options="team.employees"
-            label="Team leader"
-            placeholder="Select team leader"
+            :label="$t('Team Leader')"
+            :placeholder="$t('Select Team Leader')"
             :required="true"
             @update:model-value="setTeamLeader(team, $event)"
           />

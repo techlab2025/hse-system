@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -32,7 +33,7 @@ export default class DeleteMangementChangeTopicTypeController extends Controller
       if (this.isDataSuccess()) {
         // useLoaderStore().endLoadingWithDialog();
       } else {
-        throw new Error('Error while deleting management change topic type')
+        throw new Error(localizeUi('Error while deleting management change topic type'))
       }
     } catch (error: any) {
       console.log(error)

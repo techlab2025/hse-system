@@ -83,14 +83,14 @@ watch(
       >
         <Button
           v-if="!showSelectAllOption"
-          label="Add New"
+          :label="$t('Add New')"
           severity="secondary"
           variant="text"
           size="small"
           icon="pi pi-plus"
         />
         <Button
-          label="Remove All"
+          :label="$t('Remove All')"
           severity="danger"
           variant="text"
           size="small"
@@ -130,7 +130,7 @@ watch(
   justify-content: flex-end;
   color: var(--PrimaryColor);
   font-weight: 800;
-  text-align: right;
+  text-align: end;
 }
 
 .simple-options-footer {

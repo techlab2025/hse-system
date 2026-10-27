@@ -19,7 +19,8 @@ import EditIncidentCategoryParams from '../../Core/params/editIncidentCategoryPa
 import type IncidentCategoryDetailsModel from '../../Data/models/IncidentCategoryDetailsModel'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('IncidentCategoryForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('IncidentCategoryForm')
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{ data?: IncidentCategoryDetailsModel }>()
@@ -96,6 +97,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     isMissing: () => !Number(incidentType.value?.id),
   },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
 
@@ -108,7 +110,9 @@ const scrollToRequiredField = async (key: string) => {
 }
 
 const validateRequiredFields = async () => {
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors
@@ -147,10 +151,7 @@ onMounted(fetchLanguages)
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
-  <div
-    class="col-span-4 md:col-span-2 input-wrapper "
-    data-required-field="incidentTypeId"
-  >
+  <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="incidentTypeId">
     <UpdatedCustomInputSelect
       :modelValue="incidentType"
       :controller="incidentTypeController"

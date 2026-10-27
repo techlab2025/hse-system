@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translateMessage } from '@/localization/messages'
 import { computed, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import permitImg from '@/assets/images/SmartContract.png'
@@ -315,9 +316,9 @@ const cards = computed<EmpCard[]>(() => [
   <div class="employee-interface-wrapper">
     <div class="employee-project-picker">
       <div>
-        <label for="employee-project">Your project</label>
+        <label for="employee-project">{{ $t('Your project') }}</label>
         <p id="employee-project-help">
-          Select a project to access permits, leadership, and risk assessments.
+          {{ $t('Select a project to access permits, leadership, and risk assessments.') }}
         </p>
       </div>
       <select
@@ -328,17 +329,22 @@ const cards = computed<EmpCard[]>(() => [
         @change="selectedProjectId = Number(($event.target as HTMLSelectElement).value) || null"
       >
         <option value="" disabled>
-          {{ loadingProjects ? 'Loading projects…' : 'Select a project' }}
+          {{
+            loadingProjects ? $t('Loading projects…') : $t('employeeProjectAction.selectProject')
+          }}
         </option>
         <option v-for="project in projectOptions" :key="project.id" :value="project.id">
-          {{ project.title || project.name || `Project #${project.id}` }}
+          {{
+            project.title || project.name || $t('uiDynamic.projectReference', { p0: project.id })
+          }}
         </option>
       </select>
       <p v-if="projectError" role="status">
-        Unable to load projects. <button type="button" @click="loadProjects">Try again</button>
+        {{ $t('employeeProjectAction.loadError') }}
+        <button type="button" @click="loadProjects">{{ $t('employeeProjectAction.retry') }}</button>
       </p>
       <p v-else-if="!loadingProjects && !projectOptions.length" role="status">
-        No assigned projects are available.
+        {{ $t('employeeProjectAction.noProjects') }}
       </p>
     </div>
     <article
@@ -355,11 +361,13 @@ const cards = computed<EmpCard[]>(() => [
       <div class="card-text">
         <div class="card-eyebrow">
           <span class="card-number" aria-hidden="true"></span>
-          <span>{{ card.eyebrow }}</span>
+          <span>{{ translateMessage(card.eyebrow) }}</span>
         </div>
         <div class="info-wrapper">
-          <h2 :id="`employee-card-${card.type}`" class="card-title">{{ card.title }}</h2>
-          <p class="card-subtitle">{{ card.subtitle }}</p>
+          <h2 :id="`employee-card-${card.type}`" class="card-title">
+            {{ translateMessage(card.title) }}
+          </h2>
+          <p class="card-subtitle">{{ translateMessage(card.subtitle) }}</p>
           <p
             v-if="card.requiresProject"
             :id="`employee-card-project-hint-${card.type}`"
@@ -370,14 +378,14 @@ const cards = computed<EmpCard[]>(() => [
               <path d="M12 11v6M12 7h.01" />
             </svg>
             <span>
-              <strong>Project required</strong>
+              <strong>{{ $t('Project required') }}</strong>
               <span v-if="!projectId">
                 {{ $t('employeeProjectAction.viewHint') }}
                 <template v-if="card.type !== empCardEnum.Leadership">{{
                   $t('employeeProjectAction.createHint')
                 }}</template>
               </span>
-              <span v-else>These actions use your selected project.</span>
+              <span v-else>{{ $t('These actions use your selected project.') }}</span>
             </span>
           </p>
         </div>
@@ -404,8 +412,8 @@ const cards = computed<EmpCard[]>(() => [
           "
           :class="index === 0 ? 'button-main' : 'button-view'"
         >
-          <span>{{ action.title }}</span>
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <span>{{ translateMessage(action.title) }}</span>
+          <svg class="locale-directional-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M5 12h14m-6-6 6 6-6 6" />
           </svg>
         </component>

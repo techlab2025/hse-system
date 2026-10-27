@@ -197,7 +197,7 @@ export default class InvestigatingDetailsModel {
         'mohab@gmail.com',
         1,
         null,
-        [new TitleInterface({ id: 1, title: 'mohab' })],
+        [new TitleInterface({ id: 1, title: 'mohab', translationKey: 'MOhab' })],
         [],
       ),
       new OrganizatoinEmployeeDetailsModel(
@@ -207,7 +207,7 @@ export default class InvestigatingDetailsModel {
         'mohab@gmail.com',
         1,
         null,
-        [new TitleInterface({ id: 1, title: 'mohab' })],
+        [new TitleInterface({ id: 1, title: 'mohab', translationKey: 'MOhab' })],
         [],
       ),
       new OrganizatoinEmployeeDetailsModel(
@@ -217,7 +217,7 @@ export default class InvestigatingDetailsModel {
         'mohab@gmail.com',
         1,
         null,
-        [new TitleInterface({ id: 1, title: 'mohab' })],
+        [new TitleInterface({ id: 1, title: 'mohab', translationKey: 'MOhab' })],
         [],
       ),
       new OrganizatoinEmployeeDetailsModel(
@@ -227,7 +227,7 @@ export default class InvestigatingDetailsModel {
         'mohab@gmail.com',
         1,
         null,
-        [new TitleInterface({ id: 1, title: 'mohab' })],
+        [new TitleInterface({ id: 1, title: 'mohab', translationKey: 'MOhab' })],
         [],
       ),
     ],

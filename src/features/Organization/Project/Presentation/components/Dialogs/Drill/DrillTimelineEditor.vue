@@ -168,7 +168,7 @@ onMounted(fetchProjectEmployees)
   >
     <div class="timeline-heading">
       <div>
-        <span>{{ mode === 'planning' ? 'PLAN' : 'ACT' }}</span>
+        <span>{{ mode === 'planning' ? $t('plan') : 'ACT' }}</span>
       </div>
       <div>
         <h3>{{ $t(title) }}</h3>
@@ -204,7 +204,7 @@ onMounted(fetchProjectEmployees)
                 v-for="image in action.images"
                 :key="image"
                 :src="image.url"
-                alt="Drill evidence"
+                :alt="$t('Drill evidence')"
               />
             </div>
           </div>
@@ -242,7 +242,7 @@ onMounted(fetchProjectEmployees)
                 <label class="hse-project-field-label" :for="`drill_timeline_date_${index}`">{{
                   $t('Photographer date')
                 }}</label
-                ><FieldHelpIcon text="Select the date for this timeline entry." />
+                ><FieldHelpIcon :text="$t('Select the date for this timeline entry.')" />
               </div>
               <DatePicker
                 panel-class="hse-project-overlay hse-project-planning"
@@ -258,7 +258,7 @@ onMounted(fetchProjectEmployees)
                 <label class="hse-project-field-label" :for="`drill_timeline_time_${index}`">{{
                   $t('time')
                 }}</label
-                ><FieldHelpIcon text="Select the time for this timeline entry." />
+                ><FieldHelpIcon :text="$t('Select the time for this timeline entry.')" />
               </div>
               <DatePicker
                 panel-class="hse-project-overlay hse-project-planning"
@@ -274,9 +274,10 @@ onMounted(fetchProjectEmployees)
                 <label class="hse-project-field-label" :for="`drill_timeline_notes_${index}`">{{
                   $t('notes')
                 }}</label
-                ><FieldHelpIcon text="Describe what is planned at this point." />
+                ><FieldHelpIcon :text="$t('Describe what is planned at this point.')" />
               </div>
               <textarea
+                dir="auto"
                 :id="`drill_timeline_notes_${index}`"
                 v-model="item.notes"
                 class="hse-project-input input"
@@ -289,9 +290,12 @@ onMounted(fetchProjectEmployees)
                   class="hse-project-field-label"
                   :for="`drill_timeline_description_${index}`"
                   >{{ $t('Explanation') }}</label
-                ><FieldHelpIcon text="Describe what is planned or what happened at this point." />
+                ><FieldHelpIcon
+                  :text="$t('Describe what is planned or what happened at this point.')"
+                />
               </div>
               <textarea
+                dir="auto"
                 :id="`drill_timeline_description_${index}`"
                 v-model="item.description"
                 class="hse-project-input input"
@@ -318,9 +322,12 @@ onMounted(fetchProjectEmployees)
                   <label class="hse-project-field-label" :for="`drill_photographer_${index}`">{{
                     $t('Photographer place')
                   }}</label
-                  ><FieldHelpIcon text="Enter the place of the person who captured the evidence." />
+                  ><FieldHelpIcon
+                    :text="$t('Enter the place of the person who captured the evidence.')"
+                  />
                 </div>
                 <input
+                  dir="auto"
                   :id="`drill_photographer_${index}`"
                   v-model="item.photographerplace"
                   class="hse-project-input input"
@@ -333,9 +340,10 @@ onMounted(fetchProjectEmployees)
                   <label class="hse-project-field-label" :for="`evaluation_${index}`">{{
                     $t('evaluation')
                   }}</label
-                  ><FieldHelpIcon text="Enter the evaluation" />
+                  ><FieldHelpIcon :text="$t('Enter the evaluation')" />
                 </div>
                 <input
+                  dir="auto"
                   :id="`evaluation_${index}`"
                   v-model="item.evaluation"
                   class="hse-project-input input"
@@ -348,9 +356,10 @@ onMounted(fetchProjectEmployees)
                   <label class="hse-project-field-label" :for="`improvement_${index}`">{{
                     $t('Suggested Improvement')
                   }}</label
-                  ><FieldHelpIcon text="Enter the improvement" />
+                  ><FieldHelpIcon :text="$t('Enter the improvement')" />
                 </div>
                 <input
+                  dir="auto"
                   :id="`improvement_${index}`"
                   v-model="item.improvement"
                   class="hse-project-input input"
@@ -376,9 +385,10 @@ onMounted(fetchProjectEmployees)
                   <label class="hse-project-field-label" :for="`drill_action_notes_${index}`">{{
                     $t('notes')
                   }}</label
-                  ><FieldHelpIcon text="Add notes about this drill action." />
+                  ><FieldHelpIcon :text="$t('Add notes about this drill action.')" />
                 </div>
                 <textarea
+                  dir="auto"
                   :id="`drill_action_notes_${index}`"
                   v-model="item.notes"
                   class="hse-project-input input compact-textarea"
@@ -389,7 +399,7 @@ onMounted(fetchProjectEmployees)
                 <div class="hse-project-field field-label">
                   <label class="hse-project-field-label">{{ $t('upload image') }}</label
                   ><FieldHelpIcon
-                    text="Attach photos that document the drill action or evidence."
+                    :text="$t('Attach photos that document the drill action or evidence.')"
                   />
                 </div>
                 <MultiImagesInput :index="index" @update:images="setImages($event, index)" />

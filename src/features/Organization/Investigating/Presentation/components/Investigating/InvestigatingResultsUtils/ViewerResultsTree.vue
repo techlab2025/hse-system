@@ -68,8 +68,7 @@ onMounted(async () => {
 
 const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
   const organizationEmployee = item?.organization_employee as any
-  const employeeId =
-    organizationEmployee?.organization_employee_id || organizationEmployee?.id || 0
+  const employeeId = organizationEmployee?.organization_employee_id || organizationEmployee?.id || 0
   const employeeTitle =
     organizationEmployee?.name ||
     organizationEmployee?.title ||
@@ -118,9 +117,9 @@ watch(
             <UpdatedCustomInputSelect
               :staticOptions="employeeOptions"
               v-model="item.employee"
-              placeholder="Select Employee"
+              :placeholder="$t('Select Employee')"
               class="mt-4 mr-2 input"
-              label="Witness Name"
+              :label="$t('Witness Name')"
               :reload="false"
               :hascontent="isSelectHasContent[index]"
               @update:model-value="UpdateData"
@@ -146,6 +145,7 @@ watch(
               </template>
               <template #content>
                 <input
+                  dir="auto"
                   type="text"
                   v-model="item.employee.title"
                   class="input"
@@ -155,14 +155,18 @@ watch(
               </template>
             </UpdatedCustomInputSelect>
           </div>
-          <div class="timeline-content-text input-wrapper" :class="props.isInvestigation ? `w-full` : ``">
-            <label for="result"> Statements</label>
+          <div
+            class="timeline-content-text input-wrapper"
+            :class="props.isInvestigation ? `w-full` : ``"
+          >
+            <label for="result"> {{ $t('Statements') }}</label>
             <textarea
+              dir="auto"
               type="result"
               id="result"
               v-model="item.result"
               class="input"
-              placeholder="add your descripe"
+              :placeholder="$t('add your descripe')"
               @input="UpdateData"
             ></textarea>
           </div>
@@ -195,7 +199,7 @@ watch(
           class="add-text cursor-pointer"
           @click="addNewAnswer"
           v-if="index === Answers.length - 1"
-          >Add another witness
+          >{{ $t('Add another witness') }}
         </span>
       </div>
     </div>

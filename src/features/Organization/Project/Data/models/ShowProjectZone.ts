@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import ProjectLocationEquipmentModel from './CustomLocation/ProjectLocationEquipmentModel'
 import TitleModel from '@/base/core/Models/title_model'
@@ -45,23 +46,26 @@ export default class SohwProjectZoonModel {
   }
 
   static fromMap(data: any): SohwProjectZoonModel {
-    return new SohwProjectZoonModel(
-      data.project_zoon_id,
-      data.zoon_id || data.id,
-      data.zoon_title || data.title,
-      Array.isArray(data.project_zoon_equipments)
-        ? data.project_zoon_equipments
-            // The API can temporarily keep the project-zone pivot after its equipment is deleted.
-            .filter((item: any) => item?.equipment)
-            .map((item: any) => ProjectLocationEquipmentModel.fromMap(item))
-        : [],
-      data.location,
-      data.projectLocationId,
-      data.project_location_zoons?.map((z: any) => projectLocationZoonsModel?.fromMap(z)) ?? [],
-      TranslationsParams.fromMap(data.zoon_titles ?? []).titles,
-      data.zoons?.map((z: any) => TitleModel.fromMap(z)) ?? [],
-      data.project_id,
-      data.title,
+    return localizedRecord(
+      new SohwProjectZoonModel(
+        data.project_zoon_id,
+        data.zoon_id || data.id,
+        data.zoon_title || data.title,
+        Array.isArray(data.project_zoon_equipments)
+          ? data.project_zoon_equipments
+              // The API can temporarily keep the project-zone pivot after its equipment is deleted.
+              .filter((item: any) => item?.equipment)
+              .map((item: any) => ProjectLocationEquipmentModel.fromMap(item))
+          : [],
+        data.location,
+        data.projectLocationId,
+        data.project_location_zoons?.map((z: any) => projectLocationZoonsModel?.fromMap(z)) ?? [],
+        TranslationsParams.fromMap(data.zoon_titles ?? []).titles,
+        data.zoons?.map((z: any) => TitleModel.fromMap(z)) ?? [],
+        data.project_id,
+        data.title,
+      ),
+      data,
     )
   }
 

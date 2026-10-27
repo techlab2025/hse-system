@@ -1,3 +1,5 @@
+import { getCurrentLocale } from '@/localization/i18n'
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 type LocaleTitle = { locale?: string; title?: string }
@@ -18,7 +20,13 @@ export default class InductionProjectLocationModel extends TitleInterface {
   public locationId: number
   public title: string
 
-  constructor(id: number, projectLocationId: number, projectId: number, locationId: number, title: string) {
+  constructor(
+    id: number,
+    projectLocationId: number,
+    projectId: number,
+    locationId: number,
+    title: string,
+  ) {
     super({ id, title })
     this.id = id
     this.projectLocationId = projectLocationId
@@ -29,19 +37,22 @@ export default class InductionProjectLocationModel extends TitleInterface {
 
   static fromMap(data: Record<string, unknown>): InductionProjectLocationModel {
     const location = data as InductionProjectLocationResponse
-    const locale = (typeof localStorage !== 'undefined' && localStorage.getItem('lang')) || 'en'
+    const locale = (typeof localStorage !== 'undefined' && getCurrentLocale()) || 'en'
     const projectLocationId = Number(location.project_location_id ?? location.id ?? 0)
 
-    return new InductionProjectLocationModel(
-      projectLocationId,
-      projectLocationId,
-      Number(location.project_id ?? 0),
-      Number(location.location_id ?? 0),
-      location.title ??
-        location.location_title ??
-        location.location_titles?.find((item) => item.locale === locale)?.title ??
-        location.location_titles?.[0]?.title ??
-        '',
+    return localizedRecord(
+      new InductionProjectLocationModel(
+        projectLocationId,
+        projectLocationId,
+        Number(location.project_id ?? 0),
+        Number(location.location_id ?? 0),
+        location.title ??
+          location.location_title ??
+          location.location_titles?.find((item) => item.locale === locale)?.title ??
+          location.location_titles?.[0]?.title ??
+          '',
+      ),
+      data,
     )
   }
 }

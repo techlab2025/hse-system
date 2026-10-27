@@ -185,12 +185,6 @@ body {
   font-family: 'Regular', sans-serif;
   color: var(--text-strong);
   // overflow-x: hidden;
-
-  p,
-  span,
-  div {
-    text-transform: capitalize;
-  }
 }
 
 .create-form-actions {
@@ -300,16 +294,16 @@ body,
 .delete-btn {
   font-family: 'Regular';
   // padding: 5px;
-  margin-left: auto;
+  margin-inline-start: auto;
   background-color: var(--status-danger);
   color: var(--text-on-brand);
   border-radius: 4px;
   width: 20px;
   height: 20px;
   svg {
-    margin-left: auto;
+    margin-inline-start: auto;
 
-    margin-right: auto;
+    margin-inline-end: auto;
     width: 18px;
     height: 18px;
   }
@@ -318,7 +312,7 @@ body,
 .add-dialog {
   width: 20px;
   height: 20px;
-  margin-right: 6px;
+  margin-inline-end: 6px;
   cursor: pointer;
   color: var(--brand-primary-500);
   text-decoration: underline;
@@ -500,7 +494,7 @@ html[dir='ltr'] .actions-container {
   label::after {
     content: '*';
     color: var(--status-danger);
-    margin-left: 4px;
+    margin-inline-start: 4px;
     margin-top: 4px;
   }
 }
@@ -619,18 +613,4 @@ label {
     width: 37px !important;
     height: 35px !important;
   }
-}
-
-p,
-div,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-span,
-a,
-li {
-  text-transform: capitalize !important;
 }

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import FetchNcrDetailsParams from '../../../Core/params/ncrs/fetchNcrDetailsParams'
@@ -166,7 +168,7 @@ async function openNcr(item: InternalAuditNcrModel) {
   } catch {
     if (version === openVersion) {
       hasError.value = true
-      feedback.value = 'Unable to load NCR details. Please try again.'
+      feedback.value = localizeUi('Unable to load NCR details. Please try again.')
     }
   } finally {
     if (version === openVersion) openingNcrId.value = 0
@@ -184,13 +186,13 @@ function closeForm() {
 async function handleEdited() {
   closeForm()
   await fetchNcrs()
-  if (!hasError.value) feedback.value = 'NCR updated successfully.'
+  if (!hasError.value) feedback.value = localizeUi('NCR updated successfully.')
 }
 
 async function handleCreated() {
   closeForm()
   await fetchNcrs()
-  if (!hasError.value) feedback.value = 'NCR created successfully.'
+  if (!hasError.value) feedback.value = localizeUi('NCR created successfully.')
 }
 
 async function loadAudit() {
@@ -206,7 +208,7 @@ async function loadAudit() {
   hasError.value = false
   if (!currentAuditId.value) {
     hasError.value = true
-    feedback.value = 'Select a valid internal audit.'
+    feedback.value = localizeUi('Select a valid internal audit.')
     return
   }
   await Promise.all([fetchNcrs(version), fetchAuditDetails(version)])
@@ -225,7 +227,7 @@ onBeforeUnmount(() => {
       $t('back_to_my_internal_audits')
     }}</router-link> -->
     <header class="ncr-header">
-      <h2>Non-conformance reports</h2>
+      <h2>{{ $t('Non-conformance reports') }}</h2>
       <div class="header-actions">
         <button
           v-if="canCreateNcr"
@@ -234,11 +236,11 @@ onBeforeUnmount(() => {
           type="button"
           @click="toggleNewNcrForm"
         >
-          {{ showForm && !openedNcrId ? 'Close form' : 'New NCR' }}
+          {{ showForm && !openedNcrId ? $t('Close form') : $t('New NCR') }}
         </button>
       </div>
     </header>
-<!-- 
+    <!--
     <p
       v-if="feedback"
       class="message"

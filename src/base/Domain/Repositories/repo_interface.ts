@@ -1,3 +1,5 @@
+import { localizedApiMessage } from '@/localization/apiMessages'
+import { translate } from '@/localization/i18n'
 import {
   DataEmpty,
   DataFailed,
@@ -132,27 +134,27 @@ export default abstract class RepoInterface<T> {
       })
     } else if (error instanceof NetworkDisconnectException) {
       return new DataFailed({
-        error: new ErrorModel('Network Disconnected', ErrorType.networkConnection),
+        error: new ErrorModel(translate('network.connection'), ErrorType.networkConnection),
       })
     } else if (error instanceof UnAuthorizedException) {
       return new DataFailed({
-        error: new ErrorModel('Unauthorized', ErrorType.unAuthorized),
+        error: new ErrorModel(translate('network.unauthorized'), ErrorType.unAuthorized),
       })
     } else if (error instanceof NotFoundException) {
       return new DataFailed({
-        error: new ErrorModel('Not Found', ErrorType.unknown),
+        error: new ErrorModel(translate('network.notFound'), ErrorType.unknown),
       })
     } else if (error instanceof MethodNotAllowedException) {
       return new DataFailed({
-        error: new ErrorModel('Method Not Allowed', ErrorType.methodNotAllowed),
+        error: new ErrorModel(translate('network.method'), ErrorType.methodNotAllowed),
       })
     } else if (error instanceof NotAcceptableException) {
       return new DataFailed({
-        error: new ErrorModel('Not Acceptable', ErrorType.unknown),
+        error: new ErrorModel(translate('network.validation'), ErrorType.unknown),
       })
     } else if (error instanceof RequestTimeoutException) {
       return new DataFailed({
-        error: new ErrorModel('Request Timeout', ErrorType.unknown),
+        error: new ErrorModel(translate('network.timeout'), ErrorType.unknown),
       })
     } else if (error instanceof ConflictException) {
       return new DataFailed({
@@ -160,27 +162,34 @@ export default abstract class RepoInterface<T> {
       })
     } else if (error instanceof InternalServerException) {
       return new DataFailed({
-        error: new ErrorModel('Internal Server Error', ErrorType.unknown),
+        error: new ErrorModel(translate('network.server'), ErrorType.unknown),
       })
     } else if (error instanceof NotImplementedException) {
       return new DataFailed({
-        error: new ErrorModel('Not Implemented', ErrorType.unknown),
+        error: new ErrorModel(translate('network.method'), ErrorType.unknown),
       })
     } else if (error instanceof BadGatewayException) {
       return new DataFailed({
-        error: new ErrorModel('Bad Gateway', ErrorType.unknown),
+        error: new ErrorModel(translate('network.unavailable'), ErrorType.unknown),
       })
     } else if (error instanceof ServiceUnavailableException) {
       return new DataFailed({
-        error: new ErrorModel('Service Unavailable', ErrorType.unknown),
+        error: new ErrorModel(translate('network.unavailable'), ErrorType.unknown),
       })
     } else if (error instanceof GatewayTimeoutException) {
       return new DataFailed({
-        error: new ErrorModel('Gateway Timeout', ErrorType.unknown),
+        error: new ErrorModel(translate('network.timeout'), ErrorType.unknown),
       })
     } else {
       return new DataFailed({
-        error: new ErrorModel(((error.message as string) ?? 'Error') as string, ErrorType.unknown),
+        error: new ErrorModel(
+          (error instanceof TypeError
+            ? undefined
+            : localizedApiMessage({
+                message: error instanceof Error ? error.message : undefined,
+              })) ?? translate('network.server'),
+          ErrorType.unknown,
+        ),
       })
     }
   }

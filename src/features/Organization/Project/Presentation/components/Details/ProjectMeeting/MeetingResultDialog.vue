@@ -124,16 +124,19 @@ const ActionTypeSelectionOptions = ref<TitleInterface[]>([
   new TitleInterface({
     id: ProjectMeetingActionsTypeEnum.ONGOING,
     title: 'Ongoing',
+    translationKey: 'Ongoing',
   }),
 
   new TitleInterface({
     id: ProjectMeetingActionsTypeEnum.INFO,
     title: 'Info',
+    translationKey: 'Info',
   }),
 
   new TitleInterface({
     id: ProjectMeetingActionsTypeEnum.TASK,
     title: 'Task',
+    translationKey: 'task',
   }),
 ])
 
@@ -583,16 +586,18 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
     <span class="meeting-card-accent" />
 
     <span class="meeting-card-main">
-      <span class="meeting-card-kicker"> date : {{ meeting.date || $t('Meeting') }} </span>
+      <span class="meeting-card-kicker">
+        {{ $t('date :') }} {{ meeting.date || $t('Meeting') }}
+      </span>
 
       <strong>
         {{ meeting.serialName }}
       </strong>
 
       <small v-if="meeting.teamLeader.name">
-        Team Leader : {{ meeting.teamLeader.name || '—' }}
+        {{ $t('Team Leader :') }} {{ meeting.teamLeader.name || '—' }}
       </small>
-      <small v-if="meeting.hasResult"> show meeting result </small>
+      <small v-if="meeting.hasResult"> {{ $t('show meeting result') }} </small>
     </span>
 
     <span class="meeting-card-arrow"> → </span>
@@ -623,7 +628,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
           </small>
 
           <h2>
-            {{ meeting.title || `Meeting #${meeting.serialName}` }}
+            {{ meeting.title || $t('uiDynamic.meetingReference', { p0: meeting.serialName }) }}
           </h2>
 
           <p>
@@ -662,6 +667,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
             </span>
 
             <input
+              dir="auto"
               v-model="agenda[index]"
               type="text"
               class="hse-project-input input"
@@ -731,25 +737,26 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
               </button>
             </div>
 
-             <!-- Title -->
-              <div class="hse-project-field input-wrapper">
-                <label
-                  :for="`action_title_${index}`"
-                  class="hse-project-field-label hse-project-field field-label"
-                >
-                  {{ $t('action') }}
+            <!-- Title -->
+            <div class="hse-project-field input-wrapper">
+              <label
+                :for="`action_title_${index}`"
+                class="hse-project-field-label hse-project-field field-label"
+              >
+                {{ $t('Action') }}
 
-                  <!-- <span class="required-star"> * </span> -->
-                </label>
+                <!-- <span class="required-star"> * </span> -->
+              </label>
 
-                <input
-                  :id="`action_title_${index}`"
-                  v-model="action.title"
-                  type="text"
-                  class="hse-project-input input"
-                  :placeholder="$t('Enter action title')"
-                />
-              </div>
+              <input
+                dir="auto"
+                :id="`action_title_${index}`"
+                v-model="action.title"
+                type="text"
+                class="hse-project-input input"
+                :placeholder="$t('Enter action title')"
+              />
+            </div>
 
             <div class="action-form-grid">
               <!-- Action Type -->
@@ -761,8 +768,6 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
                 :static-options="ActionTypeSelectionOptions"
                 @update:model-value="UpdateActionType(index, $event)"
               />
-
-             
 
               <!-- Task Due Date -->
               <div v-if="isTask(action)" class="hse-project-field input-wrapper">
@@ -799,6 +804,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
                 </label>
 
                 <input
+                  dir="auto"
                   :id="`due_time_${index}`"
                   v-model="action.dueTime"
                   type="time"
@@ -879,7 +885,10 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
           </small>
 
           <h2>
-            {{ meetingResult?.serialName || `Meeting #${meetingResult?.meetingId || meeting.id}` }}
+            {{
+              meetingResult?.serialName ||
+              $t('uiDynamic.meetingReference', { p0: meetingResult?.meetingId || meeting.id })
+            }}
           </h2>
 
           <p>

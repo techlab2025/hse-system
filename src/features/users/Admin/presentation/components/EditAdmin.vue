@@ -60,7 +60,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-2 gap-5" @submit.prevent="EditClient">
         <AdminForm :AdminData="AdminDetails" @update:updateData="setParams" />
         <div class="button-wrapper">
-          <button type="submit" class="btn btn-primary">Edit</button>
+          <button type="submit" class="btn btn-primary">{{ $t('Edit') }}</button>
         </div>
       </form>
     </template>

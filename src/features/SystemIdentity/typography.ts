@@ -56,7 +56,7 @@ export const normalizeTypography = (value: unknown): Typography => {
 
 export const fontStack = (family: string): string => {
   const name = normalizeFontFamily(family)
-  return name ? `"${name}", "Regular", ui-sans-serif, sans-serif` : ''
+  return name ? `"${name}", "Regular", "HseArabic", ui-sans-serif, sans-serif` : ''
 }
 
 export const googleFontUrl = (family: string): string => {

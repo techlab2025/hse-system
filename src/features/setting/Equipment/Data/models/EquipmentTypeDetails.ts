@@ -1,3 +1,5 @@
+import { getCurrentLocale } from '@/localization/i18n'
+import { localizedRecord } from '@/localization/records'
 import TitleModel from '@/base/core/Models/title_model'
 import type { TitleLocale } from '@/base/core/params/translations_params'
 import TranslationsParams from '@/base/core/params/translations_params'
@@ -42,26 +44,30 @@ export default class EquipmentTypeDetailsModel extends TitleInterface {
   }
 
   static fromMap(data: any): EquipmentTypeDetailsModel {
-    return new EquipmentTypeDetailsModel(
-      data?.id,
-      data?.title,
-      data.subtitle,
-      data.has_certificate,
-      data.all_industries,
-      data?.industries,
-      data.parent_id,
-      data.image,
-      TranslationsParams.fromMap(data.titles).titles,
-      data.type,
-      data.organization_id,
+    return localizedRecord(
+      new EquipmentTypeDetailsModel(
+        data?.id,
+        data?.title,
+        data.subtitle,
+        data.has_certificate,
+        data.all_industries,
+        data?.industries,
+        data.parent_id,
+        data.image,
+        TranslationsParams.fromMap(data.titles).titles,
+        data.type,
+        data.organization_id,
+      ),
+      data,
     )
   }
 
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
     return new TitleInterface({
       id: data?.id,
       title: data?.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data?.titles,
     })
   }
 

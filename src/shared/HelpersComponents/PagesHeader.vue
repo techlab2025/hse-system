@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const props = defineProps<{
-  title: string,
+  title: string
   subtitle?: string
   img?: string
   actions?: boolean
@@ -9,12 +9,12 @@ const props = defineProps<{
 <template>
   <div class="employee-header">
     <div class="left-header-background">
-      <!-- <img class="left-blue-background" :src="EmployeeBg" alt="bg"> -->
-      <!-- <img class="left-yellow-background" :src="Yellowback" alt="bg"> -->
+      <!-- <img class="left-blue-background" :src="EmployeeBg" alt="" aria-hidden="true"> -->
+      <!-- <img class="left-yellow-background" :src="Yellowback" alt="" aria-hidden="true"> -->
     </div>
     <div class="employee-header-text">
       <!-- <span>image</span> -->
-      <img v-if="img" :src="img" alt="Header-img">
+      <img v-if="img" :src="img" :alt="$t('Header-img')" />
       <div class="header-text">
         <p class="title">{{ title }}</p>
         <p class="subtitle">{{ subtitle }}</p>
@@ -24,8 +24,8 @@ const props = defineProps<{
       </div>
     </div>
     <div class="right-header-background">
-      <!-- <img class="right-yellow-background" :src="Yellowback" alt="bg"> -->
-      <!-- <img class="right-blue-background" :src="EmployeeBg" alt="bg"> -->
+      <!-- <img class="right-yellow-background" :src="Yellowback" alt="" aria-hidden="true"> -->
+      <!-- <img class="right-blue-background" :src="EmployeeBg" alt="" aria-hidden="true"> -->
     </div>
   </div>
 </template>

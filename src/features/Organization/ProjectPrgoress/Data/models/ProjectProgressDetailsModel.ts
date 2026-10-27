@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 // import ClientPartnerModel from "@/features/dashboard/settings/clientPartner/Data/models/index_client_Partner_model";
 
@@ -6,26 +7,15 @@ export default class PartnerModel extends TitleInterface {
   public title: string
   public phone: string
 
-  constructor(
-    id: number,
-    title: string,
-    phone: string,
-
-  ) {
+  constructor(id: number, title: string, phone: string) {
     super({ id, title })
     this.id = id
     this.title = title
 
     this.phone = phone
-
   }
 
   static fromMap(data: any): PartnerModel {
-    return new PartnerModel(
-      data.id,
-      data.title,
-      data.phone,
-
-    )
+    return localizedRecord(new PartnerModel(data.id, data.title, data.phone), data)
   }
 }

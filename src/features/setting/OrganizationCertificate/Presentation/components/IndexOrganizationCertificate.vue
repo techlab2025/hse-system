@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
 import { onMounted, ref, watch } from 'vue'
@@ -85,7 +86,9 @@ const searchOrganizationCertificate = debounce(() => {
 
 const deleteOrganizationCertificate = async (id: number) => {
   const deleteOrganizationCertificateParams = new DeleteOrganizationCertificateParams(id)
-  await DeleteOrganizationCertificateController.getInstance().deleteOrganizationCertificate(deleteOrganizationCertificateParams)
+  await DeleteOrganizationCertificateController.getInstance().deleteOrganizationCertificate(
+    deleteOrganizationCertificateParams,
+  )
   await fetchOrganizationCertificate()
 }
 
@@ -199,7 +202,7 @@ const getOrganizationCertificateTypeLabel = (certificateType: number) => {
 // Export To Excel Sheet
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert('No data available to export')
+    alert(localizeUi('No data available to export'))
     return
   }
   const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
@@ -263,7 +266,10 @@ const organizationCertificateActionList = () => [
     icon: ExceIcon,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,
-    permission: [PermissionsEnum.ORGANIZATION_CERTIFICATE_FETCH, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+    permission: [
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_FETCH,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    ],
   },
   {
     text: t('upload_complated_template'),
@@ -276,12 +282,13 @@ const organizationCertificateActionList = () => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4  certificate_index">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 certificate_index">
     <div class="input-search col-span-1">
       <span class="icon-remove" @click="((word = ''), searchOrganizationCertificate())">
         <Search />
       </span>
       <input
+        dir="auto"
         v-model="word"
         :placeholder="$t('search_organization_certificate')"
         class="input"
@@ -360,16 +367,21 @@ const organizationCertificateActionList = () => [
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link
-                    :to="`${organizationCertificateRoute}/${item.id}`"
+                  <router-link :to="`${organizationCertificateRoute}/${item.id}`"
                     >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item?.title ?? '') }}</td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                <td :data-label="$t('Name')">{{ wordSlice(item?.title ?? '') }}</td>
+                <td
+                  :data-label="$t('all_industries')"
+                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                >
                   {{ item.allIndustries ? $t('yes') : $t('no') }}
                 </td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                <td
+                  :data-label="$t('all_industries')"
+                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                >
                   {{
                     item.industries.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')
@@ -392,7 +404,7 @@ const organizationCertificateActionList = () => [
                   </div>
                 </td> -->
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <DropList
                     :actionList="actionList(item.id, deleteOrganizationCertificate)"
                     @delete="deleteOrganizationCertificate(item.id)"
@@ -441,8 +453,12 @@ const organizationCertificateActionList = () => [
 
     <template #notPermitted>
       <DataFailed
-        addText="Have not  Permission"
-        description="You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data',
+          )
+        "
       />
     </template>
   </PermissionBuilder>
@@ -454,7 +470,10 @@ const organizationCertificateActionList = () => [
     :header="$t('upload_organization_certificate_sheet')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <UploadOrganizationCertificateExeclSheet :initial-file="pendingFile" @uploaded="handleUploadComplete" />
+    <UploadOrganizationCertificateExeclSheet
+      :initial-file="pendingFile"
+      @uploaded="handleUploadComplete"
+    />
   </Dialog>
 
   <input

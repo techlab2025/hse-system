@@ -1,5 +1,8 @@
-export function getLocalizedTitle(titles: { title_ar?: string; title_en?: string }): string {
-    const lang = localStorage.getItem("lang") ? localStorage.getItem("lang") : "en"
+import { getCurrentLocale } from '@/localization/i18n'
 
-    return lang === "ar" ? titles?.title_ar ?? "" : titles?.title_en ?? "";
+/** Only select fields supplied by the backend; keep the other translation as a fallback. */
+export function getLocalizedTitle(titles: { title_ar?: string; title_en?: string }): string {
+  return getCurrentLocale() === 'ar'
+    ? titles?.title_ar || titles?.title_en || ''
+    : titles?.title_en || titles?.title_ar || ''
 }

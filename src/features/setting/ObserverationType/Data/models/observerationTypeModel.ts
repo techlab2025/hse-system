@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
@@ -34,21 +35,36 @@ export default class ObserverationTypeModel extends TitleInterface {
   }
 
   static fromMap(data: any): ObserverationTypeModel {
-    return new ObserverationTypeModel(
-      data.id,
-      data.title,
-      data.subtitle,
-      // data.has_certificate,
-      data.all_industries,
-      data.industries?.length > 0
-        ? data.industries?.map((industry) => TitleModel.fromMap(industry))
-        : [],
-      data.parent_id,
-      data.image,
-      data.titles,
+    return localizedRecord(
+      new ObserverationTypeModel(
+        data.id,
+        data.title,
+        data.subtitle,
+        // data.has_certificate,
+        data.all_industries,
+        data.industries?.length > 0
+          ? data.industries?.map((industry) => TitleModel.fromMap(industry))
+          : [],
+        data.parent_id,
+        data.image,
+        data.titles,
+      ),
+      data,
     )
   }
-      static transformData(data: string[][]): ObserverationTypeModel[] {
-    return data.map((row, index) => new ObserverationTypeModel(index + 1, row[0] || '', row[1] || '' ,row[2] ? parseInt(row[2]) : 0, [], row[3] ? parseInt(row[3]) : 0, row[4] || '', row[5] || ''))
+  static transformData(data: string[][]): ObserverationTypeModel[] {
+    return data.map(
+      (row, index) =>
+        new ObserverationTypeModel(
+          index + 1,
+          row[0] || '',
+          row[1] || '',
+          row[2] ? parseInt(row[2]) : 0,
+          [],
+          row[3] ? parseInt(row[3]) : 0,
+          row[4] || '',
+          row[5] || '',
+        ),
+    )
   }
 }

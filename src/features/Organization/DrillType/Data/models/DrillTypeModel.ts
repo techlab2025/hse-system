@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class DrillTypeModel extends TitleInterface {
@@ -9,7 +10,7 @@ export default class DrillTypeModel extends TitleInterface {
   }
 
   static fromMap(data: any): DrillTypeModel {
-    return new DrillTypeModel(data.id, data.title, data.description)
+    return localizedRecord(new DrillTypeModel(data.id, data.title, data.description), data)
   }
 
   static example: DrillTypeModel[] = [

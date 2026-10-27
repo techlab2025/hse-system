@@ -1,5 +1,9 @@
 <template>
-  <main class="result-page-skeleton" aria-busy="true" aria-label="Loading inspection results">
+  <main
+    class="result-page-skeleton"
+    aria-busy="true"
+    :aria-label="$t('Loading inspection results')"
+  >
     <section class="result-skeleton-hero">
       <div class="result-skeleton-hero__copy">
         <span class="result-skeleton-block result-skeleton-block--eyebrow"></span>

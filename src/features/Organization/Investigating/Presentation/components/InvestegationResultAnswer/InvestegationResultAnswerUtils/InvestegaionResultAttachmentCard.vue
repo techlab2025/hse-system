@@ -18,10 +18,10 @@ const isImage = (url: string) => /\.(png|jpe?g|gif|webp|svg|avif)([?#].*)?$/i.te
         <img
           v-if="isImage(media.url)"
           :src="media.url"
-          :alt="media.file_name || `Evidence ${index + 1}`"
+          :alt="media.file_name || $t('uiDynamic.evidenceReference', { p0: index + 1 })"
         />
         <a v-else :href="media.url" target="_blank" rel="noopener noreferrer"
-          >{{ media.file_name || `Attachment ${index + 1}` }} ↗</a
+          >{{ media.file_name || $t('uiDynamic.attachmentReference', { p0: index + 1 }) }} ↗</a
         >
         <figcaption v-if="isImage(media.url) && media.file_name">{{ media.file_name }}</figcaption>
       </figure>

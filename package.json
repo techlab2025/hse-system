@@ -15,7 +15,11 @@
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
     "theme:migrate": "node scripts/migrate-style-colors-to-identity.mjs",
-    "create:feature": "tsx scripts/createFeature.ts"
+    "create:feature": "tsx scripts/createFeature.ts",
+    "i18n:audit": "node scripts/localization/audit.mjs --check",
+    "i18n:test": "tsx --tsconfig tsconfig.app.json --test scripts/localization-contract.test.ts",
+    "i18n:browser": "playwright test -c scripts/localization/playwright.config.mjs",
+    "i18n:routes": "node scripts/localization/routes-smoke.mjs"
   },
   "dependencies": {
     "@iconify-json/uil": "^1.2.3",

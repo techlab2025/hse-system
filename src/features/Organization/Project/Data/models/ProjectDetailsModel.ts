@@ -1,3 +1,4 @@
+import { getCurrentLocale } from '@/localization/i18n'
 import TranslationsParams, {
   type DescriptionLocale,
   type TitleLocale,
@@ -93,7 +94,7 @@ export default class ProjectDetailsModel {
   }
 
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     // console.log(data, 'data in get title');
 
@@ -103,6 +104,7 @@ export default class ProjectDetailsModel {
         data.titles?.find((title: any) => title.locale === savedLocale)?.title ||
         data.name ||
         data.location_title,
+      localizedTitles: data.titles,
     })
   }
 

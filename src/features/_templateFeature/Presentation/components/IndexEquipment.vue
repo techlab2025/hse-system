@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 // import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams'
 // import IndexEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/indexEquipmentTypeController'
 
@@ -50,12 +52,24 @@ const filterStatus = ref<number | null>(null)
 const filterEquipmentType = ref<number | null>(null)
 const equipmentTypeOptions = ref<TitleInterface[]>([])
 const ownershipOptions = [
-  new TitleInterface({ id: EquipmentStatus.RENT, title: 'Rent' }),
-  new TitleInterface({ id: EquipmentStatus.OWN, title: 'Owned' }),
+  new TitleInterface({ id: EquipmentStatus.RENT, title: 'Rent', translationKey: 'Rent' }),
+  new TitleInterface({ id: EquipmentStatus.OWN, title: 'Owned', translationKey: 'Owned' }),
 ]
 const filterFields = computed(() => [
-  { key: 'status', label: 'Rent Type', options: ownershipOptions },
-  { key: 'equipmentType', label: 'Equipment Type', options: equipmentTypeOptions.value },
+  {
+    key: 'status',
+    get label() {
+      return localizeUi('Rent Type')
+    },
+    options: ownershipOptions,
+  },
+  {
+    key: 'equipmentType',
+    get label() {
+      return localizeUi('Equipment Type')
+    },
+    options: equipmentTypeOptions.value,
+  },
 ])
 const indexEquipmentController = IndexEquipmentController.getInstance()
 const state = ref(indexEquipmentController.state.value)
@@ -233,8 +247,9 @@ watch(
         <Search />
       </span>
       <input
+        dir="auto"
         v-model="word"
-        :placeholder="'search'"
+        :placeholder="$t('search')"
         class="input"
         type="text"
         @input="searchEquipmentType"
@@ -301,20 +316,22 @@ watch(
                     >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
-                <td data-label="industries">
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('all_industries')">
+                  {{ item.allIndustries ? $t('yes') : $t('no') }}
+                </td>
+                <td :data-label="$t('industries')">
                   {{
                     item.industries.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')
                       : $t('no')
                   }}
                 </td>
-                <td data-label="EquipmentType">
+                <td :data-label="$t('EquipmentType')">
                   {{ item.equipmentType?.title }}
                 </td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusEquipmentType-->
                   <!--                  v-if="item.EquipmentTypeStatus === EquipmentTypeStatusEnum.Draft"-->
                   <!--                  :EquipmentTypeId="item.id"-->
@@ -345,25 +362,37 @@ watch(
       <template #empty>
         <DataEmpty
           :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EquipmentType`"
-          addText="Add EquipmentType"
-          description="You have no Equipment Types .. All your joined customers will appear here when you add your customer data"
-          title="You have No Equipment Types"
+          :addText="$t('Add_EquipmentType')"
+          :description="
+            $t(
+              'You have no Equipment Types .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Equipment Types')"
         />
       </template>
       <template #failed>
         <DataFailed
           :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EquipmentType`"
-          addText="Add EquipmentType"
-          description="You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
-          title="You have No Equipment Types"
+          :addText="$t('Add_EquipmentType')"
+          :description="
+            $t(
+              'You have no EquipmentType .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Equipment Types')"
         />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed
-        addText="Have not  Permission"
-        description="You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no EquipmentType .. All your joined customers will appear here when you add your customer data',
+          )
+        "
       />
     </template>
   </permission-builder>

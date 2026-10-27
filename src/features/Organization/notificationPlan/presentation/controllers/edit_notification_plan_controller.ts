@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import successImage from '@/assets/images/Success.png'
@@ -30,7 +31,7 @@ export default class EditNotificationPlanController extends ControllerInterface<
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog',
-          titleContent: 'Updated was successful',
+          titleContent: localizeUi('Updated was successful'),
           imageElement: successImage,
           messageContent: null,
         })

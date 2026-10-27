@@ -149,21 +149,21 @@ watch(() => props.projectId, getProjectLocationsHierarchiesEmployees, { immediat
     <div class="section-title">
       <span>03</span>
       <div>
-        <h2>Positions & employees</h2>
-        <p>Connect hierarchies and employees to every project location.</p>
+        <h2>{{ $t('Positions & employees') }}</h2>
+        <p>{{ $t('Connect hierarchies and employees to every project location.') }}</p>
       </div>
     </div>
-    <p v-if="isLoadingLocations" class="locations-status">Loading project locations…</p>
+    <p v-if="isLoadingLocations" class="locations-status">{{ $t('Loading project locations…') }}</p>
     <p v-else-if="locationsError" class="locations-status locations-error">
       {{ locationsError }}
     </p>
     <p v-else-if="!positions.length" class="locations-status">
-      No locations are assigned to this project.
+      {{ $t('No locations are assigned to this project.') }}
     </p>
     <div v-for="(location, locationIndex) in positions" :key="locationIndex" class="group-card">
       <div class="group-head">
         <div class="fixed-location">
-          <span>Project location</span>
+          <span>{{ $t('project_equipment_location') }}</span>
           <strong>{{ location.projectLocation?.title }}</strong>
         </div>
       </div>
@@ -172,8 +172,8 @@ watch(() => props.projectId, getProjectLocationsHierarchiesEmployees, { immediat
           :model-value="selectedHierarchies(location)"
           :params="hierarchyParams"
           :controller="hierarchyController"
-          label="positions"
-          placeholder="Select positions"
+          :label="$t('positions')"
+          :placeholder="$t('Select positions')"
           :type="2"
           @update:model-value="setLocationHierarchies(location, $event)"
         />
@@ -190,8 +190,8 @@ watch(() => props.projectId, getProjectLocationsHierarchiesEmployees, { immediat
               :model-value="hierarchy.employees"
               :params="hierarchy.employeeParams"
               :controller="employeeController"
-              label="employees"
-              placeholder="Select employees"
+              :label="$t('employees')"
+              :placeholder="$t('Select employees')"
               :type="2"
               @update:model-value="setPositionEmployees(hierarchy, $event)"
             />

@@ -12,7 +12,7 @@ const props = defineProps<{
 <template>
   <div class="home-routes-card">
     <div class="card-img">
-      <img v-if="!props.icon" :src="props.imgSrc" alt="logo" />
+      <img v-if="!props.icon" :src="props.imgSrc" :alt="$t('Organization logo')" />
       <component class="icon" v-if="props.icon" :is="props.icon"></component>
     </div>
     <div class="card-content">

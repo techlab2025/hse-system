@@ -102,7 +102,7 @@ function onFileChange(event: Event) {
   }
 
   // Reset input to allow selecting same files again
-  ; (event.target as HTMLInputElement).value = ''
+  ;(event.target as HTMLInputElement).value = ''
 }
 
 // Initialize from props
@@ -186,23 +186,35 @@ onUnmounted(() => {
     <div class="input-image">
       <label :for="`images${index}`" class="input-label-images">
         <CloudIcon />
-        <span v-if="multiable">Attach files (up to 10 files, each no larger than 3.5MB)</span>
-        <span v-else>Attach a file no larger than 3.5MB.</span>
+        <span v-if="multiable">{{
+          $t('Attach files (up to 10 files, each no larger than 3.5MB)')
+        }}</span>
+        <span v-else>{{ $t('Attach a file no larger than 3.5MB.') }}</span>
       </label>
 
-      <input type="file" :accept="accept" :id="`images${index}`" class="input" :multiple="multiable"
-        @change="onFileChange" />
+      <input
+        type="file"
+        :accept="accept"
+        :id="`images${index}`"
+        class="input"
+        :multiple="multiable"
+        @change="onFileChange"
+      />
     </div>
 
     <!-- Preview Images -->
 
     <div class="image-gallery" v-if="fileUrls.length > 0 || fileData.length > 0">
       <div class="image-item" v-for="(url, imgIndex) in fileUrls" :key="imgIndex">
-        <img class="preview-img" :src="url.file || url" @error="handleImageError(imgIndex)"
-          :alt="`Preview ${imgIndex + 1}`" />
+        <img
+          class="preview-img"
+          :src="url.file || url"
+          @error="handleImageError(imgIndex)"
+          :alt="$t('uiDynamic.previewItem', { p0: imgIndex + 1 })"
+        />
         <div v-if="canDelete" class="overlay" @click="removeImage(imgIndex)">
           <TrashIcon />
-          <span>Delete</span>
+          <span>{{ $t('Delete') }}</span>
         </div>
       </div>
 

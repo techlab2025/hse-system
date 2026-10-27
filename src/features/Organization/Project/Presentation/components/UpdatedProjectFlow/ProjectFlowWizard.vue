@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { translateMessage } from '@/localization/messages'
+import { translate as localizeUi } from '@/localization/i18n'
+
 import './ProjectWizardStyles.css'
 import { vWizardPanels } from './wizardPanels'
 import { vProjectPanels } from '../../composables/projectPanels'
@@ -98,8 +101,10 @@ const basic = ref<BasicProjectForm>({
 const serialFields = ref<ProjectSerialField[]>([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: '',
     enabled: !projectId.value,
   },
@@ -331,7 +336,7 @@ const validateStep = () => {
     holidays.value.hasCustom &&
     holidays.value.custom.some((item) => !item.holiday_title || !item.holidays_dates.length)
   ) {
-    errorMessage.value = 'Complete every custom holiday or remove the empty row.'
+    errorMessage.value = localizeUi('Complete every custom holiday or remove the empty row.')
     return false
   }
   if (
@@ -340,14 +345,16 @@ const validateStep = () => {
       location.heirarchys.some((hierarchy) => !hierarchy.hierarchy),
     )
   ) {
-    errorMessage.value = 'Complete every hierarchy you added or remove the incomplete row.'
+    errorMessage.value = localizeUi(
+      'Complete every hierarchy you added or remove the incomplete row.',
+    )
     return false
   }
   if (
     activeStep.value === 4 &&
     teams.value.some((location) => location.projectTeams.some((team) => !team.team))
   ) {
-    errorMessage.value = 'Complete every team you added or remove the incomplete row.'
+    errorMessage.value = localizeUi('Complete every team you added or remove the incomplete row.')
     return false
   }
   if (
@@ -360,7 +367,7 @@ const validateStep = () => {
       ),
     )
   ) {
-    errorMessage.value = 'Select one team leader for every team with employees.'
+    errorMessage.value = localizeUi('Select one team leader for every team with employees.')
     return false
   }
   errorMessage.value = ''
@@ -516,7 +523,9 @@ const saveAndNext = async () => {
 
 const skipAndNext = async () => {
   if (activeStep.value === 1 && !projectId.value) {
-    errorMessage.value = 'Save the basic project data first so the next steps have a project ID.'
+    errorMessage.value = localizeUi(
+      'Save the basic project data first so the next steps have a project ID.',
+    )
     return
   }
 
@@ -553,33 +562,43 @@ const goToPreviousStep = async () => {
     <header class="flow-hero">
       <div>
         <!-- <span class="eyebrow">PROJECT SETUP</span> -->
-        <h1>{{ editOnly ? `Update ${steps[activeStep - 1].title}` : 'Create a new project' }}</h1>
+        <h1>
+          {{
+            editOnly
+              ? $t('uiDynamic.updateItem', { p0: translateMessage(steps[activeStep - 1].title) })
+              : $t('Create a new project')
+          }}
+        </h1>
         <p>
-          Configure the operating foundation once. Every project module will use this structure.
+          {{
+            $t(
+              'Configure the operating foundation once. Every project module will use this structure.',
+            )
+          }}
         </p>
       </div>
     </header>
     <div class="hse-wizard-shell" :class="{ 'hse-wizard-shell--edit': editOnly }">
       <aside v-if="!editOnly" class="hse-wizard-rail">
         <div class="hse-wizard-rail-head">
-          <strong>Setup journey</strong>
-          <p>Complete the core project structure before operational use.</p>
+          <strong>{{ $t('Setup journey') }}</strong>
+          <p>{{ $t('Complete the core project structure before operational use.') }}</p>
           <div
             class="hse-wizard-progress"
             role="progressbar"
             :aria-valuenow="projectProgress"
             aria-valuemin="0"
             aria-valuemax="100"
-            aria-label="Setup completion"
+            :aria-label="$t('Setup completion')"
           >
             <span :style="{ width: `${projectProgress}%` }" />
           </div>
         </div>
-        <nav v-if="!editOnly" class="stepper" aria-label="Project steps">
+        <nav v-if="!editOnly" class="stepper" :aria-label="$t('Project steps')">
           <button
             v-for="step in steps"
             :key="step.number"
-            :aria-label="step.title"
+            :aria-label="translateMessage(step.title)"
             :aria-current="step.number === activeStep ? 'step' : undefined"
             type="button"
             :class="{ active: step.number === activeStep, done: step.number < activeStep }"
@@ -587,20 +606,21 @@ const goToPreviousStep = async () => {
           >
             <span>{{ step.number < activeStep ? '✓' : String(step.number).padStart(2, '0') }}</span>
             <div>
-              <strong>{{ step.title }}</strong
-              ><small>{{ step.caption }}</small>
+              <strong>{{ translateMessage(step.title) }}</strong
+              ><small>{{ translateMessage(step.caption) }}</small>
             </div>
           </button>
         </nav>
         <div class="hse-wizard-note">
           <span aria-hidden="true">✓</span>
           <p>
-            <strong>Project foundation</strong>Locations, teams and equipment defined here feed
-            every operational module.
+            <strong>{{ $t('Project foundation') }}</strong
+            >{{ $t('Locations, teams and equipment defined here feed every operational module.') }}
           </p>
         </div>
         <div class="hse-wizard-completion">
-          <small>Setup completion</small><strong>{{ projectProgress }}%</strong>
+          <small>{{ $t('Setup completion') }}</small
+          ><strong>{{ projectProgress }}%</strong>
         </div>
       </aside>
 
@@ -610,23 +630,23 @@ const goToPreviousStep = async () => {
             <h2>
               {{
                 [
-                  'Basic project data',
-                  'Project holidays',
-                  'Project positions',
-                  'Operating teams',
-                  'Equipment allocation',
+                  $t('Basic project data'),
+                  $t('Project holidays'),
+                  $t('Project positions'),
+                  $t('Operating teams'),
+                  $t('Equipment allocation'),
                 ][activeStep - 1]
               }}
             </h2>
             <p>
               {{
                 activeStep === 1
-                  ? 'Define the project identity, commercial context and operating footprint.'
-                  : steps[activeStep - 1].caption
+                  ? $t('Define the project identity, commercial context and operating footprint.')
+                  : translateMessage(steps[activeStep - 1].caption)
               }}
             </p>
           </div>
-          <span class="eyebrow">Step {{ activeStep }} of 5</span>
+          <span class="eyebrow">{{ $t('Step') }} {{ activeStep }} {{ $t('of 5') }}</span>
         </header>
         <div class="hse-wizard-step-content">
           <BasicProjectStep
@@ -669,7 +689,7 @@ const goToPreviousStep = async () => {
             class="hse-project-button btn-secondary"
             @click="router.push('/organization/projects?type=1')"
           >
-            Cancel
+            {{ $t('Cancel') }}
           </button>
           <div>
             <button
@@ -679,7 +699,7 @@ const goToPreviousStep = async () => {
               :disabled="loading"
               @click="goToPreviousStep"
             >
-              Back
+              {{ $t('back') }}
             </button>
             <button
               v-if="activeStep > 1"
@@ -688,7 +708,7 @@ const goToPreviousStep = async () => {
               :disabled="loading"
               @click="skipAndNext"
             >
-              {{ editOnly || activeStep === 5 ? 'Skip & Finish' : 'Skip & Next' }}
+              {{ editOnly || activeStep === 5 ? $t('Skip & Finish') : $t('Skip & Next') }}
             </button>
             <button
               v-if="hasCurrentStepData"
@@ -698,12 +718,12 @@ const goToPreviousStep = async () => {
             >
               {{
                 loading
-                  ? 'Saving…'
+                  ? $t('emailSettings.saving')
                   : editOnly
-                    ? 'Save changes'
+                    ? $t('Save changes')
                     : activeStep === 5
-                      ? 'Save & Finish'
-                      : 'Save & Next'
+                      ? $t('Save & Finish')
+                      : $t('Save & Next')
               }}
             </button>
           </div>

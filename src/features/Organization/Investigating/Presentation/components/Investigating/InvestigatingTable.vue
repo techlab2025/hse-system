@@ -117,28 +117,28 @@ const getZoneTitle = (item: InvestigatingTableItem) =>
       <tbody>
         <tr v-for="(item, index) in props.items || []" :key="item.Investegationid">
           <td data-label="#">{{ startIndex + index + 1 }}</td>
-          <td data-label="Report">
+          <td :data-label="$t('Report')">
             <router-link :to="getObservationLink(item)" class="report-reference">
               {{ getReportReference(item) }}
             </router-link>
           </td>
-          <td data-label="Title">
+          <td :data-label="$t('Title')">
             {{ item.observation?.title || item.title || '--' }}
           </td>
-          <td data-label="Project">{{ getProjectTitle(item) }}</td>
-          <td data-label="Date & Time">{{ getDateTime(item) }}</td>
-          <td data-label="Location / Zone">
+          <td :data-label="$t('Project')">{{ getProjectTitle(item) }}</td>
+          <td :data-label="$t('Date &amp; Time')">{{ getDateTime(item) }}</td>
+          <td :data-label="$t('auditUi.location_zone')">
             <span class="location-zone">
               <span>{{ getLocationTitle(item) }}</span>
               <small>{{ getZoneTitle(item) }}</small>
             </span>
           </td>
-          <td data-label="Status">
+          <td :data-label="$t('Status')">
             <span class="investigation-status" :class="getStatusClass(item.status)">
               {{ getStatusTitle(item.status) }}
             </span>
           </td>
-          <td data-label="Actions" data-pdf-exclude>
+          <td :data-label="$t('Actions')" data-pdf-exclude>
             <div class="table-actions">
               <router-link
                 v-if="item.status === InvestegationStatusEnum.NEW"

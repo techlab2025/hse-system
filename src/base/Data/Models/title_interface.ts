@@ -1,3 +1,4 @@
+import { i18n, translate } from '@/localization/i18n'
 export default class TitleInterface {
   id: number
   title?: string
@@ -12,6 +13,8 @@ export default class TitleInterface {
   constructor({
     id,
     title,
+    translationKey,
+    localizedTitles,
     subtitle,
     kpi,
     decodedData = '',
@@ -22,6 +25,8 @@ export default class TitleInterface {
   }: {
     id: number
     title?: string
+    translationKey?: string
+    localizedTitles?: readonly { locale: string; title?: string }[]
     subtitle?: string | number
     kpi?: string
     decodedData?: string
@@ -32,6 +37,24 @@ export default class TitleInterface {
   }) {
     this.id = id
     this.title = title
+    if (translationKey || localizedTitles?.length) {
+      let override: string | undefined
+      Object.defineProperty(this, 'title', {
+        enumerable: true,
+        configurable: true,
+        get: () =>
+          override ??
+          (translationKey
+            ? translate(translationKey)
+            : localizedTitles?.find((item) => item.locale === i18n.global.locale.value)?.title ||
+              title ||
+              localizedTitles?.[0]?.title ||
+              ''),
+        set: (value: string) => {
+          override = value
+        },
+      })
+    }
     this.subtitle = subtitle || ''
     this.kpi = kpi
     this.decodedData = decodedData

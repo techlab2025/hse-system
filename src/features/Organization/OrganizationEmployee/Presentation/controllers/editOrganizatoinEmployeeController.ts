@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
@@ -30,7 +31,7 @@ export default class EditOrganizatoinEmployeeController extends ControllerInterf
 
     const isThereHeirarchys = params.hierarchies.some((el) => el.hierarchy_id)
     if (!isThereHeirarchys) {
-      new OpenWarningDilaog('You Should Add Position ').openDialog()
+      new OpenWarningDilaog(localizeUi('You Should Add Position')).openDialog()
       return
     }
 

@@ -78,15 +78,20 @@ onMounted(() => {
                   <div class="flex items-center gap-2">
                     <label :for="`why-question-${index}`">{{ $t('question') }}</label
                     ><FieldHelpIcon
-                      text="Ask why the previous event or condition occurred to move closer to the root cause."
+                      :text="
+                        $t(
+                          'Ask why the previous event or condition occurred to move closer to the root cause.',
+                        )
+                      "
                     />
                   </div>
                   <input
+                    dir="auto"
                     type="text"
                     :id="`why-question-${index}`"
                     v-model="item.question"
                     class="input"
-                    placeholder="add your question"
+                    :placeholder="$t('add your question')"
                     @input="UpdateData"
                   />
                 </div>
@@ -94,14 +99,19 @@ onMounted(() => {
                   <div class="flex items-center gap-2">
                     <label :for="`why-answer-${index}`">{{ $t('answer') }}</label
                     ><FieldHelpIcon
-                      text="Provide an evidence-based answer that explains the cause, not just the symptom."
+                      :text="
+                        $t(
+                          'Provide an evidence-based answer that explains the cause, not just the symptom.',
+                        )
+                      "
                     />
                   </div>
                   <textarea
+                    dir="auto"
                     :id="`why-answer-${index}`"
                     v-model="item.answer"
                     class="input"
-                    placeholder="add your answer"
+                    :placeholder="$t('add your answer')"
                     @input="UpdateData"
                   ></textarea>
                 </div>
@@ -148,7 +158,7 @@ onMounted(() => {
 
 @media (max-width: 768px) {
   .timeline-wrapper {
-    padding-left: 0;
+    padding-inline-start: 0;
     padding-inline-start: 0;
   }
 

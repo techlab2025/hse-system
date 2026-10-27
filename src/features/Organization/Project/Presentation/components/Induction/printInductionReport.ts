@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import reportStyles from './induction-report-print.css?raw'
 
 /** Print a standalone report; application styles and navigation are excluded. */
@@ -11,8 +12,8 @@ export async function printInductionReport(report: HTMLElement, title: string) {
   try {
     const loaded = new Promise<void>((resolve, reject) => {
       frame.onload = () => resolve()
-      frame.onerror = () => reject(new Error('Unable to load report'))
-      timeout = setTimeout(() => reject(new Error('Print preview timed out')), 30_000)
+      frame.onerror = () => reject(new Error(localizeUi('Unable to load report')))
+      timeout = setTimeout(() => reject(new Error(localizeUi('Print preview timed out'))), 30_000)
     })
     frame.srcdoc = `<!doctype html><html><head><meta charset="utf-8">
       <style>${reportStyles}</style></head><body>${report.outerHTML}</body></html>`
@@ -20,10 +21,10 @@ export async function printInductionReport(report: HTMLElement, title: string) {
     await loaded
     clearTimeout(timeout)
     const printWindow = frame.contentWindow
-    if (!printWindow) throw new Error('Unable to open print preview')
+    if (!printWindow) throw new Error(localizeUi('Unable to open print preview'))
     printWindow.document.title = title
-    printWindow.document.documentElement.lang = report.lang || 'en'
-    printWindow.document.documentElement.dir = report.dir || 'ltr'
+    printWindow.document.documentElement.lang = report.lang || document.documentElement.lang || 'en'
+    printWindow.document.documentElement.dir = getComputedStyle(report).direction
     await printWindow.document.fonts.ready
     printWindow.addEventListener('afterprint', () => frame.remove(), { once: true })
     printWindow.focus()

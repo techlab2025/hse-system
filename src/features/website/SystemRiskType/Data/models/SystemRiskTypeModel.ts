@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class SystemRiskTypeModel extends TitleInterface {
@@ -30,15 +31,18 @@ export default class SystemRiskTypeModel extends TitleInterface {
   }
 
   static fromMap(data: any): SystemRiskTypeModel {
-    return new SystemRiskTypeModel(
-      data.id,
-      data.title,
-      data.subtitle,
-      data.color,
-      data.alt,
-      data.image,
-      data.order,
-      data.is_active,
+    return localizedRecord(
+      new SystemRiskTypeModel(
+        data.id,
+        data.title,
+        data.subtitle,
+        data.color,
+        data.alt,
+        data.image,
+        data.order,
+        data.is_active,
+      ),
+      data,
     )
   }
 }

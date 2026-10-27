@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
 import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
 
@@ -15,7 +17,6 @@ const emit = defineEmits<{ (e: 'uploaded'): void }>()
 import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue'
 import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue'
 import { useI18n } from 'vue-i18n'
-
 
 import RootCausesModel from '../../Data/models/RootCausesModel'
 import AddRootCausesController from '../controllers/addRootCausesController'
@@ -130,7 +131,7 @@ const fileUpload = async (file: File) => {
     extractedImages.value = images
   } catch (error) {
     console.error('Error processing file:', error)
-    errorMsg.value = 'Failed to process the file.'
+    errorMsg.value = localizeUi('failed_to_process_file')
   } finally {
     isLoading.value = false
   }
@@ -149,7 +150,9 @@ watch(
 // ─── Column Mapping ───────────────────────────────────────────────────────────
 const SendData = ref<string[]>(['title'])
 const SendDataLabels: Record<string, string> = {
-  title: 'Root Cause Title',
+  get title() {
+    return localizeUi('Root Cause Title')
+  },
 }
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return
@@ -247,7 +250,7 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
       <span class="loading-dot" />
       <span class="loading-dot" />
       <span class="loading-dot" />
-      <span class="loading-label">Processing file and images…</span>
+      <span class="loading-label">{{ $t('Processing file and images…') }}</span>
     </div>
 
     <FileUpload
@@ -270,14 +273,16 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
       <template v-if="mappedData && mappedData.length > 0">
         <div class="table-container">
           <div class="table-header">
-            <h3 class="table-title">Mapped Data Preview</h3>
-            <span class="table-badge">{{ mappedData.length - 1 }} rows</span>
+            <h3 class="table-title">{{ $t('Mapped Data Preview') }}</h3>
+            <span class="table-badge">{{ mappedData.length - 1 }} {{ $t('rows') }}</span>
           </div>
           <div class="table-responsive">
             <table class="main-table">
               <thead>
                 <tr>
-                  <th v-for="(item, i) in mappedData[0]" :key="i">></th>
+                  <th v-for="(item, i) in mappedData[0]" :key="i">
+                    {{ SendDataLabels[item] ?? item }}
+                  </th>
 
                   <th class="last"></th>
                 </tr>
@@ -289,7 +294,11 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
                     <span>{{ value }}</span>
                   </td>
                   <td>
-                    <button class="btn-delete-row" @click="deleteRow(rowIndex)" title="Delete row">
+                    <button
+                      class="btn-delete-row"
+                      @click="deleteRow(rowIndex)"
+                      :title="$t('delete_row')"
+                    >
                       🗑
                     </button>
                   </td>
@@ -299,7 +308,7 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
           </div>
         </div>
 
-        <button @click="AddRootCauses" class="btn-confirm">Confirm & Submit</button>
+        <button @click="AddRootCauses" class="btn-confirm">{{ $t('Confirm & Submit') }}</button>
       </template>
     </template>
   </div>
@@ -557,7 +566,7 @@ kbd {
 
 .main-table th {
   padding: 12px 16px;
-  text-align: left;
+  text-align: start;
   color: var(--brand-primary-500);
   border-bottom: 2px solid var(--brand-primary-100);
 }

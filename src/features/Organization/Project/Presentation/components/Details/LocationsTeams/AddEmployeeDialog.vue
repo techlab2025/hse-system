@@ -114,8 +114,8 @@ onMounted(() => {
     <template #header>
       <HeaderSection
         :img="ZoneDialog"
-        title="Select Employees"
-        subtitle="At least 1 Employees required for every location"
+        :title="$t('Select Employees')"
+        :subtitle="$t('At least 1 Employees required for every location')"
       />
     </template>
 
@@ -132,7 +132,7 @@ onMounted(() => {
         :required="false"
         :modelValue="SelectedHierarchy"
         :static-options="AllLocationHerarchy"
-        label="Position"
+        :label="$t('position')"
         id="Hierarchy"
         :placeholder="$t('Select Position')"
         @update:modelValue="setSelectedHierarchy"
@@ -145,7 +145,7 @@ onMounted(() => {
         :modelValue="SelectedEmployee"
         :controller="indexOrganizatoinEmployeeController"
         :params="indexOrganizatoinEmployeeParams"
-        label="Employee"
+        :label="$t('Employee')"
         :type="2"
         id="Employee"
         :placeholder="$t('Select Employee')"

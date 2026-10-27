@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { translateNavigationLabel } from '@/localization/navigation'
 import { SerialNumberEnum } from '../../Core/Enums/serialNum'
 import AddSerialNumberParams from '../../Core/params/addSerialNumberParams'
 import { onMounted, ref } from 'vue'
@@ -92,7 +93,7 @@ const fields = ref([
     suffix: '',
     start: '',
   },
-    {
+  {
     id: 8,
     serialNumberType: SerialNumberEnum.OBSERVATION,
     name: SerialNumberEnum.OBSERVATION,
@@ -101,7 +102,7 @@ const fields = ref([
     suffix: '',
     start: '',
   },
-    {
+  {
     id: 17,
     serialNumberType: SerialNumberEnum.INCIDANT,
     name: SerialNumberEnum.INCIDANT,
@@ -110,7 +111,7 @@ const fields = ref([
     suffix: '',
     start: '',
   },
-    {
+  {
     id: 15,
     serialNumberType: SerialNumberEnum.INVESTIGATION,
     name: SerialNumberEnum.INVESTIGATION,
@@ -148,7 +149,6 @@ const fields = ref([
   //   suffix: '',
   //   start: '',
   // },
-
 
   // {
   //   id: 9,
@@ -375,10 +375,10 @@ const route = useRoute()
     >
       <div class="serial-number-input-fields flex flex-col gap-5 w-full">
         <Accordion :value="field.id" class="w-full" expandIcon="null" collapseIcon="null" lazy>
-          <AccordionPanel :value="1" :header="field.title" class="w-full">
+          <AccordionPanel :value="1" :header="translateNavigationLabel(field.title)" class="w-full">
             <AccordionHeader>
               <div class="serial-form-title uppercase w-full">
-                <h2>{{ field.title }}</h2>
+                <h2>{{ translateNavigationLabel(field.title) }}</h2>
               </div>
             </AccordionHeader>
             <AccordionContent>
@@ -388,26 +388,41 @@ const route = useRoute()
                     >{{ $t('prefix') }}
                     <!-- <ImportantIcon /> -->
                   </label>
-                  <input type="text" v-model="field.prefix" placeholder="Enter your prefix" />
+                  <input
+                    dir="auto"
+                    type="text"
+                    v-model="field.prefix"
+                    :placeholder="$t('Enter your prefix')"
+                  />
                 </div>
                 <div class="input-wrapper star field-required">
                   <label
                     >{{ $t('suffix') }}
                     <!-- <ImportantIcon /> -->
                   </label>
-                  <input type="text" v-model="field.suffix" placeholder="Enter your suffix" />
+                  <input
+                    dir="auto"
+                    type="text"
+                    v-model="field.suffix"
+                    :placeholder="$t('Enter your suffix')"
+                  />
                 </div>
                 <div class="input-wrapper star field-required">
                   <label
                     >{{ $t('start number') }}
                     <!-- <ImportantIcon /> -->
                   </label>
-                  <input type="text" v-model="field.start" placeholder="Enter your start" />
+                  <input
+                    dir="auto"
+                    type="text"
+                    v-model="field.start"
+                    :placeholder="$t('Enter your start')"
+                  />
                 </div>
                 <div class="generated-serial">
                   <div class="icon-text">
                     <PathSerial />
-                    <p>Generated Serial number Example:</p>
+                    <p>{{ $t('Generated Serial number Example:') }}</p>
                   </div>
                   <div class="cards">
                     <p>{{ field.prefix }}-{{ field.start }}-{{ field.suffix }}</p>

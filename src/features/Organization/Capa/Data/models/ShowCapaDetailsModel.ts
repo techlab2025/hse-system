@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexCapaModel from './IndexCapaModel'
 import InvestigatingModel from '@/features/Organization/Investigating/Data/models/investigatingModel'
@@ -97,26 +98,30 @@ export default class ShowCapaDetailsModel extends TitleInterface {
       investigation?.previtive_tasks ??
       ncrPreventiveTasks
 
-    return new ShowCapaDetailsModel({
-      id: data.id,
-      corrective: data.corrective,
-      preventive: data.preventive,
-      serialName: data.serial_name,
-      observationCapaId: data.observation_capa_id,
-      observationId: data.observation_id,
-      date: data.date,
-      time: data.time,
-      observation: data.observation ? IndexCapaModel.fromMap(data.observation) : null,
-      internalAuditNcr: data.internal_audit_ncr
-        ? InternalAuditNcrDetailsModel.fromMap(data.internal_audit_ncr)
-        : null,
-      investigation: investigation ? InvestigatingModel.fromMap(investigation) : null,
-      correctiveTasks: correctiveTasks.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
-      preventiveTasks: preventiveTasks.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
-      lessonLearnt: data.lesson_learnt ?? data.lessonLearnt ?? '',
-      resultFindings: data.result_findings ?? data.resultFindings ?? '',
-      verificationMethodology: data.verification_methodology ?? data.verificationMethodology ?? '',
-      verificationStatus: data.verification_status ?? data.verificationStatus ?? '',
-    })
+    return localizedRecord(
+      new ShowCapaDetailsModel({
+        id: data.id,
+        corrective: data.corrective,
+        preventive: data.preventive,
+        serialName: data.serial_name,
+        observationCapaId: data.observation_capa_id,
+        observationId: data.observation_id,
+        date: data.date,
+        time: data.time,
+        observation: data.observation ? IndexCapaModel.fromMap(data.observation) : null,
+        internalAuditNcr: data.internal_audit_ncr
+          ? InternalAuditNcrDetailsModel.fromMap(data.internal_audit_ncr)
+          : null,
+        investigation: investigation ? InvestigatingModel.fromMap(investigation) : null,
+        correctiveTasks: correctiveTasks.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
+        preventiveTasks: preventiveTasks.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
+        lessonLearnt: data.lesson_learnt ?? data.lessonLearnt ?? '',
+        resultFindings: data.result_findings ?? data.resultFindings ?? '',
+        verificationMethodology:
+          data.verification_methodology ?? data.verificationMethodology ?? '',
+        verificationStatus: data.verification_status ?? data.verificationStatus ?? '',
+      }),
+      data,
+    )
   }
 }

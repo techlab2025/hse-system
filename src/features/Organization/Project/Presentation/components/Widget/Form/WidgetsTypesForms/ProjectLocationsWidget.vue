@@ -69,22 +69,22 @@ const UpdateTitle = (data) => {
 <template>
   <ZoneTitlesForm @update:value="UpdateTitle" />
   <RadioSection
-    title="Choose what you want to appear on the map."
+    :title="$t('Choose what you want to appear on the map.')"
     :selections="['locations', 'zones']"
     @update:value="(v) => updateField('MapSelection', v)"
   />
   <RadioSection
-    title="who total count"
+    :title="$t('who total count')"
     :selections="['yes', 'No']"
     @update:value="(v) => updateField('TotalCount', v)"
   />
   <ColorSelection
-    title="chart color"
+    :title="$t('chart color')"
     :colors="colors"
     @update:value="(v) => updateField('SelectedColor', v)"
   />
   <RadioSection
-    title="Available to"
+    :title="$t('Available to')"
     :selections="['anyone', 'only me']"
     @update:value="(v) => updateField('SelectedAvailable', v)"
   />

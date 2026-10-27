@@ -27,8 +27,6 @@ const ppeConditionLabels: Record<number, string> = {
   [PpeItemConditionEnum.DEFECTIVE]: 'Defective',
 }
 
-
-
 const getPpeConditionLabel = (condition: number) =>
   ppeConditionLabels[condition] || String(condition)
 </script>
@@ -37,7 +35,7 @@ const getPpeConditionLabel = (condition: number) =>
   <div class="injury-header-container">
     <div class="injury-header">
       <div class="injury-header-info">
-        <img :src="acc" alt="acc" />
+        <img :src="acc" alt="" aria-hidden="true" />
         <div class="text">
           <p>{{ $t('There are casualties from the accident.') }}</p>
           <h6>{{ props.data?.length }} {{ $t('injured') }}</h6>
@@ -71,7 +69,7 @@ const getPpeConditionLabel = (condition: number) =>
                 injury.organization_employee?.image ||
                 'https://cyber.comolho.com/static/img/avatar.png'
               "
-              alt="user"
+              :alt="$t('user')"
             />
             <p>{{ injury?.organization_employee?.name || injury?.employee_name }}</p>
           </div>

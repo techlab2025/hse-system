@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import RolePermissionModel from './RolePermissionModel'
 
 export default class RoleDetailsModel {
@@ -25,13 +26,16 @@ export default class RoleDetailsModel {
   }
 
   static fromMap(data: any): RoleDetailsModel {
-    return new RoleDetailsModel(
-      data.id,
-      data.permissions.map((item: any) => RolePermissionModel.fromMap(item)),
-      data.role,
-      data.role_id,
-      data.display_name,
-      data.allow_for_organizations ,
+    return localizedRecord(
+      new RoleDetailsModel(
+        data.id,
+        data.permissions.map((item: any) => RolePermissionModel.fromMap(item)),
+        data.role,
+        data.role_id,
+        data.display_name,
+        data.allow_for_organizations,
+      ),
+      data,
     )
   }
 }

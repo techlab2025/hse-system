@@ -1,16 +1,8 @@
 <script setup lang="ts">
-import {
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  watch,
-} from 'vue'
+import { translateKeyOrLiteral } from '@/localization/i18n'
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
-import lottie, {
-  type AnimationConfigWithData,
-  type AnimationItem,
-} from 'lottie-web'
+import lottie, { type AnimationConfigWithData, type AnimationItem } from 'lottie-web'
 
 import newLoaderJson from '@/assets/lotties/newloader.json'
 
@@ -23,7 +15,7 @@ interface LoaderProps {
 
 const props = withDefaults(defineProps<LoaderProps>(), {
   visible: true,
-  text: 'Loading...',
+  text: 'loading',
   size: 180,
   fullscreen: true,
 })
@@ -42,8 +34,7 @@ const importedJson = newLoaderJson as unknown as {
 }
 
 const animationData =
-  importedJson.default ??
-  (newLoaderJson as AnimationConfigWithData<'svg'>['animationData'])
+  importedJson.default ?? (newLoaderJson as AnimationConfigWithData<'svg'>['animationData'])
 
 function destroyAnimation(): void {
   animationInstance?.destroy()
@@ -104,7 +95,7 @@ onMounted(async () => {
 
 watch(
   () => props.visible,
-  async visible => {
+  async (visible) => {
     if (!componentMounted) {
       return
     }
@@ -144,7 +135,7 @@ onBeforeUnmount(() => {
         />
 
         <p v-if="text" class="app-loader__text">
-          {{ text }}
+          {{ translateKeyOrLiteral(text) }}
         </p>
       </div>
     </div>

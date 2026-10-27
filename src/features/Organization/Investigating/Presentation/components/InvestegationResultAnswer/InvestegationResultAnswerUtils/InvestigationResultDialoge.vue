@@ -28,8 +28,8 @@ const taskAnswer = computed(
 </script>
 
 <template>
-  <button label="Show" @click="visible = true" class="investigation-show-result-btn">
-    view details
+  <button :label="$t('Show')" @click="visible = true" class="investigation-show-result-btn">
+    {{ $t('view details') }}
   </button>
   <Dialog
     v-model:visible="visible"
@@ -39,7 +39,7 @@ const taskAnswer = computed(
   >
     <template #header>
       <div class="show-result-dialog-header">
-        <span>Task details</span>
+        <span>{{ $t('Task details') }}</span>
         <h3>{{ item?.title || staticData.title }}</h3>
       </div>
     </template>
@@ -54,11 +54,11 @@ const taskAnswer = computed(
             </h3>
             <div class="info-row">
               <div class="info-item">
-                <h5>due date :</h5>
+                <h5>{{ $t('due date :') }}</h5>
                 <span> {{ item?.due_date || item?.dueDate || item?.date }}</span>
               </div>
               <div class="info-item">
-                <h5>Responsible :</h5>
+                <h5>{{ $t('Responsible :') }}</h5>
                 <span>
                   {{
                     item?.responable_person?.name ||
@@ -70,15 +70,15 @@ const taskAnswer = computed(
             </div>
           </div>
           <div class="notes">
-            <h4>Answer</h4>
-            <p>{{ taskAnswer || 'No answer has been added yet.' }}</p>
+            <h4>{{ $t('Answer') }}</h4>
+            <p>{{ taskAnswer || $t('No answer has been added yet.') }}</p>
           </div>
         </div>
 
         <div class="user-img-side">
           <!-- <img src="@/assets/images/user-assign.png" alt="" /> -->
           <div class="name">
-            <span>assigned to :</span>
+            <span>{{ $t('assigned to :') }}</span>
             <p>{{ item?.assigned_to?.name || item?.assignedTo?.name || item?.assignedToName }}</p>
           </div>
         </div>
@@ -219,7 +219,11 @@ const taskAnswer = computed(
     justify-content: center;
     gap: 12px;
     padding: 16px;
-    background: linear-gradient(180deg, color-mix(in srgb, var(--brand-primary-50) 84%, transparent), var(--surface-1));
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--brand-primary-50) 84%, transparent),
+      var(--surface-1)
+    );
     text-align: center;
 
     img {

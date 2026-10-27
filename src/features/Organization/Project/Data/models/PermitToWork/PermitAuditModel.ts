@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class FetchPermitAuditModel extends TitleInterface {
@@ -11,7 +12,7 @@ export default class FetchPermitAuditModel extends TitleInterface {
   }
 
   static fromMap(data: any): FetchPermitAuditModel {
-    return new FetchPermitAuditModel(data.id, data.title)
+    return localizedRecord(new FetchPermitAuditModel(data.id, data.title), data)
   }
 
   static example: FetchPermitAuditModel = new FetchPermitAuditModel(

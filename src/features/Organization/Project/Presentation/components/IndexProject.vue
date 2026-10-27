@@ -203,6 +203,7 @@ watch(
           <Search />
         </button>
         <input
+          dir="auto"
           class="hse-project-input"
           v-model="word"
           :placeholder="t('search')"
@@ -305,9 +306,13 @@ watch(
           >
             <DataEmpty
               :link="`/organization/project/flow`"
-              addText="Add Project"
-              description="You have no Project .. All your joined customers will appear here when you add your customer data"
-              title="You have No Project"
+              :addText="$t('Add Project')"
+              :description="
+                $t(
+                  'You have no Project .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Project')"
             />
           </PermissionBuilder>
         </template>
@@ -317,9 +322,13 @@ watch(
           >
             <DataFailed
               :link="`/organization/project/flow`"
-              addText="Add Project"
-              description="You have no Project .. All your joined customers will appear here when you add your customer data"
-              title="You have No Project"
+              :addText="$t('Add Project')"
+              :description="
+                $t(
+                  'You have no Project .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Project')"
             />
           </PermissionBuilder>
         </template>
@@ -327,8 +336,12 @@ watch(
 
       <template #notPermitted>
         <DataFailed
-          addText="Have not Permission"
-          description="You have no Project .. All your joined customers will appear here when you add your customer data"
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no Project .. All your joined customers will appear here when you add your customer data',
+            )
+          "
         />
       </template>
     </PermissionBuilder>

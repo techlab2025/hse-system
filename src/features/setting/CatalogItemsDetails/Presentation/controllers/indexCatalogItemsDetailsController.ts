@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -6,7 +7,9 @@ import type CatalogItemsModel from '../../Data/models/CatalogItemsModel'
 import IndexCatalogItemsDetailsUseCase from '../../Domain/useCase/indexCatalogItemsDetailsUseCase'
 // import TitleInterface from '@/base/Data/Models/title_interface'
 
-export default class IndexCatalogItemsDetailsController extends SelectControllerInterface<CatalogItemsModel[]> {
+export default class IndexCatalogItemsDetailsController extends SelectControllerInterface<
+  CatalogItemsModel[]
+> {
   private static instance: IndexCatalogItemsDetailsController
   private constructor() {
     super()
@@ -24,13 +27,14 @@ export default class IndexCatalogItemsDetailsController extends SelectController
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<CatalogItemsModel[]> = await this.indexCatalogItemsDetailsUseCase.call(params)
+    const dataState: DataState<CatalogItemsModel[]> =
+      await this.indexCatalogItemsDetailsUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

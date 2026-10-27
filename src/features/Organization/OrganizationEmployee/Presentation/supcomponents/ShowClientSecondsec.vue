@@ -106,14 +106,14 @@ watch(
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Project Code</th>
-                <th scope="col">Customer name</th>
-                <th scope="col">Project name</th>
-                <th scope="col">Project type</th>
-                <th scope="col">Marketer</th>
+                <th scope="col">{{ $t('Project Code') }}</th>
+                <th scope="col">{{ $t('Customer name') }}</th>
+                <th scope="col">{{ $t('Project name') }}</th>
+                <th scope="col">{{ $t('Project type') }}</th>
+                <th scope="col">{{ $t('Marketer') }}</th>
                 <!--            <th scope="col">Project contracted for</th>-->
-                <th scope="col">Status</th>
-                <th scope="col">Actions</th>
+                <th scope="col">{{ $t('Status') }}</th>
+                <th scope="col">{{ $t('Actions') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -121,11 +121,11 @@ watch(
                 <td data-label="#">
                   <router-link :to="`/edit-project/${item.id}`">{{ item.id }}</router-link>
                 </td>
-                <td data-label="Customer name">{{ item.project_code }}</td>
-                <td data-label="Customer name">{{ item.client }}</td>
-                <td data-label="Project name">{{ wordSlice(item.title) }}</td>
-                <td data-label="Project type">{{ item.project_type }}</td>
-                <td data-label="Marketer">
+                <td :data-label="$t('Customer name')">{{ item.project_code }}</td>
+                <td :data-label="$t('Customer name')">{{ item.client }}</td>
+                <td :data-label="$t('Project name')">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('Project type')">{{ item.project_type }}</td>
+                <td :data-label="$t('Marketer')">
                   {{ item?.marketers[0]?.name ?? '___' }}
                 </td>
                 <!--            <td data-label="Project contracted for">-->
@@ -133,25 +133,25 @@ watch(
                 <!--              <span v-if="item.supervisor_exist">, Supervision</span>-->
                 <!--              <span v-if="item.authorty_exist">, Authority</span>-->
                 <!--            </td>-->
-                <td data-label="Status">
+                <td :data-label="$t('Status')">
                   <span :class="`status status_${getStatusLabel(item.project_status)}`">{{
                     getStatusLabel(item.project_status)
                   }}</span>
                 </td>
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <DropList
                     :lockStatus="item.lock_status === 1"
                     :projectStatus="item.project_status"
                     :isDesign="item.design_exist"
                     :isSupervisor="item.supervisor_exist"
                     :editLink="`/edit-project/${item.id}`"
-                    editText="Edit project"
+                    :editText="$t('auditUi.edit_project')"
                     @delete="DeleteProject(item.id)"
                     showText="Show project"
                     :showLink="`/project/${item.id}`"
-                    supervisorText="Edit supervision"
+                    :supervisorText="$t('auditUi.edit_supervision')"
                     :supervisorLink="`/add-project/${item.id}/supervision`"
-                    designText="Edit Design"
+                    :designText="$t('auditUi.edit_design')"
                     :designLink="`/add-project/${item.id}/design`"
                   />
                 </td>
@@ -174,9 +174,13 @@ watch(
       <template #empty>
         <DataEmpty
           :link="`/add-project`"
-          description="You have no project types .. All your joined customers will appear here when you add your customer data"
-          title="You have No Projects"
-          addText="Add Projects"
+          :description="
+            $t(
+              'You have no project types .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Projects')"
+          :addText="$t('Add Projects')"
         />
       </template>
       <template #failed>

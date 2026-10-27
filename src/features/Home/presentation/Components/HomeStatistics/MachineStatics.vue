@@ -59,8 +59,11 @@ const setChartOptions = () => {
     documentStyle.getPropertyValue('--p-text-color')
 
   return {
+    locale: locale.value,
     plugins: {
       legend: {
+        rtl: locale.value === 'ar',
+        textDirection: locale.value === 'ar' ? 'rtl' : 'ltr',
         labels: {
           usePointStyle: true,
           font: { family: documentStyle.fontFamily, size: 12 },

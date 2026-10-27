@@ -2,7 +2,13 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { Appearance } from '../appearance'
-import { sidebarContainerNodes, sidebarLabel, sidebarOrderKey } from '../sidebarLayout'
+import {
+  sidebarContainerNodes,
+  sidebarLabel,
+  sidebarOrderKey,
+  sidebarGroups,
+  sidebarNodes,
+} from '../sidebarLayout'
 import IdentityOrderList from './IdentityOrderList.vue'
 import IdentitySidebarDropZone from './IdentitySidebarDropZone.vue'
 import { useSidebarDrag } from '../composables/useSidebarDrag'
@@ -10,6 +16,14 @@ import { useSidebarDrag } from '../composables/useSidebarDrag'
 const model = defineModel<Appearance>({ required: true })
 const props = defineProps<{ container: string }>()
 const { t } = useI18n()
+const containerLabel = computed(() => {
+  const menu = sidebarNodes.find((node) => node.id === props.container)
+  if (menu) return sidebarLabel(model.value, menu.id, t(menu.route.name))
+  const group = sidebarGroups(model.value).find((entry) => entry.key === props.container)
+  return group
+    ? sidebarLabel(model.value, `group:${group.key}`, group.custom ? group.label : t(group.label))
+    : t('Sidebar')
+})
 const nodes = computed(() => sidebarContainerNodes(model.value, props.container))
 const nodesByKey = computed(() =>
   Object.fromEntries(nodes.value.map((node) => [sidebarOrderKey(node, props.container), node])),
@@ -40,7 +54,7 @@ const dropKey = computed(() => {
   <IdentityOrderList
     v-model="order"
     :items="items"
-    :label="`${container} menu order`"
+    :label="$t('uiDynamic.menuOrder', { p0: containerLabel })"
     external-drag
     :dragging-key="draggingKey ? sidebarOrderKey(draggingKey, container) : undefined"
     :drop-before="drag.target.value?.edge === 'before' ? dropKey : undefined"
@@ -58,9 +72,9 @@ const dropKey = computed(() => {
         class="identity-sidebar-drag-handle"
         :data-drag-item="nodesByKey[item].id"
         draggable="true"
-        :aria-label="`Pick up ${t(nodesByKey[item].route.name)} to move`"
+        :aria-label="$t('uiDynamic.pickUp', { p0: t(nodesByKey[item].route.name) })"
         :aria-pressed="drag.activeId.value === nodesByKey[item].id"
-        title="Drag to move, or click to pick up"
+        :title="$t('Drag to move, or click to pick up')"
         @click="drag.pickUp(nodesByKey[item].id)"
       >
         ⠿
@@ -69,24 +83,27 @@ const dropKey = computed(() => {
     </template>
     <template #label="{ item }">
       <input
+        dir="auto"
         v-model="model.sidebarLabels[nodesByKey[item].id]"
         class="identity-sidebar-name"
         type="text"
         maxlength="120"
         :data-sidebar-item="nodesByKey[item].id"
-        :aria-label="`Name for ${t(nodesByKey[item].route.name)}`"
+        :aria-label="$t('uiDynamic.itemName', { p0: t(nodesByKey[item].route.name) })"
         :placeholder="t(nodesByKey[item].route.name)"
         @dragstart.stop.prevent
       />
     </template>
     <template #default="{ item }">
-      <small v-if="nodesByKey[item].locked" class="identity-sidebar-pinned"
-        >Fixed in Overview</small
-      >
+      <small v-if="nodesByKey[item].locked" class="identity-sidebar-pinned">{{
+        $t('Fixed in Overview')
+      }}</small>
       <IdentitySidebarDropZone
         v-if="nodesByKey[item].isMenu"
         :container="nodesByKey[item].id"
-        :label="`Drop into ${items.find((entry) => entry.key === item)?.label} submenu`"
+        :label="
+          $t('uiDynamic.dropIntoSubmenu', { p0: items.find((entry) => entry.key === item)?.label })
+        "
         @entered="openMenus[nodesByKey[item].id] = true"
       />
       <details
@@ -95,7 +112,7 @@ const dropKey = computed(() => {
         :open="openMenus[nodesByKey[item].id]"
         @toggle="openMenus[nodesByKey[item].id] = ($event.target as HTMLDetailsElement).open"
       >
-        <summary>Submenu items</summary>
+        <summary>{{ $t('Submenu items') }}</summary>
         <IdentitySidebarItems v-model="model" :container="nodesByKey[item].id" />
       </details>
     </template>
@@ -103,6 +120,6 @@ const dropKey = computed(() => {
   <IdentitySidebarDropZone
     v-if="container !== 'overview'"
     :container="container"
-    label="Drop here to add at the end"
+    :label="$t('Drop here to add at the end')"
   />
 </template>

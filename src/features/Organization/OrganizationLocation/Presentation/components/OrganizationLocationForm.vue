@@ -243,7 +243,15 @@ watch(
       {{ $t('lat') }}
     </label>
 
-    <input type="text" @change="updateData" name="lat" id="lat" class="input" v-model="lat" />
+    <input
+      dir="auto"
+      type="text"
+      @change="updateData"
+      name="lat"
+      id="lat"
+      class="input"
+      v-model="lat"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
@@ -251,7 +259,15 @@ watch(
       {{ $t('lng') }}
     </label>
 
-    <input type="text" @change="updateData" name="lng" id="lng" class="input" v-model="lng" />
+    <input
+      dir="auto"
+      type="text"
+      @change="updateData"
+      name="lng"
+      id="lng"
+      class="input"
+      v-model="lng"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
@@ -264,7 +280,7 @@ watch(
       :placeholder="$t('select_country')"
     />
   </div>
-  
+
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput
       :controller="indexCityController"
@@ -275,7 +291,7 @@ watch(
       :placeholder="$t('select_city')"
     />
   </div>
-  
+
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput
       :controller="indexStateController"

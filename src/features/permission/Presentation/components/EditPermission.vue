@@ -64,7 +64,7 @@ const setParams = (data: Params) => {
       <form @submit.prevent="EditPermission">
         <PermissionForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">Edit</button>
+          <button type="submit" class="btn btn-primary">{{ $t('Edit') }}</button>
         </div>
       </form>
     </template>

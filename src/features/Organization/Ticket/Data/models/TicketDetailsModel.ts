@@ -1,3 +1,5 @@
+import { getCurrentLocale } from '@/localization/i18n'
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import TranslationsModel from '@/base/core/Models/translations_model'
 import TicketHistoryModel from './TicketHistoryModel'
@@ -41,26 +43,30 @@ export default class TicketDetailsModel {
   }
 
   static fromMap(data: any): TicketDetailsModel {
-    return new TicketDetailsModel(
-      data.id,
-      TranslationsModel.fromData(data.titles),
-      data.description,
-      data.type,
-      data.media,
-      data.title,
-      data.status,
-      data.created_at,
-      data.ticket_replies.map((reply: any) => TicketHistoryModel.fromMap(reply)),
-      data.ticket_type,
+    return localizedRecord(
+      new TicketDetailsModel(
+        data.id,
+        TranslationsModel.fromData(data.titles),
+        data.description,
+        data.type,
+        data.media,
+        data.title,
+        data.status,
+        data.created_at,
+        data.ticket_replies.map((reply: any) => TicketHistoryModel.fromMap(reply)),
+        data.ticket_type,
+      ),
+      data,
     )
   }
 
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data.titles,
     })
   }
 }

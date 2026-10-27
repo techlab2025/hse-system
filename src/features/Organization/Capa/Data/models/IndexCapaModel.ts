@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import LocationModel from '@/features/setting/Location/Data/models/LocationModel'
 import SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
 import ShowProjectDetailsModel from '@/features/Organization/Project/Data/models/ShowProjectDeatilsModel'
@@ -120,50 +121,53 @@ export default class IndexCapaModel {
       (!data.type && data.capa && !data.capa.observation_id)
         ? data.id
         : null)
-    return new IndexCapaModel(
-      data.id,
-      data.title,
-      data.description,
-      data.image,
-      data.is_action,
-      data.task_result_item,
-      data.type,
-      data.type_id,
-      data.type_model,
-      data.equipment,
-      data.location,
-      data.zoon,
-      data.project,
-      data.is_result,
-      data.risk_level,
-      data.save_status,
-      data.action,
-      data.is_near_miss,
-      data.capa_status,
-      data.date,
-      data.serial,
-      data.observer ? OvserverModel?.fromMap(data.observer) : undefined,
-      data.creator ? OvserverModel?.fromMap(data.creator) : undefined,
-      data.capa ? CapaModel.fromMap(data.capa) : undefined,
-      (data.media ?? []).map((item: any) => FilesModel.fromMap(item)),
-      data.serial_name ||
-        ncr?.serial_name ||
-        data.serial_number ||
-        ncr?.serial_number ||
-        data.ncr ||
-        ncr?.ncr ||
+    return localizedRecord(
+      new IndexCapaModel(
+        data.id,
+        data.title,
+        data.description,
+        data.image,
+        data.is_action,
+        data.task_result_item,
+        data.type,
+        data.type_id,
+        data.type_model,
+        data.equipment,
+        data.location,
+        data.zoon,
+        data.project,
+        data.is_result,
+        data.risk_level,
+        data.save_status,
+        data.action,
+        data.is_near_miss,
+        data.capa_status,
+        data.date,
         data.serial,
-      data.time,
-      data.action_status,
-      data?.is_work_stopped,
-      data?.created_at,
-      data?.updated_at,
-      ncrId != null ? Number(ncrId) : null,
-      data.investigation_id != null
-        ? Number(data.investigation_id)
-        : data.investigation?.id != null
-          ? Number(data.investigation.id)
-          : null,
+        data.observer ? OvserverModel?.fromMap(data.observer) : undefined,
+        data.creator ? OvserverModel?.fromMap(data.creator) : undefined,
+        data.capa ? CapaModel.fromMap(data.capa) : undefined,
+        (data.media ?? []).map((item: any) => FilesModel.fromMap(item)),
+        data.serial_name ||
+          ncr?.serial_name ||
+          data.serial_number ||
+          ncr?.serial_number ||
+          data.ncr ||
+          ncr?.ncr ||
+          data.serial,
+        data.time,
+        data.action_status,
+        data?.is_work_stopped,
+        data?.created_at,
+        data?.updated_at,
+        ncrId != null ? Number(ncrId) : null,
+        data.investigation_id != null
+          ? Number(data.investigation_id)
+          : data.investigation?.id != null
+            ? Number(data.investigation.id)
+            : null,
+      ),
+      data,
     )
   }
 }

@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class DocumentCategoryModel extends TitleInterface {
@@ -6,7 +7,7 @@ export default class DocumentCategoryModel extends TitleInterface {
   }
 
   static fromMap(data: any): DocumentCategoryModel {
-    return new DocumentCategoryModel(data.id, data.title)
+    return localizedRecord(new DocumentCategoryModel(data.id, data.title), data)
   }
 
   static example: DocumentCategoryModel[] = [

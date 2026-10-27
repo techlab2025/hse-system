@@ -257,7 +257,9 @@ const inputId = `file-upload-${props.index ?? Math.random().toString(36).substri
     >
       <span class="upload-icon">↑</span>
       <span class="upload-text">
-        {{ isMaxReached ? `Max ${maxFiles} files reached` : 'Click to upload' }}
+        {{
+          isMaxReached ? $t('uiDynamic.fileLimitReached', { p0: maxFiles }) : $t('Click to upload')
+        }}
       </span>
       <input
         :id="inputId"
@@ -269,7 +271,11 @@ const inputId = `file-upload-${props.index ?? Math.random().toString(36).substri
         @change="handleFileUpload"
       />
     </label>
-    <label v-else-if="!readonly" :for="inputId" :class="[className ?? 'upload-area', { disabled: isMaxReached }]">
+    <label
+      v-else-if="!readonly"
+      :for="inputId"
+      :class="[className ?? 'upload-area', { disabled: isMaxReached }]"
+    >
       <slot name="content"></slot>
       <input
         :id="inputId"
@@ -287,7 +293,7 @@ const inputId = `file-upload-${props.index ?? Math.random().toString(36).substri
         v-for="fileItem in files"
         :key="fileItem.id"
         class="preview-item"
-        title="Click to download"
+        :title="$t('Click to download')"
         @click="downloadFile(fileItem)"
       >
         <template v-if="isImage(fileItem)">
@@ -311,7 +317,7 @@ const inputId = `file-upload-${props.index ?? Math.random().toString(36).substri
           v-if="!readonly"
           type="button"
           class="remove-btn"
-          title="Remove"
+          :title="$t('Remove')"
           @click.stop="removeFile(fileItem.id)"
         >
           ✕

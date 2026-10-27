@@ -1,10 +1,9 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import type SystemWorkDetailsModel from '../../Data/models/SystemWorkDetailsModel'
 import ShowSystemWorkUseCase from '../../Domain/useCase/showSystemWorkUseCase'
-
-
 
 export default class ShowSystemWorkController extends ControllerInterface<SystemWorkDetailsModel> {
   private static instance: ShowSystemWorkController
@@ -27,13 +26,14 @@ export default class ShowSystemWorkController extends ControllerInterface<System
     // console.log(params)
     this.setLoading()
 
-    const dataState: DataState<SystemWorkDetailsModel> = await this.ShowSystemWorkUseCase.call(params)
+    const dataState: DataState<SystemWorkDetailsModel> =
+      await this.ShowSystemWorkUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

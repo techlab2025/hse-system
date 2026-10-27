@@ -131,7 +131,14 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchAdmin())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchAdmin" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchAdmin"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
@@ -144,14 +151,16 @@ watch(
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ADMIN_ALL,
-    PermissionsEnum.ADMIN_DELETE,
-    PermissionsEnum.ADMIN_FETCH,
-    PermissionsEnum.ADMIN_UPDATE,
-    PermissionsEnum.ADMIN_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ADMIN_ALL,
+      PermissionsEnum.ADMIN_DELETE,
+      PermissionsEnum.ADMIN_FETCH,
+      PermissionsEnum.ADMIN_UPDATE,
+      PermissionsEnum.ADMIN_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -173,30 +182,37 @@ watch(
                 <td data-label="#">
                   <router-link :to="`/admin/admins/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.name) }}</td>
+                <td :data-label="$t('Name')">{{ wordSlice(item.name) }}</td>
 
-                <td data-label="email">
+                <td :data-label="$t('email')">
                   {{ item?.email }}
                 </td>
 
-                <td data-label="phone">
+                <td :data-label="$t('phone')">
                   {{ item?.phone }}
                 </td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusAdmin-->
                   <!--                  v-if="item.AdminStatus === AdminStatusEnum.Draft"-->
                   <!--                  :AdminId="item.id"-->
                   <!--                  @AdminChangeStatus="fetchAdmin"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteAdmin)" @delete="deleteAdmin(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteAdmin)"
+                    @delete="deleteAdmin(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -205,20 +221,40 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/admin/admins/add`" addText="Add Admin"
-          description="You have no Admin .. All your joined customers will appear here when you add your customer data"
-          title="You have No Admin" />
+        <DataEmpty
+          :link="`/admin/admins/add`"
+          :addText="$t('Add_Admin')"
+          :description="
+            $t(
+              'You have no Admin .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Admin')"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/admin/admins/add`" addText="Add Admin"
-          description="You have no Admin .. All your joined customers will appear here when you add your customer data"
-          title="You have No Admin" />
+        <DataFailed
+          :link="`/admin/admins/add`"
+          :addText="$t('Add_Admin')"
+          :description="
+            $t(
+              'You have no Admin .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Admin')"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no Admin .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Admin .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+      />
     </template>
   </PermissionBuilder>
 </template>

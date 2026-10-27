@@ -39,6 +39,7 @@ const getLangTitleList = (): TitleInterface[] => {
     return new TitleInterface({
       id: index + 1,
       title: lang.name,
+      translationKey: lang.name,
       subtitle: lang.code,
     })
   })
@@ -88,8 +89,6 @@ const fetchLang = async (
 onMounted(async () => {
   await fetchLang()
 })
-
-
 
 const updateData = () => {
   const translationsParams = new TranslationsParams()
@@ -147,7 +146,14 @@ watch(
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput :modelValue="lang" :staticOptions="langsList" label="Language" id="lang"
-      placeholder="Select Language" @update:modelValue="setLang" :required="true" />
+    <CustomSelectInput
+      :modelValue="lang"
+      :staticOptions="langsList"
+      :label="$t('Language')"
+      id="lang"
+      :placeholder="$t('Select Language')"
+      @update:modelValue="setLang"
+      :required="true"
+    />
   </div>
 </template>

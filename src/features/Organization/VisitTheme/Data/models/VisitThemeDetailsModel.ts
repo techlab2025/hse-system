@@ -1,3 +1,4 @@
+import { getCurrentLocale } from '@/localization/i18n'
 import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
@@ -23,10 +24,18 @@ export default class VisitThemeDetailsModel {
       data.id,
       translations.titles,
       Boolean(data.all_industries),
-      (data.industries ?? []).map((industry) => new TitleInterface({
-        id: industry.id,
-        title: industry.title ?? industry.titles?.find((title) => title.locale === localStorage.getItem('lang'))?.title ?? industry.titles?.[0]?.title ?? '',
-      })),
+      (data.industries ?? []).map(
+        (industry) =>
+          new TitleInterface({
+            id: industry.id,
+            title:
+              industry.title ??
+              industry.titles?.find((title) => title.locale === getCurrentLocale())?.title ??
+              industry.titles?.[0]?.title ??
+              '',
+            localizedTitles: industry.titles,
+          }),
+      ),
     )
   }
 

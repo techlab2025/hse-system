@@ -1,5 +1,7 @@
 <!-- FilterWithProject.vue -->
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import type Params from '@/base/core/params/params'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import type { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
@@ -47,7 +49,7 @@ const fetchControllerData = async () => {
     message.value = dynamicOptions.value.length === 0 ? 'No data available' : ''
   } catch (e) {
     console.error(e)
-    message.value = 'Failed to load data'
+    message.value = localizeUi('Failed to load data')
   } finally {
     loading.value = false
   }

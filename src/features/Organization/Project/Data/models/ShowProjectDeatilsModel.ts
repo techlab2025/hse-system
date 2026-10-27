@@ -1,3 +1,5 @@
+import { getCurrentLocale } from '@/localization/i18n'
+import { localizedRecord } from '@/localization/records'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
@@ -148,62 +150,67 @@ export default class ShowProjectDetailsModel {
     )
     const drills = Array.isArray(directDrills) ? directDrills : teamDrills
 
-    return new ShowProjectDetailsModel(
-      data.id,
-      data.title,
-      data.description,
-      data.partner,
-      data.locations ?? [],
-      data?.team_locations?.map((item: any) => TeamLocation.fromMap(item)) ?? [],
-      data.methods?.map((item: any) => this.getTitle(item)) ?? [],
-      data?.project_zoons?.map((item: any) => SohwProjectZoonModel.fromMap(item)) ?? [],
-      data.serial_number,
-      data.start_date,
-      data.locations?.map((item: any) =>
-        this.getLocationsWithKeys(item, 4, LocationEnum.COUNTRY),
-      ) ?? [], //
-      data.locations?.map((item: any) => this.getLocationsWithKeys(item, 3, LocationEnum.STATE)) ??
-        [], //
-      data.locations?.map((item: any) => this.getLocationsWithKeys(item, 2, LocationEnum.CITY)) ??
-        [], //
-      data.locations?.map((item: any) => this.getLocationsWithKeys(item, 1, LocationEnum.AREA)) ??
-        [], //
-      data.locations?.map((item: any) => SohwProjectZoonModel.fromMap(item)) ?? [],
-      data.contractors?.map((item: any) => ContractorDetailsModel.fromMap(item)),
-      data.hierarchies,
-      data.organization_employees?.map((item: any) =>
-        OrganizatoinEmployeeDetailsModel.fromMap(item),
+    return localizedRecord(
+      new ShowProjectDetailsModel(
+        data.id,
+        data.title,
+        data.description,
+        data.partner,
+        data.locations ?? [],
+        data?.team_locations?.map((item: any) => TeamLocation.fromMap(item)) ?? [],
+        data.methods?.map((item: any) => this.getTitle(item)) ?? [],
+        data?.project_zoons?.map((item: any) => SohwProjectZoonModel.fromMap(item)) ?? [],
+        data.serial_number,
+        data.start_date,
+        data.locations?.map((item: any) =>
+          this.getLocationsWithKeys(item, 4, LocationEnum.COUNTRY),
+        ) ?? [], //
+        data.locations?.map((item: any) =>
+          this.getLocationsWithKeys(item, 3, LocationEnum.STATE),
+        ) ?? [], //
+        data.locations?.map((item: any) => this.getLocationsWithKeys(item, 2, LocationEnum.CITY)) ??
+          [], //
+        data.locations?.map((item: any) => this.getLocationsWithKeys(item, 1, LocationEnum.AREA)) ??
+          [], //
+        data.locations?.map((item: any) => SohwProjectZoonModel.fromMap(item)) ?? [],
+        data.contractors?.map((item: any) => ContractorDetailsModel.fromMap(item)),
+        data.hierarchies,
+        data.organization_employees?.map((item: any) =>
+          OrganizatoinEmployeeDetailsModel.fromMap(item),
+        ),
+        data.project_locations?.map((item: any) => projectLocationModel.fromMap(item)),
+        data.serial_name,
+        data.end_date,
+        lossTimes.map((item: Record<string, unknown>) => ProjectLossTimeModel.fromMap(item)),
+        drills.map((item: Record<string, any>) => DrillModel.fromMap(item)),
+        Array.isArray(data.meetings)
+          ? data.meetings.map((el) => ProjectMeetingModel.fromMap(el))
+          : [],
+        Number(data.observations_count ?? 0),
+        Number(data.observation_count ?? 0),
+        Number(data.incident_count ?? 0),
+        Number(data.investigation_count ?? 0),
+        Number(data.inspection_count ?? 0),
+        Number(data.equipment_count ?? 0),
+        Number(data.assigned_locations_count ?? 0),
+        Number(data.assigned_zones_count ?? 0),
+        Number(data.assigned_employees_count ?? 0),
+        data.status ?? null,
+        Number(data.project_progress ?? 0),
       ),
-      data.project_locations?.map((item: any) => projectLocationModel.fromMap(item)),
-      data.serial_name,
-      data.end_date,
-      lossTimes.map((item: Record<string, unknown>) => ProjectLossTimeModel.fromMap(item)),
-      drills.map((item: Record<string, any>) => DrillModel.fromMap(item)),
-      Array.isArray(data.meetings)
-        ? data.meetings.map((el) => ProjectMeetingModel.fromMap(el))
-        : [],
-      Number(data.observations_count ?? 0),
-      Number(data.observation_count ?? 0),
-      Number(data.incident_count ?? 0),
-      Number(data.investigation_count ?? 0),
-      Number(data.inspection_count ?? 0),
-      Number(data.equipment_count ?? 0),
-      Number(data.assigned_locations_count ?? 0),
-      Number(data.assigned_zones_count ?? 0),
-      Number(data.assigned_employees_count ?? 0),
-      data.status ?? null,
-      Number(data.project_progress ?? 0),
+      data,
     )
   }
 
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     // console.log(data, 'data in get title');
 
     return new TitleInterface({
       id: data?.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data.titles,
     })
   }
 
@@ -238,20 +245,24 @@ export default class ShowProjectDetailsModel {
     1,
     'Eco-friendly / Sustainability-oriented Names',
     'This project focuses on developing eco-friendly and sustainability-oriented names for products, services, or brands. The goal is to create names that reflect environmental consciousness and promote sustainable practices.',
-    new TitleInterface({ id: 1, title: 'GreenTech Solutions' }),
+    new TitleInterface({
+      id: 1,
+      title: 'GreenTech Solutions',
+      translationKey: 'GreenTech Solutions',
+    }),
     [LocationDetailsModel.example, LocationDetailsModel.example2],
     [TeamLocation.example, TeamLocation.example],
-    [new TitleInterface({ id: 1, title: 'Creative Naming' })],
+    [new TitleInterface({ id: 1, title: 'Creative Naming', translationKey: 'Creative Naming' })],
     [SohwProjectZoonModel.example, SohwProjectZoonModel.example2],
     '12345', // Serial Number
     '2023-06-01', // Start Date
-    new TitleInterface({ id: 1, title: 'United States' }), // Country
-    new TitleInterface({ id: 2, title: 'California' }), // State
-    new TitleInterface({ id: 3, title: 'San Francisco' }), // City
-    new TitleInterface({ id: 4, title: 'Downtown' }), // Area
+    new TitleInterface({ id: 1, title: 'United States', translationKey: 'United States' }), // Country
+    new TitleInterface({ id: 2, title: 'California', translationKey: 'California' }), // State
+    new TitleInterface({ id: 3, title: 'San Francisco', translationKey: 'San Francisco' }), // City
+    new TitleInterface({ id: 4, title: 'Downtown', translationKey: 'Downtown' }), // Area
     [SohwProjectZoonModel.example], // Zones
     [ContractorDetailsModel.example, ContractorDetailsModel.example], // Contractors
-    [new TitleInterface({ id: 1, title: 'Creative Naming' })], // Hierarchies
+    [new TitleInterface({ id: 1, title: 'Creative Naming', translationKey: 'Creative Naming' })], // Hierarchies
     [OrganizatoinEmployeeDetailsModel.example], // Organization Employees
     [projectLocationModel.example], // Project Locations
     '15245', // Serial Name

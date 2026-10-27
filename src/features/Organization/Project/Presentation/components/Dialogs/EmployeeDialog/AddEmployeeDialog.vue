@@ -33,8 +33,8 @@ const visible = ref(false)
       <div class="add-employee-header">
         <HeaderSection
           :img="AddEmployee"
-          title="add your employees"
-          subtitle="follow the steps to add your employees easly"
+          :title="$t('add your employees')"
+          :subtitle="$t('auditUi.follow_the_steps_to_add_your_employees')"
         />
       </div>
     </template>

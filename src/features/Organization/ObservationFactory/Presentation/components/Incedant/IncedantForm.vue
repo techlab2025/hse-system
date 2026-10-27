@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -221,8 +223,10 @@ const SerialNumber = ref()
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
@@ -237,8 +241,8 @@ const UpdateSerial = (data) => {
 <template>
   <div class="col-span-6 md:col-span-6">
     <HeaderPage
-      :title="'create Incedant'"
-      :subtitle="'Identify and report potential Incedants before they cause harm'"
+      :title="$t('create Incedant')"
+      :subtitle="$t('Identify and report potential Incedants before they cause harm')"
       :img="HazardImage"
     />
     <HeaderProjectsFilter
@@ -260,7 +264,7 @@ const UpdateSerial = (data) => {
     <div class="Hazard-form-header">
       <HazardIcon class="icon" />
       <p class="title">
-        Incedant form
+        {{ $t('Incedant form') }}
         <!-- <span>( #001 )</span> -->
       </p>
     </div>
@@ -278,17 +282,17 @@ const UpdateSerial = (data) => {
 
   <!-- Date -->
   <div class="col-span-2 md:col-span-2 input-wrapper">
-    <label for="date">Date</label>
-    <DatePicker v-model="date" placeholder="Add your date" />
+    <label for="date">{{ $t('Date') }}</label>
+    <DatePicker v-model="date" :placeholder="$t('Add your date')" />
   </div>
 
   <!-- Time -->
   <div class="input-wrapper col-span-2 md:grid-cols-12">
-    <label for="time">time</label>
+    <label for="time">{{ $t('time') }}</label>
     <DatePicker
       v-model="SelctedTime"
       class="mt-4 mr-2 input date-picker"
-      placeholder="Select time"
+      :placeholder="$t('Select time')"
       @update:model-value="updateData"
       input-id="time"
       :time-only="true"
@@ -297,15 +301,22 @@ const UpdateSerial = (data) => {
 
   <!-- Place -->
   <div class="input-wrapper col-span-3 md:grid-cols-12">
-    <label for="time">Placa</label>
-    <input type="text" v-model="PlaceText" @input="updateData" placeholder="Enter Place" />
+    <label for="time">{{ $t('Placa') }}</label>
+    <input
+      dir="auto"
+      type="text"
+      v-model="PlaceText"
+      @input="updateData"
+      :placeholder="$t('Enter Place')"
+    />
   </div>
 
   <!-- description -->
   <div class="col-span-3 md:col-span-3 input-wrapper">
     <label for="text">{{ $t('description') }}</label>
     <input
-      placeholder="Add your title"
+      dir="auto"
+      :placeholder="$t('Add your title')"
       type="text"
       class="input"
       id="text"
@@ -321,16 +332,16 @@ const UpdateSerial = (data) => {
       class="input"
       :controller="indexEquipmentController"
       :params="indexEquipmentParams"
-      label="select machine (optional)"
+      :label="$t('select machine (optional)')"
       id="machine"
-      placeholder="select your machine"
+      :placeholder="$t('select your machine')"
       @update:modelValue="setMachine"
     />
   </div>
 
   <!-- Image -->
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-    <label for="">upload image</label>
+    <label for="">{{ $t('upload image') }}</label>
     <MultiImagesInput :initialImages="image" @update:images="setImages" />
   </div>
 
@@ -346,7 +357,7 @@ const UpdateSerial = (data) => {
               value="yes"
               @update:model-value="updateData"
             />
-            <label>Yes</label>
+            <label>{{ $t('Yes') }}</label>
           </div>
 
           <div class="radio-selection" :class="{ selected: takeAction === 'no' }">
@@ -356,7 +367,7 @@ const UpdateSerial = (data) => {
               value="no"
               @update:model-value="updateData"
             />
-            <label>No</label>
+            <label>{{ $t('No') }}</label>
           </div>
         </div>
       </div>
@@ -371,7 +382,7 @@ const UpdateSerial = (data) => {
               value="yes"
               @update:model-value="updateData"
             />
-            <label>Yes</label>
+            <label>{{ $t('Yes') }}</label>
           </div>
 
           <div class="radio-selection" :class="{ selected: solved === 'no' }">
@@ -381,7 +392,7 @@ const UpdateSerial = (data) => {
               value="no"
               @update:model-value="updateData"
             />
-            <label>No</label>
+            <label>{{ $t('No') }}</label>
           </div>
         </div>
       </div>
@@ -391,17 +402,25 @@ const UpdateSerial = (data) => {
   <div class="input-wrapper col-span-6 md:col-span-6" v-show="showSolvedAndDescription">
     <label for="action">{{ $t('preventive_action') }}</label>
     <textarea
+      dir="auto"
       id="action"
       class="input"
       v-model="preventive_action"
       @input="updateData"
-      placeholder="add your descripe"
+      :placeholder="$t('add your descripe')"
     ></textarea>
   </div>
 
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-    <label for="descripe">descripe <span class="optional">(optional)</span></label>
-    <textarea v-model="descripe" id="descripe" placeholder="add your descripe"></textarea>
+    <label for="descripe"
+      >{{ $t('descripe') }} <span class="optional">{{ $t('(optional)') }}</span></label
+    >
+    <textarea
+      dir="auto"
+      v-model="descripe"
+      id="descripe"
+      :placeholder="$t('add your descripe')"
+    ></textarea>
   </div>
 
   <div class="col-span-6 md:col-span-6 input-wrapper w-full">

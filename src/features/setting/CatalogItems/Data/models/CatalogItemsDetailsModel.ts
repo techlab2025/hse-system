@@ -1,5 +1,9 @@
+import { getCurrentLocale } from '@/localization/i18n'
 // import type TitleModel from "@/base/core/Models/title_model";
-import TranslationsParams, { type DescriptionLocale, type TitleLocale } from '@/base/core/params/translations_params.ts'
+import TranslationsParams, {
+  type DescriptionLocale,
+  type TitleLocale,
+} from '@/base/core/params/translations_params.ts'
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
@@ -9,7 +13,7 @@ import type GuideCatalogModel from './GuideCatalog'
 export default class CatalogItemsDetailsModel {
   public id: number
   public titles: TitleLocale[]
-  public descriptions:DescriptionLocale[]
+  public descriptions: DescriptionLocale[]
   public allIndustries: number
   public parentId: number
   public image: string
@@ -22,15 +26,14 @@ export default class CatalogItemsDetailsModel {
   constructor(
     id: number,
     titles: TitleLocale[],
-    descriptions:DescriptionLocale[], 
+    descriptions: DescriptionLocale[],
     allIndustries: number,
     industries: TitleModel<string>[] = [],
     parentId: number,
     image: string,
     parent: TitleInterface | null,
     guideCategoryItem: GuideCatalogModel,
-    link: string
-
+    link: string,
   ) {
     this.id = id
     this.titles = titles
@@ -42,7 +45,6 @@ export default class CatalogItemsDetailsModel {
     this.parent = parent
     this.guideCategoryItem = guideCategoryItem
     this.link = link
-
   }
 
   static fromMap(data: any): CatalogItemsDetailsModel {
@@ -56,18 +58,19 @@ export default class CatalogItemsDetailsModel {
         : [],
       data?.parent_id,
       data?.image,
-      data?.parent ? this.getTitle(data?.parent)  : null,
+      data?.parent ? this.getTitle(data?.parent) : null,
       data.guide_category_item,
-      data.link
+      data.link,
     )
   }
 
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data.titles,
     })
   }
 }

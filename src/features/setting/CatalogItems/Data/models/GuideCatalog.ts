@@ -1,23 +1,21 @@
-import TranslationsParams, { type DescriptionLocale, type TitleLocale } from '@/base/core/params/translations_params.ts'
+import { getCurrentLocale } from '@/localization/i18n'
+import TranslationsParams, {
+  type DescriptionLocale,
+  type TitleLocale,
+} from '@/base/core/params/translations_params.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 
 export default class GuideCatalogModel {
   public id: number
   public titles: TitleLocale[]
-  public descriptions:DescriptionLocale[]
-    public link: string
+  public descriptions: DescriptionLocale[]
+  public link: string
 
-  constructor(
-    id: number,
-    titles: TitleLocale[],
-    descriptions:DescriptionLocale[], 
-    link: string
-  ) {
+  constructor(id: number, titles: TitleLocale[], descriptions: DescriptionLocale[], link: string) {
     this.id = id
     this.titles = titles
     this.descriptions = descriptions
     this.link = link
-
   }
 
   static fromMap(data: any): GuideCatalogModel {
@@ -25,16 +23,17 @@ export default class GuideCatalogModel {
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
       TranslationsParams.fromMap(data.descriptions).descriptions,
-      data.link
+      data.link,
     )
   }
 
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data.titles,
     })
   }
 }

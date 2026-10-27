@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
@@ -37,13 +38,13 @@ export default class AddLocationController extends ControllerInterface<LocationM
         return false
       }
       if (!params?.ParentId && params?.type === LocationEnum.AREA) {
-        new OpenWarningDilaog('Please Select City').openDialog()
+        new OpenWarningDilaog(localizeUi('Please Select City')).openDialog()
         return false
       } else if (!params?.ParentId && params?.type === LocationEnum.STATE) {
-        new OpenWarningDilaog('Please Select Country').openDialog()
+        new OpenWarningDilaog(localizeUi('Please Select Country')).openDialog()
         return false
       } else if (!params?.ParentId && params?.type === LocationEnum.CITY) {
-        new OpenWarningDilaog('Please Select State').openDialog()
+        new OpenWarningDilaog(localizeUi('Please Select State')).openDialog()
         return false
       }
       const dataState: DataState<LocationModel> = await this.addLocationUseCase.call(params)
@@ -53,7 +54,7 @@ export default class AddLocationController extends ControllerInterface<LocationM
         requestSucceeded = true
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })
@@ -61,7 +62,7 @@ export default class AddLocationController extends ControllerInterface<LocationM
 
         const { user } = useUserStore()
         const route = useRoute()
-       
+
         if (
           !router.currentRoute.value.fullPath.includes('project-progress') &&
           !router.currentRoute.value.fullPath.includes('/organization/project/add')

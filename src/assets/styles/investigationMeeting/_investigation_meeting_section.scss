@@ -79,7 +79,7 @@
     font-size: $MdSize;
   }
   .sub-radio-group {
-    margin-left: 1.3rem;
+    margin-inline-start: 1.3rem;
     @include flex-column(nowrap, flex-start, flex-start);
     gap: 8px;
   }

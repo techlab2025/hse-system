@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import type Params from '@/base/core/params/params'
 import type { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import { ref, watch, onMounted } from 'vue'
@@ -21,14 +23,14 @@ const fetchOptions = async () => {
   if (!props.controllerData || !props.pramsData) return
   try {
     loading.value = true
-    message.value = 'Loading...'
+    message.value = localizeUi('Loading...')
 
     const response = await props.controllerData.state.value.data
     console.log(response, 'sdadas')
     dynamicOptions.value = response
     updateControllerState()
   } catch (error) {
-    message.value = 'Error loading data'
+    message.value = localizeUi('Error loading data')
   } finally {
     loading.value = false
   }
@@ -36,9 +38,9 @@ const fetchOptions = async () => {
 
 const updateControllerState = () => {
   if (props.controllerData.isDataFailed()) {
-    message.value = 'An Error Occurred'
+    message.value = localizeUi('An Error Occurred')
   } else if (props.controllerData.isDataSuccess() && dynamicOptions.value.length === 0) {
-    message.value = 'No Data Found'
+    message.value = localizeUi('No Data Found')
   }
 }
 

@@ -30,11 +30,27 @@ const isSubmitting = ref(false)
 
 const ChangeTaskStatusOptions = ref<TitleInterface[]>([
   // new TitleInterface({ id: ChangeTaskStatusEnum.NOT_STARTED, title: t('task_status_not_started') }),
-  new TitleInterface({ id: ChangeTaskStatusEnum.IN_PROGRESS, title: t('task_status_in_progress') }),
-  new TitleInterface({ id: ChangeTaskStatusEnum.PENDING_ON_HOLD, title: t('task_status_pending') }),
+  new TitleInterface({
+    id: ChangeTaskStatusEnum.IN_PROGRESS,
+    title: t('task_status_in_progress'),
+    translationKey: 'task_status_in_progress',
+  }),
+  new TitleInterface({
+    id: ChangeTaskStatusEnum.PENDING_ON_HOLD,
+    title: t('task_status_pending'),
+    translationKey: 'task_status_pending',
+  }),
   // new TitleInterface({ id: ChangeTaskStatusEnum.OVERDUE, title: t('task_status_overdue') }),
-  new TitleInterface({ id: ChangeTaskStatusEnum.COMPLETED, title: t('task_status_completed') }),
-  new TitleInterface({ id: ChangeTaskStatusEnum.CANCELLED, title: t('task_status_cancelled') }),
+  new TitleInterface({
+    id: ChangeTaskStatusEnum.COMPLETED,
+    title: t('task_status_completed'),
+    translationKey: 'task_status_completed',
+  }),
+  new TitleInterface({
+    id: ChangeTaskStatusEnum.CANCELLED,
+    title: t('task_status_cancelled'),
+    translationKey: 'task_status_cancelled',
+  }),
 ])
 
 const isOverdue = computed(() => props.taskStatus === ChangeTaskStatusEnum.OVERDUE)
@@ -95,9 +111,9 @@ const submit = async () => {
           :staticOptions="ChangeTaskStatusOptions"
           :required="false"
           :reload="false"
-          label="status"
+          :label="$t('status')"
           id="task_status"
-          placeholder="Select status"
+          :placeholder="$t('Select status')"
           @update:modelValue="selectedOption = $event as TitleInterface | null"
         />
       </div>
@@ -105,6 +121,7 @@ const submit = async () => {
       <div class="task-note-field">
         <label for="reason">{{ $t('reason') }}</label>
         <Textarea
+          dir="auto"
           id="reason"
           v-model="reason"
           :rows="3"

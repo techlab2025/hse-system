@@ -38,11 +38,31 @@ const router = useRouter()
 const labels = useProjectLabels()
 const detailTabs = [
   { key: 'all', label: 'allData', icon: 'grid' },
-  { key: 'scope', label: 'scope', icon: 'grid' },
-  { key: 'operations', label: 'operations', icon: 'users' },
-  { key: 'equipment', label: 'equipment', icon: 'equipment' },
-  { key: 'meetings', label: 'meetings', icon: 'clock' },
-  { key: 'drills', label: 'drills', icon: 'pulse' },
+  {
+    key: 'scope',
+    label: 'scope',
+    icon: 'grid',
+  },
+  {
+    key: 'operations',
+    label: 'operations',
+    icon: 'users',
+  },
+  {
+    key: 'equipment',
+    label: 'equipment',
+    icon: 'equipment',
+  },
+  {
+    key: 'meetings',
+    label: 'meetings',
+    icon: 'clock',
+  },
+  {
+    key: 'drills',
+    label: 'drills',
+    icon: 'pulse',
+  },
   { key: 'lossTime', label: 'lossTime', icon: 'clock' },
 ] as const
 
@@ -304,17 +324,25 @@ watch(
       <template #empty>
         <DataEmpty
           :link="`/organization/project/add`"
-          addText="Add Project"
-          description="You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="You have No Project"
+          :addText="$t('Add Project')"
+          :description="
+            $t(
+              'You have no Project .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Project')"
         />
       </template>
       <template #failed>
         <DataFailed
           :link="`/organization/project/add`"
-          addText="Add Project"
-          description="You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="You have No Project"
+          :addText="$t('Add Project')"
+          :description="
+            $t(
+              'You have no Project .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Project')"
         />
       </template>
     </DataStatus>

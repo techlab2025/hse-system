@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import { computed, ref } from 'vue'
@@ -81,7 +83,7 @@ const submit = async () => {
   error.value = ''
 
   if (!MeetingType.value?.id) {
-    error.value = 'Meeting type is Required.'
+    error.value = localizeUi('Meeting type is Required.')
     return
   }
   // if (!selectedHieararchy.value?.length) {
@@ -89,14 +91,14 @@ const submit = async () => {
   //   return
   // }
   if (!selectedEmployees.value.length) {
-    error.value = 'Select at least one employee.'
+    error.value = localizeUi('Select at least one employee.')
     return
   }
   if (
     !selectedTeamLeaderId.value ||
     !selectedEmployees.value.some((employee) => employee.id === selectedTeamLeaderId.value)
   ) {
-    error.value = 'Select a team leader from the chosen employees.'
+    error.value = localizeUi('Select a team leader from the chosen employees.')
     return
   }
 
@@ -192,13 +194,25 @@ const UpdateMeetingType = (value: TitleInterface | TitleInterface[] | null) => {
 }
 
 const DayesSelectionOptions = ref<TitleInterface[]>([
-  new TitleInterface({ id: PeriodicDaysEnum.SATURDAY, title: 'Saturday' }),
-  new TitleInterface({ id: PeriodicDaysEnum.SUNDAY, title: 'Sunday' }),
-  new TitleInterface({ id: PeriodicDaysEnum.MONDAY, title: 'Monday' }),
-  new TitleInterface({ id: PeriodicDaysEnum.TUESDAY, title: 'Tuesday' }),
-  new TitleInterface({ id: PeriodicDaysEnum.WEDNESDAY, title: 'Wednesday' }),
-  new TitleInterface({ id: PeriodicDaysEnum.THURSDAY, title: 'Thursday' }),
-  new TitleInterface({ id: PeriodicDaysEnum.FRIDAY, title: 'Friday' }),
+  new TitleInterface({
+    id: PeriodicDaysEnum.SATURDAY,
+    title: 'Saturday',
+    translationKey: 'Saturday',
+  }),
+  new TitleInterface({ id: PeriodicDaysEnum.SUNDAY, title: 'Sunday', translationKey: 'Sunday' }),
+  new TitleInterface({ id: PeriodicDaysEnum.MONDAY, title: 'Monday', translationKey: 'Monday' }),
+  new TitleInterface({ id: PeriodicDaysEnum.TUESDAY, title: 'Tuesday', translationKey: 'Tuesday' }),
+  new TitleInterface({
+    id: PeriodicDaysEnum.WEDNESDAY,
+    title: 'Wednesday',
+    translationKey: 'Wednesday',
+  }),
+  new TitleInterface({
+    id: PeriodicDaysEnum.THURSDAY,
+    title: 'Thursday',
+    translationKey: 'Thursday',
+  }),
+  new TitleInterface({ id: PeriodicDaysEnum.FRIDAY, title: 'Friday', translationKey: 'Friday' }),
 ])
 
 const WithDateDayesSelectionOptions = ref<TitleInterface[]>(
@@ -325,7 +339,7 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
       >
         <div class="hse-project-field field-label">
           <label class="hse-project-field-label" for="drill_date">{{ $t('Meeting dates') }}</label
-          ><FieldHelpIcon text="Select the dates." />
+          ><FieldHelpIcon :text="$t('Select the dates.')" />
         </div>
         <DatePicker
           panel-class="hse-project-overlay hse-project-planning"
@@ -347,7 +361,7 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
       >
         <div class="hse-project-field field-label">
           <label class="hse-project-field-label" for="drill_date">{{ $t('Meeting dates') }}</label
-          ><FieldHelpIcon text="Select the dates." />
+          ><FieldHelpIcon :text="$t('Select the dates.')" />
         </div>
         <DatePicker
           panel-class="hse-project-overlay hse-project-planning"

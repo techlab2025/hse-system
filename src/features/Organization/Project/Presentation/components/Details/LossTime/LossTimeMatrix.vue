@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import { getCurrentLocale } from '@/localization/i18n'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import type ProjectLossTimeModel from '../../../../Data/models/ProjectLossTimeModel'
 
 defineProps<{ lossTimes: ProjectLossTimeModel[] }>()
 
-const formatValue = (value: number) => new Intl.NumberFormat().format(value)
+const formatValue = (value: number) => new Intl.NumberFormat(getCurrentLocale()).format(value)
 </script>
 
 <template>
@@ -16,9 +18,9 @@ const formatValue = (value: number) => new Intl.NumberFormat().format(value)
   >
     <header class="loss-time-header">
       <div>
-        <span>SAFETY PERFORMANCE</span>
-        <h2>Loss Time Matrix</h2>
-        <p>Daily, monthly, and yearly loss time by accident type.</p>
+        <span>{{ $t('SAFETY PERFORMANCE') }}</span>
+        <h2>{{ $t('Loss Time Matrix') }}</h2>
+        <p>{{ $t('Daily, monthly, and yearly loss time by accident type.') }}</p>
       </div>
     </header>
 
@@ -26,10 +28,10 @@ const formatValue = (value: number) => new Intl.NumberFormat().format(value)
       <table class="hse-project-table">
         <thead>
           <tr>
-            <th scope="col">Accident type</th>
-            <th scope="col">Daily</th>
-            <th scope="col">Monthly</th>
-            <th scope="col">Yearly</th>
+            <th scope="col">{{ $t('Accident type') }}</th>
+            <th scope="col">{{ $t('Daily') }}</th>
+            <th scope="col">{{ $t('Monthly') }}</th>
+            <th scope="col">{{ $t('Yearly') }}</th>
           </tr>
         </thead>
         <tbody>

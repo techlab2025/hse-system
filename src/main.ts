@@ -14,29 +14,15 @@ import ToastService from 'primevue/toastservice'
 import PrimeVue from 'primevue/config'
 import App from './App.vue'
 import router from './router'
-import { createI18n } from 'vue-i18n'
+import { i18n } from './localization/i18n'
+import { syncLocale } from './localization/syncLocale'
+import { installIdentityFormStyling } from './plugins/identityForm'
+import './localization/direction.css'
 // import * as Sentry from '@sentry/vue'
-import ar from './locales/ar.json'
-import en from './locales/en.json'
-import { createAutoTranslate } from './plugins/autoTranslate'
-
-const savedLanguage = localStorage.getItem('lang') || 'en'
-
-document.documentElement.lang = savedLanguage
-document.documentElement.dir = savedLanguage === 'ar' ? 'rtl' : 'ltr'
 document.documentElement.classList.add('hse-cloud-identity')
 
-const i18n = createI18n({
-  legacy: false,
-  locale: savedLanguage,
-  fallbackLocale: 'ar',
-  messages: {
-    en: en,
-    ar: ar,
-  },
-})
-
 const app = createApp(App)
+installIdentityFormStyling(app)
 // if (process.env.NODE_ENV !== 'development') {
 //   Sentry.init({
 //     app,
@@ -62,7 +48,6 @@ pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 app.use(router)
 app.use(i18n)
-app.use(createAutoTranslate(i18n.global))
 app.use(ToastService)
 app.use(PrimeVue, {
   pt: { datepicker: hseDatePickerPt },
@@ -76,4 +61,5 @@ app.use(PrimeVue, {
     },
   },
 })
+syncLocale(app)
 app.mount('#app')

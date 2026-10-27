@@ -4,7 +4,7 @@
   @include flex-row(nowrap, flex-end, center);
   gap: $XsSize4;
   font-family: 'Regular';
-  margin-right: $XsSize2;
+  margin-inline-end: $XsSize2;
   .employee-select {
     transition: 0.3s all linear;
     &.selected {

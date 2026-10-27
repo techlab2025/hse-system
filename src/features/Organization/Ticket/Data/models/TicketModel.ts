@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { StatusEnum } from '../../Core/Enums/statusEnum'
 import type TitleModel from '@/base/Data/Models/title_model'
@@ -42,15 +43,18 @@ export default class TicketModel extends TitleInterface {
   }
 
   static fromMap(data: any): TicketModel {
-    return new TicketModel(
-      data.id,
-      data.title,
-      data.description,
-      data.type,
-      data.media,
-      data.status,
-      data.created_at,
-      data.ticket_type,
+    return localizedRecord(
+      new TicketModel(
+        data.id,
+        data.title,
+        data.description,
+        data.type,
+        data.media,
+        data.status,
+        data.created_at,
+        data.ticket_type,
+      ),
+      data,
     )
   }
 }

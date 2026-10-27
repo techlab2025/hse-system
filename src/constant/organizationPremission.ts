@@ -1,10 +1,13 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import type { PermissionItem } from './adminPremission'
 
 export const OrgPermissions: PermissionItem = {
   key: PermissionsEnum.ORGANIZATION_EMPLOYEE,
   code: PermissionsEnum.ORGANIZATION_EMPLOYEE,
-  label: 'Organization',
+  get label() {
+    return localizeUi('Organization')
+  },
   permissions: [
     // =========================
     // ORGANIZATION
@@ -12,69 +15,95 @@ export const OrgPermissions: PermissionItem = {
     {
       key: PermissionsEnum.ORGANIZATION_EMPLOYEE,
       code: PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      label: 'Organization',
+      get label() {
+        return localizeUi('Organization')
+      },
       permissions: [
         {
           key: PermissionsEnum.INTERNAL_AUDIT_ALL,
           code: PermissionsEnum.INTERNAL_AUDIT_ALL,
-          label: 'Internal Audit',
+          get label() {
+            return localizeUi('Internal Audit')
+          },
           permissions: [
             {
               key: PermissionsEnum.INTERNAL_AUDIT_ALL,
               code: PermissionsEnum.INTERNAL_AUDIT_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.INTERNAL_AUDIT_FETCH,
               code: PermissionsEnum.INTERNAL_AUDIT_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.INTERNAL_AUDIT_DETAILS,
               code: PermissionsEnum.INTERNAL_AUDIT_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.INTERNAL_AUDIT_CREATE,
               code: PermissionsEnum.INTERNAL_AUDIT_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.INTERNAL_AUDIT_UPDATE,
               code: PermissionsEnum.INTERNAL_AUDIT_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.INTERNAL_AUDIT_DELETE,
               code: PermissionsEnum.INTERNAL_AUDIT_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.MY_INTERNAL_AUDIT_ALL,
           code: PermissionsEnum.MY_INTERNAL_AUDIT_ALL,
-          label: 'My Internal Audit',
+          get label() {
+            return localizeUi('My Internal Audit')
+          },
           permissions: [
             {
               key: PermissionsEnum.MY_INTERNAL_AUDIT_ALL,
               code: PermissionsEnum.MY_INTERNAL_AUDIT_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.MY_INTERNAL_AUDIT_FETCH,
               code: PermissionsEnum.MY_INTERNAL_AUDIT_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.MY_INTERNAL_AUDIT_DETAILS,
               code: PermissionsEnum.MY_INTERNAL_AUDIT_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.MY_INTERNAL_AUDIT_CREATE,
               code: PermissionsEnum.MY_INTERNAL_AUDIT_CREATE,
-              label: 'Create NCR',
+              get label() {
+                return localizeUi('Create NCR')
+              },
             },
           ],
         },
@@ -115,37 +144,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
           code: PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
-          label: 'Equipment Type',
+          get label() {
+            return localizeUi('Equipment Type')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
               code: PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
               code: PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_TYPE_DETAILS,
               code: PermissionsEnum.ORG_EQUIPMENT_TYPE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
               code: PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
               code: PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_TYPE_DELETE,
               code: PermissionsEnum.ORG_EQUIPMENT_TYPE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -154,47 +197,65 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.OBJECTIVE_ORG_ALL,
           code: PermissionsEnum.OBJECTIVE_ORG_ALL,
-          label: 'Objective',
+          get label() {
+            return localizeUi('Objective')
+          },
           permissions: [
             {
               key: PermissionsEnum.OBJECTIVE_ORG_ALL,
               code: PermissionsEnum.OBJECTIVE_ORG_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.OBJECTIVE_ORG_FETCH,
               code: PermissionsEnum.OBJECTIVE_ORG_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.OBJECTIVE_ORG_DETAILS,
               code: PermissionsEnum.OBJECTIVE_ORG_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.OBJECTIVE_ORG_CREATE,
               code: PermissionsEnum.OBJECTIVE_ORG_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.OBJECTIVE_ORG_UPDATE,
               code: PermissionsEnum.OBJECTIVE_ORG_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.OBJECTIVE_ORG_DELETE,
               code: PermissionsEnum.OBJECTIVE_ORG_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.OBJECTIVE_ORG_ORDER,
               code: PermissionsEnum.OBJECTIVE_ORG_ORDER,
-              label: 'Order',
+              get label() {
+                return localizeUi('Order')
+              },
             },
             {
               key: PermissionsEnum.OBJECTIVE_ORG_CHANGE_STATUS,
               code: PermissionsEnum.OBJECTIVE_ORG_CHANGE_STATUS,
-              label: 'Change Status',
+              get label() {
+                return localizeUi('Change Status')
+              },
             },
           ],
         },
@@ -203,37 +264,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_FACTORY_ALL,
           code: PermissionsEnum.ORG_FACTORY_ALL,
-          label: 'Factor',
+          get label() {
+            return localizeUi('hazard_factor')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_FACTORY_ALL,
               code: PermissionsEnum.ORG_FACTORY_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_FACTORY_FETCH,
               code: PermissionsEnum.ORG_FACTORY_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_FACTORY_DETAILS,
               code: PermissionsEnum.ORG_FACTORY_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_FACTORY_CREATE,
               code: PermissionsEnum.ORG_FACTORY_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_FACTORY_UPDATE,
               code: PermissionsEnum.ORG_FACTORY_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_FACTORY_DELETE,
               code: PermissionsEnum.ORG_FACTORY_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -242,42 +317,58 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.PROJECT_ZONE_ALL,
           code: PermissionsEnum.PROJECT_ZONE_ALL,
-          label: 'Project Zone',
+          get label() {
+            return localizeUi('Project Zone')
+          },
           permissions: [
             {
               key: PermissionsEnum.PROJECT_ZONE_ALL,
               code: PermissionsEnum.PROJECT_ZONE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_ZONE_FETCH,
               code: PermissionsEnum.PROJECT_ZONE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_ZONE_DETAILS,
               code: PermissionsEnum.PROJECT_ZONE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_ZONE_CREATE,
               code: PermissionsEnum.PROJECT_ZONE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_ZONE_UPDATE,
               code: PermissionsEnum.PROJECT_ZONE_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_ZONE_DELETE,
               code: PermissionsEnum.PROJECT_ZONE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_ZONE_FETCH_LOCATIONS,
               code: PermissionsEnum.PROJECT_ZONE_FETCH_LOCATIONS,
-              label: 'Fetch Locations',
+              get label() {
+                return localizeUi('Fetch Locations')
+              },
             },
           ],
         },
@@ -286,33 +377,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.HERIKALY_ALL,
           code: PermissionsEnum.HERIKALY_ALL,
-          label: 'Position',
+          get label() {
+            return localizeUi('position')
+          },
           permissions: [
-            { key: PermissionsEnum.HERIKALY_ALL, code: PermissionsEnum.HERIKALY_ALL, label: 'All' },
+            {
+              key: PermissionsEnum.HERIKALY_ALL,
+              code: PermissionsEnum.HERIKALY_ALL,
+              get label() {
+                return localizeUi('ALL')
+              },
+            },
             {
               key: PermissionsEnum.HERIKALY_FETCH,
               code: PermissionsEnum.HERIKALY_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.HERIKALY_DETAILS,
               code: PermissionsEnum.HERIKALY_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.HERIKALY_CREATE,
               code: PermissionsEnum.HERIKALY_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.HERIKALY_UPDATE,
               code: PermissionsEnum.HERIKALY_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.HERIKALY_DELETE,
               code: PermissionsEnum.HERIKALY_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -321,37 +430,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_FACTORY_ITEM_ALL,
           code: PermissionsEnum.ORG_FACTORY_ITEM_ALL,
-          label: 'Factor Item',
+          get label() {
+            return localizeUi('factor_item')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_FACTORY_ITEM_ALL,
               code: PermissionsEnum.ORG_FACTORY_ITEM_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_FACTORY_ITEM_FETCH,
               code: PermissionsEnum.ORG_FACTORY_ITEM_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_FACTORY_ITEM_DETAILS,
               code: PermissionsEnum.ORG_FACTORY_ITEM_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
               code: PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_FACTORY_ITEM_UPDATE,
               code: PermissionsEnum.ORG_FACTORY_ITEM_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_FACTORY_ITEM_DELETE,
               code: PermissionsEnum.ORG_FACTORY_ITEM_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -360,37 +483,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_TEMPLATE_ALL,
           code: PermissionsEnum.ORG_TEMPLATE_ALL,
-          label: 'Template',
+          get label() {
+            return localizeUi('Template')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_TEMPLATE_ALL,
               code: PermissionsEnum.ORG_TEMPLATE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_TEMPLATE_FETCH,
               code: PermissionsEnum.ORG_TEMPLATE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_TEMPLATE_DETAILS,
               code: PermissionsEnum.ORG_TEMPLATE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_TEMPLATE_CREATE,
               code: PermissionsEnum.ORG_TEMPLATE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_TEMPLATE_UPDATE,
               code: PermissionsEnum.ORG_TEMPLATE_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_TEMPLATE_DELETE,
               code: PermissionsEnum.ORG_TEMPLATE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -398,37 +535,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.TEMPLATE_ITEM_ALL,
           code: PermissionsEnum.TEMPLATE_ITEM_ALL,
-          label: 'Template Item',
+          get label() {
+            return localizeUi('Template_Item')
+          },
           permissions: [
             {
               key: PermissionsEnum.TEMPLATE_ITEM_ALL,
               code: PermissionsEnum.TEMPLATE_ITEM_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.TEMPLATE_ITEM_FETCH,
               code: PermissionsEnum.TEMPLATE_ITEM_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.TEMPLATE_ITEM_DETAILS,
               code: PermissionsEnum.TEMPLATE_ITEM_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.TEMPLATE_ITEM_CREATE,
               code: PermissionsEnum.TEMPLATE_ITEM_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.TEMPLATE_ITEM_UPDATE,
               code: PermissionsEnum.TEMPLATE_ITEM_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.TEMPLATE_ITEM_DELETE,
               code: PermissionsEnum.TEMPLATE_ITEM_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -437,37 +588,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_HAZARD_TYPE_ALL,
           code: PermissionsEnum.ORG_HAZARD_TYPE_ALL,
-          label: 'Hazard Classification',
+          get label() {
+            return localizeUi('Hazard Classification')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_HAZARD_TYPE_ALL,
               code: PermissionsEnum.ORG_HAZARD_TYPE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
               code: PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_HAZARD_TYPE_DETAILS,
               code: PermissionsEnum.ORG_HAZARD_TYPE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
               code: PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
               code: PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
               code: PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -476,33 +641,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.PARTNER_ALL,
           code: PermissionsEnum.PARTNER_ALL,
-          label: 'Partner',
+          get label() {
+            return localizeUi('partner')
+          },
           permissions: [
-            { key: PermissionsEnum.PARTNER_ALL, code: PermissionsEnum.PARTNER_ALL, label: 'All' },
+            {
+              key: PermissionsEnum.PARTNER_ALL,
+              code: PermissionsEnum.PARTNER_ALL,
+              get label() {
+                return localizeUi('ALL')
+              },
+            },
             {
               key: PermissionsEnum.PARTNER_FETCH,
               code: PermissionsEnum.PARTNER_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.PARTNER_DETAILS,
               code: PermissionsEnum.PARTNER_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.PARTNER_CREATE,
               code: PermissionsEnum.PARTNER_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.PARTNER_UPDATE,
               code: PermissionsEnum.PARTNER_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.PARTNER_DELETE,
               code: PermissionsEnum.PARTNER_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -511,33 +694,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.PROJECT_ALL,
           code: PermissionsEnum.PROJECT_ALL,
-          label: 'Projects',
+          get label() {
+            return localizeUi('Projects')
+          },
           permissions: [
-            { key: PermissionsEnum.PROJECT_ALL, code: PermissionsEnum.PROJECT_ALL, label: 'All' },
+            {
+              key: PermissionsEnum.PROJECT_ALL,
+              code: PermissionsEnum.PROJECT_ALL,
+              get label() {
+                return localizeUi('ALL')
+              },
+            },
             {
               key: PermissionsEnum.PROJECT_FETCH,
               code: PermissionsEnum.PROJECT_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_DETAILS,
               code: PermissionsEnum.PROJECT_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_CREATE,
               code: PermissionsEnum.PROJECT_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_UPDATE,
               code: PermissionsEnum.PROJECT_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_DELETE,
               code: PermissionsEnum.PROJECT_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -546,37 +747,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
           code: PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
-          label: 'Organization Documents',
+          get label() {
+            return localizeUi('organization_documents')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
               code: PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORGANIZATION_DOCUMENTS_FETCH,
               code: PermissionsEnum.ORGANIZATION_DOCUMENTS_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORGANIZATION_DOCUMENTS_DETAILS,
               code: PermissionsEnum.ORGANIZATION_DOCUMENTS_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORGANIZATION_DOCUMENTS_CREATE,
               code: PermissionsEnum.ORGANIZATION_DOCUMENTS_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORGANIZATION_DOCUMENTS_UPDATE,
               code: PermissionsEnum.ORGANIZATION_DOCUMENTS_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORGANIZATION_DOCUMENTS_DELETE,
               code: PermissionsEnum.ORGANIZATION_DOCUMENTS_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -585,37 +800,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.CERTIFICATE_ALL,
           code: PermissionsEnum.CERTIFICATE_ALL,
-          label: 'Training',
+          get label() {
+            return localizeUi('organization_setup_steps.training.title')
+          },
           permissions: [
             {
               key: PermissionsEnum.CERTIFICATE_ALL,
               code: PermissionsEnum.CERTIFICATE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.CERTIFICATE_FETCH,
               code: PermissionsEnum.CERTIFICATE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.CERTIFICATE_DETAILS,
               code: PermissionsEnum.CERTIFICATE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.CERTIFICATE_CREATE,
               code: PermissionsEnum.CERTIFICATE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.CERTIFICATE_UPDATE,
               code: PermissionsEnum.CERTIFICATE_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.CERTIFICATE_DELETE,
               code: PermissionsEnum.CERTIFICATE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -624,37 +853,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
           code: PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
-          label: 'Incidents Type',
+          get label() {
+            return localizeUi('Incidents Type')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
               code: PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_ACCIDENTS_TYPE_FETCH,
               code: PermissionsEnum.ORG_ACCIDENTS_TYPE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_ACCIDENTS_TYPE_DETAILS,
               code: PermissionsEnum.ORG_ACCIDENTS_TYPE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE,
               code: PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_ACCIDENTS_TYPE_UPDATE,
               code: PermissionsEnum.ORG_ACCIDENTS_TYPE_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_ACCIDENTS_TYPE_DELETE,
               code: PermissionsEnum.ORG_ACCIDENTS_TYPE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -663,37 +906,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_EQUIPMENT_ALL,
           code: PermissionsEnum.ORG_EQUIPMENT_ALL,
-          label: 'Equipment',
+          get label() {
+            return localizeUi('Equipment')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_EQUIPMENT_ALL,
               code: PermissionsEnum.ORG_EQUIPMENT_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_FETCH,
               code: PermissionsEnum.ORG_EQUIPMENT_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_DETAILS,
               code: PermissionsEnum.ORG_EQUIPMENT_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_CREATE,
               code: PermissionsEnum.ORG_EQUIPMENT_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_UPDATE,
               code: PermissionsEnum.ORG_EQUIPMENT_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_DELETE,
               code: PermissionsEnum.ORG_EQUIPMENT_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -702,37 +959,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.LOCATION_ORG_ALL,
           code: PermissionsEnum.LOCATION_ORG_ALL,
-          label: 'Location',
+          get label() {
+            return localizeUi('Location')
+          },
           permissions: [
             {
               key: PermissionsEnum.LOCATION_ORG_ALL,
               code: PermissionsEnum.LOCATION_ORG_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.LOCATION_ORG_FETCH,
               code: PermissionsEnum.LOCATION_ORG_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.LOCATION_ORG_DETAILS,
               code: PermissionsEnum.LOCATION_ORG_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.LOCATION_ORG_CREATE,
               code: PermissionsEnum.LOCATION_ORG_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.LOCATION_ORG_UPDATE,
               code: PermissionsEnum.LOCATION_ORG_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.LOCATION_ORG_DELETE,
               code: PermissionsEnum.LOCATION_ORG_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -740,37 +1011,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_METHOD_ALL,
           code: PermissionsEnum.ORG_METHOD_ALL,
-          label: 'Method',
+          get label() {
+            return localizeUi('Method')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_METHOD_ALL,
               code: PermissionsEnum.ORG_METHOD_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_METHOD_FETCH,
               code: PermissionsEnum.ORG_METHOD_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_METHOD_DETAILS,
               code: PermissionsEnum.ORG_METHOD_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_METHOD_CREATE,
               code: PermissionsEnum.ORG_METHOD_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_METHOD_UPDATE,
               code: PermissionsEnum.ORG_METHOD_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_METHOD_DELETE,
               code: PermissionsEnum.ORG_METHOD_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -778,33 +1063,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_TEAM_ALL,
           code: PermissionsEnum.ORG_TEAM_ALL,
-          label: 'Team',
+          get label() {
+            return localizeUi('Team')
+          },
           permissions: [
-            { key: PermissionsEnum.ORG_TEAM_ALL, code: PermissionsEnum.ORG_TEAM_ALL, label: 'All' },
+            {
+              key: PermissionsEnum.ORG_TEAM_ALL,
+              code: PermissionsEnum.ORG_TEAM_ALL,
+              get label() {
+                return localizeUi('ALL')
+              },
+            },
             {
               key: PermissionsEnum.ORG_TEAM_FETCH,
               code: PermissionsEnum.ORG_TEAM_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_TEAM_DETAILS,
               code: PermissionsEnum.ORG_TEAM_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_TEAM_CREATE,
               code: PermissionsEnum.ORG_TEAM_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_TEAM_UPDATE,
               code: PermissionsEnum.ORG_TEAM_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_TEAM_DELETE,
               code: PermissionsEnum.ORG_TEAM_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -813,37 +1116,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_EMPLOYEE_ALL,
           code: PermissionsEnum.ORG_EMPLOYEE_ALL,
-          label: 'Employee',
+          get label() {
+            return localizeUi('Employee')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_EMPLOYEE_ALL,
               code: PermissionsEnum.ORG_EMPLOYEE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_EMPLOYEE_FETCH,
               code: PermissionsEnum.ORG_EMPLOYEE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_EMPLOYEE_DETAILS,
               code: PermissionsEnum.ORG_EMPLOYEE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_EMPLOYEE_CREATE,
               code: PermissionsEnum.ORG_EMPLOYEE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_EMPLOYEE_UPDATE,
               code: PermissionsEnum.ORG_EMPLOYEE_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_EMPLOYEE_DELETE,
               code: PermissionsEnum.ORG_EMPLOYEE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -852,37 +1169,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_CONTRACTOR_ALL,
           code: PermissionsEnum.ORG_CONTRACTOR_ALL,
-          label: 'Contractor',
+          get label() {
+            return localizeUi('Contructor')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_CONTRACTOR_ALL,
               code: PermissionsEnum.ORG_CONTRACTOR_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_CONTRACTOR_FETCH,
               code: PermissionsEnum.ORG_CONTRACTOR_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_CONTRACTOR_DETAILS,
               code: PermissionsEnum.ORG_CONTRACTOR_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_CONTRACTOR_CREATE,
               code: PermissionsEnum.ORG_CONTRACTOR_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_CONTRACTOR_DELETE,
               code: PermissionsEnum.ORG_CONTRACTOR_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.ORG_CONTRACTOR_UPDATE,
               code: PermissionsEnum.ORG_CONTRACTOR_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
           ],
         },
@@ -891,37 +1222,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
           code: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
-          label: 'Operations',
+          get label() {
+            return localizeUi('operations')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
               code: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_FETCH,
               code: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_DETAILS,
               code: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_DELETE,
               code: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_UPDATE,
               code: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_CREATE,
               code: PermissionsEnum.ORG_EQUIPMENT_MANGEMENT_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
           ],
         },
@@ -929,37 +1274,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_ROLE_ALL,
           code: PermissionsEnum.ORG_ROLE_ALL,
-          label: 'Role',
+          get label() {
+            return localizeUi('Role')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_ROLE_ALL,
               code: PermissionsEnum.ORG_ROLE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_ROLE_FETCH,
               code: PermissionsEnum.ORG_ROLE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_ROLE_DETAILS,
               code: PermissionsEnum.ORG_ROLE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_ROLE_CREATE,
               code: PermissionsEnum.ORG_ROLE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_ROLE_DELETE,
               code: PermissionsEnum.ORG_ROLE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.ORG_ROLE_UPDATE,
               code: PermissionsEnum.ORG_ROLE_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
           ],
         },
@@ -968,22 +1327,30 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ATTACHMENT_MATRIX_ALL,
           code: PermissionsEnum.ATTACHMENT_MATRIX_ALL,
-          label: 'Attachment Matrix',
+          get label() {
+            return localizeUi('Attachment Matrix')
+          },
           permissions: [
             {
               key: PermissionsEnum.ATTACHMENT_MATRIX_ALL,
               code: PermissionsEnum.ATTACHMENT_MATRIX_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ATTACHMENT_MATRIX_FETCH,
               code: PermissionsEnum.ATTACHMENT_MATRIX_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ATTACHMENT_MATRIX_CREATE,
               code: PermissionsEnum.ATTACHMENT_MATRIX_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
           ],
         },
@@ -992,47 +1359,65 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_INSPECTION_ALL,
           code: PermissionsEnum.ORG_INSPECTION_ALL,
-          label: 'Inspection',
+          get label() {
+            return localizeUi('Inspection')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_INSPECTION_ALL,
               code: PermissionsEnum.ORG_INSPECTION_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_INSPECTION_FETCH,
               code: PermissionsEnum.ORG_INSPECTION_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_INSPECTION_DETAILS,
               code: PermissionsEnum.ORG_INSPECTION_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_INSPECTION_CREATE,
               code: PermissionsEnum.ORG_INSPECTION_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_INSPECTION_DELETE,
               code: PermissionsEnum.ORG_INSPECTION_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.ORG_INSPECTION_UPDATE,
               code: PermissionsEnum.ORG_INSPECTION_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.MY_TASKS_ALL,
               code: PermissionsEnum.MY_TASKS_ALL,
-              label: 'drag',
+              get label() {
+                return localizeUi('perform_assigned_inspections')
+              },
             },
             {
               key: PermissionsEnum.INSPECTION_RESULTS_FETCH,
               code: PermissionsEnum.INSPECTION_RESULTS_FETCH,
-              label: 'results',
+              get label() {
+                return localizeUi('Results')
+              },
             },
           ],
         },
@@ -1040,37 +1425,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_HAZARD_ALL,
           code: PermissionsEnum.ORG_HAZARD_ALL,
-          label: 'Hazard',
+          get label() {
+            return localizeUi('Hazard')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_HAZARD_ALL,
               code: PermissionsEnum.ORG_HAZARD_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_HAZARD_FETCH,
               code: PermissionsEnum.ORG_HAZARD_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_HAZARD_DETAILS,
               code: PermissionsEnum.ORG_HAZARD_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_HAZARD_CREATE,
               code: PermissionsEnum.ORG_HAZARD_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_HAZARD_DELETE,
               code: PermissionsEnum.ORG_HAZARD_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.ORG_HAZARD_UPDATE,
               code: PermissionsEnum.ORG_HAZARD_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
           ],
         },
@@ -1078,37 +1477,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_INCEDANT_ALL,
           code: PermissionsEnum.ORG_INCEDANT_ALL,
-          label: 'Incident',
+          get label() {
+            return localizeUi('Incident')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_INCEDANT_ALL,
               code: PermissionsEnum.ORG_INCEDANT_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_INCEDANT_FETCH,
               code: PermissionsEnum.ORG_INCEDANT_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_INCEDANT_DETAILS,
               code: PermissionsEnum.ORG_INCEDANT_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_INCEDANT_CREATE,
               code: PermissionsEnum.ORG_INCEDANT_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_INCEDANT_DELETE,
               code: PermissionsEnum.ORG_INCEDANT_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.ORG_INCEDANT_UPDATE,
               code: PermissionsEnum.ORG_INCEDANT_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
           ],
         },
@@ -1116,37 +1529,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_OBSERVATION_ALL,
           code: PermissionsEnum.ORG_OBSERVATION_ALL,
-          label: 'Observation',
+          get label() {
+            return localizeUi('Observation')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_OBSERVATION_ALL,
               code: PermissionsEnum.ORG_OBSERVATION_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_OBSERVATION_FETCH,
               code: PermissionsEnum.ORG_OBSERVATION_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_OBSERVATION_DETAILS,
               code: PermissionsEnum.ORG_OBSERVATION_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_OBSERVATION_CREATE,
               code: PermissionsEnum.ORG_OBSERVATION_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_OBSERVATION_DELETE,
               code: PermissionsEnum.ORG_OBSERVATION_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.ORG_OBSERVATION_UPDATE,
               code: PermissionsEnum.ORG_OBSERVATION_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
           ],
         },
@@ -1154,37 +1581,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.SCOPE_ALL,
           code: PermissionsEnum.SCOPE_ALL,
-          label: 'Scope',
+          get label() {
+            return localizeUi('Scope')
+          },
           permissions: [
             {
               key: PermissionsEnum.SCOPE_ALL,
               code: PermissionsEnum.SCOPE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.SCOPE_FETCH,
               code: PermissionsEnum.SCOPE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.SCOPE_DETAILS,
               code: PermissionsEnum.SCOPE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.SCOPE_CREATE,
               code: PermissionsEnum.SCOPE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.SCOPE_DELETE,
               code: PermissionsEnum.SCOPE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.SCOPE_UPDATE,
               code: PermissionsEnum.SCOPE_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
           ],
         },
@@ -1192,37 +1633,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
           code: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
-          label: 'Employee Training',
+          get label() {
+            return localizeUi('employee_certificate')
+          },
           permissions: [
             {
               key: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
               code: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
               code: PermissionsEnum.EMPLOYEE_CERTIFICATE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.EMPLOYEE_CERTIFICATE_DETAILS,
               code: PermissionsEnum.EMPLOYEE_CERTIFICATE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
               code: PermissionsEnum.EMPLOYEE_CERTIFICATE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
               code: PermissionsEnum.EMPLOYEE_CERTIFICATE_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.EMPLOYEE_CERTIFICATE_CREATE,
               code: PermissionsEnum.EMPLOYEE_CERTIFICATE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
           ],
         },
@@ -1230,37 +1685,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
           code: PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
-          label: 'Observation Type',
+          get label() {
+            return localizeUi('Observation Type')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
               code: PermissionsEnum.ORG_OBSERVATION_TYPE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
               code: PermissionsEnum.ORG_OBSERVATION_TYPE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_OBSERVATION_TYPE_DETAILS,
               code: PermissionsEnum.ORG_OBSERVATION_TYPE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_OBSERVATION_TYPE_DELETE,
               code: PermissionsEnum.ORG_OBSERVATION_TYPE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
               code: PermissionsEnum.ORG_OBSERVATION_TYPE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_OBSERVATION_TYPE_UPDATE,
               code: PermissionsEnum.ORG_OBSERVATION_TYPE_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
           ],
         },
@@ -1268,37 +1737,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.WHIERE_HOUSE_ALL,
           code: PermissionsEnum.WHIERE_HOUSE_ALL,
-          label: 'Warehouse',
+          get label() {
+            return localizeUi('Warehouse')
+          },
           permissions: [
             {
               key: PermissionsEnum.WHIERE_HOUSE_ALL,
               code: PermissionsEnum.WHIERE_HOUSE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.WHIERE_HOUSE_FETCH,
               code: PermissionsEnum.WHIERE_HOUSE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.WHIERE_HOUSE_DETAILS,
               code: PermissionsEnum.WHIERE_HOUSE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.WHIERE_HOUSE_DELETE,
               code: PermissionsEnum.WHIERE_HOUSE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.WHIERE_HOUSE_CREATE,
               code: PermissionsEnum.WHIERE_HOUSE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.WHIERE_HOUSE_UPDATE,
               code: PermissionsEnum.WHIERE_HOUSE_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
           ],
         },
@@ -1306,37 +1789,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
           code: PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
-          label: 'Warehouse Type',
+          get label() {
+            return localizeUi('wareHouse_type')
+          },
           permissions: [
             {
               key: PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
               code: PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
               code: PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.WHIERE_HOUSE_TYPE_DETAILS,
               code: PermissionsEnum.WHIERE_HOUSE_TYPE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
               code: PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
               code: PermissionsEnum.WHIERE_HOUSE_TYPE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
               code: PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
           ],
         },
@@ -1344,365 +1841,503 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_DRILL_TYPE_ALL,
           code: PermissionsEnum.ORG_DRILL_TYPE_ALL,
-          label: 'Drill Type',
+          get label() {
+            return localizeUi('Drill Type')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_DRILL_TYPE_ALL,
               code: PermissionsEnum.ORG_DRILL_TYPE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_DRILL_TYPE_FETCH,
               code: PermissionsEnum.ORG_DRILL_TYPE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_DRILL_TYPE_DETAILS,
               code: PermissionsEnum.ORG_DRILL_TYPE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_DRILL_TYPE_CREATE,
               code: PermissionsEnum.ORG_DRILL_TYPE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_DRILL_TYPE_UPDATE,
               code: PermissionsEnum.ORG_DRILL_TYPE_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_DRILL_TYPE_DELETE,
               code: PermissionsEnum.ORG_DRILL_TYPE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORG_PTW_TYPE_ALL,
           code: PermissionsEnum.ORG_PTW_TYPE_ALL,
-          label: 'PTW Type',
+          get label() {
+            return localizeUi('PTW Type')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_PTW_TYPE_ALL,
               code: PermissionsEnum.ORG_PTW_TYPE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_PTW_TYPE_FETCH,
               code: PermissionsEnum.ORG_PTW_TYPE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_PTW_TYPE_CREATE,
               code: PermissionsEnum.ORG_PTW_TYPE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_PTW_TYPE_UPDATE,
               code: PermissionsEnum.ORG_PTW_TYPE_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_PTW_TYPE_DELETE,
               code: PermissionsEnum.ORG_PTW_TYPE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORG_VISIT_ACTIVITIES_ALL,
           code: PermissionsEnum.ORG_VISIT_ACTIVITIES_ALL,
-          label: 'Visit Activities',
+          get label() {
+            return localizeUi('Visit Activities')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_VISIT_ACTIVITIES_ALL,
               code: PermissionsEnum.ORG_VISIT_ACTIVITIES_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_VISIT_ACTIVITIES_FETCH,
               code: PermissionsEnum.ORG_VISIT_ACTIVITIES_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_VISIT_ACTIVITIES_DETAILS,
               code: PermissionsEnum.ORG_VISIT_ACTIVITIES_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_VISIT_ACTIVITIES_CREATE,
               code: PermissionsEnum.ORG_VISIT_ACTIVITIES_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_VISIT_ACTIVITIES_UPDATE,
               code: PermissionsEnum.ORG_VISIT_ACTIVITIES_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_VISIT_ACTIVITIES_DELETE,
               code: PermissionsEnum.ORG_VISIT_ACTIVITIES_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORG_VISIT_THEME_ALL,
           code: PermissionsEnum.ORG_VISIT_THEME_ALL,
-          label: 'Visit Theme',
+          get label() {
+            return localizeUi('Visit Theme')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_VISIT_THEME_ALL,
               code: PermissionsEnum.ORG_VISIT_THEME_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_VISIT_THEME_FETCH,
               code: PermissionsEnum.ORG_VISIT_THEME_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_VISIT_THEME_DETAILS,
               code: PermissionsEnum.ORG_VISIT_THEME_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_VISIT_THEME_CREATE,
               code: PermissionsEnum.ORG_VISIT_THEME_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_VISIT_THEME_UPDATE,
               code: PermissionsEnum.ORG_VISIT_THEME_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_VISIT_THEME_DELETE,
               code: PermissionsEnum.ORG_VISIT_THEME_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORG_VISIT_CATEGORY_ALL,
           code: PermissionsEnum.ORG_VISIT_CATEGORY_ALL,
-          label: 'Visit Category',
+          get label() {
+            return localizeUi('Visit Category')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_VISIT_CATEGORY_ALL,
               code: PermissionsEnum.ORG_VISIT_CATEGORY_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_VISIT_CATEGORY_FETCH,
               code: PermissionsEnum.ORG_VISIT_CATEGORY_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_VISIT_CATEGORY_DETAILS,
               code: PermissionsEnum.ORG_VISIT_CATEGORY_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_VISIT_CATEGORY_CREATE,
               code: PermissionsEnum.ORG_VISIT_CATEGORY_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_VISIT_CATEGORY_UPDATE,
               code: PermissionsEnum.ORG_VISIT_CATEGORY_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_VISIT_CATEGORY_DELETE,
               code: PermissionsEnum.ORG_VISIT_CATEGORY_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
           code: PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
-          label: 'PPE Activity',
+          get label() {
+            return localizeUi('PPE Activity')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
               code: PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_PPE_ACTIVITY_FETCH,
               code: PermissionsEnum.ORG_PPE_ACTIVITY_FETCH,
-              label: 'Fetch',
+              get label() {
+                return localizeUi('Fetch')
+              },
             },
             {
               key: PermissionsEnum.ORG_PPE_ACTIVITY_DETAILS,
               code: PermissionsEnum.ORG_PPE_ACTIVITY_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_PPE_ACTIVITY_CREATE,
               code: PermissionsEnum.ORG_PPE_ACTIVITY_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_PPE_ACTIVITY_UPDATE,
               code: PermissionsEnum.ORG_PPE_ACTIVITY_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_PPE_ACTIVITY_DELETE,
               code: PermissionsEnum.ORG_PPE_ACTIVITY_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORG_PPE_TOOLS_ALL,
           code: PermissionsEnum.ORG_PPE_TOOLS_ALL,
-          label: 'PPE Tools',
+          get label() {
+            return localizeUi('PPE Tools')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_PPE_TOOLS_ALL,
               code: PermissionsEnum.ORG_PPE_TOOLS_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_PPE_TOOLS_FETCH,
               code: PermissionsEnum.ORG_PPE_TOOLS_FETCH,
-              label: 'Fetch',
+              get label() {
+                return localizeUi('Fetch')
+              },
             },
             {
               key: PermissionsEnum.ORG_PPE_TOOLS_DETAILS,
               code: PermissionsEnum.ORG_PPE_TOOLS_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_PPE_TOOLS_CREATE,
               code: PermissionsEnum.ORG_PPE_TOOLS_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_PPE_TOOLS_UPDATE,
               code: PermissionsEnum.ORG_PPE_TOOLS_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_PPE_TOOLS_DELETE,
               code: PermissionsEnum.ORG_PPE_TOOLS_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORG_DOCUMENT_CATEGORY_ALL,
           code: PermissionsEnum.ORG_DOCUMENT_CATEGORY_ALL,
-          label: 'Document Categories',
+          get label() {
+            return localizeUi('Document Categories')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_DOCUMENT_CATEGORY_ALL,
               code: PermissionsEnum.ORG_DOCUMENT_CATEGORY_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_DOCUMENT_CATEGORY_FETCH,
               code: PermissionsEnum.ORG_DOCUMENT_CATEGORY_FETCH,
-              label: 'Fetch',
+              get label() {
+                return localizeUi('Fetch')
+              },
             },
             {
               key: PermissionsEnum.ORG_DOCUMENT_CATEGORY_DETAILS,
               code: PermissionsEnum.ORG_DOCUMENT_CATEGORY_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_DOCUMENT_CATEGORY_CREATE,
               code: PermissionsEnum.ORG_DOCUMENT_CATEGORY_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_DOCUMENT_CATEGORY_UPDATE,
               code: PermissionsEnum.ORG_DOCUMENT_CATEGORY_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_DOCUMENT_CATEGORY_DELETE,
               code: PermissionsEnum.ORG_DOCUMENT_CATEGORY_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORG_AUDIT_STANDARDS_ALL,
           code: PermissionsEnum.ORG_AUDIT_STANDARDS_ALL,
-          label: 'Audit Standards',
+          get label() {
+            return localizeUi('Audit Standards')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_AUDIT_STANDARDS_ALL,
               code: PermissionsEnum.ORG_AUDIT_STANDARDS_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_AUDIT_STANDARDS_FETCH,
               code: PermissionsEnum.ORG_AUDIT_STANDARDS_FETCH,
-              label: 'Fetch',
+              get label() {
+                return localizeUi('Fetch')
+              },
             },
             {
               key: PermissionsEnum.ORG_AUDIT_STANDARDS_DETAILS,
               code: PermissionsEnum.ORG_AUDIT_STANDARDS_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_AUDIT_STANDARDS_CREATE,
               code: PermissionsEnum.ORG_AUDIT_STANDARDS_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_AUDIT_STANDARDS_UPDATE,
               code: PermissionsEnum.ORG_AUDIT_STANDARDS_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_AUDIT_STANDARDS_DELETE,
               code: PermissionsEnum.ORG_AUDIT_STANDARDS_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORG_AUDIT_ACTIVITIES_ALL,
           code: PermissionsEnum.ORG_AUDIT_ACTIVITIES_ALL,
-          label: 'Audit Activities',
+          get label() {
+            return localizeUi('Audit Activities')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_AUDIT_ACTIVITIES_ALL,
               code: PermissionsEnum.ORG_AUDIT_ACTIVITIES_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_AUDIT_ACTIVITIES_FETCH,
               code: PermissionsEnum.ORG_AUDIT_ACTIVITIES_FETCH,
-              label: 'Fetch',
+              get label() {
+                return localizeUi('Fetch')
+              },
             },
             {
               key: PermissionsEnum.ORG_AUDIT_ACTIVITIES_DETAILS,
               code: PermissionsEnum.ORG_AUDIT_ACTIVITIES_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_AUDIT_ACTIVITIES_CREATE,
               code: PermissionsEnum.ORG_AUDIT_ACTIVITIES_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_AUDIT_ACTIVITIES_UPDATE,
               code: PermissionsEnum.ORG_AUDIT_ACTIVITIES_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_AUDIT_ACTIVITIES_DELETE,
               code: PermissionsEnum.ORG_AUDIT_ACTIVITIES_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -1710,37 +2345,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_PPE_ITEM_ALL,
           code: PermissionsEnum.ORG_PPE_ITEM_ALL,
-          label: 'PPE Item',
+          get label() {
+            return localizeUi('PPE Item')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_PPE_ITEM_ALL,
               code: PermissionsEnum.ORG_PPE_ITEM_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_PPE_ITEM_FETCH,
               code: PermissionsEnum.ORG_PPE_ITEM_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_PPE_ITEM_DETAILS,
               code: PermissionsEnum.ORG_PPE_ITEM_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_PPE_ITEM_CREATE,
               code: PermissionsEnum.ORG_PPE_ITEM_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_PPE_ITEM_UPDATE,
               code: PermissionsEnum.ORG_PPE_ITEM_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_PPE_ITEM_DELETE,
               code: PermissionsEnum.ORG_PPE_ITEM_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -1748,37 +2397,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.INJURY_ALL,
           code: PermissionsEnum.INJURY_ALL,
-          label: 'Injury',
+          get label() {
+            return localizeUi('Injury')
+          },
           permissions: [
             {
               key: PermissionsEnum.INJURY_ALL,
               code: PermissionsEnum.INJURY_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.INJURY_FETCH,
               code: PermissionsEnum.INJURY_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.INJURY_DETAILS,
               code: PermissionsEnum.INJURY_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.INJURY_DELETE,
               code: PermissionsEnum.INJURY_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.INJURY_CREATE,
               code: PermissionsEnum.INJURY_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.INJURY_UPDATE,
               code: PermissionsEnum.INJURY_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
           ],
         },
@@ -1786,37 +2449,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ROOT_CAUSES_ALL,
           code: PermissionsEnum.ROOT_CAUSES_ALL,
-          label: 'Root Causes',
+          get label() {
+            return localizeUi('Root Causes')
+          },
           permissions: [
             {
               key: PermissionsEnum.ROOT_CAUSES_ALL,
               code: PermissionsEnum.ROOT_CAUSES_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ROOT_CAUSES_FETCH,
               code: PermissionsEnum.ROOT_CAUSES_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ROOT_CAUSES_DETAILS,
               code: PermissionsEnum.ROOT_CAUSES_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ROOT_CAUSES_DELETE,
               code: PermissionsEnum.ROOT_CAUSES_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.ROOT_CAUSES_CREATE,
               code: PermissionsEnum.ROOT_CAUSES_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ROOT_CAUSES_UPDATE,
               code: PermissionsEnum.ROOT_CAUSES_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
           ],
         },
@@ -1824,37 +2501,51 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.CODING_SYSTEM_ALL,
           code: PermissionsEnum.CODING_SYSTEM_ALL,
-          label: 'Coding System',
+          get label() {
+            return localizeUi('coding_system')
+          },
           permissions: [
             {
               key: PermissionsEnum.CODING_SYSTEM_ALL,
               code: PermissionsEnum.CODING_SYSTEM_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.CODING_SYSTEM_FETCH,
               code: PermissionsEnum.CODING_SYSTEM_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.CODING_SYSTEM_DETAILS,
               code: PermissionsEnum.CODING_SYSTEM_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.CODING_SYSTEM_DELETE,
               code: PermissionsEnum.CODING_SYSTEM_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.CODING_SYSTEM_CREATE,
               code: PermissionsEnum.CODING_SYSTEM_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.CODING_SYSTEM_UPDATE,
               code: PermissionsEnum.CODING_SYSTEM_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
           ],
         },
@@ -1862,42 +2553,58 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.INVESTIGATION_ALL,
           code: PermissionsEnum.INVESTIGATION_ALL,
-          label: 'Investigation',
+          get label() {
+            return localizeUi('Investigation')
+          },
           permissions: [
             {
               key: PermissionsEnum.INVESTIGATION_ALL,
               code: PermissionsEnum.INVESTIGATION_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.INVESTIGATION_FETCH,
               code: PermissionsEnum.INVESTIGATION_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.INVESTIGATION_DETAILS,
               code: PermissionsEnum.INVESTIGATION_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.INVESTIGATION_DELETE,
               code: PermissionsEnum.INVESTIGATION_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.INVESTIGATION_CREATE,
               code: PermissionsEnum.INVESTIGATION_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.INVESTIGATION_UPDATE,
               code: PermissionsEnum.INVESTIGATION_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.FULL_INVESTIGATION_CREATE,
               code: PermissionsEnum.FULL_INVESTIGATION_CREATE,
-              label: 'Create Full Investigation',
+              get label() {
+                return localizeUi('Create Full Investigation')
+              },
             },
           ],
         },
@@ -1905,96 +2612,132 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.CAPA_ALL,
           code: PermissionsEnum.CAPA_ALL,
-          label: 'Capa',
+          get label() {
+            return localizeUi('Capa')
+          },
           permissions: [
             {
               key: PermissionsEnum.CAPA_ALL,
               code: PermissionsEnum.CAPA_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.CAPA_FETCH,
               code: PermissionsEnum.CAPA_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.CAPA_DETAILS,
               code: PermissionsEnum.CAPA_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.CAPA_DELETE,
               code: PermissionsEnum.CAPA_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.CAPA_CAREATE,
               code: PermissionsEnum.CAPA_CAREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.CAPA_UPDATE,
               code: PermissionsEnum.CAPA_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.CAPA_CHANGE_STATUS,
               code: PermissionsEnum.CAPA_CHANGE_STATUS,
-              label: 'Change Status',
+              get label() {
+                return localizeUi('Change Status')
+              },
             },
             {
               key: PermissionsEnum.CAPA_SET_RESULT,
               code: PermissionsEnum.CAPA_SET_RESULT,
-              label: 'Set Result',
+              get label() {
+                return localizeUi('Set Result')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORG_MEETING_TYPE_ALL,
           code: PermissionsEnum.ORG_MEETING_TYPE_ALL,
-          label: 'meeting type',
+          get label() {
+            return localizeUi('meeting type')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_MEETING_TYPE_ALL,
               code: PermissionsEnum.ORG_MEETING_TYPE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_MEETING_TYPE_FETCH,
               code: PermissionsEnum.ORG_MEETING_TYPE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_MEETING_TYPE_DETAILS,
               code: PermissionsEnum.ORG_MEETING_TYPE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_MEETING_TYPE_DELETE,
               code: PermissionsEnum.ORG_MEETING_TYPE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.ORG_MEETING_TYPE_CREATE,
               code: PermissionsEnum.ORG_MEETING_TYPE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_MEETING_TYPE_UPDATE,
               code: PermissionsEnum.ORG_MEETING_TYPE_UPDATE,
-              label: 'update',
+              get label() {
+                return localizeUi('update')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.PROJECT_PERMIT,
           code: PermissionsEnum.PROJECT_PERMIT,
-          label: 'Project Permit',
+          get label() {
+            return localizeUi('Project Permit')
+          },
           permissions: [
             {
               key: PermissionsEnum.PROJECT_PERMIT,
               code: PermissionsEnum.PROJECT_PERMIT,
-              label: 'Allow',
+              get label() {
+                return localizeUi('Allow')
+              },
             },
           ],
         },
@@ -2002,867 +2745,1205 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_TRANING_TOPIC_ALL,
           code: PermissionsEnum.ORG_TRANING_TOPIC_ALL,
-          label: 'Traning Topic',
+          get label() {
+            return localizeUi('Traning Topic')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_TRANING_TOPIC_ALL,
               code: PermissionsEnum.ORG_TRANING_TOPIC_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_TRANING_TOPIC_FETCH,
               code: PermissionsEnum.ORG_TRANING_TOPIC_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_TRANING_TOPIC_DETAILS,
               code: PermissionsEnum.ORG_TRANING_TOPIC_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_TRANING_TOPIC_CREATE,
               code: PermissionsEnum.ORG_TRANING_TOPIC_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_TRANING_TOPIC_UPDATE,
               code: PermissionsEnum.ORG_TRANING_TOPIC_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_TRANING_TOPIC_DELETE,
               code: PermissionsEnum.ORG_TRANING_TOPIC_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.inductions_ALL,
           code: PermissionsEnum.inductions_ALL,
-          label: 'Inductions',
+          get label() {
+            return localizeUi('Inductions')
+          },
           permissions: [
             {
               key: PermissionsEnum.inductions_ALL,
               code: PermissionsEnum.inductions_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.inductions_FETCH,
               code: PermissionsEnum.inductions_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.inductions_DETAILS,
               code: PermissionsEnum.inductions_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.inductions_CREATE,
               code: PermissionsEnum.inductions_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.inductions_UPDATE,
               code: PermissionsEnum.inductions_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.inductions_DELETE,
               code: PermissionsEnum.inductions_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ppe_matrix_logs_ALL,
           code: PermissionsEnum.ppe_matrix_logs_ALL,
-          label: 'PPE Matrix Logs',
+          get label() {
+            return localizeUi('PPE Matrix Logs')
+          },
           permissions: [
             {
               key: PermissionsEnum.ppe_matrix_logs_ALL,
               code: PermissionsEnum.ppe_matrix_logs_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ppe_matrix_logs_FETCH,
               code: PermissionsEnum.ppe_matrix_logs_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ppe_matrix_logs_DETAILS,
               code: PermissionsEnum.ppe_matrix_logs_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ppe_matrix_logs_CREATE,
               code: PermissionsEnum.ppe_matrix_logs_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ppe_matrix_logs_UPDATE,
               code: PermissionsEnum.ppe_matrix_logs_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ppe_matrix_logs_DELETE,
               code: PermissionsEnum.ppe_matrix_logs_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.objectives_ALL,
           code: PermissionsEnum.objectives_ALL,
-          label: 'Objectives',
+          get label() {
+            return localizeUi('Objectives')
+          },
           permissions: [
             {
               key: PermissionsEnum.objectives_ALL,
               code: PermissionsEnum.objectives_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.objectives_FETCH,
               code: PermissionsEnum.objectives_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.objectives_DETAILS,
               code: PermissionsEnum.objectives_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.objectives_CREATE,
               code: PermissionsEnum.objectives_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.objectives_UPDATE,
               code: PermissionsEnum.objectives_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.objectives_DELETE,
               code: PermissionsEnum.objectives_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.PTW_ALL,
           code: PermissionsEnum.PTW_ALL,
-          label: 'Permit to wotk',
+          get label() {
+            return localizeUi('Permit to wotk')
+          },
           permissions: [
             {
               key: PermissionsEnum.PTW_ALL,
               code: PermissionsEnum.PTW_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.PTW_FETCH,
               code: PermissionsEnum.PTW_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.PTW_CREATE,
               code: PermissionsEnum.PTW_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.PTW_DELETE,
               code: PermissionsEnum.PTW_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
             {
               key: PermissionsEnum.PTW_DETAILS,
               code: PermissionsEnum.PTW_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.PTW_UPDATE,
               code: PermissionsEnum.PTW_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.RISK_ASSESSMENT_ALL,
           code: PermissionsEnum.RISK_ASSESSMENT_ALL,
-          label: 'Risk Assessment',
+          get label() {
+            return localizeUi('Risk assessment')
+          },
           permissions: [
             {
               key: PermissionsEnum.RISK_ASSESSMENT_ALL,
               code: PermissionsEnum.RISK_ASSESSMENT_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.RISK_ASSESSMENT_FETCH,
               code: PermissionsEnum.RISK_ASSESSMENT_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.RISK_ASSESSMENT_DETAILS,
               code: PermissionsEnum.RISK_ASSESSMENT_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.RISK_ASSESSMENT_CREATE,
               code: PermissionsEnum.RISK_ASSESSMENT_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.RISK_ASSESSMENT_UPDATE,
               code: PermissionsEnum.RISK_ASSESSMENT_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.RISK_ASSESSMENT_DELETE,
               code: PermissionsEnum.RISK_ASSESSMENT_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.LEADERSHIP_ALL,
           code: PermissionsEnum.LEADERSHIP_ALL,
-          label: 'Leadership ',
+          get label() {
+            return localizeUi('Leadership')
+          },
           permissions: [
             {
               key: PermissionsEnum.LEADERSHIP_ALL,
               code: PermissionsEnum.LEADERSHIP_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.LEADERSHIP_FETCH,
               code: PermissionsEnum.LEADERSHIP_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.LEADERSHIP_DETAILS,
               code: PermissionsEnum.LEADERSHIP_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.LEADERSHIP_CRAETE,
               code: PermissionsEnum.LEADERSHIP_CRAETE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.LEADERSHIP_UPDATE,
               code: PermissionsEnum.LEADERSHIP_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.LEADERSHIP_DELETE,
               code: PermissionsEnum.LEADERSHIP_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.MOC_ALL,
           code: PermissionsEnum.MOC_ALL,
-          label: 'Mangement Of Change ',
+          get label() {
+            return localizeUi('Mangement Of Change')
+          },
           permissions: [
             {
               key: PermissionsEnum.MOC_ALL,
               code: PermissionsEnum.MOC_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.MOC_FETCH,
               code: PermissionsEnum.MOC_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.MOC_DETAILS,
               code: PermissionsEnum.MOC_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.MOC_CRAETE,
               code: PermissionsEnum.MOC_CRAETE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.MOC_UPDATE,
               code: PermissionsEnum.MOC_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.MOC_DELETE,
               code: PermissionsEnum.MOC_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL,
           code: PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL,
-          label: 'Mangement Of Change Type ',
+          get label() {
+            return localizeUi('Mangement Of Change Type')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL,
               code: PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_FETCH,
               code: PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_DETAILS,
               code: PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_CREATE,
               code: PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_UPDATE,
               code: PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_DELETE,
               code: PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.PROJECT_PROGRESS_ALL,
           code: PermissionsEnum.PROJECT_PROGRESS_ALL,
-          label: 'Project Progress',
+          get label() {
+            return localizeUi('Project Progress')
+          },
           permissions: [
             {
               key: PermissionsEnum.PROJECT_PROGRESS_ALL,
               code: PermissionsEnum.PROJECT_PROGRESS_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORGANIZATION_CERTIFICATE_ALL,
           code: PermissionsEnum.ORGANIZATION_CERTIFICATE_ALL,
-          label: 'Organization Certificates',
+          get label() {
+            return localizeUi('Organization Certificates')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORGANIZATION_CERTIFICATE_ALL,
               code: PermissionsEnum.ORGANIZATION_CERTIFICATE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORGANIZATION_CERTIFICATE_FETCH,
               code: PermissionsEnum.ORGANIZATION_CERTIFICATE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORGANIZATION_CERTIFICATE_DETAILS,
               code: PermissionsEnum.ORGANIZATION_CERTIFICATE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE,
               code: PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORGANIZATION_CERTIFICATE_UPDATE,
               code: PermissionsEnum.ORGANIZATION_CERTIFICATE_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORGANIZATION_CERTIFICATE_DELETE,
               code: PermissionsEnum.ORGANIZATION_CERTIFICATE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORG_LOCATION_ALL,
           code: PermissionsEnum.ORG_LOCATION_ALL,
-          label: 'Organization Locations',
+          get label() {
+            return localizeUi('Organization Locations')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_LOCATION_ALL,
               code: PermissionsEnum.ORG_LOCATION_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_LOCATION_FETCH,
               code: PermissionsEnum.ORG_LOCATION_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_LOCATION_DETAILS,
               code: PermissionsEnum.ORG_LOCATION_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_LOCATION_CREATE,
               code: PermissionsEnum.ORG_LOCATION_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_LOCATION_UPDATE,
               code: PermissionsEnum.ORG_LOCATION_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_LOCATION_DELETE,
               code: PermissionsEnum.ORG_LOCATION_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.HEALTH_CONDITION_ALL,
           code: PermissionsEnum.HEALTH_CONDITION_ALL,
-          label: 'Health Conditions',
+          get label() {
+            return localizeUi('health_conditions')
+          },
           permissions: [
             {
               key: PermissionsEnum.HEALTH_CONDITION_ALL,
               code: PermissionsEnum.HEALTH_CONDITION_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.HEALTH_CONDITION_FETCH,
               code: PermissionsEnum.HEALTH_CONDITION_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.HEALTH_CONDITION_DETAILS,
               code: PermissionsEnum.HEALTH_CONDITION_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.HEALTH_CONDITION_CREATE,
               code: PermissionsEnum.HEALTH_CONDITION_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.HEALTH_CONDITION_UPDATE,
               code: PermissionsEnum.HEALTH_CONDITION_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.HEALTH_CONDITION_DELETE,
               code: PermissionsEnum.HEALTH_CONDITION_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORG_HEALTH_CONDITION_ALL,
           code: PermissionsEnum.ORG_HEALTH_CONDITION_ALL,
-          label: 'Organization Health Conditions',
+          get label() {
+            return localizeUi('Organization Health Conditions')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_HEALTH_CONDITION_ALL,
               code: PermissionsEnum.ORG_HEALTH_CONDITION_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_HEALTH_CONDITION_FETCH,
               code: PermissionsEnum.ORG_HEALTH_CONDITION_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_HEALTH_CONDITION_DETAILS,
               code: PermissionsEnum.ORG_HEALTH_CONDITION_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_HEALTH_CONDITION_CREATE,
               code: PermissionsEnum.ORG_HEALTH_CONDITION_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_HEALTH_CONDITION_UPDATE,
               code: PermissionsEnum.ORG_HEALTH_CONDITION_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_HEALTH_CONDITION_DELETE,
               code: PermissionsEnum.ORG_HEALTH_CONDITION_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORG_CONTRACTOR_MANAGEMENT_ALL,
           code: PermissionsEnum.ORG_CONTRACTOR_MANAGEMENT_ALL,
-          label: 'Contractor Management',
+          get label() {
+            return localizeUi('Contractor Management')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_CONTRACTOR_MANAGEMENT_ALL,
               code: PermissionsEnum.ORG_CONTRACTOR_MANAGEMENT_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_CONTRACTOR_MANAGEMENT_FETCH,
               code: PermissionsEnum.ORG_CONTRACTOR_MANAGEMENT_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_CONTRACTOR_MANAGEMENT_DETAILS,
               code: PermissionsEnum.ORG_CONTRACTOR_MANAGEMENT_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_CONTRACTOR_MANAGEMENT_CREATE,
               code: PermissionsEnum.ORG_CONTRACTOR_MANAGEMENT_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_CONTRACTOR_MANAGEMENT_UPDATE,
               code: PermissionsEnum.ORG_CONTRACTOR_MANAGEMENT_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_CONTRACTOR_MANAGEMENT_DELETE,
               code: PermissionsEnum.ORG_CONTRACTOR_MANAGEMENT_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.PROJECT_LOCATION_ALL,
           code: PermissionsEnum.PROJECT_LOCATION_ALL,
-          label: 'Project Locations',
+          get label() {
+            return localizeUi('Project Locations')
+          },
           permissions: [
             {
               key: PermissionsEnum.PROJECT_LOCATION_ALL,
               code: PermissionsEnum.PROJECT_LOCATION_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_FETCH,
               code: PermissionsEnum.PROJECT_LOCATION_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_DETAILS,
               code: PermissionsEnum.PROJECT_LOCATION_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_CREATE,
               code: PermissionsEnum.PROJECT_LOCATION_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_UPDATE,
               code: PermissionsEnum.PROJECT_LOCATION_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_DELETE,
               code: PermissionsEnum.PROJECT_LOCATION_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.PROJECT_ZONE_ALL,
           code: PermissionsEnum.PROJECT_ZONE_ALL,
-          label: 'Project Zones',
+          get label() {
+            return localizeUi('Project zones')
+          },
           permissions: [
             {
               key: PermissionsEnum.PROJECT_ZONE_ALL,
               code: PermissionsEnum.PROJECT_ZONE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_ZONE_FETCH,
               code: PermissionsEnum.PROJECT_ZONE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_ZONE_DETAILS,
               code: PermissionsEnum.PROJECT_ZONE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_ZONE_CREATE,
               code: PermissionsEnum.PROJECT_ZONE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_ZONE_UPDATE,
               code: PermissionsEnum.PROJECT_ZONE_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_ZONE_DELETE,
               code: PermissionsEnum.PROJECT_ZONE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_ALL,
           code: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_ALL,
-          label: 'Project Location Hierarchy',
+          get label() {
+            return localizeUi('Project Location Hierarchy')
+          },
           permissions: [
             {
               key: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_ALL,
               code: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_FETCH,
               code: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_DETAILS,
               code: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_CREATE,
               code: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_UPDATE,
               code: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_DELETE,
               code: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.PROJECT_LOCATION_EMPLOYEE_ALL,
           code: PermissionsEnum.PROJECT_LOCATION_EMPLOYEE_ALL,
-          label: 'Project Location Employees',
+          get label() {
+            return localizeUi('Project Location Employees')
+          },
           permissions: [
             {
               key: PermissionsEnum.PROJECT_LOCATION_EMPLOYEE_ALL,
               code: PermissionsEnum.PROJECT_LOCATION_EMPLOYEE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_EMPLOYEE_FETCH,
               code: PermissionsEnum.PROJECT_LOCATION_EMPLOYEE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_EMPLOYEE_DETAILS,
               code: PermissionsEnum.PROJECT_LOCATION_EMPLOYEE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_EMPLOYEE_CREATE,
               code: PermissionsEnum.PROJECT_LOCATION_EMPLOYEE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_EMPLOYEE_UPDATE,
               code: PermissionsEnum.PROJECT_LOCATION_EMPLOYEE_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_EMPLOYEE_DELETE,
               code: PermissionsEnum.PROJECT_LOCATION_EMPLOYEE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_EMPLOYEE_ALL,
           code: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_EMPLOYEE_ALL,
-          label: 'Project Location Hierarchy Employees',
+          get label() {
+            return localizeUi('Project Location Hierarchy Employees')
+          },
           permissions: [
             {
               key: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_EMPLOYEE_ALL,
               code: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_EMPLOYEE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_EMPLOYEE_FETCH,
               code: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_EMPLOYEE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_EMPLOYEE_DETAILS,
               code: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_EMPLOYEE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_EMPLOYEE_CREATE,
               code: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_EMPLOYEE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_EMPLOYEE_UPDATE,
               code: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_EMPLOYEE_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_EMPLOYEE_DELETE,
               code: PermissionsEnum.PROJECT_LOCATION_HIERARCHY_EMPLOYEE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.PROJECT_ZOON_EQUIPMENT_ALL,
           code: PermissionsEnum.PROJECT_ZOON_EQUIPMENT_ALL,
-          label: 'Project Zone Equipment',
+          get label() {
+            return localizeUi('Project Zone Equipment')
+          },
           permissions: [
             {
               key: PermissionsEnum.PROJECT_ZOON_EQUIPMENT_ALL,
               code: PermissionsEnum.PROJECT_ZOON_EQUIPMENT_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_ZOON_EQUIPMENT_FETCH,
               code: PermissionsEnum.PROJECT_ZOON_EQUIPMENT_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_ZOON_EQUIPMENT_CREATE,
               code: PermissionsEnum.PROJECT_ZOON_EQUIPMENT_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.PROJECT_LOCATION_TEAM_EMPLOYEE_ALL,
           code: PermissionsEnum.PROJECT_LOCATION_TEAM_EMPLOYEE_ALL,
-          label: 'Project Location Team Employees',
+          get label() {
+            return localizeUi('Project Location Team Employees')
+          },
           permissions: [
             {
               key: PermissionsEnum.PROJECT_LOCATION_TEAM_EMPLOYEE_ALL,
               code: PermissionsEnum.PROJECT_LOCATION_TEAM_EMPLOYEE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_TEAM_EMPLOYEE_FETCH,
               code: PermissionsEnum.PROJECT_LOCATION_TEAM_EMPLOYEE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_TEAM_EMPLOYEE_CREATE,
               code: PermissionsEnum.PROJECT_LOCATION_TEAM_EMPLOYEE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.PROJECT_LOCATION_TEAM_EMPLOYEE_DELETE,
               code: PermissionsEnum.PROJECT_LOCATION_TEAM_EMPLOYEE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.TASK_ALL,
           code: PermissionsEnum.TASK_ALL,
-          label: 'Tasks',
+          get label() {
+            return localizeUi('tasks')
+          },
           permissions: [
-            { key: PermissionsEnum.TASK_ALL, code: PermissionsEnum.TASK_ALL, label: 'All' },
-            { key: PermissionsEnum.TASK_FETCH, code: PermissionsEnum.TASK_FETCH, label: 'Table' },
+            {
+              key: PermissionsEnum.TASK_ALL,
+              code: PermissionsEnum.TASK_ALL,
+              get label() {
+                return localizeUi('ALL')
+              },
+            },
+            {
+              key: PermissionsEnum.TASK_FETCH,
+              code: PermissionsEnum.TASK_FETCH,
+              get label() {
+                return localizeUi('Table')
+              },
+            },
             {
               key: PermissionsEnum.TASK_DETAILS,
               code: PermissionsEnum.TASK_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.TASK_CREATE,
               code: PermissionsEnum.TASK_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.TASK_UPDATE,
               code: PermissionsEnum.TASK_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.TASK_DELETE,
               code: PermissionsEnum.TASK_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.TASK_RESULT_ALL,
           code: PermissionsEnum.TASK_RESULT_ALL,
-          label: 'Task Results',
+          get label() {
+            return localizeUi('Task Results')
+          },
           permissions: [
             {
               key: PermissionsEnum.TASK_RESULT_ALL,
               code: PermissionsEnum.TASK_RESULT_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.TASK_RESULT_FETCH,
               code: PermissionsEnum.TASK_RESULT_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.TASK_RESULT_DETAILS,
               code: PermissionsEnum.TASK_RESULT_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.TASK_RESULT_CREATE,
               code: PermissionsEnum.TASK_RESULT_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.TASK_RESULT_UPDATE,
               code: PermissionsEnum.TASK_RESULT_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.TASK_RESULT_DELETE,
               code: PermissionsEnum.TASK_RESULT_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.TASK_RESULT_ITEM_ALL,
           code: PermissionsEnum.TASK_RESULT_ITEM_ALL,
-          label: 'Task Result Items',
+          get label() {
+            return localizeUi('Task Result Items')
+          },
           permissions: [
             {
               key: PermissionsEnum.TASK_RESULT_ITEM_ALL,
               code: PermissionsEnum.TASK_RESULT_ITEM_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.TASK_RESULT_ITEM_FETCH,
               code: PermissionsEnum.TASK_RESULT_ITEM_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.TASK_RESULT_ITEM_DETAILS,
               code: PermissionsEnum.TASK_RESULT_ITEM_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.TASK_RESULT_ITEM_CREATE,
               code: PermissionsEnum.TASK_RESULT_ITEM_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.TASK_RESULT_ITEM_UPDATE,
               code: PermissionsEnum.TASK_RESULT_ITEM_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.TASK_RESULT_ITEM_DELETE,
               code: PermissionsEnum.TASK_RESULT_ITEM_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -3017,22 +4098,30 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.INVESTIGATION_TASK_RESULT_ALL,
           code: PermissionsEnum.INVESTIGATION_TASK_RESULT_ALL,
-          label: 'Investigation Task Results',
+          get label() {
+            return localizeUi('Investigation Task Results')
+          },
           permissions: [
             {
               key: PermissionsEnum.INVESTIGATION_TASK_RESULT_ALL,
               code: PermissionsEnum.INVESTIGATION_TASK_RESULT_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.INVESTIGATION_TASK_RESULT_FETCH,
               code: PermissionsEnum.INVESTIGATION_TASK_RESULT_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.INVESTIGATION_TASK_RESULT_DETAILS,
               code: PermissionsEnum.INVESTIGATION_TASK_RESULT_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             // {
             //   key: PermissionsEnum.INVESTIGATION_TASK_RESULT_CREATE,
@@ -3042,17 +4131,23 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.FULL_INVESTIGATION_MEETING_RESULT_CREATE,
               code: PermissionsEnum.FULL_INVESTIGATION_MEETING_RESULT_CREATE,
-              label: 'Create ',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.INVESTIGATION_TASK_RESULT_UPDATE,
               code: PermissionsEnum.INVESTIGATION_TASK_RESULT_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.INVESTIGATION_TASK_RESULT_DELETE,
               code: PermissionsEnum.INVESTIGATION_TASK_RESULT_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
@@ -3285,144 +4380,204 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.TICKET_ALL,
           code: PermissionsEnum.TICKET_ALL,
-          label: 'Support Tickets',
+          get label() {
+            return localizeUi('Support Tickets')
+          },
           permissions: [
-            { key: PermissionsEnum.TICKET_ALL, code: PermissionsEnum.TICKET_ALL, label: 'All' },
+            {
+              key: PermissionsEnum.TICKET_ALL,
+              code: PermissionsEnum.TICKET_ALL,
+              get label() {
+                return localizeUi('ALL')
+              },
+            },
             {
               key: PermissionsEnum.TICKET_FETCH,
               code: PermissionsEnum.TICKET_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.TICKET_DETAILS,
               code: PermissionsEnum.TICKET_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.TICKET_CREATE,
               code: PermissionsEnum.TICKET_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.TICKET_UPDATE,
               code: PermissionsEnum.TICKET_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.TICKET_DELETE,
               code: PermissionsEnum.TICKET_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_ALL,
           code: PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_ALL,
-          label: 'Documentation References',
+          get label() {
+            return localizeUi('Documentation References')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_ALL,
               code: PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_FETCH,
               code: PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_DETAILS,
               code: PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_CREATE,
               code: PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_UPDATE,
               code: PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_DELETE,
               code: PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.ORG_SHIFT_ALL,
           code: PermissionsEnum.ORG_SHIFT_ALL,
-          label: 'Shifts',
+          get label() {
+            return localizeUi('shifts')
+          },
           permissions: [
             {
               key: PermissionsEnum.ORG_SHIFT_ALL,
               code: PermissionsEnum.ORG_SHIFT_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.ORG_SHIFT_FETCH,
               code: PermissionsEnum.ORG_SHIFT_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.ORG_SHIFT_DETAILS,
               code: PermissionsEnum.ORG_SHIFT_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.ORG_SHIFT_CREATE,
               code: PermissionsEnum.ORG_SHIFT_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.ORG_SHIFT_UPDATE,
               code: PermissionsEnum.ORG_SHIFT_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.ORG_SHIFT_DELETE,
               code: PermissionsEnum.ORG_SHIFT_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },
         {
           key: PermissionsEnum.NOTIFICATION_PLAN_ALL,
           code: PermissionsEnum.NOTIFICATION_PLAN_ALL,
-          label: 'Notification Plans',
+          get label() {
+            return localizeUi('Notification Plans')
+          },
           permissions: [
             {
               key: PermissionsEnum.NOTIFICATION_PLAN_ALL,
               code: PermissionsEnum.NOTIFICATION_PLAN_ALL,
-              label: 'All',
+              get label() {
+                return localizeUi('ALL')
+              },
             },
             {
               key: PermissionsEnum.NOTIFICATION_PLAN_FETCH,
               code: PermissionsEnum.NOTIFICATION_PLAN_FETCH,
-              label: 'Table',
+              get label() {
+                return localizeUi('Table')
+              },
             },
             {
               key: PermissionsEnum.NOTIFICATION_PLAN_DETAILS,
               code: PermissionsEnum.NOTIFICATION_PLAN_DETAILS,
-              label: 'Details',
+              get label() {
+                return localizeUi('Details')
+              },
             },
             {
               key: PermissionsEnum.NOTIFICATION_PLAN_CREATE,
               code: PermissionsEnum.NOTIFICATION_PLAN_CREATE,
-              label: 'Create',
+              get label() {
+                return localizeUi('create')
+              },
             },
             {
               key: PermissionsEnum.NOTIFICATION_PLAN_UPDATE,
               code: PermissionsEnum.NOTIFICATION_PLAN_UPDATE,
-              label: 'Update',
+              get label() {
+                return localizeUi('update')
+              },
             },
             {
               key: PermissionsEnum.NOTIFICATION_PLAN_DELETE,
               code: PermissionsEnum.NOTIFICATION_PLAN_DELETE,
-              label: 'Delete',
+              get label() {
+                return localizeUi('Delete')
+              },
             },
           ],
         },

@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import AddSystemHeaderData from '@/shared/icons/AddSystemHeaderData.vue';
-
+import AddSystemHeaderData from '@/shared/icons/AddSystemHeaderData.vue'
 </script>
 
 <template>
   <button class="system-data-add col-span-3">
     <AddSystemHeaderData class="icon" />
     <div class="system-data-content">
-      <h2>Add Items from the System</h2>
-      <p>Click here to open the list and select items directly from the system.</p>
+      <h2>{{ $t('Add Items from the System') }}</h2>
+      <p>{{ $t('Click here to open the list and select items directly from the system.') }}</p>
     </div>
   </button>
 </template>
@@ -24,7 +23,7 @@ import AddSystemHeaderData from '@/shared/icons/AddSystemHeaderData.vue';
   padding: 10px;
   margin-top: 12px;
   border-radius: 12px;
-  font-size: "Regular";
+  font-size: 'Regular';
 
   .icon {
     width: 24px;
@@ -48,8 +47,7 @@ import AddSystemHeaderData from '@/shared/icons/AddSystemHeaderData.vue';
       color: var(--text-strong);
       font-weight: 700;
       font-size: 14px;
-      font-family: "Regular";
-
+      font-family: 'Regular';
     }
 
     p {
@@ -59,9 +57,7 @@ import AddSystemHeaderData from '@/shared/icons/AddSystemHeaderData.vue';
       color: var(--brand-primary-700);
       font-size: 500;
       font-size: 12px;
-
     }
   }
-
 }
 </style>

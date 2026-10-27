@@ -61,8 +61,10 @@ onMounted(() => {
   <div class="template-container choice-builder">
     <div class="choice-builder-header">
       <div>
-        <p class="title">Add Your Answers</p>
-        <p class="subtitle">You must add at least two items and a maximum of 3 choices</p>
+        <p class="title">{{ $t('Add Your Answers') }}</p>
+        <p class="subtitle">
+          {{ $t('You must add at least two items and a maximum of 3 choices') }}
+        </p>
       </div>
       <!-- <button v-if="canAddAnswer" class="choice-add-btn" type="button" @click="addNewAnswer">
         <AddAnswer />
@@ -81,22 +83,23 @@ onMounted(() => {
 
         <div class="input-wrapper choice-text">
           <input
+            dir="auto"
             type="text"
             v-model="item.title"
             class="input"
-            placeholder="Enter choice text"
+            :placeholder="$t('Enter choice text')"
             @input="UpdateData"
           />
         </div>
 
         <div class="choice-options">
           <label class="choice-pill" :class="{ active: item.is_upload }">
-            <span>Upload photo</span>
+            <span>{{ $t('Upload_photo') }}</span>
             <input type="checkbox" v-model="item.is_upload" @change="UpdateData" />
           </label>
 
           <label class="choice-pill" :class="{ active: item.isTextAreaRequired }">
-            <span>Typing text</span>
+            <span>{{ $t('Typing text') }}</span>
             <input
               type="checkbox"
               v-model="item.isTextAreaRequired"
@@ -105,12 +108,12 @@ onMounted(() => {
           </label>
 
           <label class="choice-pill" :class="{ active: item.has_auto_observation }">
-            <span>Auto observation</span>
+            <span>{{ $t('Auto observation') }}</span>
             <input type="checkbox" v-model="item.has_auto_observation" @change="UpdateData" />
           </label>
 
           <label class="choice-pill subtle" :class="{ active: item.textarea_type }">
-            <span>Text required</span>
+            <span>{{ $t('Text required') }}</span>
             <input
               :disabled="!item.isTextAreaRequired"
               type="checkbox"
@@ -126,11 +129,11 @@ onMounted(() => {
             @click="DeleteItem(index)"
           >
             <DeleteItemAction />
-            <span>Remove</span>
+            <span>{{ $t('Remove') }}</span>
           </button>
           <button v-if="canAddAnswer" class="choice-inline-add" type="button" @click="addNewAnswer">
             <AddAnswer />
-            <span>Add</span>
+            <span>{{ $t('Add') }}</span>
           </button>
         </div>
       </div>

@@ -44,7 +44,13 @@ const fetchProjectType = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteProjectTypeParams = new IndexProjectTypeParams(query, pageNumber, perPage, withPage, id)
+  const deleteProjectTypeParams = new IndexProjectTypeParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    id,
+  )
   await indexProjectTypeController.getData(deleteProjectTypeParams)
 }
 
@@ -137,7 +143,14 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchProjectType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchProjectType" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchProjectType"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
@@ -150,14 +163,16 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.PROJECT_TYPE_ALL,
-    PermissionsEnum.PROJECT_TYPE_DELETE,
-    PermissionsEnum.PROJECT_TYPE_FETCH,
-    PermissionsEnum.PROJECT_TYPE_UPDATE,
-    PermissionsEnum.PROJECT_TYPE_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.PROJECT_TYPE_ALL,
+      PermissionsEnum.PROJECT_TYPE_DELETE,
+      PermissionsEnum.PROJECT_TYPE_FETCH,
+      PermissionsEnum.PROJECT_TYPE_UPDATE,
+      PermissionsEnum.PROJECT_TYPE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -180,9 +195,11 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
                 <td data-label="#">
                   <router-link :to="`/admin/Project-type/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries">{{ item.allIndustries ? $t('yes') : $t('no') }}</td>
-                <td data-label="all_industries">
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('all_industries')">
+                  {{ item.allIndustries ? $t('yes') : $t('no') }}
+                </td>
+                <td :data-label="$t('all_industries')">
                   {{
                     item.industries.length > 0
                       ? item.industries.map((industry) => industry.title).join(', ')
@@ -193,20 +210,27 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td> -->
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusProjectType-->
                   <!--                  v-if="item.ProjectTypeStatus === ProjectTypeStatusEnum.Draft"-->
                   <!--                  :ProjectTypeId="item.id"-->
                   <!--                  @ProjectTypeChangeStatus="fetchProjectType"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteProjectType)" @delete="deleteProjectType(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteProjectType)"
+                    @delete="deleteProjectType(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -215,20 +239,40 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/add/ProjectType`" addText="Add ProjectType"
-          description="You have no ProjectTypeuages .. All your joined customers will appear here when you add your customer data"
-          title="You have No ProjectTypeuages" />
+        <DataEmpty
+          :link="`/add/ProjectType`"
+          :addText="$t('auditUi.add_project_type')"
+          :description="
+            $t(
+              'You have no ProjectTypeuages .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No ProjectTypeuages')"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/add/ProjectType`" addText="Add ProjectType"
-          description="You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data"
-          title="You have No ProjectTypeuages" />
+        <DataFailed
+          :link="`/add/ProjectType`"
+          :addText="$t('auditUi.add_project_type')"
+          :description="
+            $t(
+              'You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No ProjectTypeuages')"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+      />
     </template>
   </PermissionBuilder>
 </template>

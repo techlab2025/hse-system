@@ -42,20 +42,24 @@ const resolveTicket = () => {
     <Dialog
       v-model:visible="visible"
       modal
-      header="Header"
+      :header="$t('header')"
       :style="{ width: '50vw' }"
       :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
     >
       <template #header>
         <HeaderSection
-          title="Your problem has been successfully solved"
-          subtitle="If the problem has been fully resolved, Resolve the ticket. If it hasn't been resolved, please let us know about the issue."
+          :title="$t('Your problem has been successfully solved')"
+          :subtitle="
+            $t(
+              'auditUi.mark_the_ticket_as_resolved_if_the_issue_has_been_fixed_otherwise_describe_the_remaining_issue',
+            )
+          "
         />
       </template>
 
       <div class="input-wrapper">
         <label for="reply">{{ $t('reply') }}</label>
-        <textarea id="reply" v-model="reply" :placeholder="$t('reply')"></textarea>
+        <textarea dir="auto" id="reply" v-model="reply" :placeholder="$t('reply')"></textarea>
       </div>
 
       <button class="btn btn-primary w-full !mt-4" @click="resolveTicket">{{ $t('Send') }}</button>

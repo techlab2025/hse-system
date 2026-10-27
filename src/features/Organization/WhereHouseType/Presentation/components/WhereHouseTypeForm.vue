@@ -22,7 +22,8 @@ import type TitleInterface from '@/base/Data/Models/title_interface'
 import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('WhereHouseTypeForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('WhereHouseTypeForm')
 
 const emit = defineEmits(['update:data'])
 
@@ -214,6 +215,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
       !industry.value?.length,
   },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
 
@@ -226,7 +228,9 @@ const scrollToRequiredField = async (key: string) => {
 }
 
 const validateRequiredFields = async () => {
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors
@@ -262,7 +266,7 @@ defineExpose({
   >
     <CustomCheckbox
       :index="3"
-      :title="`all_industries`"
+      :title="$t('all_industries')"
       :checked="allIndustries"
       @update:checked="updateAllIndustries"
     />
@@ -276,9 +280,9 @@ defineExpose({
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
-      label="industry"
+      :label="$t('industry')"
       id="AccidentsType"
-      placeholder="Select industry"
+      :placeholder="$t('Select industry')"
       :type="2"
       @update:modelValue="setIndustry"
     />

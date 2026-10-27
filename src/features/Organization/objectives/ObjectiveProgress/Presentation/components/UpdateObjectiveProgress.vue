@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -133,11 +135,11 @@ watch(objective, async (value) => {
   })
   if (!value || !editing.value) return
   if (!progressId.value) {
-    recordError.value = 'op.invalidRecord'
+    recordError.value = localizeUi('op.invalidRecord')
     return
   }
   if (!supportsProgress('details') || !supportsProgress('edit')) {
-    recordError.value = 'op.correctionUnavailable'
+    recordError.value = localizeUi('op.correctionUnavailable')
     return
   }
   recordLoading.value = true
@@ -153,7 +155,7 @@ watch(objective, async (value) => {
     data.objectiveId !== value.id ||
     data.id !== progressId.value
   ) {
-    recordError.value = 'op.loadFailed'
+    recordError.value = localizeUi('op.loadFailed')
     return
   }
   record.value = data
@@ -289,6 +291,7 @@ async function save() {
               aria-describedby="actual-error"
             />
             <input
+              dir="ltr"
               v-else
               id="objective-actual-result"
               v-model="draft.actualResult"
@@ -321,6 +324,7 @@ async function save() {
         <div class="op-field">
           <label for="objective-progress-notes">{{ $t('op.notes') }}</label
           ><Textarea
+            dir="auto"
             id="objective-progress-notes"
             v-model="draft.notes"
             rows="4"

@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
@@ -104,7 +105,11 @@ export default class AddInvestigatingResultController extends ControllerInterfac
     )
   }
 
-  async addInvestigatingResult(params: AddInvestigationResultParams, router: Router, draft: boolean = false) {
+  async addInvestigatingResult(
+    params: AddInvestigationResultParams,
+    router: Router,
+    draft: boolean = false,
+  ) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       // Validation Section Start
@@ -124,7 +129,7 @@ export default class AddInvestigatingResultController extends ControllerInterfac
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })

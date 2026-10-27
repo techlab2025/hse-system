@@ -1,6 +1,7 @@
-import type { TitleLocale } from '@/base/core/params/translations_params';
+import { getCurrentLocale } from '@/localization/i18n'
+import type { TitleLocale } from '@/base/core/params/translations_params'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
-import { LocationEnum } from '../../Core/Enum/LocationEnum';
+import { LocationEnum } from '../../Core/Enum/LocationEnum'
 
 export default class LocationDetailsModel {
   public id: number
@@ -53,16 +54,19 @@ export default class LocationDetailsModel {
     )
   }
 
-
-
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data.titles,
     })
   }
-  static getLocationsWithKeys(data: LocationData | null, level: number, type: LocationEnum): TitleInterface | null {
+  static getLocationsWithKeys(
+    data: LocationData | null,
+    level: number,
+    type: LocationEnum,
+  ): TitleInterface | null {
     if (!data || level < 1) return null
 
     let current: LocationData | null = data

@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
@@ -31,7 +32,7 @@ export default class FetchMyProjectsController extends SelectControllerInterface
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state
@@ -47,6 +48,7 @@ export default class FetchMyProjectsController extends SelectControllerInterface
         new TitleInterface({
           id: -1,
           title: 'All Projects',
+          translationKey: 'all_projects',
         }),
       )
       // }

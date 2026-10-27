@@ -124,7 +124,7 @@ const SubmitData = () => {
           <p class="title">{{ props.title }}</p>
           <ZoneIcon />
         </div>
-        <img :src="selectedWidget?.img" alt="Widget Image" />
+        <img :src="selectedWidget?.img" :alt="$t('Widget Image')" />
       </div>
     </div>
 

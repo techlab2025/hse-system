@@ -193,10 +193,24 @@ const updateAllIndustries = (data: boolean) => {
   updateData()
 }
 
-const { requiredFieldErrors, validateRequiredFields: validateFields } = useRequiredFields('AccidentsTypeForm', () => [
-  { key: 'langs', message: '', isMissing: () => !langs.value.some((item) => String(item.title ?? '').trim().length > 0) },
-  { key: 'industry', message: '', isMissing: () => user.user?.type === OrganizationTypeEnum.ADMIN && !allIndustries.value && !hasSelectedValue(industry.value) },
-])
+const { requiredFieldErrors, validateRequiredFields: validateFields } = useRequiredFields(
+  'AccidentsTypeForm',
+  () => [
+    {
+      key: 'langs',
+      message: '',
+      isMissing: () => !langs.value.some((item) => String(item.title ?? '').trim().length > 0),
+    },
+    {
+      key: 'industry',
+      message: '',
+      isMissing: () =>
+        user.user?.type === OrganizationTypeEnum.ADMIN &&
+        !allIndustries.value &&
+        !hasSelectedValue(industry.value),
+    },
+  ],
+)
 const validateRequiredFields = async () => {
   updateData()
   return validateFields()
@@ -208,6 +222,7 @@ defineExpose({ validateRequiredFields })
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
     <label for="serialNumber">{{ $t('serial_number') }}</label>
     <input
+      dir="auto"
       type="text"
       v-model="SerialNumber"
       @input="UpdateSerial"
@@ -215,16 +230,22 @@ defineExpose({ validateRequiredFields })
       :disabled="projtecStateus.isSerialNumberAuto()"
       :placeholder="
         projtecStateus.isSerialNumberAuto()
-          ? 'You can leave it (auto-generated)'
-          : 'Enter Your Serial Number'
+          ? $t('You can leave it (auto-generated)')
+          : $t('Enter Your Serial Number')
       "
     />
   </div>
 
   <div data-required-field="langs" class="col-span-4 md:col-span-2">
-    <LangTitleInput :label="`${$t('incident_type_name')}`" :langs="langDefault"
-    :modelValue="langs" @update:modelValue="setLangs" />
-    <p v-if="requiredFieldErrors.langs" class="required-field-message" role="alert">{{ requiredFieldErrors.langs }}</p>
+    <LangTitleInput
+      :label="`${$t('incident_type_name')}`"
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="setLangs"
+    />
+    <p v-if="requiredFieldErrors.langs" class="required-field-message" role="alert">
+      {{ requiredFieldErrors.langs }}
+    </p>
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">
@@ -237,7 +258,7 @@ defineExpose({ validateRequiredFields })
   >
     <CustomCheckbox
       :index="3"
-      :title="`all_industries`"
+      :title="$t('all_industries')"
       :checked="allIndustries"
       @update:checked="updateAllIndustries"
     />
@@ -245,23 +266,16 @@ defineExpose({ validateRequiredFields })
 
   <div class="incident-type-toggle col-span-4 md:col-span-2">
     <label for="is-loss-time">{{ $t('is_loss_time') }}</label>
-    <ToggleSwitch
-      v-model="isLossTime"
-      input-id="is-loss-time"
-      @update:model-value="updateData"
-    />
+    <ToggleSwitch v-model="isLossTime" input-id="is-loss-time" @update:model-value="updateData" />
   </div>
 
   <div class="incident-type-toggle col-span-4 md:col-span-2">
     <label for="is-falilty">{{ $t('is_fatilty') }}</label>
-    <ToggleSwitch
-      v-model="isFalilty"
-      input-id="is-falilty"
-      @update:model-value="updateData"
-    />
+    <ToggleSwitch v-model="isFalilty" input-id="is-falilty" @update:model-value="updateData" />
   </div>
 
-  <div data-required-field="industry"
+  <div
+    data-required-field="industry"
     class="col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
   >
@@ -269,13 +283,15 @@ defineExpose({ validateRequiredFields })
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
-      label="industry"
+      :label="$t('industry')"
       id="AccidentsType"
-      placeholder="Select industry"
+      :placeholder="$t('Select industry')"
       :type="2"
       @update:modelValue="setIndustry"
     />
-    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">{{ requiredFieldErrors.industry }}</p>
+    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">
+      {{ requiredFieldErrors.industry }}
+    </p>
   </div>
 </template>
 
@@ -293,5 +309,10 @@ defineExpose({ validateRequiredFields })
 </style>
 
 <style scoped>
-.required-field-message { margin-top: .35rem; color: var(--status-danger); font-size: .82rem; font-weight: 700; }
+.required-field-message {
+  margin-top: 0.35rem;
+  color: var(--status-danger);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
 </style>

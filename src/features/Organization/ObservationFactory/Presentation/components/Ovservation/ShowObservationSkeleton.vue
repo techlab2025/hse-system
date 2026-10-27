@@ -1,5 +1,9 @@
 <template>
-  <div class="show-observation-skeleton" aria-busy="true" aria-label="Loading observation details">
+  <div
+    class="show-observation-skeleton"
+    aria-busy="true"
+    :aria-label="$t('Loading observation details')"
+  >
     <div class="skeleton-alert">
       <span class="skeleton-block alert-icon"></span>
       <span class="skeleton-block alert-copy"></span>

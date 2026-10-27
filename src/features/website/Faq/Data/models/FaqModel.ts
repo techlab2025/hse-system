@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientFaqModel from "@/features/dashboard/settings/clientFaq/Data/models/index_client_faq_model";
@@ -14,7 +15,6 @@ export default class FaqModel extends TitleInterface {
   public answer: string
   public is_active: number
 
-
   constructor(
     id: number,
     title: string,
@@ -27,7 +27,7 @@ export default class FaqModel extends TitleInterface {
     titles: string,
     question: string,
     answer: string,
-    is_active: number
+    is_active: number,
   ) {
     super({ id, title, subtitle })
 
@@ -44,21 +44,24 @@ export default class FaqModel extends TitleInterface {
   }
 
   static fromMap(data: any): FaqModel {
-    return new FaqModel(
-      data.id,
-      data.title,
-      data.subtitle,
-      data.has_faq,
-      data.all_industries,
-      data.industries?.length > 0
-        ? data.industries?.map((industry) => TitleModel.fromMap(industry))
-        : [],
-      data.parent_id,
-      data.image,
-      data.titles,
-      data.question,
-      data.answer,
-      data.is_active
+    return localizedRecord(
+      new FaqModel(
+        data.id,
+        data.title,
+        data.subtitle,
+        data.has_faq,
+        data.all_industries,
+        data.industries?.length > 0
+          ? data.industries?.map((industry) => TitleModel.fromMap(industry))
+          : [],
+        data.parent_id,
+        data.image,
+        data.titles,
+        data.question,
+        data.answer,
+        data.is_active,
+      ),
+      data,
     )
   }
 }

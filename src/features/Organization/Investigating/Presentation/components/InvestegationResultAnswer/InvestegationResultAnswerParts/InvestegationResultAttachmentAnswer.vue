@@ -55,8 +55,8 @@ const props = defineProps<{
   <div class="attachments-answer">
     <div class="header">
       <HeaderPage
-        :title="`Investigation attachments`"
-        :subtitle="`All files added to the investigation`"
+        :title="$t('Investigation attachments')"
+        :subtitle="$t('All files added to the investigation')"
         :img="AttachmentAnswer"
         class="title-header answer-header border-top"
       />

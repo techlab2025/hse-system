@@ -36,7 +36,7 @@ const UpdateImg = (data: string) => {
   <div class="injury-header-container" v-if="props.data?.length > 0">
     <div class="injury-header">
       <div class="injury-header-info">
-        <img :src="RIP" alt="RIP" />
+        <img :src="RIP" alt="" aria-hidden="true" />
         <div class="text">
           <p>{{ $t('fatalities from the accident') }}</p>
           <h6>{{ props.data?.length }} {{ $t('deaths') }}</h6>

@@ -100,10 +100,10 @@ const UploadCertificateImage = async () => {
 </script>
 
 <template>
-  <button @click="visible = true" >
+  <button @click="visible = true">
     <div class="expired">
       <span class="not-required-date">
-        <span>Not Required</span>
+        <span>{{ $t('Not Required') }}</span>
       </span>
       <span class="not-required">
         <Repeaticon />
@@ -124,17 +124,23 @@ const UploadCertificateImage = async () => {
       <hr />
       <div class="dialog-content mt-10">
         <div class="input-wrapper">
-          <label for="Notes">Notes</label>
-          <input type="text" v-model="Notes" class="input" placeholder="Add notes ..." />
+          <label for="Notes">{{ $t('Notes') }}</label>
+          <input
+            dir="auto"
+            type="text"
+            v-model="Notes"
+            class="input"
+            :placeholder="$t('Add notes ...')"
+          />
         </div>
         <div class="input-wrapper mt-10" v-if="is_expire_date">
           <label for="">{{ $t('select_expire_date') }}</label>
           <DatePicker
             v-model="SelectedData"
             class="input"
-            label="select Expiry Date"
+            :label="$t('select Expiry Date')"
             id="Day"
-            placeholder="select Expiry Date"
+            :placeholder="$t('select Expiry Date')"
             @update:modelValue="UpdateDate"
           />
         </div>
@@ -143,9 +149,9 @@ const UploadCertificateImage = async () => {
           <DatePicker
             v-model="SelectedIssueData"
             class="input"
-            label="select Issue Date"
+            :label="$t('select Issue Date')"
             id="Day"
-            placeholder="select Issue Date"
+            :placeholder="$t('select Issue Date')"
             @update:modelValue="UpdateIssueDate"
           />
         </div>
@@ -165,7 +171,9 @@ const UploadCertificateImage = async () => {
           />
         </div>
       </div>
-      <button class="btn btn-primary w-full mt-10" @click="UploadCertificateImage">Confirm</button>
+      <button class="btn btn-primary w-full mt-10" @click="UploadCertificateImage">
+        {{ $t('Confirm') }}
+      </button>
     </div>
   </Dialog>
 </template>

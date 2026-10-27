@@ -35,7 +35,12 @@ const langs = ref<{ locale: string; title: string }[]>([])
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
 
 const ActionsSelection = ref<TitleInterface[]>([
-  new TitleInterface({ id: ActionsEnum.CheckBox, title: 'Checkbox', subtitle: '' }),
+  new TitleInterface({
+    id: ActionsEnum.CheckBox,
+    title: 'Checkbox',
+    translationKey: 'Checkbox',
+    subtitle: '',
+  }),
 ])
 
 // Image
@@ -152,11 +157,36 @@ const setLangs = (data: { locale: string; title: string }[]) => {
 
 const SelectedTemplateType = ref<TitleInterface | null>(null)
 const TemplateTypes = ref<TitleInterface[]>([
-  new TitleInterface({ id: TemplateType.Equipment, title: 'Equipment', subtitle: '' }),
-  new TitleInterface({ id: TemplateType.Tool, title: 'Tool', subtitle: '' }),
-  new TitleInterface({ id: TemplateType.Location, title: 'Location', subtitle: '' }),
-  new TitleInterface({ id: TemplateType.PermitToWork, title: 'Permit To Work', subtitle: '' }),
-  new TitleInterface({ id: TemplateType.device, title: 'Device', subtitle: '' }),
+  new TitleInterface({
+    id: TemplateType.Equipment,
+    title: 'Equipment',
+    translationKey: 'Equipment',
+    subtitle: '',
+  }),
+  new TitleInterface({
+    id: TemplateType.Tool,
+    title: 'Tool',
+    translationKey: 'Tool',
+    subtitle: '',
+  }),
+  new TitleInterface({
+    id: TemplateType.Location,
+    title: 'Location',
+    translationKey: 'Location',
+    subtitle: '',
+  }),
+  new TitleInterface({
+    id: TemplateType.PermitToWork,
+    title: 'Permit To Work',
+    translationKey: 'Permit To Work',
+    subtitle: '',
+  }),
+  new TitleInterface({
+    id: TemplateType.device,
+    title: 'Device',
+    translationKey: 'Device',
+    subtitle: '',
+  }),
   // new TitleInterface({ id: TemplateType.machine, title: 'Machine', subtitle: '' }),
 ])
 
@@ -348,7 +378,7 @@ watch(
             :langs="langDefault"
             :modelValue="langs"
             @update:modelValue="setLangs"
-            :label="`Template title`"
+            :label="$t('Template title')"
           />
           <p v-if="validationErrors.templateTitle" class="required-field-message">
             {{ validationErrors.templateTitle }}

@@ -165,8 +165,9 @@ watch(
         <Search />
       </span>
       <input
+        dir="auto"
         v-model="word"
-        :placeholder="'search'"
+        :placeholder="$t('search')"
         class="input"
         type="text"
         @input="searchEquipmentType"
@@ -219,9 +220,13 @@ watch(
           :link="`/${
             user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
           }/add/EquipmentType`"
-          addText="Add EquipmentType"
-          description="You have no Equipment Types .. All your joined customers will appear here when you add your customer data"
-          title="You have No Equipment Types"
+          :addText="$t('Add_EquipmentType')"
+          :description="
+            $t(
+              'You have no Equipment Types .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Equipment Types')"
         />
       </template>
       <template #failed>
@@ -229,17 +234,25 @@ watch(
           :link="`/${
             user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
           }/add/EquipmentType`"
-          addText="Add EquipmentType"
-          description="You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
-          title="You have No Equipment Types"
+          :addText="$t('Add_EquipmentType')"
+          :description="
+            $t(
+              'You have no EquipmentType .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Equipment Types')"
         />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed
-        addText="Have not  Permission"
-        description="You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no EquipmentType .. All your joined customers will appear here when you add your customer data',
+          )
+        "
       />
     </template>
   </PermissionBuilder>

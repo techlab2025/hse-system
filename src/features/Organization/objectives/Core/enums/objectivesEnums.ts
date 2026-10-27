@@ -19,24 +19,57 @@ export enum ObjectiveFrequencyEnum {
 }
 
 export const ObjectiveTargetTypeOptions = [
-  new TitleInterface({ id: ObjectiveTargetTypeEnum.Percentage, title: 'Percentage' }),
-  new TitleInterface({ id: ObjectiveTargetTypeEnum.Number, title: 'Number' }),
+  new TitleInterface({
+    id: ObjectiveTargetTypeEnum.Percentage,
+    title: 'Percentage',
+    translationKey: 'objectiveMeasurement.percentage',
+  }),
+  new TitleInterface({
+    id: ObjectiveTargetTypeEnum.Number,
+    title: 'Number',
+    translationKey: 'objectiveMeasurement.number',
+  }),
   new TitleInterface({
     id: ObjectiveTargetTypeEnum.PeriodicFrequency,
     title: 'Periodic frequency',
+    translationKey: 'objectiveMeasurement.periodic',
   }),
 ]
 
 export const ObjectiveDirectionOptions = [
-  new TitleInterface({ id: ObjectiveDirectionEnum.Increase, title: 'Increase' }),
-  new TitleInterface({ id: ObjectiveDirectionEnum.Reduce, title: 'Decrease' }),
+  new TitleInterface({
+    id: ObjectiveDirectionEnum.Increase,
+    title: 'Increase',
+    translationKey: 'objectiveMeasurement.increase',
+  }),
+  new TitleInterface({
+    id: ObjectiveDirectionEnum.Reduce,
+    title: 'Decrease',
+    translationKey: 'objectiveMeasurement.decrease',
+  }),
 ]
 
 export const ObjectiveFrequencyOptions = [
-  new TitleInterface({ id: ObjectiveFrequencyEnum.Annually, title: 'Annually' }),
-  new TitleInterface({ id: ObjectiveFrequencyEnum.SemiAnnually, title: 'Semi-annually' }),
-  new TitleInterface({ id: ObjectiveFrequencyEnum.Quarterly, title: 'Quarterly' }),
-  new TitleInterface({ id: ObjectiveFrequencyEnum.Monthly, title: 'Monthly' }),
+  new TitleInterface({
+    id: ObjectiveFrequencyEnum.Annually,
+    title: 'Annually',
+    translationKey: 'objectiveMeasurement.annual',
+  }),
+  new TitleInterface({
+    id: ObjectiveFrequencyEnum.SemiAnnually,
+    title: 'Semi-annually',
+    translationKey: 'objectiveMeasurement.semiannual',
+  }),
+  new TitleInterface({
+    id: ObjectiveFrequencyEnum.Quarterly,
+    title: 'Quarterly',
+    translationKey: 'objectiveMeasurement.quarterly',
+  }),
+  new TitleInterface({
+    id: ObjectiveFrequencyEnum.Monthly,
+    title: 'Monthly',
+    translationKey: 'objectiveMeasurement.monthly',
+  }),
 ]
 
 export const getObjectiveTargetTypeTitle = (

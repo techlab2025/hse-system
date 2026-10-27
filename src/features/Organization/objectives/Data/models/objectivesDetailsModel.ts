@@ -1,3 +1,4 @@
+import { getCurrentLocale } from '@/localization/i18n'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 import type {
@@ -27,7 +28,7 @@ export default class ObjectivesDetailsModel {
     const title = (value: unknown): TitleInterface | null => {
       if (!value || typeof value !== 'object') return null
       const item = value as Record<string, unknown>
-      const locale = localStorage.getItem('lang') || 'en'
+      const locale = getCurrentLocale() || 'en'
       const titles = Array.isArray(item.titles)
         ? (item.titles as { locale?: string; title?: string }[])
         : []

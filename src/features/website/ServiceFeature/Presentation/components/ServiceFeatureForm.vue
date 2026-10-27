@@ -286,9 +286,9 @@ watch(
       :controller="indexServiceController"
       :modelValue="service_id"
       :params="ServiceParams"
-      label="service"
+      :label="$t('Service')"
       id="service"
-      placeholder="Select service"
+      :placeholder="$t('Select service')"
       @update:modelValue="setIndexService"
     />
   </div>
@@ -320,7 +320,6 @@ watch(
           :label="$t('itemTitle') + ' ' + (index + 1)"
           :modelValue="item.langs"
           @update:modelValue="(val) => setItemLangs(index, val)"
-
         />
       </div>
 
@@ -338,7 +337,7 @@ watch(
         <label for="alt_image">
           {{ $t('alt_image') }}
         </label>
-        <input type="text" v-model="item.alt_image" @input="updateData" />
+        <input dir="auto" type="text" v-model="item.alt_image" @input="updateData" />
       </div>
 
       <div class="col-span-4">
@@ -347,7 +346,7 @@ watch(
           @update:modelValue="(val) => setItemImage(index, val)"
           :label="`Image-${index + 1}`"
           :id="`image-${index + 1}`"
-          placeholder="Select image"
+          :placeholder="$t('Select image')"
           :index="index"
           :aspectRatio="1 / 1"
           :isCrop="true"

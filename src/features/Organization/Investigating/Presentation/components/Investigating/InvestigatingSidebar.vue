@@ -25,8 +25,8 @@ const selectRisk = (value: Observation | null) => {
       <div class="sidebar-card">
         <div class="sidebar-card-header">
           <div class="sidebar-header">
-            <p class="sidebar-label-item-primary">Investigation</p>
-            <img :src="booksImage" alt="books" class="sidebar-img" />
+            <p class="sidebar-label-item-primary">{{ $t('Investigation') }}</p>
+            <img :src="booksImage" alt="" aria-hidden="true" class="sidebar-img" />
           </div>
           <div class="sidebar-card-details">
             <ul class="sidebar-list">
@@ -34,7 +34,7 @@ const selectRisk = (value: Observation | null) => {
                 @click="selectRisk(Observation.AccidentsType)"
                 :class="{ active: ObservationRiskLevel === null }"
               >
-                All Incident
+                {{ $t('All Incident') }}
                 <!-- <span>({{ props.highObservationCount + props.mediumObservationCount }})</span> -->
                 <span>({{ mediumObservationCount }})</span>
               </li>
@@ -42,7 +42,7 @@ const selectRisk = (value: Observation | null) => {
                 @click="selectRisk(Observation.ObservationType)"
                 :class="{ active: ObservationRiskLevel === null }"
               >
-                Observation
+                {{ $t('Observation') }}
                 <span>({{ highObservationCount }})</span>
               </li>
 

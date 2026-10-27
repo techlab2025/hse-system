@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import TitleModel from '@/base/core/Models/title_model'
 import ProjectLocationEmployeeModel from './ProjectLocationEmployeeModel'
@@ -51,19 +52,25 @@ export default class ProjectCustomLocationModel extends TitleModel {
         ? [data]
         : []
 
-    return new ProjectCustomLocationModel(
-      data.project_location_id ?? 0,
-      data.location_id ?? 0,
-      data.location_title ?? '',
-      data.project_location_zoons?.map((item: any) => SohwProjectZoonModel.fromMap(item)) ?? [],
-      data.project_location_hierarchies?.map((item) => ProjectLocationHierarchyModel.fromMap(item)) ?? [],
-      data.project_location_hierarchy_employees?.map((item: any) =>
-        ProjectLocationEmployeeModel.fromMap(item),
-      ) ?? [],
-      data.project_location_teams?.map((item: any) => ProjectLocationTeamModel.fromMap(item)) ?? [],
-      data.project_location_equipments ?? [],
-      data?.project_location_hierarchies ?? [],
-      contractors.map((item: any) => ContractorDetailsModel.fromMap(item)),
+    return localizedRecord(
+      new ProjectCustomLocationModel(
+        data.project_location_id ?? 0,
+        data.location_id ?? 0,
+        data.location_title ?? '',
+        data.project_location_zoons?.map((item: any) => SohwProjectZoonModel.fromMap(item)) ?? [],
+        data.project_location_hierarchies?.map((item) =>
+          ProjectLocationHierarchyModel.fromMap(item),
+        ) ?? [],
+        data.project_location_hierarchy_employees?.map((item: any) =>
+          ProjectLocationEmployeeModel.fromMap(item),
+        ) ?? [],
+        data.project_location_teams?.map((item: any) => ProjectLocationTeamModel.fromMap(item)) ??
+          [],
+        data.project_location_equipments ?? [],
+        data?.project_location_hierarchies ?? [],
+        contractors.map((item: any) => ContractorDetailsModel.fromMap(item)),
+      ),
+      data,
     )
   }
 

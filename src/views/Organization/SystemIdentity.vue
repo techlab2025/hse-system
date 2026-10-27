@@ -1,10 +1,12 @@
 <script lang="ts">
 // false = localStorage only; true = fetch/save the organization identity through the API.
-export const USE_SYSTEM_IDENTITY_API = false
+export const USE_SYSTEM_IDENTITY_API = true
 </script>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { translate as localizeUi } from '@/localization/i18n'
+import { translateMessage } from '@/localization/messages'
 import IdentityTypographyEditor from '@/features/SystemIdentity/components/IdentityTypographyEditor.vue'
 import IdentityColorEditor from '@/features/SystemIdentity/components/IdentityColorEditor.vue'
 import IdentitySidebarEditor from '@/features/SystemIdentity/components/IdentitySidebarEditor.vue'
@@ -89,7 +91,7 @@ const uploadLogo = (event: Event) => {
   const file = (event.target as HTMLInputElement).files?.[0]
   if (!file) return
   if (file.size > 3.5 * 1024 * 1024) {
-    message.value = 'Logo must be smaller than 3.5 MB.'
+    message.value = localizeUi('Logo must be smaller than 3.5 MB.')
     return
   }
 
@@ -104,7 +106,7 @@ const uploadLogo = (event: Event) => {
       isExtracting.value = false
     }
     image.onerror = () => {
-      message.value = 'The selected image could not be processed.'
+      message.value = localizeUi('The selected image could not be processed.')
       isExtracting.value = false
     }
     image.src = source
@@ -130,7 +132,7 @@ const restoreDefaults = () => {
 const save = async () => {
   if (isSaving.value || isInitializing.value) return
   if (!form.value.name.trim()) {
-    message.value = 'Identity name is required.'
+    message.value = localizeUi('Identity name is required.')
     return
   }
   isSaving.value = true
@@ -138,9 +140,9 @@ const save = async () => {
   try {
     await saveIdentity({ ...form.value, name: form.value.name.trim() })
     copySavedIdentity()
-    message.value = 'System identity has been saved and applied.'
+    message.value = localizeUi('System identity has been saved and applied.')
   } catch (error) {
-    message.value = `${error instanceof Error ? error.message : 'Could not save the organization identity.'} Your draft is still here.`
+    message.value = `${translateMessage(error instanceof Error ? error.message : 'Could not save the organization identity.')} ${localizeUi('Your draft is still here.')}`
   } finally {
     isSaving.value = false
   }
@@ -153,7 +155,7 @@ const reset = async () => {
   try {
     await resetIdentity()
     copySavedIdentity()
-    message.value = 'Default system identity has been restored.'
+    message.value = localizeUi('Default system identity has been restored.')
   } catch (error) {
     message.value =
       error instanceof Error ? error.message : 'Could not reset the organization identity.'
@@ -180,23 +182,29 @@ onMounted(() => void load())
   <main class="identity-page hse-identity">
     <header class="identity-hero">
       <div>
-        <span class="eyebrow">Organization settings</span>
-        <h1>System Identity</h1>
+        <span class="eyebrow">{{ $t('emailSettings.back') }}</span>
+        <h1>{{ $t('system_identity') }}</h1>
         <p>
-          Customize your logo, interface colors, typography, header, and sidebar layout across
-          HSE.Cloud.Ai.
+          {{
+            $t(
+              'Customize your logo, interface colors, typography, header, and sidebar layout across HSE.Cloud.Ai.',
+            )
+          }}
         </p>
       </div>
       <div class="active-badge" :class="{ inactive: !form.isActive }">
-        <span></span>{{ form.isActive ? 'Active identity' : 'Identity disabled' }}
+        <span></span>{{ form.isActive ? $t('Active identity') : $t('Identity disabled') }}
       </div>
     </header>
 
-    <p v-if="message" class="identity-message" role="status">{{ message }}</p>
+    <p v-if="message" class="identity-message" role="status">{{ translateMessage(message) }}</p>
 
     <p v-if="identityLoadError" class="identity-message" role="alert">
-      Could not load the organization identity. The available browser cache or HSE defaults are
-      shown.
+      {{
+        $t(
+          'Could not load the organization identity. The available browser cache or HSE defaults are shown.',
+        )
+      }}
       {{ identityLoadError }}
       <button
         type="button"
@@ -204,34 +212,39 @@ onMounted(() => void load())
         :disabled="isInitializing || isSaving"
         @click="load(true)"
       >
-        Retry loading
+        {{ $t('Retry loading') }}
       </button>
     </p>
     <p v-if="identityCacheWarning" class="identity-message" role="status">
       {{ identityCacheWarning }}
     </p>
     <p v-if="isInitializing" class="identity-message" role="status">
-      Loading organization identity…
+      {{ $t('Loading organization identity…') }}
     </p>
     <fieldset v-else class="identity-controls" :disabled="isSaving">
       <section class="identity-shell">
         <header class="section-header">
           <div>
-            <span class="eyebrow">Brand controls</span>
-            <h2>Identity details</h2>
-            <p>Manage the logo, active palette, and live system preview.</p>
+            <span class="eyebrow">{{ $t('Brand controls') }}</span>
+            <h2>{{ $t('Identity details') }}</h2>
+            <p>{{ $t('Manage the logo, active palette, and live system preview.') }}</p>
           </div>
-          <button type="button" class="button ghost danger" @click="reset">Reset identity</button>
+          <button type="button" class="button ghost danger" @click="reset">
+            {{ $t('Reset identity') }}
+          </button>
         </header>
 
         <div class="identity-grid">
           <section class="identity-card logo-card">
             <div class="field-group">
               <div class="field-label">
-                <label for="identity-name">Identity name</label>
-                <FieldHelpIcon text="A recognizable name for this organization identity profile." />
+                <label for="identity-name">{{ $t('Identity name') }}</label>
+                <FieldHelpIcon
+                  :text="$t('A recognizable name for this organization identity profile.')"
+                />
               </div>
               <input
+                dir="auto"
                 id="identity-name"
                 v-model="form.name"
                 type="text"
@@ -240,16 +253,22 @@ onMounted(() => void load())
             </div>
 
             <div class="field-label">
-              <span>Organization logo</span>
+              <span>{{ $t('Organization logo') }}</span>
               <FieldHelpIcon
-                text="Upload a logo to use in the application header and automatically extract a matching palette."
+                :text="
+                  $t(
+                    'Upload a logo to use in the application header and automatically extract a matching palette.',
+                  )
+                "
               />
             </div>
             <button type="button" class="logo-dropzone" @click="fileInput?.click()">
-              <img v-if="form.logo" :src="form.logo" alt="Organization logo preview" />
-              <span v-else class="logo-placeholder"><b>+</b> Upload organization logo</span>
+              <img v-if="form.logo" :src="form.logo" :alt="$t('Organization logo preview')" />
+              <span v-else class="logo-placeholder"
+                ><b>+</b> {{ $t('Upload organization logo') }}</span
+              >
               <small>{{
-                isExtracting ? 'Extracting colors…' : 'PNG, JPG, SVG or WebP · max 3.5 MB'
+                isExtracting ? $t('Extracting colors…') : $t('PNG, JPG, SVG or WebP · max 3.5 MB')
               }}</small>
             </button>
             <input
@@ -264,11 +283,15 @@ onMounted(() => void load())
               <input id="identity-active" v-model="form.isActive" type="checkbox" />
               <span class="toggle"></span>
               <span
-                ><b>Active identity</b
-                ><small>Apply this identity throughout the system.</small></span
+                ><b>{{ $t('Active identity') }}</b
+                ><small>{{ $t('Apply this identity throughout the system.') }}</small></span
               >
               <FieldHelpIcon
-                text="Disable this option to temporarily use the default HSE identity without deleting your saved choices."
+                :text="
+                  $t(
+                    'Disable this option to temporarily use the default HSE identity without deleting your saved choices.',
+                  )
+                "
               />
             </label>
           </section>
@@ -276,8 +299,8 @@ onMounted(() => void load())
           <section class="identity-card palette-card">
             <div class="card-heading">
               <div>
-                <span class="eyebrow">Color system</span>
-                <h3>Current palette</h3>
+                <span class="eyebrow">{{ $t('Color system') }}</span>
+                <h3>{{ $t('Current palette') }}</h3>
               </div>
               <div class="palette-dots">
                 <i :style="{ background: form.primaryColor }"></i
@@ -308,7 +331,7 @@ onMounted(() => void load())
               class="color-row"
             >
               <div class="field-label">
-                <label :for="`identity-${field.key}`">{{ field.label }}</label
+                <label :for="`identity-${field.key}`">{{ translateMessage(field.label) }}</label
                 ><FieldHelpIcon :text="field.help" />
               </div>
               <div class="color-control">
@@ -322,9 +345,13 @@ onMounted(() => void load())
 
             <div class="extracted-block">
               <div class="field-label">
-                <span>Colors extracted from logo</span
+                <span>{{ $t('Colors extracted from logo') }}</span
                 ><FieldHelpIcon
-                  text="These dominant colors were detected from the uploaded logo. Select one to use it as the primary color."
+                  :text="
+                    $t(
+                      'These dominant colors were detected from the uploaded logo. Select one to use it as the primary color.',
+                    )
+                  "
                 />
               </div>
               <div v-if="form.extractedColors.length" class="swatches">
@@ -333,13 +360,13 @@ onMounted(() => void load())
                   :key="color"
                   type="button"
                   :style="{ background: color }"
-                  :title="`Use ${color}`"
+                  :title="$t('Use {color}', { color })"
                   @click="form.primaryColor = color"
                 >
                   <span>{{ color }}</span>
                 </button>
               </div>
-              <p v-else>Upload a logo to generate a suggested color palette.</p>
+              <p v-else>{{ $t('Upload a logo to generate a suggested color palette.') }}</p>
             </div>
 
             <div class="button-row">
@@ -349,10 +376,10 @@ onMounted(() => void load())
                 :disabled="form.extractedColors.length < 3"
                 @click="applyDetectedColors"
               >
-                Apply detected colors
+                {{ $t('Apply detected colors') }}
               </button>
               <button type="button" class="button ghost" @click="restoreDefaults">
-                Use HSE defaults
+                {{ $t('Use HSE defaults') }}
               </button>
             </div>
           </section>
@@ -365,10 +392,13 @@ onMounted(() => void load())
       <section class="identity-shell">
         <header class="section-header">
           <div>
-            <h2>Sidebar navigation</h2>
+            <h2>{{ $t('Sidebar navigation') }}</h2>
             <p>
-              Rename sidebar tabs and items, change their order, or move items between groups. Click
-              Save and apply identity to apply your choice.
+              {{
+                $t(
+                  'Rename sidebar tabs and items, change their order, or move items between groups. Click Save and apply identity to apply your choice.',
+                )
+              }}
             </p>
           </div>
         </header>
@@ -383,11 +413,12 @@ onMounted(() => void load())
           />
           <span class="toggle" aria-hidden="true"></span>
           <span>
-            <b>Always-open sidebar</b>
-            <small
-              >Show all group titles and available routes together. Turn off to use the compact
-              sidebar.</small
-            >
+            <b>{{ $t('Always-open sidebar') }}</b>
+            <small>{{
+              $t(
+                'Show all group titles and available routes together. Turn off to use the compact sidebar.',
+              )
+            }}</small>
           </span>
         </label>
       </section>
@@ -395,7 +426,7 @@ onMounted(() => void load())
       <IdentityPreview :identity="form" />
 
       <button class="save-button" type="button" :disabled="isSaving" @click="save">
-        {{ isSaving ? 'Saving identity…' : 'Save and apply identity' }}
+        {{ isSaving ? $t('Saving identity…') : $t('Save and apply identity') }}
       </button>
     </fieldset>
   </main>

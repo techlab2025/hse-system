@@ -1,4 +1,4 @@
-import TitleInterface from "@/base/Data/Models/title_interface"
+import TitleInterface from '@/base/Data/Models/title_interface'
 
 export enum PeriodicTypeEnum {
   DAILY = 1,
@@ -8,12 +8,16 @@ export enum PeriodicTypeEnum {
   DATES = 5,
 }
 
-export const PeriodicTypeOptions :TitleInterface[]= [
-  new TitleInterface({ title: 'daily', id: PeriodicTypeEnum.DAILY }),
-  new TitleInterface({ title: 'weekly', id: PeriodicTypeEnum.WEEKLY }),
-  new TitleInterface({ title: 'monthly', id: PeriodicTypeEnum.MONTHLY }),
-  new TitleInterface({ title: 'yearly', id: PeriodicTypeEnum.YEARLY }),
-  new TitleInterface({ title: 'dates', id: PeriodicTypeEnum.DATES }),
+export const PeriodicTypeOptions: TitleInterface[] = [
+  new TitleInterface({ title: 'daily', translationKey: 'Daily', id: PeriodicTypeEnum.DAILY }),
+  new TitleInterface({
+    title: 'weekly',
+    translationKey: 'periodicWeekly',
+    id: PeriodicTypeEnum.WEEKLY,
+  }),
+  new TitleInterface({ title: 'monthly', translationKey: 'Monthly', id: PeriodicTypeEnum.MONTHLY }),
+  new TitleInterface({ title: 'yearly', translationKey: 'Yearly', id: PeriodicTypeEnum.YEARLY }),
+  new TitleInterface({ title: 'dates', translationKey: 'dates', id: PeriodicTypeEnum.DATES }),
 ]
 
 export const getPeriodicTypeMaxDays = (type: PeriodicTypeEnum): number | null => {
@@ -39,7 +43,9 @@ export const parsePeriodicType = (value: unknown): PeriodicTypeEnum | null => {
     return numericValue as PeriodicTypeEnum
   }
 
-  const normalized = String(value ?? '').trim().toLowerCase()
+  const normalized = String(value ?? '')
+    .trim()
+    .toLowerCase()
   const aliases: Record<string, PeriodicTypeEnum> = {
     daily: PeriodicTypeEnum.DAILY,
     weekly: PeriodicTypeEnum.WEEKLY,
@@ -60,9 +66,9 @@ export const validatePeriodicNumberOfDays = (
   if (type === PeriodicTypeEnum.DAILY) return null
 
   const numericValue = Number(value)
-  if (!Number.isInteger(numericValue) || numericValue <= 0) {
-    return 'Number of days must be a positive integer'
-  }
+  // if (!Number.isInteger(numericValue) || numericValue <= 0) {
+  //   return 'Number of days must be a positive integer'
+  // }
 
   if (type === PeriodicTypeEnum.WEEKLY && numericValue >= 7) {
     return 'Weekly number of days must be less than 7'

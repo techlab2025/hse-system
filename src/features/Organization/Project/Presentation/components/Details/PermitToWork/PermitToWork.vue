@@ -270,12 +270,13 @@ const handleFilesChange = (files: UploadedFile[]) => {
                 <FieldHelpIcon
                   :text="
                     serialIsAuto
-                      ? 'The serial will be generated automatically.'
-                      : 'Enter the serial number.'
+                      ? $t('The serial will be generated automatically.')
+                      : $t('Enter the serial number.')
                   "
                 />
               </label>
               <InputText
+                dir="auto"
                 id="permit_serial_number"
                 v-model="serial"
                 class="ptw-control"
@@ -301,14 +302,15 @@ const handleFilesChange = (files: UploadedFile[]) => {
             </div>
             <div class="hse-project-field ptw-field" data-required-field="Name">
               <label class="hse-project-field-label" for="name">
-                {{ $t('Permit Number') }}
+                {{ $t('Permit number') }}
                 <span class="required-mark">*</span>
               </label>
               <InputText
+                dir="auto"
                 id="name"
                 v-model="ptwNum"
                 class="ptw-control"
-                :placeholder="$t('Enter permit Number')"
+                :placeholder="$t('Enter permit number')"
                 @input="setptwNo"
               />
               <p v-if="getFieldError('Name')" class="hse-project-field required-field-message">
@@ -354,6 +356,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
             <div class="hse-project-field ptw-field">
               <label class="hse-project-field-label" for="location">{{ $t('Area') }}</label>
               <InputText
+                dir="auto"
                 id="location"
                 v-model="location"
                 class="ptw-control"
@@ -483,6 +486,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
                 $t('Description of Work Optional')
               }}</label>
               <textarea
+                dir="auto"
                 id="description"
                 v-model="description"
                 class="hse-project-input ptw-control ptw-textarea"
@@ -758,7 +762,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
   gap: 10px;
   margin-bottom: 16px;
 }
-.white{
+.white {
   color: white !important;
 }
 

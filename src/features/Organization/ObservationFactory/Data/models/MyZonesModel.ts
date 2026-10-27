@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 export default class MyZonesModel {
   public ProjectZoneId: number
   public projectLocationId: number
@@ -12,11 +13,14 @@ export default class MyZonesModel {
   }
 
   static fromMap(data: any): MyZonesModel {
-    return new MyZonesModel(
-      data.project_zoon_id,
-      data.project_location_id,
-      data.zoon_id,
-      data.zoon_title,
+    return localizedRecord(
+      new MyZonesModel(
+        data.project_zoon_id,
+        data.project_location_id,
+        data.zoon_id,
+        data.zoon_title,
+      ),
+      data,
     )
   }
 }

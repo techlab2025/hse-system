@@ -1,3 +1,4 @@
+import { getCurrentLocale } from '@/localization/i18n'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 
 export default class SubscriptionApplicationDetailsModel {
@@ -59,11 +60,12 @@ export default class SubscriptionApplicationDetailsModel {
   }
 
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data.titles,
     })
   }
 }

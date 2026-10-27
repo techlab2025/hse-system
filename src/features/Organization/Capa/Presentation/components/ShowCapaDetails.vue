@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { useRoute } from 'vue-router'
 import ShowCapaDetailsParams from '../../Core/params/ShowCapaDetailsParams'
 import ShowCapaDetailsController from '../controllers/ShowCapaDetailsController'
@@ -26,7 +28,9 @@ const summaryCards = computed(() => {
   const details = state.value.data
   const cards: { label: string; value: string | number; path?: string }[] = [
     {
-      label: 'Capa serial',
+      get label() {
+        return localizeUi('Capa serial')
+      },
       value: details?.serialName || 'N/A',
     },
   ]
@@ -39,14 +43,18 @@ const summaryCards = computed(() => {
 
     cards.push(
       {
-        label: 'Investigation serial',
+        get label() {
+          return localizeUi('Investigation Serial')
+        },
         value: investigation?.SerialName || investigation?.Investegationid || 'N/A',
         path: investigation?.Investegationid
           ? `/organization/Investigating-result-answer/${investigation.Investegationid}`
           : undefined,
       },
       {
-        label: 'Incident serial',
+        get label() {
+          return localizeUi('incident Serial')
+        },
         value: observation?.serialName || observation?.serial || 'N/A',
         path: observation?.id ? `/organization/observation/show/${observation.id}` : undefined,
       },
@@ -135,15 +143,15 @@ onMounted(() => {
 
     <template #empty>
       <DataEmpty
-        title="No CAPA details found"
-        description="There is no CAPA details data for this record yet."
+        :title="$t('No CAPA details found')"
+        :description="$t('There is no CAPA details data for this record yet.')"
       />
     </template>
 
     <template #failed>
       <DataFailed
-        title="Could not load CAPA details"
-        description="Something went wrong while loading this CAPA details page."
+        :title="$t('Could not load CAPA details')"
+        :description="$t('Something went wrong while loading this CAPA details page.')"
       />
     </template>
   </DataStatus>

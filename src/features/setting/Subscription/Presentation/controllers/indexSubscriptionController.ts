@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -6,7 +7,9 @@ import IndexSubscriptionUseCase from '../../Domain/useCase/indexSubscriptionUseC
 import type SubscriptionModel from '../../Data/models/SubscriptionModel'
 // import TitleInterface from '@/base/Data/Models/title_interface'
 
-export default class IndexSubscriptionController extends SelectControllerInterface<SubscriptionModel[]> {
+export default class IndexSubscriptionController extends SelectControllerInterface<
+  SubscriptionModel[]
+> {
   private static instance: IndexSubscriptionController
   private constructor() {
     super()
@@ -24,13 +27,14 @@ export default class IndexSubscriptionController extends SelectControllerInterfa
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<SubscriptionModel[]> = await this.indexSubscriptionUseCase.call(params)
+    const dataState: DataState<SubscriptionModel[]> =
+      await this.indexSubscriptionUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

@@ -41,8 +41,8 @@ watch(visible, (newValue) => {
       <div class="add-widget-header">
         <HeaderSection
           :img="WidgetIcon"
-          title="Widget Settings & Customization"
-          subtitle="Easily customize the dashboard layout for your project needs"
+          :title="$t('Widget Settings &amp; Customization')"
+          :subtitle="$t('auditUi.customize_the_dashboard_layout_to_suit_your_project')"
         />
       </div>
     </template>

@@ -11,11 +11,10 @@ const props = defineProps<{
   icon: string
 }>()
 
-
 const staticZones = ref([
-  { zoonId: 1, zoonTitle: 'show all' },
-  { zoonId: 2, zoonTitle: 'incedant' },
-  { zoonId: 3, zoonTitle: 'observation' },
+  { zoonId: 1, zoonTitle: 'show_all' },
+  { zoonId: 2, zoonTitle: 'Incident' },
+  { zoonId: 3, zoonTitle: 'Observation' },
 ])
 
 const SelectedFilter = ref<Set<number>>(new Set())
@@ -28,11 +27,9 @@ const UpdateData = (id: number) => {
 }
 </script>
 
-
 <template>
   <div class="idnex-filter">
     <div class="filter-container">
-
       <p
         v-for="zone in allZones"
         :key="zone.zoonId"
@@ -40,7 +37,7 @@ const UpdateData = (id: number) => {
         :class="{ active: SelectedFilter.has(zone.zoonId) }"
         @click="UpdateData(zone.zoonId)"
       >
-        {{ zone.zoonTitle }}
+        {{ $t(zone.zoonTitle) }}
       </p>
     </div>
   </div>

@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 export default class CreateTaskAmswerModel {
   public projectZoonId: number
   public projectLocationId: number
@@ -19,12 +20,15 @@ export default class CreateTaskAmswerModel {
   }
 
   static fromMap(data: any): CreateTaskAmswerModel {
-    return new CreateTaskAmswerModel(
-      data.project_zoon_id,
-      data.project_location_id,
-      data.zoon_id,
-      data.zoon_title,
-      data.project_zoon_equipments,
+    return localizedRecord(
+      new CreateTaskAmswerModel(
+        data.project_zoon_id,
+        data.project_location_id,
+        data.zoon_id,
+        data.zoon_title,
+        data.project_zoon_equipments,
+      ),
+      data,
     )
   }
 }

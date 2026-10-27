@@ -141,7 +141,9 @@ const scrollToRequiredField = async (key: string) => {
 }
 
 const validateRequiredFields = async () => {
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   setRequiredErrors(missedFields)
 
   if (!missedFields.length) return true
@@ -261,6 +263,7 @@ const saveAndNew = () => submitNotificationPlan(true)
     <div class="input-wrapper title-field" data-required-field="title">
       <label for="title">{{ $t('title') }}</label>
       <input
+        dir="auto"
         id="title"
         v-model.trim="title"
         class="input"
@@ -275,7 +278,7 @@ const saveAndNew = () => submitNotificationPlan(true)
 
     <div class="input-wrapper status-field">
       <CustomCheckbox
-        title="active"
+        :title="$t('active')"
         :checked="isActive"
         :index="0"
         @update:checked="isActive = $event"
@@ -305,7 +308,7 @@ const saveAndNew = () => submitNotificationPlan(true)
             </span>
             <span class="action-card__label">{{ optionTitle(action) }}</span>
             <span v-if="isActionSelected(action.id)" class="action-card__badge">{{
-              $t('active') || 'Active'
+              $t('active') || $t('Active')
             }}</span>
           </label>
 
@@ -438,7 +441,7 @@ const saveAndNew = () => submitNotificationPlan(true)
           <CustomSelectInput
             id="employee-ids"
             :modelValue="selectedEmployees"
-            label="employees"
+            :label="$t('employees')"
             :controller="indexEmployeesController"
             :params="indexEmployeesParams"
             :type="2"
@@ -450,7 +453,7 @@ const saveAndNew = () => submitNotificationPlan(true)
           <CustomSelectInput
             id="hierarchy-ids"
             :modelValue="selectedHierarchies"
-            label="positions"
+            :label="$t('positions')"
             :controller="indexHierarchiesController"
             :params="indexHierarchiesParams"
             :type="2"

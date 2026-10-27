@@ -29,7 +29,7 @@ const setIndustry = (value: TitleInterface | TitleInterface[] | null) => {
     <div class="input-wrapper">
       <CustomCheckbox
         :index="scopeId"
-        title="all_industries"
+        :title="$t('all_industries')"
         :checked="model.allIndustries"
         @update:checked="updateAllIndustries"
       />
@@ -39,9 +39,9 @@ const setIndustry = (value: TitleInterface | TitleInterface[] | null) => {
         :model-value="industry"
         :controller="industryController"
         :params="industryParams"
-        label="industry"
+        :label="$t('industry')"
         :id="scopeId"
-        placeholder="Select industry"
+        :placeholder="$t('Select industry')"
         :required="true"
         :type="2"
         @update:model-value="setIndustry"

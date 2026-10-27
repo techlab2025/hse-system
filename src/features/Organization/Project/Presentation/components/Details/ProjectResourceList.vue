@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, nextTick, ref, watch } from 'vue'
@@ -154,13 +156,17 @@ const hasScopedAddAction = computed(() =>
 const workflowAction = computed(() => {
   if (resource.value === 'locations') {
     return {
-      label: 'Add project location',
+      get label() {
+        return localizeUi('Add project location')
+      },
       to: `/organization/project/flow/${projectId.value}/1?edit=1&return_to=summary`,
     }
   }
   if (resource.value === 'contractors') {
     return {
-      label: 'Add contractor',
+      get label() {
+        return localizeUi('Add contractor')
+      },
       to: `/organization/project/flow/${projectId.value}/1?edit=1&return_to=summary`,
     }
   }
@@ -190,22 +196,23 @@ const resourceItems = computed<ResourceItem[]>(() => {
   if (resource.value === 'contractors') {
     return (locations.value[0]?.contractors ?? []).map((contractor, index) => ({
       key: `contractor-${contractor.id || index}`,
-      title: contractor.name || 'Contractor',
-      subtitle: 'Project contractor',
-      location: `Project #${projectId.value}`,
+      title: contractor.name || localizeUi('contractor'),
+      subtitle: localizeUi('Project contractor'),
+      location: localizeUi('resourceCounts.projectNumber', { id: projectId.value }),
       detail: contractor.companyEmail || contractor.phone || '',
-      badge: 'Contractor',
+      badge: localizeUi('contractor'),
     }))
   }
 
   if (resource.value === 'drills') {
     return (drillsState.value.data ?? []).map((drill, index) => ({
       key: `drill-${drill.id || index}`,
-      title: drill.drillType?.title || `Emergency drill ${index + 1}`,
-      subtitle: drill.serialNumber || 'Emergency preparedness drill',
-      location: drill.projectTeam?.title || detailsState.value.data?.title || 'Project',
+      title:
+        drill.drillType?.title || localizeUi('Emergency drill {number}', { number: index + 1 }),
+      subtitle: drill.serialNumber || localizeUi('Emergency preparedness drill'),
+      location: drill.projectTeam?.title || detailsState.value.data?.title || localizeUi('Project'),
       detail: [drill.date, drill.time].filter(Boolean).join(' · '),
-      badge: 'Drill',
+      badge: localizeUi('Drill'),
       drill,
     }))
   }
@@ -213,11 +220,14 @@ const resourceItems = computed<ResourceItem[]>(() => {
   if (resource.value === 'meetings') {
     return (meetingsState.value.data ?? []).map((meeting, index) => ({
       key: `meeting-${meeting.id || index}`,
-      title: meeting.serialName || `Safety meeting ${index + 1}`,
-      subtitle: `${meeting.hierarchies?.length ?? 0} participating positions`,
-      location: meeting.teamLeader?.name || `Project #${projectId.value}`,
+      title:
+        meeting.serialName || localizeUi('resourceCounts.meetingNumber', { number: index + 1 }),
+      subtitle: localizeUi('resourceCounts.positions', { count: meeting.hierarchies?.length ?? 0 }),
+      location:
+        meeting.teamLeader?.name ||
+        localizeUi('resourceCounts.projectNumber', { id: projectId.value }),
       detail: meeting.date || '',
-      badge: 'Meeting',
+      badge: localizeUi('Meeting'),
       meeting,
     }))
   }
@@ -225,11 +235,14 @@ const resourceItems = computed<ResourceItem[]>(() => {
   if (resource.value === 'locations') {
     return locations.value.map((location, index) => ({
       key: `location-${location.projectLocationId || location.id || index}`,
-      title: location.title || `Location ${index + 1}`,
-      subtitle: `${location.locationZones?.length ?? 0} zones`,
-      location: 'Project location',
-      detail: `${location.locationTeams?.length ?? 0} teams · ${location.locationEmplyees?.length ?? 0} employees`,
-      badge: 'Location',
+      title: location.title || localizeUi('Location {number}', { number: index + 1 }),
+      subtitle: localizeUi('resourceCounts.zones', { count: location.locationZones?.length ?? 0 }),
+      location: localizeUi('Project location'),
+      detail: localizeUi('resourceCounts.teamsEmployees', {
+        teams: location.locationTeams?.length ?? 0,
+        employees: location.locationEmplyees?.length ?? 0,
+      }),
+      badge: localizeUi('Location'),
     }))
   }
 
@@ -237,10 +250,12 @@ const resourceItems = computed<ResourceItem[]>(() => {
     return locations.value.flatMap((location) =>
       (location.locationZones ?? []).map((zone, index) => ({
         key: `zone-${zone.projectZoonId || zone.zoonId || index}-${location.projectLocationId}`,
-        title: zone.zoonTitle || zone.title || `Zone ${index + 1}`,
-        subtitle: `${zone.projectZoonEquipments?.length ?? 0} assigned equipment`,
-        location: location.title || 'Project location',
-        badge: 'Zone',
+        title: zone.zoonTitle || zone.title || localizeUi('zone_number', { number: index + 1 }),
+        subtitle: localizeUi('resourceCounts.assignEquipment', {
+          count: zone.projectZoonEquipments?.length ?? 0,
+        }),
+        location: location.title || localizeUi('project_equipment_location'),
+        badge: localizeUi('Zone'),
       })),
     )
   }
@@ -251,14 +266,14 @@ const resourceItems = computed<ResourceItem[]>(() => {
         (location.locationZones ?? []).flatMap((zone) =>
           (zone.projectZoonEquipments ?? []).map((equipment, index) => ({
             key: `equipment-${equipment.id || equipment.projectZoonEquipmentId || index}`,
-            title: equipment.title || equipment.equipment?.title || 'Equipment',
+            title: equipment.title || equipment.equipment?.title || localizeUi('Equipment'),
             subtitle:
               equipment.equipmenType?.title ||
               equipment.equipment?.equipment_type?.title ||
-              'Asset',
-            location: `${location.title || 'Location'} · ${zone.zoonTitle || zone.title || 'Zone'}`,
+              localizeUi('Asset'),
+            location: `${location.title || localizeUi('Location')} · ${zone.zoonTitle || zone.title || localizeUi('Zone')}`,
             detail: equipment.equipment?.licensePlateNumber || equipment.equipmentDescription || '',
-            badge: 'Equipment',
+            badge: localizeUi('Equipment'),
             equipmentId: Number(equipment.equipment?.id || equipment.id),
           })),
         ),
@@ -271,10 +286,10 @@ const resourceItems = computed<ResourceItem[]>(() => {
       locations.value.flatMap((location) =>
         (location.locationTeams ?? []).map((team, index) => ({
           key: `team-${team.projectLocationTeamId || team.teamId || index}`,
-          title: team.teamTitle || team.title || 'Team',
-          subtitle: `${team.Employees?.length ?? 0} team members`,
-          location: location.title || 'Project location',
-          badge: 'Team',
+          title: team.teamTitle || team.title || localizeUi('Team'),
+          subtitle: localizeUi('resourceCounts.members', { count: team.Employees?.length ?? 0 }),
+          location: location.title || localizeUi('project_equipment_location'),
+          badge: localizeUi('Team'),
         })),
       ),
     )
@@ -285,10 +300,12 @@ const resourceItems = computed<ResourceItem[]>(() => {
       locations.value.flatMap((location) =>
         (location.locationHierarchy ?? []).map((hierarchy, index) => ({
           key: `hierarchy-${hierarchy.projectLocationHierarchyId || hierarchy.id || index}`,
-          title: hierarchy.title || 'Project position',
-          subtitle: `${hierarchy.Employees?.length ?? 0} assigned employees`,
-          location: location.title || 'Project location',
-          badge: 'Position',
+          title: hierarchy.title || localizeUi('Project position'),
+          subtitle: localizeUi('resourceCounts.employees', {
+            count: hierarchy.Employees?.length ?? 0,
+          }),
+          location: location.title || localizeUi('project_equipment_location'),
+          badge: localizeUi('position'),
         })),
       ),
     )
@@ -305,7 +322,7 @@ const resourceItems = computed<ResourceItem[]>(() => {
       return [...directEmployees, ...teamEmployees, ...hierarchyEmployees].map(
         (employee, index) => ({
           key: `employee-${employee.organization_employee_id || employee.employeeId || index}`,
-          title: employee.name || 'Employee',
+          title: employee.name || localizeUi('Employee'),
           subtitle:
             employee.hierarchyposition
               ?.map((position) => position.title)
@@ -315,11 +332,11 @@ const resourceItems = computed<ResourceItem[]>(() => {
               ?.map((position) => position.title)
               .filter(Boolean)
               .join(', ') ||
-            'Project employee',
-          location: location.title || 'Project location',
+            localizeUi('Project employee'),
+          location: location.title || localizeUi('project_equipment_location'),
           detail: employee.email || '',
           image: employee.image,
-          badge: employee.is_leader ? 'Team leader' : 'Employee',
+          badge: employee.is_leader ? localizeUi('Team Leader') : localizeUi('Employee'),
           employeeId: Number(employee.organization_employee_id || employee.employeeId),
         }),
       )
@@ -450,16 +467,17 @@ watch(resource, () => {
           :to="`/organization/project-summary/${projectId}`"
           class="hse-project-button back-link"
         >
-          <span aria-hidden="true">←</span> Project summary
+          <span class="locale-directional-icon" aria-hidden="true">←</span>
+          {{ $t('Project Summary') }}
         </RouterLink>
         <!-- <span class="resource-eyebrow">{{ projectLabel }}</span> -->
-        <h1>{{ definition.title }}</h1>
-        <p>{{ definition.description }}</p>
+        <h1>{{ $t(definition.title) }}</h1>
+        <p>{{ $t(definition.description) }}</p>
       </div>
       <div class="resource-hero__actions">
         <div class="resource-total">
           <strong>{{ resourceTotal }}</strong>
-          <span>{{ resource }}</span>
+          <span>{{ $t(resource) }}</span>
         </div>
 
         <AddDrillDialog
@@ -501,19 +519,19 @@ watch(resource, () => {
     >
       <header>
         <div>
-          <span>Choose assignment scope</span>
+          <span>{{ $t('Choose assignment scope') }}</span>
           <h2>{{ addActionLabel }}</h2>
-          <p>Select the location or zone where the new assignment belongs.</p>
+          <p>{{ $t('Select the location or zone where the new assignment belongs.') }}</p>
         </div>
-        <button type="button" aria-label="Close add options" @click="showAddOptions = false">
+        <button type="button" :aria-label="$t('Close add options')" @click="showAddOptions = false">
           ×
         </button>
       </header>
 
       <div v-if="resource === 'equipment' && zones.length" class="resource-add-panel__single">
         <div>
-          <strong>Project equipment</strong>
-          <small>{{ zones.length }} zones available</small>
+          <strong>{{ $t('Project equipment') }}</strong>
+          <small>{{ zones.length }} {{ $t('zones available') }}</small>
         </div>
         <AddEquipmentDialog :project_zoons="zones" />
       </div>
@@ -522,8 +540,8 @@ watch(resource, () => {
         <article v-for="location in locations" :key="location.projectLocationId || location.id">
           <span class="resource-add-scopes__icon">{{ location.title?.charAt(0) || 'L' }}</span>
           <div>
-            <strong>{{ location.title || 'Project location' }}</strong>
-            <small>{{ location.locationZones?.length ?? 0 }} zones</small>
+            <strong>{{ location.title || $t('project_equipment_location') }}</strong>
+            <small>{{ location.locationZones?.length ?? 0 }} {{ $t('zones') }}</small>
           </div>
 
           <RouterLink
@@ -531,14 +549,14 @@ watch(resource, () => {
             :to="`/organization/project-employee/project/${projectId}?locationId=${locationId(location)}&return_to=summary`"
             class="scope-action"
           >
-            Add employee <span aria-hidden="true">→</span>
+            {{ $t('Add employee') }} <span aria-hidden="true">→</span>
           </RouterLink>
           <RouterLink
             v-else-if="resource === 'hierarchies'"
             :to="`/organization/project-hierarchy/project/${projectId}?locationId=${locationId(location)}&return_to=summary`"
             class="scope-action"
           >
-            Add position <span aria-hidden="true">→</span>
+            {{ $t('Add position') }} <span aria-hidden="true">→</span>
           </RouterLink>
           <ProjectLocationZoonDialog
             v-else-if="resource === 'zones'"
@@ -556,23 +574,23 @@ watch(resource, () => {
       </div>
 
       <div v-else class="resource-add-panel__empty">
-        <p>Add a project location before assigning {{ resource }}.</p>
+        <p>{{ $t('Add a project location before assigning') }} {{ resource }}.</p>
         <RouterLink :to="`/organization/project/flow/${projectId}/1?edit=1&return_to=summary`">
-          Add project location
+          {{ $t('Add project location') }}
         </RouterLink>
       </div>
     </section>
 
-    <section v-if="isLoading" class="resource-grid" aria-label="Loading project data">
+    <section v-if="isLoading" class="resource-grid" :aria-label="$t('Loading project data')">
       <span v-for="index in 6" :key="index" class="resource-skeleton"></span>
     </section>
 
     <DataFailed
       v-else-if="errorMessage"
-      :title="`Unable to load ${resource}`"
+      :title="$t('uiDynamic.resourceLoadFailed', { p0: resource })"
       :description="errorMessage"
       :link="`/organization/project-summary/${projectId}`"
-      add-text="Back to project summary"
+      :add-text="$t('auditUi.back_to_project_summary')"
     />
 
     <section v-else-if="resourceItems.length" class="resource-grid" :data-resource="resource">
@@ -633,9 +651,13 @@ watch(resource, () => {
 
     <section v-else class="resource-empty">
       <span aria-hidden="true">0</span>
-      <h2>No {{ resource }} found</h2>
-      <p>This project does not currently have matching {{ resource }} assignments.</p>
-      <RouterLink :to="`/organization/project-details/${projectId}`">Open full details</RouterLink>
+      <h2>{{ $t('No {resource} found', { resource: $t(resource) }) }}</h2>
+      <p>
+        {{ $t('This project has no matching {resource} assignments.', { resource: $t(resource) }) }}
+      </p>
+      <RouterLink :to="`/organization/project-details/${projectId}`">{{
+        $t('Open full details')
+      }}</RouterLink>
     </section>
 
     <Pagination

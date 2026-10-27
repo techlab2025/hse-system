@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
@@ -30,7 +31,7 @@ export default class AddRoleController extends ControllerInterface<RoleModel> {
     // useLoaderStore().setLoadingWithDialog();
     try {
       if (params.role.length < 1) {
-        new OpenWarningDilaog('You Should Add Role ').openDialog()
+        new OpenWarningDilaog(localizeUi('You Should Add Role')).openDialog()
         return false
       }
       // if (params.roleName.length < 1) {
@@ -42,7 +43,7 @@ export default class AddRoleController extends ControllerInterface<RoleModel> {
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })
@@ -50,9 +51,8 @@ export default class AddRoleController extends ControllerInterface<RoleModel> {
         const { user } = useUserStore()
         if (
           !router.currentRoute.value.fullPath.includes('organization-employee') &&
-          !router.currentRoute.value.fullPath.includes('project-progress')&&
+          !router.currentRoute.value.fullPath.includes('project-progress') &&
           !router.currentRoute.value.fullPath.includes('project-employee')
-
         ) {
           if (user?.type === OrganizationTypeEnum.ADMIN) {
             router.push('/admin/role')

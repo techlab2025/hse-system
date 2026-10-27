@@ -1,3 +1,4 @@
+import { getCurrentLocale } from '@/localization/i18n'
 import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
@@ -39,11 +40,11 @@ export default class AuditStandardDetailsModel {
             id: industry.id,
             title:
               industry.title ??
-              industry.titles?.find(
-                (title: TitleLocale) => title.locale === localStorage.getItem('lang'),
-              )?.title ??
+              industry.titles?.find((title: TitleLocale) => title.locale === getCurrentLocale())
+                ?.title ??
               industry.titles?.[0]?.title ??
               '',
+            localizedTitles: industry.titles,
           }),
       ),
     )

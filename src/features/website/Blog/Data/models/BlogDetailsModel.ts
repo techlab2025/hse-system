@@ -1,4 +1,9 @@
-import TranslationsParams, { type DescriptionLocale, type TitleLocale, type SubtitlesLocale } from '@/base/core/params/translations_params.ts'
+import { getCurrentLocale } from '@/localization/i18n'
+import TranslationsParams, {
+  type DescriptionLocale,
+  type TitleLocale,
+  type SubtitlesLocale,
+} from '@/base/core/params/translations_params.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import HashtagDetailsModel from '@/features/website/Hashtag/Data/models/HashtagDetailsModel'
 import CategoryDetailsModel from '@/features/website/Category/Data/models/CategoryDetailsModel'
@@ -21,8 +26,7 @@ export default class BlogDetailsModel {
     image: string,
     alt: string,
     hashtags?: HashtagDetailsModel[],
-    categories?: CategoryDetailsModel[]
-
+    categories?: CategoryDetailsModel[],
   ) {
     this.id = id
     this.titles = titles
@@ -38,7 +42,7 @@ export default class BlogDetailsModel {
     const translations = TranslationsParams.fromMap(
       data.titles || [],
       data.descriptions || [],
-      data.subtitles || []
+      data.subtitles || [],
     )
 
     return new BlogDetailsModel(
@@ -48,16 +52,17 @@ export default class BlogDetailsModel {
       translations.subtitles,
       data.image,
       data.alt,
-      data.hashtags?.map((hashtag: any) =>this.getTitle(hashtag)) || [],
-      data.categories?.map((category: any) =>this.getTitle(category)) || []
+      data.hashtags?.map((hashtag: any) => this.getTitle(hashtag)) || [],
+      data.categories?.map((category: any) => this.getTitle(category)) || [],
     )
   }
 
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data.titles,
     })
   }
 }

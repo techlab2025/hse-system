@@ -1,3 +1,5 @@
+import { getCurrentLocale } from '@/localization/i18n'
+import { localizedRecord } from '@/localization/records'
 // import type TitleModel from "@/base/core/Models/title_model";
 import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
@@ -60,35 +62,39 @@ export default class TemplateDetailsModel {
   }
 
   static fromMap(data: any): TemplateDetailsModel {
-    return new TemplateDetailsModel(
-      data.id,
-      data.name,
-      TranslationsParams.fromMap(data.titles).titles,
-      // data.has_certificate,
-      data.all_industries,
-      data.industries?.length > 0
-        ? data.industries?.map((industry) => this.getTitle(industry))
-        : [],
-      data.parent_id,
-      data.image,
-      data.template_items?.length > 0
-        ? data.template_items.map((item) => TemplateItemDetailsModel.fromMap(item))
-        : [],
-      data.require_image,
-      this.getTemplateItemsAction(data.action),
-      data.title,
-      data.type,
-      data.tag,
-      data.template_item_tags?.map((el: any) => TemplateItemTagModel.fromMap(el)),
+    return localizedRecord(
+      new TemplateDetailsModel(
+        data.id,
+        data.name,
+        TranslationsParams.fromMap(data.titles).titles,
+        // data.has_certificate,
+        data.all_industries,
+        data.industries?.length > 0
+          ? data.industries?.map((industry) => this.getTitle(industry))
+          : [],
+        data.parent_id,
+        data.image,
+        data.template_items?.length > 0
+          ? data.template_items.map((item) => TemplateItemDetailsModel.fromMap(item))
+          : [],
+        data.require_image,
+        this.getTemplateItemsAction(data.action),
+        data.title,
+        data.type,
+        data.tag,
+        data.template_item_tags?.map((el: any) => TemplateItemTagModel.fromMap(el)),
+      ),
+      data,
     )
   }
 
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data.titles,
     })
   }
 
@@ -98,12 +104,14 @@ export default class TemplateDetailsModel {
         return new TitleInterface({
           id: ActionsEnum.CheckBox,
           title: 'Checkbox',
+          translationKey: 'Checkbox',
           subtitle: '',
         })
       default:
         return new TitleInterface({
           id: ActionsEnum.CheckBox,
           title: 'Unknown',
+          translationKey: 'Unknown',
           subtitle: '',
         })
     }

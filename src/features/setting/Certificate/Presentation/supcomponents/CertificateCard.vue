@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image';
-import type CertificateModel from '../../Data/models/CertificateModel';
+import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
+import type CertificateModel from '../../Data/models/CertificateModel'
 
 const props = defineProps<{
   cerificate: CertificateModel
@@ -12,10 +12,12 @@ const props = defineProps<{
       <div class="certificate-header">
         <div class="certificate-title">
           <p class="title">{{ cerificate.title }}</p>
-          <span class="status">status</span>
+          <span class="status">{{ $t('status') }}</span>
         </div>
         <!-- v-if="cerificate.createdAt" -->
-        <p class="created-at">{{ $t('created_at') }} <span>as{{ cerificate?.createdAt }}</span></p>
+        <p class="created-at">
+          {{ $t('created_at') }} <span>{{ cerificate?.createdAt }}</span>
+        </p>
       </div>
       <div class="certificate-data">
         <div class="issue-date">
@@ -27,10 +29,14 @@ const props = defineProps<{
           <span>10-2-2001</span>
         </div>
       </div>
-
     </div>
     <div class="certificate-image">
-      <img :src="cerificate.image || `/assets/images/logo.svg`" alt="training-image" @error="setDefaultImage">
+      <img
+        :src="cerificate.image || `/assets/images/logo.svg`"
+        alt=""
+        aria-hidden="true"
+        @error="setDefaultImage"
+      />
     </div>
   </div>
 </template>

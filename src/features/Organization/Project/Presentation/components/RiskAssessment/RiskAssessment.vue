@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import PermissionHandler from '@/base/Presentation/utils/permission_handler'
@@ -67,7 +69,7 @@ async function fetchAll() {
       items.value = state.value.data ?? []
     else error.value = state.value.error?.title ?? 'Could not load risk assessments'
   } catch {
-    error.value = 'Could not load risk assessments'
+    error.value = localizeUi('Could not load risk assessments')
   } finally {
     loading.value = false
   }
@@ -87,7 +89,7 @@ async function fetchDetails(id: number) {
       selected.value = state.value.data ?? null
     else detailsError.value = state.value.error?.title ?? 'Could not load risk assessment details'
   } catch {
-    detailsError.value = 'Could not load risk assessment details'
+    detailsError.value = localizeUi('Could not load risk assessment details')
   } finally {
     detailsLoading.value = false
   }
@@ -124,8 +126,8 @@ onMounted(fetchAll)
           </span>
           <div>
             <!-- <span class="eyebrow">Project safety</span> -->
-            <h1>Risk assessments</h1>
-            <p>Review work activities, control evidence, and approvals in one place.</p>
+            <h1>{{ $t('Risk assessments') }}</h1>
+            <p>{{ $t('Review work activities, control evidence, and approvals in one place.') }}</p>
           </div>
         </div>
       </div>
@@ -135,15 +137,16 @@ onMounted(fetchAll)
         :to="`/organization/project-details/${projectId}/risk-assessments/create`"
       >
         <span class="primary-button__icon" aria-hidden="true">＋</span>
-        <span>New assessment</span>
+        <span>{{ $t('New assessment') }}</span>
       </RouterLink>
     </header>
 
-    <section class="risk-summary" aria-label="Risk assessment overview">
+    <section class="risk-summary" :aria-label="$t('Risk assessment overview')">
       <article class="summary-card">
         <span class="summary-card__icon" aria-hidden="true">◎</span>
         <div>
-          <small>Total assessments</small><strong>{{ items.length }}</strong>
+          <small>{{ $t('Total assessments') }}</small
+          ><strong>{{ items.length }}</strong>
         </div>
         <!-- <span class="summary-card__trend">Register</span> -->
       </article>
@@ -157,7 +160,7 @@ onMounted(fetchAll)
       <article class="summary-card">
         <span class="summary-card__icon" aria-hidden="true">◷</span>
         <div>
-          <small>Latest assessment</small
+          <small>{{ $t('Latest assessment') }}</small
           ><strong class="summary-card__date">{{ latestAssessmentDate }}</strong>
         </div>
         <!-- <span class="summary-card__trend">Updated</span> -->
@@ -171,9 +174,9 @@ onMounted(fetchAll)
           <div>
             <!-- <span class="eyebrow">Assessment register</span> -->
             <h2>
-              Assessments <span class="count">{{ items.length }}</span>
+              {{ $t('Assessments') }} <span class="count">{{ items.length }}</span>
             </h2>
-            <p>Open any record to review its approval and supporting evidence.</p>
+            <p>{{ $t('Open any record to review its approval and supporting evidence.') }}</p>
           </div>
         </div>
         <!-- <button class="refresh-button" type="button" :disabled="loading" @click="fetchAll">
@@ -183,18 +186,23 @@ onMounted(fetchAll)
       <p v-if="error" class="message error" role="alert"><span>!</span>{{ error }}</p>
       <div v-if="loading" class="loading-state" role="status">
         <span class="loading-state__pulse"></span>
-        <div><strong>Loading assessments</strong><small>Preparing the safety register…</small></div>
+        <div>
+          <strong>{{ $t('Loading assessments') }}</strong
+          ><small>{{ $t('Preparing the safety register…') }}</small>
+        </div>
       </div>
       <div v-else-if="items.length" class="table-scroll">
         <table class="hse-project-table">
           <thead>
             <tr>
-              <th>Activity</th>
-              <th>Work area</th>
-              <th>Date</th>
-              <th>Created By</th>
+              <th>{{ $t('Activity') }}</th>
+              <th>{{ $t('Work area') }}</th>
+              <th>{{ $t('Date') }}</th>
+              <th>{{ $t('Created by') }}</th>
               <!-- <th>Attachments</th> -->
-              <th><span class="sr-only">Actions</span></th>
+              <th>
+                <span class="sr-only">{{ $t('Actions') }}</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -203,11 +211,9 @@ onMounted(fetchAll)
                 <span class="activity-cell">
                   <span class="activity-avatar">{{ activityInitial(item.activity) }}</span>
                   <span
-                    ><strong>{{ item.activity || 'Untitled activity' }}</strong
-                    >
+                    ><strong>{{ item.activity || $t('Untitled activity') }}</strong>
                     <!-- <small>Risk assessment</small> -->
-                    </span
-                  >
+                  </span>
                 </span>
               </td>
               <td>
@@ -231,7 +237,7 @@ onMounted(fetchAll)
                   type="button"
                   @click="fetchDetails(item.id)"
                 >
-                  View <span aria-hidden="true">→</span>
+                  {{ $t('View') }} <span aria-hidden="true">→</span>
                 </button>
               </td>
             </tr>
@@ -245,15 +251,17 @@ onMounted(fetchAll)
             <path d="M12 8v5M12 16.5v.1" />
           </svg>
         </span>
-        <span class="eyebrow">Your register is ready</span>
-        <h3>No assessments yet</h3>
-        <p>Create the first assessment to start documenting project risks and approvals.</p>
+        <span class="eyebrow">{{ $t('Your register is ready') }}</span>
+        <h3>{{ $t('No assessments yet') }}</h3>
+        <p>
+          {{ $t('Create the first assessment to start documenting project risks and approvals.') }}
+        </p>
         <RouterLink
           v-if="canCreate"
           class="hse-project-button hse-project-button--primary empty-action"
           :to="`/organization/project-details/${projectId}/risk-assessments/create`"
         >
-          Create first assessment <span aria-hidden="true">→</span>
+          {{ $t('Create first assessment') }} <span aria-hidden="true">→</span>
         </RouterLink>
       </div>
     </section>
@@ -378,7 +386,7 @@ th {
 table {
   width: 100%;
   border-collapse: collapse;
-  text-align: left;
+  text-align: start;
 }
 th {
   background: var(--hse-project-surface);

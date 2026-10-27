@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
@@ -36,12 +37,14 @@ export default class AddInductionController extends ControllerInterface<Inductio
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })
 
-        const root = router.currentRoute.value.path.startsWith('/admin') ? '/admin' : '/organization'
+        const root = router.currentRoute.value.path.startsWith('/admin')
+          ? '/admin'
+          : '/organization'
         const routeProjectId = router.currentRoute.value.query.project_id
         const projectId = Array.isArray(routeProjectId) ? routeProjectId[0] : routeProjectId
         const inductionRoute = projectId

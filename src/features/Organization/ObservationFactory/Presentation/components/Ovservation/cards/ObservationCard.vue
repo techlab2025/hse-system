@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { translateMessage } from '@/localization/messages'
 import type { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 
@@ -29,14 +30,14 @@ const cardTone = item.title.toLowerCase().replace(/\s+/g, '-')
   <div class="card observation-hub-card" :class="`observation-hub-card--${cardTone}`">
     <div class="card-visual">
       <div class="image">
-        <img :src="item.image" :alt="item.title" loading="lazy" />
+        <img :src="item.image" :alt="translateMessage(item.title)" loading="lazy" />
       </div>
       <!-- <span class="card-kicker">{{ $t('workspace') }}</span> -->
     </div>
 
     <div class="card-body">
       <div class="card-content">
-        <h4 class="card-header-title">{{ item.title }}</h4>
+        <h4 class="card-header-title">{{ translateMessage(item.title) }}</h4>
         <!-- <p class="description">{{ item.description }}</p> -->
       </div>
 
@@ -47,7 +48,10 @@ const cardTone = item.title.toLowerCase().replace(/\s+/g, '-')
           </RouterLink>
         </permission-builder>
 
-        <permission-builder v-if="item.indexPermissions && item.indexRoute" :code="item.indexPermissions">
+        <permission-builder
+          v-if="item.indexPermissions && item.indexRoute"
+          :code="item.indexPermissions"
+        >
           <RouterLink :to="item.indexRoute" class="card-action">
             {{ $t('show') }}
           </RouterLink>

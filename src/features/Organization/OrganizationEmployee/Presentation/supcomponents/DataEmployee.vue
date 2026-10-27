@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import Handemployee from '@/shared/icons/handemployee.vue';
-
+import Handemployee from '@/shared/icons/handemployee.vue'
 </script>
 
 <template>
   <button class="system-data-add col-span-3">
     <Handemployee class="icon" />
     <div class="system-data-content">
-      <h2>Add Employee to the Position</h2>
-      <p>Assign the employee to the UI team and define their role in the organizational structure.</p>
+      <h2>{{ $t('Add Employee to the Position') }}</h2>
+      <p>
+        {{
+          $t(
+            'Assign the employee to the UI team and define their role in the organizational structure.',
+          )
+        }}
+      </p>
     </div>
   </button>
 </template>
@@ -24,7 +29,7 @@ import Handemployee from '@/shared/icons/handemployee.vue';
   padding: 16px;
   margin: 12px 0;
   border-radius: 12px;
-  font-size: "Regular";
+  font-size: 'Regular';
 
   .icon {
     width: 34px;
@@ -48,8 +53,7 @@ import Handemployee from '@/shared/icons/handemployee.vue';
       color: var(--text-strong);
       font-weight: 700;
       font-size: 14px;
-      font-family: "Regular";
-
+      font-family: 'Regular';
     }
 
     p {
@@ -59,9 +63,7 @@ import Handemployee from '@/shared/icons/handemployee.vue';
       color: var(--brand-primary-700);
       font-size: 500;
       font-size: 12px;
-
     }
   }
-
 }
 </style>

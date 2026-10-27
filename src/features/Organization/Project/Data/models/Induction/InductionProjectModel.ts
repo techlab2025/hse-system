@@ -1,3 +1,5 @@
+import { getCurrentLocale } from '@/localization/i18n'
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 type LocaleTitle = { locale?: string; title?: string }
@@ -17,7 +19,13 @@ export default class InductionProjectModel extends TitleInterface {
   public serialNumber: string
   public serialName: string
 
-  constructor(id: number, projectId: number, title: string, serialNumber: string, serialName: string) {
+  constructor(
+    id: number,
+    projectId: number,
+    title: string,
+    serialNumber: string,
+    serialName: string,
+  ) {
     super({ id, title, subtitle: serialName || serialNumber })
     this.id = id
     this.projectId = projectId
@@ -28,18 +36,21 @@ export default class InductionProjectModel extends TitleInterface {
 
   static fromMap(data: Record<string, unknown>): InductionProjectModel {
     const project = data as InductionProjectResponse
-    const locale = (typeof localStorage !== 'undefined' && localStorage.getItem('lang')) || 'en'
+    const locale = (typeof localStorage !== 'undefined' && getCurrentLocale()) || 'en'
 
-    return new InductionProjectModel(
-      Number(project.project_id ?? project.id ?? 0),
-      Number(project.project_id ?? project.id ?? 0),
-      project.title ??
-        project.titles?.find((item) => item.locale === locale)?.title ??
-        project.titles?.[0]?.title ??
-        project.serial_name ??
-        '',
-      project.serial_number ?? '',
-      project.serial_name ?? '',
+    return localizedRecord(
+      new InductionProjectModel(
+        Number(project.project_id ?? project.id ?? 0),
+        Number(project.project_id ?? project.id ?? 0),
+        project.title ??
+          project.titles?.find((item) => item.locale === locale)?.title ??
+          project.titles?.[0]?.title ??
+          project.serial_name ??
+          '',
+        project.serial_number ?? '',
+        project.serial_name ?? '',
+      ),
+      data,
     )
   }
 }

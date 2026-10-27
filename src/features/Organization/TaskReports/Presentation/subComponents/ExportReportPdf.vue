@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { translateMessage } from '@/localization/messages'
 import { usePdfExport } from '@/composables/usePdfExport'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
@@ -110,7 +111,7 @@ const exportPDF = () =>
       <PdefActionIcon v-if="isDropList" />
 
       <span>
-        {{ isExporting ? 'Exporting...' : buttonLabel }}
+        {{ isExporting ? $t('Exporting…') : translateMessage(buttonLabel) }}
       </span>
     </button>
 

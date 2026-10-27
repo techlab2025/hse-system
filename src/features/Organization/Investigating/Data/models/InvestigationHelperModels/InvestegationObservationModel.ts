@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import acc from '@/assets/images/acc.png'
 
 export default class InvestegationObservationModel {
@@ -28,14 +29,17 @@ export default class InvestegationObservationModel {
   }
 
   static fromMap(data: any): InvestegationObservationModel {
-    return new InvestegationObservationModel(
-      data.id,
-      data.description,
-      data.image,
-      data.is_action,
-      data.title,
-      data.type,
-      data.type_id,
+    return localizedRecord(
+      new InvestegationObservationModel(
+        data.id,
+        data.description,
+        data.image,
+        data.is_action,
+        data.title,
+        data.type,
+        data.type_id,
+      ),
+      data,
     )
   }
 

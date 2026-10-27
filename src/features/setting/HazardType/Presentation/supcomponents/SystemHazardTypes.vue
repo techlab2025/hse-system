@@ -95,8 +95,8 @@ const SubmitData = async () => {
     <template #header>
       <HeaderSection
         :img="DialogSystem"
-        title="add system types"
-        subtitle="select the types you need and add it to your types"
+        :title="$t('add system types')"
+        :subtitle="$t('auditUi.select_the_types_you_need_and_add_them_to_your_types')"
       />
     </template>
     <DataStatus :controller="state">
@@ -121,7 +121,11 @@ const SubmitData = async () => {
             </div>
           </div>
         </div>
-        <button v-if="state.data?.length" class="btn btn-primary w-full mt-5 confirm-btn" @click="SubmitData">
+        <button
+          v-if="state.data?.length"
+          class="btn btn-primary w-full mt-5 confirm-btn"
+          @click="SubmitData"
+        >
           {{ $t('confirm') }}
         </button>
       </template>

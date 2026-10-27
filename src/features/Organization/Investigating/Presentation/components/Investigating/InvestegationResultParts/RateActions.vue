@@ -20,7 +20,7 @@ const UpdateData = () => {
 <template>
   <div class="rate-of-actions">
     <HeaderPage
-      :title="`Immediate Action Effectiveness`"
+      :title="$t('Immediate Action Effectiveness')"
       :subtitle="``"
       :img="checkActions"
       class="title-header"
@@ -51,7 +51,11 @@ const UpdateData = () => {
             <span class="action-choice-heading">
               <span class="action-choice-title">{{ $t('Not Effective') }}</span>
               <FieldHelpIcon
-                text="Choose this when the immediate action did not adequately control or remove the risk."
+                :text="
+                  $t(
+                    'Choose this when the immediate action did not adequately control or remove the risk.',
+                  )
+                "
               />
             </span>
             <span class="action-choice-description">
@@ -84,7 +88,11 @@ const UpdateData = () => {
             <span class="action-choice-heading">
               <span class="action-choice-title">{{ $t('Effective') }}</span>
               <FieldHelpIcon
-                text="Choose this when the immediate action successfully controlled the risk or made the situation safe."
+                :text="
+                  $t(
+                    'Choose this when the immediate action successfully controlled the risk or made the situation safe.',
+                  )
+                "
               />
             </span>
             <span class="action-choice-description">
@@ -103,10 +111,15 @@ const UpdateData = () => {
         <div class="action-notes-header">
           <label for="notes">{{ $t('notes') }}</label>
           <FieldHelpIcon
-            text="Explain why the immediate action was effective or ineffective and note any remaining concerns."
+            :text="
+              $t(
+                'Explain why the immediate action was effective or ineffective and note any remaining concerns.',
+              )
+            "
           />
         </div>
         <textarea
+          dir="auto"
           id="notes"
           class="input"
           :placeholder="$t('add your notes on the taken action')"

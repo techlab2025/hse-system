@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
@@ -33,12 +34,12 @@ export default class AddPpeItemController extends ControllerInterface<PpeItemMod
     try {
       if (params instanceof AddPpeItemExcelParams) {
         if (!params.data.length) {
-          new OpenWarningDilaog('At least one row is required').openDialog()
+          new OpenWarningDilaog(localizeUi('At least one row is required')).openDialog()
           return
         }
         for (const el of params.data) {
           if (!el.title) {
-            new OpenWarningDilaog('Title is required').openDialog()
+            new OpenWarningDilaog(localizeUi('Title Is Required')).openDialog()
             return
           }
         }
@@ -49,19 +50,20 @@ export default class AddPpeItemController extends ControllerInterface<PpeItemMod
           return
         }
       }
-      const dataState: DataState<PpeItemModel> =
-        await this.AddPpeItemUseCase.call(params)
+      const dataState: DataState<PpeItemModel> = await this.AddPpeItemUseCase.call(params)
       this.setLoading()
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })
         if (router.currentRoute.value.path.includes('ppe-item')) {
-          const root = router.currentRoute.value.path.startsWith('/admin') ? '/admin' : '/organization'
+          const root = router.currentRoute.value.path.startsWith('/admin')
+            ? '/admin'
+            : '/organization'
           if (!draft) await router.push(`${root}/ppe-items`)
         }
 

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
@@ -126,14 +128,14 @@ const updateData = () => {
         selectedCatalog.value?.id || route.params.parent_id,
       )
     : new AddCatalogItemsDetailsParams(
-      {
-        translation: translationsParams,
-        allIndustries: AllIndustry,
-        industries: industry.value?.map((item) => item.id) ?? [],
-        order: 0,
-        guidgate_category_id: selectedCatalog.value?.id || route.params.parent_id
-      }
-         
+        {
+          translation: translationsParams,
+          allIndustries: AllIndustry,
+          industries: industry.value?.map((item) => item.id) ?? [],
+          order: 0,
+          guidgate_category_id: selectedCatalog.value?.id || route.params.parent_id,
+        },
+
         // SerialNumber.value?.SerialNumber,
         // id,
       )
@@ -156,7 +158,6 @@ const setLangs = (data: { locale: string; description: string }[]) => {
   updateData()
 }
 
-
 // init Teamss either from backend (edit mode) or from defaults (create mode)
 watch(
   [() => props.data, () => langDefault.value],
@@ -165,9 +166,7 @@ watch(
 
     if (newData?.descriptions?.length) {
       langs.value = newDefault.map((l) => {
-        const existing = newData.descriptions.find(
-          (t) => t.locale === l.locale,
-        )
+        const existing = newData.descriptions.find((t) => t.locale === l.locale)
 
         return {
           locale: l.locale,
@@ -206,43 +205,51 @@ const SerialNumber = ref()
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
 ])
 const indexCatalogController = IndexCatalogController.getInstance()
-  const indexCatalogParams = new IndexCatalogParams("" , 1 , 10 , 0, null, ParentTypeEnum.child , true)
+const indexCatalogParams = new IndexCatalogParams('', 1, 10, 0, null, ParentTypeEnum.child, true)
 
-  const selectedCatalog = ref<TitleInterface>()
-  const setCatalog = (data: TitleInterface) => { 
-    selectedCatalog.value = data
-    updateData()
-  }
-  const route = useRoute()
+const selectedCatalog = ref<TitleInterface>()
+const setCatalog = (data: TitleInterface) => {
+  selectedCatalog.value = data
+  updateData()
+}
+const route = useRoute()
 </script>
 
 <template>
-
-       <div
+  <div
     class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN && !route.params.parent_id && !data?.id"
+    v-if="
+      !allIndustries &&
+      user.user?.type == OrganizationTypeEnum.ADMIN &&
+      !route.params.parent_id &&
+      !data?.id
+    "
   >
     <CustomSelectInput
       :modelValue="selectedCatalog"
-      :controller="indexCatalogController" 
+      :controller="indexCatalogController"
       :params="indexCatalogParams"
       :label="$t('Catalog')"
-      id="catalog"  
+      id="catalog"
       :placeholder="$t('Select catalog')"
       @update:modelValue="setCatalog"
     />
-  </div> 
-  <div class="col-span-4 md:col-span-4">
-    <LangTitleInput  type="textarea" :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
-
-
-
+  <div class="col-span-4 md:col-span-4">
+    <LangTitleInput
+      type="textarea"
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="setLangs"
+    />
+  </div>
 </template>

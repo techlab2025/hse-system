@@ -87,7 +87,6 @@
             color: $PrimaryColor;
             font-size: $SmSize;
             font-weight: $BaseFontSemiBoldWeight;
-           
           }
           .arrow {
             color: var(--text-soft);
@@ -227,7 +226,7 @@
         @include flex-column(nowrap, flex-start, flex-start);
         gap: 4px;
         .project-name {
-          padding-left: 6px;
+          padding-inline-start: 6px;
           color: var(--brand-accent-500);
           font-size: $SmSize;
           font-weight: $BaseFontSemiBoldWeight;

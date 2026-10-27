@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Image from 'primevue/image'
@@ -58,19 +60,41 @@ const actions = computed(() => [
 const specs = computed(() => {
   const d = props.equipmentData
   return [
-    { label: 'serial name', value: d.serial_name, icon: 'equipment' as const },
     {
-      label: 'License number',
+      get label() {
+        return localizeUi('serial name')
+      },
+      value: d.serial_name,
+      icon: 'equipment' as const,
+    },
+    {
+      get label() {
+        return localizeUi('License number')
+      },
       value: d.licensePlateNumber || d.licenseNumber,
       icon: 'equipment' as const,
     },
-    { label: 'Vehicle Kilometer', value: d.kilometer, icon: 'gauge' as const },
     {
-      label: 'ivms',
+      get label() {
+        return localizeUi('Vehicle Kilometer')
+      },
+      value: d.kilometer,
+      icon: 'gauge' as const,
+    },
+    {
+      get label() {
+        return localizeUi('IVMS')
+      },
       value: d.ivms == null ? null : t(d.ivms ? 'yes' : 'no'),
       icon: 'pulse' as const,
     },
-    { label: 'Mainfactury Year', value: d.mainfacturyDate, icon: 'clock' as const },
+    {
+      get label() {
+        return localizeUi('Mainfactury Year')
+      },
+      value: d.mainfacturyDate,
+      icon: 'clock' as const,
+    },
     {
       label:
         Number(d.equipmentOfHavyStatus) === EquipmentOfHavyStatus.light
@@ -80,19 +104,29 @@ const specs = computed(() => {
       icon: 'clock' as const,
     },
     {
-      label: 'Equipment Used Status',
+      get label() {
+        return localizeUi('Equipment Used Status')
+      },
       value: d.equipmentUsedStatus == null ? null : t(EquipmentUsed[d.equipmentUsedStatus] || '—'),
       icon: 'gauge' as const,
     },
     {
-      label: 'Equipment Condition',
+      get label() {
+        return localizeUi('Equipment Condition')
+      },
       value:
         d.equipmentUsedStatus === EquipmentUsed.used && d.equipmentCondition != null
           ? t(EquipmentCondition[d.equipmentCondition] || '—')
           : null,
       icon: 'gauge' as const,
     },
-    { label: 'inspection date', value: d.lastInspectoinDate, icon: 'clock' as const },
+    {
+      get label() {
+        return localizeUi('inspection date')
+      },
+      value: d.lastInspectoinDate,
+      icon: 'clock' as const,
+    },
   ].filter((s) => s.value !== null && s.value !== undefined && s.value !== '')
 })
 function imageFallback(event: Event) {

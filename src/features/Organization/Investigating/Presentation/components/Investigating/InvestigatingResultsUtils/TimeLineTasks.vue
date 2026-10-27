@@ -131,17 +131,20 @@ onMounted(async () => {
                 :data-required-field="fieldKey(index, 'text') || undefined"
               >
                 <div class="flex items-center gap-2">
-                  <label :for="fieldId(index, 'text')">Action</label
+                  <label :for="fieldId(index, 'text')">{{ $t('Action') }}</label
                   ><FieldHelpIcon
-                    text="Describe the specific corrective or preventive action to be completed."
+                    :text="
+                      $t('Describe the specific corrective or preventive action to be completed.')
+                    "
                   />
                 </div>
                 <input
+                  dir="auto"
                   type="text"
                   :id="fieldId(index, 'text')"
                   v-model="item.text"
                   class="input"
-                  placeholder="add your title"
+                  :placeholder="$t('add your title')"
                   :aria-invalid="Boolean(fieldError(index, 'text'))"
                   @input="UpdateData"
                 />
@@ -158,10 +161,10 @@ onMounted(async () => {
                   <CustomSelectInput
                     :staticOptions="employeeOptions"
                     v-model="item.employee"
-                    placeholder="Select Employee"
+                    :placeholder="$t('Select Employee')"
                     class="mt-4 mr-2 input"
-                    label="Implementation Responsibility "
-                    help-text="Select the person responsible for carrying out this action."
+                    :label="$t('Implementation Responsibility')"
+                    :help-text="$t('Select the person responsible for carrying out this action.')"
                     :reload="false"
                     @update:model-value="UpdateData"
                   />
@@ -186,17 +189,18 @@ onMounted(async () => {
                     />
                   </div>
                   <div v-if="!item.isGoing" class="flex items-center gap-2">
-                    <label :for="fieldId(index, 'date')"
-                      >Expected Time for Implementation</label
+                    <label :for="fieldId(index, 'date')">{{
+                      $t('Expected Time for Implementation')
+                    }}</label
                     ><FieldHelpIcon
-                      text="Select the target date by which this action should be completed."
+                      :text="$t('Select the target date by which this action should be completed.')"
                     />
                   </div>
                   <DatePicker
                     v-if="!item.isGoing"
                     v-model="item.date"
                     class="mt-4 mr-2 input date-picker"
-                    placeholder="Select Date"
+                    :placeholder="$t('Select Date')"
                     @update:model-value="UpdateData"
                     :input-id="fieldId(index, 'date')"
                   />
@@ -212,10 +216,14 @@ onMounted(async () => {
                   <CustomSelectInput
                     :staticOptions="employeeOptions"
                     v-model="item.ResponablePerson"
-                    placeholder="Select Responable Person"
+                    :placeholder="$t('Select Responable Person')"
                     class="mt-4 mr-2 input"
-                    label="Monitoring Responsibility "
-                    help-text="Select the person responsible for verifying progress and confirming completion."
+                    :label="$t('Monitoring Responsibility')"
+                    :help-text="
+                      $t(
+                        'Select the person responsible for verifying progress and confirming completion.',
+                      )
+                    "
                     :reload="false"
                     @update:model-value="UpdateData"
                   />
@@ -313,7 +321,7 @@ onMounted(async () => {
 
 @media (max-width: 768px) {
   .timeline-wrapper {
-    padding-left: 0;
+    padding-inline-start: 0;
     padding-inline-start: 0;
   }
 

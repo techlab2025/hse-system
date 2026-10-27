@@ -1,3 +1,4 @@
+import { getCurrentLocale } from '@/localization/i18n'
 import WhereHouseTypeDetailsModel from '@/features/Organization/WhereHouseType/Data/models/WhereHouseTypeDetailsModel'
 
 export default class WhereHouseDetailsModel {
@@ -29,7 +30,7 @@ export default class WhereHouseDetailsModel {
 
   static example: WhereHouseDetailsModel = new WhereHouseDetailsModel(1, 'test', 'test')
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     return new WhereHouseTypeDetailsModel(
       data.id,

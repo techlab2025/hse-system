@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -6,9 +7,7 @@ import type IndexOwnTaskModel from '../../../Data/models/IndexOwnTaskModel'
 import indexOwnTaskUseCase from '../../../Domain/useCase/employeeTask/indexOwnTaskUseCase'
 // import TitleInterface from '@/base/Data/Models/title_interface'
 
-export default class IndexOwnTaskController extends SelectControllerInterface<
-  IndexOwnTaskModel[]
-> {
+export default class IndexOwnTaskController extends SelectControllerInterface<IndexOwnTaskModel[]> {
   private static instance: IndexOwnTaskController
   private constructor() {
     super()
@@ -26,15 +25,14 @@ export default class IndexOwnTaskController extends SelectControllerInterface<
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<IndexOwnTaskModel[]> =
-      await this.IndexOwnTaskUseCase.call(params)
+    const dataState: DataState<IndexOwnTaskModel[]> = await this.IndexOwnTaskUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
-      console.log("dataState",dataState)
+      console.log('dataState', dataState)
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

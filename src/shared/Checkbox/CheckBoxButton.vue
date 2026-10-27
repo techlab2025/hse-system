@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import Checkbox from 'primevue/checkbox';
-import CheckBoxImg from "@/assets/images/CheckBoxImg.png"
+import { ref } from 'vue'
+import Checkbox from 'primevue/checkbox'
+import CheckBoxImg from '@/assets/images/CheckBoxImg.png'
 
 const emit = defineEmits(['update:checked'])
 const props = defineProps<{
-  title: string,
-  img?: string,
+  title: string
+  img?: string
   checked?: boolean
 }>()
-const ButtonValue = ref(props.checked);
+const ButtonValue = ref(props.checked)
 
 const UpdateData = (data) => {
   // console.log(data.target.checked);
@@ -20,7 +20,7 @@ const UpdateData = (data) => {
 <template>
   <div class="checkbox-button">
     <label for="checkbox" class="checkbox-data">
-      <img :src="img || CheckBoxImg" alt="checkbox-icon">
+      <img :src="img || CheckBoxImg" alt="" aria-hidden="true" />
       <p class="title">{{ title }}</p>
     </label>
     <Checkbox v-model="ButtonValue" binary class="checkbox" id="checkbox" @change="UpdateData" />

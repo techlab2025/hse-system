@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 
@@ -39,17 +40,20 @@ export default class ServiceModel extends TitleInterface {
   }
 
   static fromMap(data: any): ServiceModel {
-    return new ServiceModel(
-      data.id,
-      data.title,
-      data.subtitle, // fixed key
-      data.description,
-      data.alt,
-      data.image,
-      data.is_active,
-      data.order,
-      data.includes?.map((i: any) => TitleModel.fromMap(i)) ?? [],
-      data.created_at,
+    return localizedRecord(
+      new ServiceModel(
+        data.id,
+        data.title,
+        data.subtitle, // fixed key
+        data.description,
+        data.alt,
+        data.image,
+        data.is_active,
+        data.order,
+        data.includes?.map((i: any) => TitleModel.fromMap(i)) ?? [],
+        data.created_at,
+      ),
+      data,
     )
   }
 }

@@ -1,10 +1,9 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import type PowerFullDetailsModel from '../../Data/models/PowerFullDetailsModel'
 import ShowPowerFullUseCase from '../../Domain/useCase/showPowerFullUseCase'
-
-
 
 export default class ShowPowerFullController extends ControllerInterface<PowerFullDetailsModel> {
   private static instance: ShowPowerFullController
@@ -33,7 +32,7 @@ export default class ShowPowerFullController extends ControllerInterface<PowerFu
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

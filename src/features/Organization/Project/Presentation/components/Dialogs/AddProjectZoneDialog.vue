@@ -22,7 +22,7 @@ const updateData = () => {
     @click.prevent="visible = true"
     class="hse-project-root add-dialog"
   >
-    new
+    {{ $t('new') }}
   </button>
   <Dialog
     data-hse-project
@@ -51,7 +51,7 @@ const updateData = () => {
 .add-dialog {
   width: 20px;
   height: 20px;
-  margin-right: 6px;
+  margin-inline-end: 6px;
   cursor: pointer;
   color: var(--brand-primary-500);
   text-decoration: underline;

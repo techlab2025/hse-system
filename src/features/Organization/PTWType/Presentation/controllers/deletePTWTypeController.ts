@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -24,15 +25,14 @@ export default class DeletePTWTypeController extends ControllerInterface<PTWType
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
-      const dataState: DataState<PTWTypeModel> =
-        await this.DeletePTWTypeUseCase.call(params)
+      const dataState: DataState<PTWTypeModel> = await this.DeletePTWTypeUseCase.call(params)
       this.setLoading()
 
       this.setState(dataState)
       if (this.isDataSuccess()) {
         // useLoaderStore().endLoadingWithDialog();
       } else {
-        throw new Error('Error while addServices')
+        throw new Error(localizeUi('Error while addServices'))
       }
     } catch (error: any) {
       console.log(error)

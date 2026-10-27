@@ -145,8 +145,9 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
         <Search />
       </span>
       <input
+        dir="auto"
         v-model="word"
-        :placeholder="'search'"
+        :placeholder="$t('search')"
         class="input"
         type="text"
         @input="searchHazardType"
@@ -195,10 +196,10 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
                 <td data-label="#">
                   <span :to="`/admin/accidents-type/${item.id}`">{{ index + 1 }} </span>
                 </td>
-                <td data-label="Name">{{ item.name }}</td>
-                <td data-label="email">{{ item.email }}</td>
+                <td :data-label="$t('Name')">{{ item.name }}</td>
+                <td :data-label="$t('email')">{{ item.email }}</td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <DropList
                     :actionList="actionList(item.id, deleteOrganization)"
                     @delete="deleteOrganization(item.id)"
@@ -224,9 +225,9 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
         <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_CREATE]">
           <DataEmpty
             :link="`/add/HazardType`"
-            addText="Add Organizations"
-            description="You have no Organizations .. All your joined customers will appear here when you add your customer data"
-            title="You have No Organizations"
+            :addText="$t('auditUi.add_organization')"
+            :description="$t('auditUi.organizations_will_appear_here_after_you_add_them')"
+            :title="$t('auditUi.no_organizations_yet')"
           />
         </PermissionBuilder>
       </template>
@@ -234,9 +235,9 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
         <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_CREATE]">
           <DataFailed
             :link="`/add/HazardType`"
-            addText="Add Organizations"
-            description="You have no Organizations .. All your joined customers will appear here when you add your customer data"
-            title="You have No Organizations"
+            :addText="$t('auditUi.add_organization')"
+            :description="$t('auditUi.organizations_will_appear_here_after_you_add_them')"
+            :title="$t('auditUi.no_organizations_yet')"
           />
         </PermissionBuilder>
       </template>
@@ -244,8 +245,8 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
 
     <template #notPermitted>
       <DataFailed
-        addText="Have not  Permission"
-        description="You have no Organizations .. All your joined customers will appear here when you add your customer data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="$t('auditUi.organizations_will_appear_here_after_you_add_them')"
       />
     </template>
   </PermissionBuilder>

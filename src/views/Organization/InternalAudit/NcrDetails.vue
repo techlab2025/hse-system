@@ -47,11 +47,13 @@ watch(
       <template #initial><TableLoader :cols="3" :rows="5" /></template>
       <template #empty
         ><DataEmpty
-          title="No NCR details found"
-          description="No details are available for this NCR."
+          :title="$t('No NCR details found')"
+          :description="$t('No details are available for this NCR.')"
       /></template>
       <template #failed
-        ><DataFailed title="Could not load NCR details" description="Please try again."
+        ><DataFailed
+          :title="$t('Could not load NCR details')"
+          :description="$t('Please try again.')"
       /></template>
     </DataStatus>
   </PermissionBuilder>

@@ -157,8 +157,8 @@ const route = useRoute()
       </span> -->
 
       <span class="content">
-        <span class="title">System Templates</span>
-        <span class="description">Default templates provided by the system</span>
+        <span class="title">{{ $t('system templets') }}</span>
+        <span class="description">{{ $t('Default templates provided by the system') }}</span>
       </span>
     </button>
 
@@ -172,8 +172,8 @@ const route = useRoute()
       </span> -->
 
       <span class="content">
-        <span class="title">Organization Templates</span>
-        <span class="description">Templates created by your organization</span>
+        <span class="title">{{ $t('Organization Templates') }}</span>
+        <span class="description">{{ $t('Templates created by your organization') }}</span>
       </span>
     </button>
   </div>
@@ -199,7 +199,7 @@ const route = useRoute()
           project_id: route.query.project_id,
         },
       }"
-      >Submit</router-link
+      >{{ $t('Submit') }}</router-link
     >
   </div>
 </template>

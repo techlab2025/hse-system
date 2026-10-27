@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientBlogModel from "@/features/dashboard/settings/clientBlog/Data/models/index_client_blog_model";
@@ -11,8 +12,7 @@ export default class BlogModel extends TitleInterface {
   public image: string
   public titles: string
   public descriptions: string
-    public is_active: number
-
+  public is_active: number
 
   constructor(
     id: number,
@@ -25,7 +25,7 @@ export default class BlogModel extends TitleInterface {
     image: string,
     titles: string,
     descriptions: string,
-    is_active: number
+    is_active: number,
   ) {
     super({ id, title, subtitle })
 
@@ -41,20 +41,23 @@ export default class BlogModel extends TitleInterface {
   }
 
   static fromMap(data: any): BlogModel {
-    return new BlogModel(
-      data.id,
-      data.title,
-      data.subtitle,
-      data.has_blog,
-      data.all_industries,
-      data.industries?.length > 0
-        ? data.industries?.map((industry) => TitleModel.fromMap(industry))
-        : [],
-      data.parent_id,
-      data.image,
-      data.titles,
-      data.descriptions,
-      data.is_active
+    return localizedRecord(
+      new BlogModel(
+        data.id,
+        data.title,
+        data.subtitle,
+        data.has_blog,
+        data.all_industries,
+        data.industries?.length > 0
+          ? data.industries?.map((industry) => TitleModel.fromMap(industry))
+          : [],
+        data.parent_id,
+        data.image,
+        data.titles,
+        data.descriptions,
+        data.is_active,
+      ),
+      data,
     )
   }
 }

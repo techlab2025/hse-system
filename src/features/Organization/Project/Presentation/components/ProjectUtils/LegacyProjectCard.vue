@@ -188,7 +188,7 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
       </div>
       <div v-if="availableFlowSteps.length" class="project-flow-actions" @click.prevent.stop>
         <div class="flow-progress-copy">
-          <span>Setup {{ data.projectProgress }}%</span>
+          <span>{{ $t('Setup') }} {{ data.projectProgress }}%</span>
           <div><i :style="{ width: `${data.projectProgress}%` }" /></div>
         </div>
         <div class="flow-step-links">
@@ -206,7 +206,7 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
             class="continue-flow"
             @click.prevent.stop="openFlow(continueStep)"
           >
-            Continue setup →
+            {{ $t('Continue setup →') }}
           </button>
         </div>
       </div>

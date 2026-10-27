@@ -67,7 +67,7 @@ const { user } = useUserStore()
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper field-required">
     <label for="role">{{ $t('role') }}</label>
-    <input type="text" id="role" v-model="role" class="input" @input="updateData" />
+    <input dir="auto" type="text" id="role" v-model="role" class="input" @input="updateData" />
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper field-required">
     <label for="roleName">{{ $t('role_name') }}</label>
@@ -79,7 +79,7 @@ const { user } = useUserStore()
   >
     <CustomCheckbox
       :index="2"
-      :title="`Allow For Organization`"
+      :title="$t('Allow For Organization')"
       :checked="AllowOrganization"
       @update:checked="AllowOrganization = $event"
     />

@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class WhereHouseTypeModel extends TitleInterface {
@@ -13,7 +14,10 @@ export default class WhereHouseTypeModel extends TitleInterface {
   }
 
   static fromMap(data: any): WhereHouseTypeModel {
-    return new WhereHouseTypeModel(data.id, data.title, data.warehouse_type_id)
+    return localizedRecord(
+      new WhereHouseTypeModel(data.id, data.title, data.warehouse_type_id),
+      data,
+    )
   }
 
   static example: WhereHouseTypeModel[] = [

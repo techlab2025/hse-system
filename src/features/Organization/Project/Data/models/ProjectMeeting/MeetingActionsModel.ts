@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
 
 export default class MeetingActionsModel {
@@ -34,26 +35,29 @@ export default class MeetingActionsModel {
   }
 
   static fromMap(data: any): MeetingActionsModel {
-    return new MeetingActionsModel({
-      id: data.id,
-      meetingId: data.meeting_id,
-      title: data.title,
-      type: data.type,
-      status: data.status,
-      createdAt: data.created_at,
-      assignedEmployee: data.assigned_employee,
-      dueDate: data.due_date,
-      dueTime: data.due_time,
-    })
+    return localizedRecord(
+      new MeetingActionsModel({
+        id: data.id,
+        meetingId: data.meeting_id,
+        title: data.title,
+        type: data.type,
+        status: data.status,
+        createdAt: data.created_at,
+        assignedEmployee: data.assigned_employee,
+        dueDate: data.due_date,
+        dueTime: data.due_time,
+      }),
+      data,
+    )
   }
 
   static example: MeetingActionsModel = new MeetingActionsModel({
     id: 1,
-    meetingId:2,
+    meetingId: 2,
     title: '',
     type: 2,
     status: 2,
-    createdAt:'',
+    createdAt: '',
     assignedEmployee: OrganizatoinEmployeeModel.exampl2,
     dueDate: '',
     dueTime: '',

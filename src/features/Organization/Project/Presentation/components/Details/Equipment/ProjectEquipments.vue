@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
@@ -23,9 +25,27 @@ const projectCustomLocationController = ProjectCustomLocationController.getInsta
 const state = ref(projectCustomLocationController.state.value)
 const selectedEquipmentType = ref<EquipmentTypesEnum>(EquipmentTypesEnum.EQUIPMENT)
 const equipmentTypeOptions = [
-  { value: EquipmentTypesEnum.EQUIPMENT, label: 'Equipment', icon: 'truck' },
-  { value: EquipmentTypesEnum.DEVICE, label: 'device', icon: 'desktop' },
-  { value: EquipmentTypesEnum.TOOL, label: 'tool', icon: 'wrench' },
+  {
+    value: EquipmentTypesEnum.EQUIPMENT,
+    get label() {
+      return localizeUi('Equipment')
+    },
+    icon: 'truck',
+  },
+  {
+    value: EquipmentTypesEnum.DEVICE,
+    get label() {
+      return localizeUi('device')
+    },
+    icon: 'desktop',
+  },
+  {
+    value: EquipmentTypesEnum.TOOL,
+    get label() {
+      return localizeUi('tool')
+    },
+    icon: 'wrench',
+  },
 ]
 const locations = computed(() => state.value.data ?? [])
 
@@ -107,7 +127,7 @@ watch(
           v-project-panels
           class="hse-project-root hse-project-page project-equipments-pdf-content"
         >
-          <section class="equipment-overview" aria-label="Equipment overview">
+          <section class="equipment-overview" :aria-label="$t('Equipment overview')">
             <div class="overview-copy">
               <span class="overview-kicker">{{ $t('project_equipment_inventory') }}</span>
               <h2>{{ $t('Equipment_tools_&_devices_by_zone') }}</h2>
@@ -266,17 +286,25 @@ watch(
       <template #empty>
         <DataEmpty
           :link="`/organization/project/add`"
-          addText="Add Project"
-          description="You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="You have No Project"
+          :addText="$t('Add Project')"
+          :description="
+            $t(
+              'You have no Project .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Project')"
         />
       </template>
       <template #failed>
         <DataFailed
           :link="`/organization/project/add`"
-          addText="Add Project"
-          description="You have no Project .. All your joined customers will appear here when you add your customer data"
-          title="You have No Project"
+          :addText="$t('Add Project')"
+          :description="
+            $t(
+              'You have no Project .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Project')"
         />
       </template>
     </DataStatus>

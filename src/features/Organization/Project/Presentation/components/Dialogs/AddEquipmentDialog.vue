@@ -77,13 +77,15 @@ const AddEquipment = async () => {
       :subtitle="
         $t('You haven’t added any equipment to this project. Start building your crew now!')
       "
-      linkText="Start building your crew now!"
+      :linkText="$t('Start building your crew now!')"
       @click="visible = true"
       v-if="isEmpty"
     />
 
     <!-- <AddEquipmentIcon class="add-equipment-icon" @click="visible = true" v-else /> -->
-    <p class="add-equipment-icon" v-if="!isEmpty" @click="visible = true">{{ `add equipment` }}</p>
+    <p class="add-equipment-icon" v-if="!isEmpty" @click="visible = true">
+      {{ $t('Add_Equipment') }}
+    </p>
     <Dialog
       data-hse-project
       class="hse-project-root hse-project-overlay"

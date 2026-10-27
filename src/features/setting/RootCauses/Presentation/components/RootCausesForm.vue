@@ -104,16 +104,16 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditRootCausesParams(
-      props.data?.id! ?? 0,
-      translationsParams,
-      AllIndustry,
-      industry.value?.map((item) => item.id),
-    )
+        props.data?.id! ?? 0,
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id),
+      )
     : new AddRootCausesParams(
-      translationsParams,
-      AllIndustry,
-      industry.value?.map((item) => item.id),
-    )
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id),
+      )
   emit('update:data', params)
 }
 
@@ -157,10 +157,24 @@ const updateAllIndustries = (data: boolean) => {
   updateData()
 }
 
-const { requiredFieldErrors, validateRequiredFields: validateFields } = useRequiredFields('RootCausesForm', () => [
-  { key: 'langs', message: '', isMissing: () => !langs.value.some((item) => String(item.title ?? '').trim().length > 0) },
-  { key: 'industry', message: '', isMissing: () => user.user?.type === OrganizationTypeEnum.ADMIN && !allIndustries.value && !hasSelectedValue(industry.value) },
-])
+const { requiredFieldErrors, validateRequiredFields: validateFields } = useRequiredFields(
+  'RootCausesForm',
+  () => [
+    {
+      key: 'langs',
+      message: '',
+      isMissing: () => !langs.value.some((item) => String(item.title ?? '').trim().length > 0),
+    },
+    {
+      key: 'industry',
+      message: '',
+      isMissing: () =>
+        user.user?.type === OrganizationTypeEnum.ADMIN &&
+        !allIndustries.value &&
+        !hasSelectedValue(industry.value),
+    },
+  ],
+)
 const validateRequiredFields = async () => {
   updateData()
   return validateFields()
@@ -170,24 +184,53 @@ defineExpose({ validateRequiredFields })
 
 <template>
   <div data-required-field="langs" class="col-span-4 md:col-span-4">
-    <LangTitleInput :label="`${$t('root_cause_name')}`" :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
-    <p v-if="requiredFieldErrors.langs" class="required-field-message" role="alert">{{ requiredFieldErrors.langs }}</p>
+    <LangTitleInput
+      :label="`${$t('root_cause_name')}`"
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="setLangs"
+    />
+    <p v-if="requiredFieldErrors.langs" class="required-field-message" role="alert">
+      {{ requiredFieldErrors.langs }}
+    </p>
   </div>
 
   <!-- all industry -->
   <div class="input-wrapper col-span-2" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomCheckbox :index="3" :title="`all_industries`" :checked="allIndustries"
-      @update:checked="updateAllIndustries" />
+    <CustomCheckbox
+      :index="3"
+      :title="$t('all_industries')"
+      :checked="allIndustries"
+      @update:checked="updateAllIndustries"
+    />
   </div>
   <!--industry  -->
-  <div data-required-field="industry" class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
-      label="Select Industry" id="EquipmentType" placeholder="Select industry" :type="2"
-      @update:modelValue="setIndustry" />
-    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">{{ requiredFieldErrors.industry }}</p>
+  <div
+    data-required-field="industry"
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
+    <CustomSelectInput
+      :modelValue="industry"
+      :controller="industryController"
+      :params="industryParams"
+      :label="$t('Select Industry')"
+      id="EquipmentType"
+      :placeholder="$t('Select industry')"
+      :type="2"
+      @update:modelValue="setIndustry"
+    />
+    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">
+      {{ requiredFieldErrors.industry }}
+    </p>
   </div>
 </template>
 
 <style scoped>
-.required-field-message { margin-top: .35rem; color: var(--status-danger); font-size: .82rem; font-weight: 700; }
+.required-field-message {
+  margin-top: 0.35rem;
+  color: var(--status-danger);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
 </style>

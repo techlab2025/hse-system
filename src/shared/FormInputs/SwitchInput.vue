@@ -5,29 +5,31 @@ import FieldHelpIcon from './FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:value'])
 const props = defineProps<{
-  fields: { key: string, label: string, placeholder: string, value: string, enabled: boolean }[]
+  fields: { key: string; label: string; placeholder: string; value: string; enabled: boolean }[]
   switch_title?: string
   switch_reverse?: boolean
   isAuto?: boolean | true
   helpText?: string
 }>()
 
-
-watch(props.fields, (newVal) => {
-  const payload: Record<string, string> = {}
-  newVal.forEach(field => {
-    if (props.switch_reverse) {
-      payload[field.key] = field.enabled ? '' : field.value
-      if (field.enabled) {
-        field.value = ""
+watch(
+  props.fields,
+  (newVal) => {
+    const payload: Record<string, string> = {}
+    newVal.forEach((field) => {
+      if (props.switch_reverse) {
+        payload[field.key] = field.enabled ? '' : field.value
+        if (field.enabled) {
+          field.value = ''
+        }
+      } else {
+        payload[field.key] = field.enabled ? field.value : ''
       }
-    }
-    else {
-      payload[field.key] = field.enabled ? field.value : ''
-    }
-  })
-  emit('update:value', payload)
-}, { deep: true })
+    })
+    emit('update:value', payload)
+  },
+  { deep: true },
+)
 </script>
 
 <template>
@@ -43,8 +45,14 @@ watch(props.fields, (newVal) => {
           <ToggleSwitch v-model="field.enabled" />
         </div>
       </div>
-      <input :id="field.key" v-model="field.value" type="text" :placeholder="field.placeholder"
-        :disabled="field.enabled" />
+      <input
+        dir="auto"
+        :id="field.key"
+        v-model="field.value"
+        type="text"
+        :placeholder="field.placeholder"
+        :disabled="field.enabled"
+      />
     </div>
   </div>
 </template>

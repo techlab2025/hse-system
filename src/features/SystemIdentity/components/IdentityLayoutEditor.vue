@@ -10,25 +10,32 @@ const model = defineModel<Appearance>({ required: true })
 </script>
 <template>
   <section class="identity-editor">
-    <h2>Header layout</h2>
+    <h2>{{ $t('Header layout') }}</h2>
     <p>
-      Move the controls container as one item. Inside it, drag Profile, Notifications, and Language
-      to change their order. Arrow buttons also work with a keyboard or touch screen.
+      {{
+        $t(
+          'Move the controls container as one item. Inside it, drag Profile, Notifications, and Language to change their order. Arrow buttons also work with a keyboard or touch screen.',
+        )
+      }}
     </p>
-    <IdentityOrderList v-model="model.headerOrder" :items="headerFields" label="Header order">
+    <IdentityOrderList
+      v-model="model.headerOrder"
+      :items="headerFields"
+      :label="$t('Header order')"
+    >
       <template #default="{ item }">
         <div v-if="item === 'actions'" class="identity-order-group">
-          <p>Inside this container</p>
+          <p>{{ $t('Inside this container') }}</p>
           <IdentityOrderList
             v-model="model.headerActionOrder"
             :items="headerActionFields"
-            label="Header controls order"
+            :label="$t('Header controls order')"
           />
         </div>
       </template>
     </IdentityOrderList>
-    <h2>Breadcrumb position</h2>
-    <p>Drag the breadcrumb into a position, or select a position below.</p>
+    <h2>{{ $t('Breadcrumb position') }}</h2>
+    <p>{{ $t('Drag the breadcrumb into a position, or select a position below.') }}</p>
     <div class="identity-position-options">
       <button
         v-for="position in breadcrumbPositions"
@@ -40,12 +47,12 @@ const model = defineModel<Appearance>({ required: true })
         @dragover.prevent
         @drop.prevent="model.breadcrumbPosition = position"
       >
-        <span>{{ position }}</span>
+        <span>{{ $t(position) }}</span>
         <span
           v-if="model.breadcrumbPosition === position"
           draggable="true"
           @dragstart="$event.dataTransfer?.setData('text/plain', 'breadcrumb')"
-          >⠿ Home / Page</span
+          >{{ $t('⠿ Home / Page') }}</span
         >
       </button>
     </div>

@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import type AttachmentModel from '@/base/Data/Models/attachment_model'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { UserTypeEnum } from '../../../../../../../orbit-client/src/features/Organization/Tickets/Core/Enum/userTypeEnum'
@@ -29,13 +30,16 @@ export default class TicketHistoryModel extends TitleInterface {
 
   static fromMap(data: any): TicketHistoryModel {
     // console.log('ProjectModel data:', data)
-    return new TicketHistoryModel({
-      id: data.id,
-      reply: data.reply,
-      createdAt: data.created_at,
-      attachments: data.attachments,
-      userType: data.user_type,
-      status: data.status,
-    })
+    return localizedRecord(
+      new TicketHistoryModel({
+        id: data.id,
+        reply: data.reply,
+        createdAt: data.created_at,
+        attachments: data.attachments,
+        userType: data.user_type,
+        status: data.status,
+      }),
+      data,
+    )
   }
 }

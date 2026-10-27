@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -5,10 +6,7 @@ import { SelectControllerInterface } from '@/base/Presentation/Controller/select
 import type PTWTypeModel from '../../Data/models/PTWTypeModel'
 import IndexPTWTypeUseCase from '../../Domain/useCase/indexPTWTypeUseCase'
 
-
-export default class IndexPTWTypeController extends SelectControllerInterface<
-  PTWTypeModel[]
-> {
+export default class IndexPTWTypeController extends SelectControllerInterface<PTWTypeModel[]> {
   private static instance: IndexPTWTypeController
   private constructor() {
     super()
@@ -26,14 +24,13 @@ export default class IndexPTWTypeController extends SelectControllerInterface<
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<PTWTypeModel[]> =
-      await this.IndexPTWTypeUseCase.call(params)
+    const dataState: DataState<PTWTypeModel[]> = await this.IndexPTWTypeUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

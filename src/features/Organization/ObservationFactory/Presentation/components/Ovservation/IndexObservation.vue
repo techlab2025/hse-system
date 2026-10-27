@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import '../styles/observation-identity.css'
 import { computed, onMounted, ref, watch } from 'vue'
 import PermissionHandler from '@/base/Presentation/utils/permission_handler'
@@ -66,19 +68,35 @@ const filterRiskLevel = ref<number | null>(null)
 const filterFields = [
   {
     key: 'saveStatus',
-    label: 'Observation Type',
+    get label() {
+      return localizeUi('Observation Type')
+    },
     options: [
-      new TitleInterface({ id: SaveStatusEnum.Saved, title: t('Positive') }),
-      new TitleInterface({ id: SaveStatusEnum.NotSaved, title: t('Negative') }),
+      new TitleInterface({
+        id: SaveStatusEnum.Saved,
+        title: t('Positive'),
+        translationKey: 'Positive',
+      }),
+      new TitleInterface({
+        id: SaveStatusEnum.NotSaved,
+        title: t('Negative'),
+        translationKey: 'Negative',
+      }),
     ],
   },
   {
     key: 'riskLevel',
-    label: 'Risk Level',
+    get label() {
+      return localizeUi('Risk Level')
+    },
     options: [
-      new TitleInterface({ id: RiskLevelEnum.High, title: t('High') }),
-      new TitleInterface({ id: RiskLevelEnum.Medium, title: t('Medium') }),
-      new TitleInterface({ id: RiskLevelEnum.Low, title: t('Low') }),
+      new TitleInterface({ id: RiskLevelEnum.High, title: t('High'), translationKey: 'High' }),
+      new TitleInterface({
+        id: RiskLevelEnum.Medium,
+        title: t('Medium'),
+        translationKey: 'Medium',
+      }),
+      new TitleInterface({ id: RiskLevelEnum.Low, title: t('Low'), translationKey: 'Low' }),
     ],
   },
 ]
@@ -477,12 +495,12 @@ const canCreateRecord = computed(() =>
         <div class="observation-control-center hse-operations-command">
           <div class="observation-control-header">
             <IndexHazardHeader
-              :title="isReportView ? 'observation report' : 'observation'"
+              :title="isReportView ? $t('observation_report') : $t('observation')"
               :length="state?.pagination?.total || 0"
               :projects="Projects"
               :selected-project-id="selectedProjctesFilters"
               :isProjectsLoading="isProjectsLoading"
-              subtitle="Manage, filter, and review workplace observations"
+              :subtitle="$t('Manage, filter, and review workplace observations')"
               variant="observation"
               @update:data="setSelectedProjectFilter"
             >
@@ -557,7 +575,7 @@ const canCreateRecord = computed(() =>
                   :selected-zone-ids="SelectedZonesFilter"
                   @update:data="ApplayFilter"
                   :link="observationCreateLink"
-                  :linkText="'Create Observation'"
+                  :linkText="$t('create_observation')"
                 />
               </PermissionBuilder>
             </div>
@@ -836,18 +854,18 @@ const canCreateRecord = computed(() =>
             <DataEmpty
               :withbtn="canCreateRecord"
               :link="observationCreateLink"
-              addText="Report Observation"
+              :addText="$t('report observation')"
               description=" "
-              title="You have No Observation"
+              :title="$t('You have No Observation')"
             />
           </template>
           <template #failed>
             <DataFailed
               :withbtn="canCreateRecord"
               :link="observationCreateLink"
-              addText="Report Observation"
+              :addText="$t('report observation')"
               description=" "
-              title="You have No Observation"
+              :title="$t('You have No Observation')"
             />
           </template>
         </DataStatus>
@@ -856,7 +874,7 @@ const canCreateRecord = computed(() =>
         v-else
         :title="$t('have_not_permission')"
         :withbtn="false"
-        description="You do not have permission to view observations."
+        :description="$t('You do not have permission to view observations.')"
       />
     </div>
   </div>

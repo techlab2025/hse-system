@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 export default class TemplateOptionModel {
   public id: number
   public title: string
@@ -23,13 +24,16 @@ export default class TemplateOptionModel {
   }
 
   static fromMap(data: any): TemplateOptionModel {
-    return new TemplateOptionModel(
-      data.id,
-      data.title,
-      data.is_danger,
-      data.has_auto_observation,
-      data.textarea_type,
-      data.is_upload ?? data.isUpload ?? false,
+    return localizedRecord(
+      new TemplateOptionModel(
+        data.id,
+        data.title,
+        data.is_danger,
+        data.has_auto_observation,
+        data.textarea_type,
+        data.is_upload ?? data.isUpload ?? false,
+      ),
+      data,
     )
   }
 }

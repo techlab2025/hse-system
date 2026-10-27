@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import PaginationModel from '@/base/core/Models/pagination_model'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
@@ -30,9 +32,24 @@ const state = ref(indexCapaController.state.value)
 type CapaSource = 'all' | 'ncr' | 'investigation'
 const selectedSource = ref<CapaSource>('all')
 const sourceTabs: { value: CapaSource; label: string }[] = [
-  { value: 'all', label: 'all' },
-  { value: 'ncr', label: 'NCR' },
-  { value: 'investigation', label: 'Investigation' },
+  {
+    value: 'all',
+    get label() {
+      return localizeUi('all')
+    },
+  },
+  {
+    value: 'ncr',
+    get label() {
+      return localizeUi('NCR')
+    },
+  },
+  {
+    value: 'investigation',
+    get label() {
+      return localizeUi('Investigation')
+    },
+  },
 ]
 const sourceCounts = computed(() => {
   const items = state.value.data ?? []
@@ -239,7 +256,7 @@ watch(
             @update:data="setSelectedProjectFilter"
           /> -->
           <IndexHazardHeader
-            :title="`CAPA`"
+            :title="$t('CAPA')"
             :length="filteredItems.length"
             :projects="[]"
             @update:data="setSelectedProjectFilter"
@@ -432,10 +449,14 @@ watch(
               ]"
             >
               <DataEmpty
-                description="You have no CAPA .. All your joined customers will appear here when you add your customer data"
+                :description="
+                  $t(
+                    'You have no CAPA .. All your joined customers will appear here when you add your customer data',
+                  )
+                "
                 :link="`/organization`"
                 :withbtn="false"
-                title="You have No CAPA"
+                :title="$t('You have No CAPA')"
               />
             </PermissionBuilder>
           </template>
@@ -447,19 +468,27 @@ watch(
               ]"
             >
               <DataFailed
-                description="You have no CAPA .. All your joined customers will appear here when you add your customer data"
+                :description="
+                  $t(
+                    'You have no CAPA .. All your joined customers will appear here when you add your customer data',
+                  )
+                "
                 :link="`/organization`"
                 :withbtn="false"
-                title="You have No CAPA"
+                :title="$t('You have No CAPA')"
               />
             </PermissionBuilder>
           </template>
         </DataStatus>
         <template #notPermitted>
           <DataFailed
-            addText="Have not  Permission"
+            :addText="$t('auditUi.you_do_not_have_permission')"
             :withbtn="false"
-            description="You have no Observation .. All your joined customers will appear here when you add your customer data"
+            :description="
+              $t(
+                'You have no Observation .. All your joined customers will appear here when you add your customer data',
+              )
+            "
           />
         </template>
       </PermissionBuilder>
@@ -545,7 +574,7 @@ watch(
 
 .card-content {
   &.new-btn {
-    margin-left: auto !important;
+    margin-inline-start: auto !important;
     justify-content: start !important;
     align-items: end !important;
   }

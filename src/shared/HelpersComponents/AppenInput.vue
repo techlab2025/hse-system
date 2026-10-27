@@ -1,74 +1,68 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch } from 'vue'
 import UploadAppend from '@/shared/icons/UploadAppend.vue'
 import IconAdd from '@/shared/icons/IconAdd.vue'
 import IconMinus from '@/shared/icons/IconMinus.vue'
 
-
 // Props
 const { modelValue, withImage = false } = defineProps<{
-  modelValue: { title: string; img?: string }[];
-  withImage?: boolean;
-}>();
+  modelValue: { title: string; img?: string }[]
+  withImage?: boolean
+}>()
 
 // Emit
 const emit = defineEmits<{
-  (e: "update:modelValue", value: { title: string; img?: string }[]): void;
-}>();
+  (e: 'update:modelValue', value: { title: string; img?: string }[]): void
+}>()
 
 // Local copy of inputs
-const inputs = ref([...modelValue]);
+const inputs = ref([...modelValue])
 
 // Sync when parent updates
 watch(
   () => modelValue,
   (newVal) => {
-    inputs.value = [...newVal];
+    inputs.value = [...newVal]
   },
-  { deep: true }
-);
+  { deep: true },
+)
 
 // Sync back to parent
 watch(
   inputs,
   (newVal) => {
-    emit("update:modelValue", newVal);
+    emit('update:modelValue', newVal)
   },
-  { deep: true }
-);
+  { deep: true },
+)
 
 // Add new input
 const addInput = () => {
-  inputs.value.push({ title: "", img: "" });
-};
+  inputs.value.push({ title: '', img: '' })
+}
 
 // Remove input by index
 const removeInput = (index: number) => {
-  inputs.value.splice(index, 1);
-};
+  inputs.value.splice(index, 1)
+}
 
 // Handle file change
 const onFileChange = (event: Event, index: number) => {
-  const target = event.target as HTMLInputElement;
-  const file = target.files?.[0];
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
   if (file) {
-    const reader = new FileReader();
+    const reader = new FileReader()
     reader.onload = (e) => {
-      inputs.value[index].img = e.target?.result as string;
-    };
-    reader.readAsDataURL(file);
+      inputs.value[index].img = e.target?.result as string
+    }
+    reader.readAsDataURL(file)
   }
-};
+}
 </script>
-
 
 <template>
   <div>
-    <div
-      class="input-append"
-      v-for="(input, index) in inputs"
-      :key="index"
-    >
+    <div class="input-append" v-for="(input, index) in inputs" :key="index">
       <!-- Add button for first row -->
       <button
         type="button"
@@ -81,23 +75,14 @@ const onFileChange = (event: Event, index: number) => {
       </button>
 
       <!-- Remove button for all other rows -->
-      <button
-        type="button"
-        class="btn-minus"
-        v-if="index !== 0"
-        @click="removeInput(index)"
-      >
+      <button type="button" class="btn-minus" v-if="index !== 0" @click="removeInput(index)">
         <IconMinus />
       </button>
 
       <!-- Title Input -->
       <div class="input-wrapper">
-        <label for="">Title</label>
-        <input
-          type="text"
-          v-model="input.title"
-          placeholder="Enter Title"
-        />
+        <label for="">{{ $t('Title') }}</label>
+        <input dir="auto" type="text" v-model="input.title" :placeholder="$t('Enter Title')" />
       </div>
 
       <!-- File Input -->
@@ -114,11 +99,9 @@ const onFileChange = (event: Event, index: number) => {
           <UploadAppend />
         </label>
         <div class="img-preview" v-if="input.img">
-          <img :src="input.img" alt="Preview" />
+          <img :src="input.img" :alt="$t('Preview')" />
         </div>
       </div>
-
-
     </div>
   </div>
 </template>

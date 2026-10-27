@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 interface IndustryReference {
@@ -76,25 +77,28 @@ export default class SubscriptionApplicationModel extends TitleInterface {
   static fromMap(data: SubscriptionApplicationMap): SubscriptionApplicationModel {
     const industryFromId =
       typeof data.industry_id === 'object' && data.industry_id !== null ? data.industry_id : null
-    const industryId = industryFromId?.id ??
-      (typeof data.industry_id === 'number' ? data.industry_id : null)
+    const industryId =
+      industryFromId?.id ?? (typeof data.industry_id === 'number' ? data.industry_id : null)
     const industry = data.industry ?? industryFromId
 
-    return new SubscriptionApplicationModel(
-      data.id,
-      data.subscription_application_id,
-      data.request_date,
-      data.request_status,
-      data.status_name,
-      data.name,
-      data.phone,
-      data.email,
-      data.address,
-      data.admin_name,
-      data.admin_phone,
-      data.admin_email,
-      industryId,
-      industry,
+    return localizedRecord(
+      new SubscriptionApplicationModel(
+        data.id,
+        data.subscription_application_id,
+        data.request_date,
+        data.request_status,
+        data.status_name,
+        data.name,
+        data.phone,
+        data.email,
+        data.address,
+        data.admin_name,
+        data.admin_phone,
+        data.admin_email,
+        industryId,
+        industry,
+      ),
+      data,
     )
   }
 }

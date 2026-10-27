@@ -33,5 +33,5 @@ export const LangsMap: Record<LangEnum, { name: string; icon: DefineComponent; c
   [LangEnum.RUSSIAN]: { name: 'Russian', icon: RUS, code: LangEnum.RUSSIAN },
   [LangEnum.THAI]: { name: 'Thai', icon: THA, code: LangEnum.THAI },
   [LangEnum.VIETNAMESE]: { name: 'Vietnamese', icon: VIE, code: LangEnum.VIETNAMESE },
-  [LangEnum.PERSIAN]: { name: 'Iraqi', icon: IR, code: LangEnum.PERSIAN },
+  [LangEnum.PERSIAN]: { name: 'Persian', icon: IR, code: LangEnum.PERSIAN },
 }

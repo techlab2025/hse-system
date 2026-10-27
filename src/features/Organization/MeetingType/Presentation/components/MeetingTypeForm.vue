@@ -31,7 +31,8 @@ type LanguageOption = { locale: string; title: string; icon?: Component | string
 type LocalizedTitle = { locale: string; title: string }
 type LocalizedDescription = { locale: string; description: string }
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('MeetingTypeForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('MeetingTypeForm')
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddMeetingTypeParams | EditMeetingTypeParams): void
@@ -43,7 +44,7 @@ const languages = ref<LanguageOption[]>([])
 const titles = ref<LocalizedTitle[]>([])
 const descriptions = ref<LocalizedDescription[]>([])
 const periodicType = ref<TitleInterface>(
-  new TitleInterface({ id: PeriodicTypeEnum.DAILY, title: 'daily' }),
+  new TitleInterface({ id: PeriodicTypeEnum.DAILY, title: 'daily', translationKey: 'Daily' }),
 )
 const numberOfDays = ref<number | null>(null)
 const allIndustries = ref(false)
@@ -162,9 +163,9 @@ const getNumberOfDaysError = () => {
   if (!showNumberOfDays.value) return ''
 
   const value = Number(numberOfDays.value)
-  if (!Number.isInteger(value) || value <= 0) {
-    return 'Number Of Days Must Be A Positive Integer'
-  }
+  // if (!Number.isInteger(value) || value <= 0) {
+  //   return 'Number Of Days Must Be A Positive Integer'
+  // }
 
   const max = maxNumberOfDays.value
   if (max !== null && value > max) {
@@ -194,11 +195,11 @@ const requiredFields = computed(() => [
     message: 'Periodic Type Is Required',
     isMissing: () => !Object.values(PeriodicTypeEnum).includes(periodicType.value.id),
   },
-  {
-    key: 'number_of_days',
-    message: getNumberOfDaysError(),
-    isMissing: () => Boolean(getNumberOfDaysError()),
-  },
+  // {
+  //   key: 'number_of_days',
+  //   message: getNumberOfDaysError(),
+  //   isMissing: () => Boolean(getNumberOfDaysError()),
+  // },
   {
     key: 'industry',
     message: '',
@@ -208,7 +209,9 @@ const requiredFields = computed(() => [
       !industry.value?.length,
   },
 ])
+
 const requiredFieldErrors = ref<Record<string, string>>({})
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const validateRequiredFields = async () => {
   const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
@@ -287,7 +290,7 @@ onMounted(fetchLanguages)
   >
     <CustomCheckbox
       :index="3"
-      title="all_industries"
+      :title="$t('all_industries')"
       :checked="allIndustries"
       @update:checked="updateAllIndustries"
     />
@@ -301,9 +304,9 @@ onMounted(fetchLanguages)
       :model-value="industry"
       :controller="industryController"
       :params="industryParams"
-      label="industry"
+      :label="$t('industry')"
       id="meetingtype-industry"
-      placeholder="Select industry"
+      :placeholder="$t('Select industry')"
       :type="2"
       @update:model-value="setIndustry"
     />

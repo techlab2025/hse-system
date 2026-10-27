@@ -4,7 +4,7 @@
 
 .total-machines-header-container {
   @include flex-row(nowrap, space-between, center);
-  padding-right: 30px;
+  padding-inline-end: 30px;
   width: 90%;
 
   @media (max-width: 768px) {
@@ -12,7 +12,7 @@
     align-items: flex-start;
     gap: 8px;
     width: 100%;
-    padding-right: 0;
+    padding-inline-end: 0;
   }
 
   .static-data {
@@ -38,7 +38,7 @@
 
   .total-machines-header-container {
     @include flex-row(nowrap, space-between, center);
-    padding-right: 30px;
+    padding-inline-end: 30px;
     width: 90%;
 
     @media (max-width: 768px) {
@@ -46,13 +46,13 @@
       flex-direction: column;
       gap: 12px;
       width: 100%;
-      padding-right: 0;
+      padding-inline-end: 0;
     }
 
     .total-machines-header {
       @include flex-column(nowrap, flex-start, flex-start);
       gap: 4px;
-      // padding-left: 25px;
+      // padding-inline-start: 25px;
 
       .static {
         color: var(--text-soft);

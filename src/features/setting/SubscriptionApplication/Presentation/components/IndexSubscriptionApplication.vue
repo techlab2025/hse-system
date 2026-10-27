@@ -136,8 +136,9 @@ const displayValue = (value: unknown) => {
         <Search />
       </span>
       <input
+        dir="auto"
         v-model="word"
-        :placeholder="'search'"
+        :placeholder="$t('search')"
         class="input"
         type="text"
         @input="searchSubscriptionApplication"
@@ -174,7 +175,7 @@ const displayValue = (value: unknown) => {
         <div
           class="table-responsive table-responsive--scroll subscription-applications-table"
           tabindex="0"
-          aria-label="Subscription applications"
+          :aria-label="$t('Subscription applications')"
         >
           <table class="main-table subscription-applications-grid">
             <thead>
@@ -268,9 +269,13 @@ const displayValue = (value: unknown) => {
         >
           <DataEmpty
             :link="`/admin/subscription-application/add`"
-            addText="Add SubscriptionApplication"
-            description="You have no SubscriptionApplication .. All your joined customers will appear here when you add your customer data"
-            title="You have No SubscriptionApplication"
+            :addText="$t('auditUi.add_subscription_application')"
+            :description="
+              $t(
+                'You have no SubscriptionApplication .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No SubscriptionApplication')"
           />
         </permission-builder>
       </template>
@@ -284,9 +289,13 @@ const displayValue = (value: unknown) => {
         >
           <DataFailed
             :link="`/admin/subscription-application/add`"
-            addText="Add SubscriptionApplication"
-            description="You have no SubscriptionApplication .. All your joined customers will appear here when you add your customer data"
-            title="You have No SubscriptionApplication"
+            :addText="$t('auditUi.add_subscription_application')"
+            :description="
+              $t(
+                'You have no SubscriptionApplication .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No SubscriptionApplication')"
           />
         </permission-builder>
       </template>
@@ -301,8 +310,12 @@ const displayValue = (value: unknown) => {
         ]"
       >
         <DataFailed
-          addText="Have not  Permission"
-          description="You have no SubscriptionApplication .. All your joined customers will appear here when you add your customer data"
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no SubscriptionApplication .. All your joined customers will appear here when you add your customer data',
+            )
+          "
         />
       </permission-builder>
     </template>

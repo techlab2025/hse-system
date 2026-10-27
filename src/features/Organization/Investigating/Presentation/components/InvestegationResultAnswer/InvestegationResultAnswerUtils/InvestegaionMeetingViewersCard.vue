@@ -29,11 +29,11 @@ const note = computed(
 </script>
 <template>
   <div class="investegaion-viewers-card-conatiner">
-    <p class="viewer-number">Witness.{{ index + 1 }}</p>
+    <p class="viewer-number">{{ $t('Witness.') }}{{ index + 1 }}</p>
     <div class="investegaion-viewers-card">
       <div class="view">
         <div class="view-header">
-          <span>Witness statement</span>
+          <span>{{ $t('Witness statement') }}</span>
           <hr class="hr" />
         </div>
         <p class="view-content">{{ note }}</p>

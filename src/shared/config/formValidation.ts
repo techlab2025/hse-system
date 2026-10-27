@@ -43,11 +43,11 @@ export const formValidation: {
     OrganizationCertificateForm: {
       enabled: true,
       fields: {
-        certification_name: { enabled: true, message: 'Certification name is required' },
-        issuing_body: { enabled: true, message: 'Issuing body is required' },
-        certificate_number: { enabled: true, message: 'Certificate number is required' },
-        issue_date: { enabled: true, message: 'Issue date is required' },
-        expire_date: { enabled: true, message: 'Expiry date is required' },
+        certification_name: { enabled: true, message: 'requiredFields.certificationName' },
+        issuing_body: { enabled: true, message: 'requiredFields.issuingBody' },
+        certificate_number: { enabled: true, message: 'requiredFields.certificateNumber' },
+        issue_date: { enabled: true, message: 'requiredFields.issueDate' },
+        expire_date: { enabled: true, message: 'requiredFields.expiryDate' },
         certificate_file: { enabled: true, message: '' },
       },
     },
@@ -55,16 +55,16 @@ export const formValidation: {
     HazardForm: {
       enabled: true,
       fields: {
-        langs: { enabled: true, message: 'Risk Name Is Required' },
+        langs: { enabled: true, message: 'requiredFields.riskName' },
         industry: { enabled: true, message: 'Industry Is Required' },
-        HazardType: { enabled: true, message: 'Hazard Classification Is Required' },
+        HazardType: { enabled: true, message: 'requiredFields.hazardClassification' },
       },
     },
     // src/features/Organization/Injury/Presentation/components/InjuryForm.vue
     InjuryForm: {
       enabled: true,
       fields: {
-        langs: { enabled: true, message: 'Injury Name Is Required' },
+        langs: { enabled: true, message: 'requiredFields.injuryName' },
         industry: { enabled: true, message: 'Industry Is Required' },
       },
     },
@@ -72,7 +72,7 @@ export const formValidation: {
     ObserverationTypeForm: {
       enabled: true,
       fields: {
-        langs: { enabled: true, message: 'Observation Type Name Is Required' },
+        langs: { enabled: true, message: 'requiredFields.observationTypeName' },
         industry: { enabled: true, message: 'Industry Is Required' },
       },
     },
@@ -80,7 +80,7 @@ export const formValidation: {
     RootCausesForm: {
       enabled: true,
       fields: {
-        langs: { enabled: true, message: 'Root Cause Name Is Required' },
+        langs: { enabled: true, message: 'requiredFields.rootCauseName' },
         industry: { enabled: true, message: 'Industry Is Required' },
       },
     },
@@ -88,25 +88,25 @@ export const formValidation: {
     EquipmentTypeForm: {
       enabled: true,
       fields: {
-        langs: { enabled: true, message: 'Equipment Brand Name Is Required' },
+        langs: { enabled: true, message: 'requiredFields.equipmentBrandName' },
         industry: { enabled: true, message: 'Industry Is Required' },
-        image: { enabled: false, message: 'Image Is Required' },
+        image: { enabled: false, message: 'requiredFields.image' },
       },
     },
     // src/features/setting/HazardType/Presentation/components/HazardTypeForm.vue
     HazardTypeForm: {
       enabled: true,
       fields: {
-        langs: { enabled: true, message: 'Hazard Classification Name Is Required' },
+        langs: { enabled: true, message: 'requiredFields.hazardClassificationName' },
         industry: { enabled: true, message: 'Industry Is Required' },
-        Factor: { enabled: false, message: 'Factor Is Required' },
+        Factor: { enabled: false, message: 'requiredFields.factor' },
       },
     },
     // src/features/setting/AccidentsTypes/Presentation/components/AccidentsTypeForm.vue
     AccidentsTypeForm: {
       enabled: true,
       fields: {
-        langs: { enabled: true, message: 'Incident Type Name Is Required' },
+        langs: { enabled: true, message: 'requiredFields.incidentTypeName' },
         industry: { enabled: true, message: 'Industry Is Required' },
       },
     },
@@ -148,7 +148,7 @@ export const formValidation: {
       enabled: true,
       fields: {
         langs: { enabled: true, message: 'Title Is Required' },
-        department: { enabled: true, message: 'Department is required' },
+        department: { enabled: true, message: 'requiredFields.department' },
       },
     },
     // src/features/Organization/Inspection/Presentation/components/InspectionForm.vue
@@ -218,9 +218,9 @@ export const formValidation: {
       fields: {
         mangementChangeTopicType: {
           enabled: true,
-          message: 'Management Change Topic Type Is Required',
+          message: 'requiredFields.changeTopicType',
         },
-        title: { enabled: true, message: 'Management Change Topic Type Title Is Required' },
+        title: { enabled: true, message: 'requiredFields.changeTopicTypeTitle' },
       },
     },
     // src/features/Organization/MangementOfChange/Presentation/components/MangementChangeForm.vue
@@ -356,7 +356,7 @@ export const formValidation: {
     WhereHouseForm: {
       enabled: true,
       fields: {
-        Name: { enabled: true, message: 'Warehouse Is Required' },
+        Name: { enabled: true, message: 'requiredFields.warehouse' },
         SelectedWhereHouseType: { enabled: true, message: 'Warehouse Type Is Required' },
       },
     },
@@ -364,7 +364,7 @@ export const formValidation: {
     WhereHouseTypeForm: {
       enabled: true,
       fields: {
-        langs: { enabled: true, message: 'warehouse type Is Required' },
+        langs: { enabled: true, message: 'requiredFields.warehouseType' },
         industry: { enabled: true, message: 'Industry Is Required' },
       },
     },

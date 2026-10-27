@@ -9,8 +9,6 @@ import ShowHomeViewPricingController from '../controllers/showHomeViewPricingCon
 import ShowHomeViewPricingParams from '../../Core/params/showHomeViewPricingParams'
 import EditHomeViewPricingController from '../controllers/editHomeViewPricingController'
 
-
-
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
@@ -61,7 +59,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditHomeViewPricing">
         <HomeViewPricingForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">Edit</button>
+          <button type="submit" class="btn btn-primary">{{ $t('Edit') }}</button>
         </div>
       </form>
     </template>

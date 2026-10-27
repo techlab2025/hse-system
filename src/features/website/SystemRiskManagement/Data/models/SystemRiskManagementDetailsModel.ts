@@ -1,5 +1,9 @@
+import { getCurrentLocale } from '@/localization/i18n'
 // import type TitleModel from "@/base/core/Models/title_model";
-import TranslationsParams, { type TitleLocale, type SubtitlesLocale } from '@/base/core/params/translations_params.ts'
+import TranslationsParams, {
+  type TitleLocale,
+  type SubtitlesLocale,
+} from '@/base/core/params/translations_params.ts'
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
 // import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
@@ -14,8 +18,6 @@ export default class SystemRiskManagementDetailsModel {
   public image: string
   public alt: string
 
-
-
   constructor(
     id: number,
     titles: TitleLocale[],
@@ -23,7 +25,6 @@ export default class SystemRiskManagementDetailsModel {
 
     alt: string,
     image: string,
-
   ) {
     this.id = id
     this.titles = titles
@@ -31,34 +32,29 @@ export default class SystemRiskManagementDetailsModel {
 
     this.alt = alt
     this.image = image
-
   }
 
-static fromMap(data: any): SystemRiskManagementDetailsModel {
-  const translations = TranslationsParams.fromMap(
-    data.titles,
-    [],
-    data.subtitles,
-  )
+  static fromMap(data: any): SystemRiskManagementDetailsModel {
+    const translations = TranslationsParams.fromMap(data.titles, [], data.subtitles)
 
-  console.log('translations', translations)
+    console.log('translations', translations)
 
-  return new SystemRiskManagementDetailsModel(
-    data.id,
-    translations.titles,
-    translations.subtitles,
-    data.alt,
-    data.image,
-  )
-}
-
+    return new SystemRiskManagementDetailsModel(
+      data.id,
+      translations.titles,
+      translations.subtitles,
+      data.alt,
+      data.image,
+    )
+  }
 
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     return new TitleInterface({
       id: data.id,
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data.titles,
     })
   }
 }

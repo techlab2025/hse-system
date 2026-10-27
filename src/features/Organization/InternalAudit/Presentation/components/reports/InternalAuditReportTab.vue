@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import {
   computed,
   nextTick,
@@ -139,7 +141,7 @@ function saveDraft() {
   if (isReported.value) return
   if (!internalAuditPlanId.value) {
     hasError.value = true
-    feedback.value = 'Select an audit before saving the report draft.'
+    feedback.value = localizeUi('Select an audit before saving the report draft.')
     return
   }
   localStorage.setItem(
@@ -154,7 +156,7 @@ function saveDraft() {
     }),
   )
   hasError.value = false
-  feedback.value = 'Report draft saved on this device.'
+  feedback.value = localizeUi('Report draft saved on this device.')
 }
 
 async function fetchDetails() {
@@ -180,7 +182,7 @@ async function fetchDetails() {
   if (!internalAuditPlanId.value) {
     details.value = null
     hasError.value = true
-    feedback.value = 'Select an audit from the Audit Register to create its report.'
+    feedback.value = localizeUi('Select an audit from the Audit Register to create its report.')
     return
   }
 
@@ -197,12 +199,13 @@ async function fetchDetails() {
       ])
       if (version !== loadVersion) return
       if (planResult instanceof DataSuccess) reportPlan.value = planResult.data
-      else documentError.value = 'Unable to load the full audit plan.'
+      else documentError.value = localizeUi('Unable to load the full audit plan.')
       if (attendanceResult instanceof DataSuccess || attendanceResult instanceof DataEmpty) {
         reportAttendance.value = attendanceResult.data ?? []
-      } else documentError.value = 'Unable to load audit attendance.'
+      } else documentError.value = localizeUi('Unable to load audit attendance.')
     } catch {
-      if (version === loadVersion) documentError.value = 'Unable to load the full report data.'
+      if (version === loadVersion)
+        documentError.value = localizeUi('Unable to load the full report data.')
     } finally {
       if (version === loadVersion) documentLoading.value = false
     }
@@ -250,11 +253,11 @@ async function fetchDetails() {
 }
 
 function validate(): boolean {
-  if (!internalAuditPlanId.value) feedback.value = 'An internal audit is required.'
-  else if (!scope.value.trim()) feedback.value = 'Scope is required.'
-  else if (!methodology.value.trim()) feedback.value = 'Methodology is required.'
-  else if (!maintenance.value.trim()) feedback.value = 'Maintenance is required.'
-  else if (!conclusion.value.trim()) feedback.value = 'Conclusion is required.'
+  if (!internalAuditPlanId.value) feedback.value = localizeUi('An internal audit is required.')
+  else if (!scope.value.trim()) feedback.value = localizeUi('Scope is required.')
+  else if (!methodology.value.trim()) feedback.value = localizeUi('Methodology is required.')
+  else if (!maintenance.value.trim()) feedback.value = localizeUi('Maintenance is required.')
+  else if (!conclusion.value.trim()) feedback.value = localizeUi('Conclusion is required.')
   else {
     feedback.value = ''
     hasError.value = false
@@ -287,7 +290,7 @@ async function submit() {
     emit('saved')
     await fetchDetails()
     previewMode.value = true
-    if (!hasError.value) feedback.value = 'Internal audit report issued successfully.'
+    if (!hasError.value) feedback.value = localizeUi('Internal audit report issued successfully.')
     return
   }
 
@@ -339,9 +342,9 @@ onDeactivated(() => {
   <section class="report-tab">
     <header class="report-header" data-pdf-exclude>
       <div>
-        <span class="eyebrow">Final audit record</span>
-        <h2>Audit Report</h2>
-        <p>Audit plan, attendance, all NCRs, and report details.</p>
+        <span class="eyebrow">{{ $t('Final audit record') }}</span>
+        <h2>{{ $t('Audit Report') }}</h2>
+        <p>{{ $t('Audit plan, attendance, all NCRs, and report details.') }}</p>
       </div>
       <div class="header-actions">
         <button
@@ -350,7 +353,7 @@ onDeactivated(() => {
           :disabled="!details || isLoading || isExporting || !!documentError || !!ncrError"
           @click="previewMode = !previewMode"
         >
-          {{ previewMode ? 'Back to form' : 'Preview' }}
+          {{ previewMode ? $t('Back to form') : $t('Preview') }}
         </button>
         <button
           class="secondary-button"
@@ -358,7 +361,7 @@ onDeactivated(() => {
           :disabled="!details || isLoading || isExporting || !!documentError || !!ncrError"
           @click="printReport"
         >
-          {{ isExporting ? 'Exporting…' : 'Export PDF' }}
+          {{ isExporting ? $t('Exporting…') : $t('Export PDF') }}
         </button>
       </div>
     </header>
@@ -372,7 +375,7 @@ onDeactivated(() => {
       {{ feedback }}
     </p>
     <p v-if="exportError" class="message error" role="alert" data-pdf-exclude>{{ exportError }}</p>
-    <div v-if="isLoading" class="report-loading" aria-label="Loading audit details">
+    <div v-if="isLoading" class="report-loading" :aria-label="$t('Loading audit details')">
       <span v-for="index in 4" :key="index"></span>
     </div>
     <template v-else-if="details">
@@ -402,50 +405,59 @@ onDeactivated(() => {
       <form v-else class="report-form" @submit.prevent="submit">
         <section class="report-section">
           <div class="section-title">
-            <h3>4. Report details</h3>
-            <p>Audit findings and conclusion.</p>
+            <h3>{{ $t('4. Report details') }}</h3>
+            <p>{{ $t('Audit findings and conclusion.') }}</p>
           </div>
           <label class="field"
-            ><span>Scope clarifications <b>*</b></span
-            ><textarea v-model="scope" rows="4" :disabled="isReported || previewMode"></textarea>
+            ><span>{{ $t('Scope clarifications') }} <b>*</b></span
+            ><textarea
+              dir="auto"
+              v-model="scope"
+              rows="4"
+              :disabled="isReported || previewMode"
+            ></textarea>
           </label>
           <label class="field"
-            ><span>Methodology <b>*</b></span
+            ><span>{{ $t('Methodology') }} <b>*</b></span
             ><textarea
+              dir="auto"
               v-model="methodology"
               rows="4"
               :disabled="isReported || previewMode"
             ></textarea>
           </label>
           <label class="field"
-            ><span>Maintenance <b>*</b></span
+            ><span>{{ $t('Maintenance') }} <b>*</b></span
             ><textarea
+              dir="auto"
               v-model="maintenance"
               rows="4"
               :disabled="isReported || previewMode"
             ></textarea>
           </label>
           <label class="field"
-            ><span>General observations</span
+            ><span>{{ $t('General observations') }}</span
             ><textarea
+              dir="auto"
               v-model="generalObservations"
               rows="4"
               :disabled="isReported || previewMode"
             ></textarea>
           </label>
-       
+
           <HandleFIlesUpload
             v-if="!isReported && !previewMode"
-            label="Report attachments (optional)"
+            :label="$t('Report attachments (optional)')"
             accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
             :multiple="true"
             :file="reportAttachments"
             :max-files="10"
             @change="setAttachments"
           />
-             <label class="field"
-            ><span>Conclusion <b>*</b></span
+          <label class="field"
+            ><span>{{ $t('Conclusion') }} <b>*</b></span
             ><textarea
+              dir="auto"
               v-model="conclusion"
               rows="4"
               :disabled="isReported || previewMode"
@@ -453,17 +465,21 @@ onDeactivated(() => {
           </label>
         </section>
         <p v-if="!isReported && !canIssueReport" class="stage-note">
-          The report can be issued after the plan is published and the audit start date is reached.
+          {{
+            $t(
+              'The report can be issued after the plan is published and the audit start date is reached.',
+            )
+          }}
         </p>
         <footer v-if="!isReported && !previewMode" class="form-actions" data-pdf-exclude>
           <button class="secondary-button" type="button" :disabled="isSaving" @click="saveDraft">
-            Save Draft</button
+            {{ $t('Save Draft') }}</button
           ><button
             class="primary-button"
             type="submit"
             :disabled="isSaving || !canIssueReport || !!ncrError"
           >
-            {{ isSaving ? 'Issuing report…' : 'Issue Report' }}
+            {{ isSaving ? $t('Issuing report…') : $t('Issue Report') }}
           </button>
         </footer>
       </form>
@@ -471,7 +487,7 @@ onDeactivated(() => {
   </section>
 </template>
 <style scoped>
-.diable{
+.diable {
   pointer-events: none;
   opacity: 0.6;
 }

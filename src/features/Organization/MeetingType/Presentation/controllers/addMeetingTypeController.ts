@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
@@ -35,7 +36,7 @@ export default class AddMeetingTypeController extends ControllerInterface<Meetin
     try {
       if (params instanceof AddMeetingTypeExcelParams) {
         if (!params.data.length) {
-          new OpenWarningDilaog('At least one row is required').openDialog()
+          new OpenWarningDilaog(localizeUi('At least one row is required')).openDialog()
           return
         }
 
@@ -80,7 +81,7 @@ export default class AddMeetingTypeController extends ControllerInterface<Meetin
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })

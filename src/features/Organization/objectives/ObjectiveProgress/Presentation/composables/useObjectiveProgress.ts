@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { computed, onBeforeUnmount, shallowRef, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import {
@@ -49,13 +50,13 @@ export function useObjectiveProgress() {
     error.value = ''
     history.value = new DataInitial()
     if (!canView.value) {
-      error.value = 'op.forbidden'
+      error.value = localizeUi('op.forbidden')
       loading.value = false
       return
     }
     const id = objectiveId.value
     if (!id) {
-      error.value = 'op.invalidObjective'
+      error.value = localizeUi('op.invalidObjective')
       loading.value = false
       return
     }
@@ -66,12 +67,12 @@ export function useObjectiveProgress() {
       const state = await controller.showObjectivesType(new ShowObjectivesParams(id))
       if (request !== generation) return
       if (!state.value.data || Number(state.value.data.id) !== id) {
-        error.value = 'op.notFound'
+        error.value = localizeUi('op.notFound')
         return
       }
       objective.value = state.value.data
     } catch {
-      if (request === generation) error.value = 'op.loadFailed'
+      if (request === generation) error.value = localizeUi('op.loadFailed')
     } finally {
       if (request === generation) loading.value = false
     }

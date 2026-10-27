@@ -20,8 +20,6 @@ const props = defineProps<{
   serviceId: number
 }>()
 
-
-
 const langsTitle = ref<{ locale: string; title: string }[]>([])
 const langsSubTitle = ref<{ locale: string; subtitle: string }[]>([])
 
@@ -131,20 +129,20 @@ watch(
 
     langsTitle.value = newData?.titles?.length
       ? newDefault.map((l) => {
-        const existing = newData.titles.find((t) => t.locale === l.locale)
-        return existing ?? { locale: l.locale, title: '' }
-      })
+          const existing = newData.titles.find((t) => t.locale === l.locale)
+          return existing ?? { locale: l.locale, title: '' }
+        })
       : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
     langsSubTitle.value = newData?.subtitles?.length
       ? newDefault.map((l) => {
-        const existing = newData.subtitles.find((t) => t.locale === l.locale)
-        return existing ?? { locale: l.locale, subtitle: '' }
-      })
+          const existing = newData.subtitles.find((t) => t.locale === l.locale)
+          return existing ?? { locale: l.locale, subtitle: '' }
+        })
       : newDefault.map((l) => ({ locale: l.locale, title: '' }))
-    SelectedColor.value = newData?.color??''
-    imageAlt.value = newData?.alt??''
-    image.value = newData?.image??''
+    SelectedColor.value = newData?.color ?? ''
+    imageAlt.value = newData?.alt ?? ''
+    image.value = newData?.image ?? ''
 
     updateData()
   },
@@ -190,11 +188,12 @@ const setImage = async (data: File | string) => {
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="color">Color</label>
+    <label for="color">{{ $t('Color') }}</label>
     <input
+      dir="auto"
       type="text"
       class="input"
-      placeholder="Select Color"
+      :placeholder="$t('Select Color')"
       id="color"
       v-model="SelectedColor"
     />
@@ -202,11 +201,12 @@ const setImage = async (data: File | string) => {
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="image-alt">{{ $t('image_alt') }}</label>
     <input
+      dir="auto"
       id="image-alt"
       v-model="imageAlt"
       type="text"
       class="input"
-      placeholder="Link"
+      :placeholder="$t('slug')"
       @input="UpdateAltImage"
     />
   </div>
@@ -216,9 +216,9 @@ const setImage = async (data: File | string) => {
     <SingleFileUpload
       :modelValue="image"
       @update:modelValue="setImage"
-      label="Image"
+      :label="$t('image')"
       id="image"
-      placeholder="Select image"
+      :placeholder="$t('Select image')"
       :isCrop="true"
       :aspectRatio="1 / 1"
     />

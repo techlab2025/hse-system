@@ -41,14 +41,18 @@ const closeTicket = () => {
     <Dialog
       v-model:visible="visible"
       modal
-      header="Header"
+      :header="$t('header')"
       :style="{ width: '50vw' }"
       :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
     >
       <template #header>
         <HeaderSection
-          title="Your problem has been successfully solved"
-          subtitle="If the problem has been fully resolved, close the ticket. If it hasn't been resolved, please let us know about the issue."
+          :title="$t('Your problem has been successfully solved')"
+          :subtitle="
+            $t(
+              'auditUi.close_the_ticket_if_the_issue_has_been_resolved_otherwise_describe_the_remaining_issue',
+            )
+          "
         />
       </template>
 

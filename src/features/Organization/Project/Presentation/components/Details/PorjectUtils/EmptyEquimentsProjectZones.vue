@@ -13,7 +13,7 @@ const props = defineProps<{
 <template>
   <div data-hse-project v-project-panels class="hse-project-root empty-zones-equipment">
     <div class="empty-zones-equipment-container">
-      <img :src="EquimentFolderEmpty" alt="empty-equipment" />
+      <img :src="EquimentFolderEmpty" alt="" aria-hidden="true" />
       <div class="header">
         <h2 class="title">{{ $t('empty zones') }}</h2>
         <p class="description">

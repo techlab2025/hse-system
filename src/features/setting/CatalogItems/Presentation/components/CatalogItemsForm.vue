@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
@@ -28,7 +30,7 @@ import CatalogItemsParams from '../../Core/params/CatalogGuideItemParams'
 
 const emit = defineEmits(['update:data'])
 const route = useRoute()
-const link = ref("")
+const link = ref('')
 const props = defineProps<{
   data?: CatalogItemsDetailsModel
 }>()
@@ -286,8 +288,10 @@ const SerialNumber = ref()
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
@@ -336,19 +340,26 @@ watch(
 
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <LangTitleInput
-      label="catalog_description"
+      :label="$t('auditUi.catalog_description')"
       :langs="langDefault"
       :modelValue="langsDescription"
       @update:modelValue="(val) => (langsDescription = val)"
       field-type="description"
       type="textarea"
-      :placeholder="`catalog description`"
+      :placeholder="$t('catalog description')"
       :required="false"
     />
   </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">
-    <label for="link">Link</label>
-    <input type="link" class="input" v-model="link"   @input="updateData" placeholder="Enter Link" />
+    <label for="link">{{ $t('slug') }}</label>
+    <input
+      dir="auto"
+      type="link"
+      class="input"
+      v-model="link"
+      @input="updateData"
+      :placeholder="$t('Enter Link')"
+    />
   </div>
   <!--  <div class="col-span-4 md:col-span-2 input-wrapper check-box">-->
   <!--    <label>{{ $t('has_certificate') }}</label>-->

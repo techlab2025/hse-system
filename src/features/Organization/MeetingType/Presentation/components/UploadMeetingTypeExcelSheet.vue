@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
 import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
 
@@ -33,11 +35,21 @@ const router = useRouter()
 let uploadRevision = 0
 const SendData = computed(() => meetingTypeExcelFields(false))
 const SendDataLabels: Record<string, string> = {
-  title: 'Meeting Type Title',
-  periodic_type: 'Periodic Type (1 Daily, 2 Weekly, 3 Monthly, 4 Yearly, 5 Dates)',
-  number_of_days: 'Number Of Days',
-  all_industries: 'All Industries (1 Yes, 0 No)',
-  industry_ids: 'Industry IDs (comma-separated)',
+  get title() {
+    return localizeUi('Meeting Type Title')
+  },
+  get periodic_type() {
+    return localizeUi('Periodic Type (1 Daily, 2 Weekly, 3 Monthly, 4 Yearly, 5 Dates)')
+  },
+  get number_of_days() {
+    return localizeUi('Number Of Days')
+  },
+  get all_industries() {
+    return localizeUi('All Industries (1 Yes, 0 No)')
+  },
+  get industry_ids() {
+    return localizeUi('Industry IDs (comma-separated)')
+  },
 }
 
 const fileUpload = async (file: File | null) => {
@@ -54,17 +66,18 @@ const fileUpload = async (file: File | null) => {
     const workbook = XLSX.read(await file.arrayBuffer(), { type: 'array' })
     if (revision !== uploadRevision) return
     const sheet = workbook.Sheets[workbook.SheetNames[0]]
-    if (!sheet) throw new Error('The workbook does not contain a worksheet.')
+    if (!sheet) throw new Error(localizeUi('The workbook does not contain a worksheet.'))
     const data = readLookupRows(sheet, {
       header: 1,
       raw: false,
       defval: '',
       blankrows: false,
     }) as ExcelSheet
-    if (data.length < 2) throw new Error('At least one data row is required.')
+    if (data.length < 2) throw new Error(localizeUi('At least one data row is required.'))
     const headers = data[0].map(normalizeMeetingTypeHeader)
     const named = headers.filter(Boolean)
-    if (new Set(named).size !== named.length) throw new Error('Excel column names must be unique.')
+    if (new Set(named).size !== named.length)
+      throw new Error(localizeUi('Excel column names must be unique.'))
     Data.value = data
     if (headers.includes('title') && headers.includes('periodic_type')) {
       mappedData.value = [headers, ...data.slice(1)]
@@ -119,9 +132,12 @@ const addMeetingTypes = async () => {
   errorMsg.value = ''
   let params: AddMeetingTypeExcelParams
   try {
-    params = new AddMeetingTypeExcelParams({
-      data: buildMeetingTypeExcelRows(mappedData.value, false),
-    }, getIndustryScope())
+    params = new AddMeetingTypeExcelParams(
+      {
+        data: buildMeetingTypeExcelRows(mappedData.value, false),
+      },
+      getIndustryScope(),
+    )
   } catch (error) {
     errorMsg.value = error instanceof Error ? error.message : 'Check the imported rows.'
     new OpenWarningDilaog(errorMsg.value).openDialog()
@@ -133,7 +149,9 @@ const addMeetingTypes = async () => {
     await addMeetingTypeController.addMeetingType(params, router)
     if (addMeetingTypeController.isDataSuccess()) emit('uploaded')
   } catch {
-    errorMsg.value = 'The meeting types could not be imported. Your preview is still available.'
+    errorMsg.value = localizeUi(
+      'The meeting types could not be imported. Your preview is still available.',
+    )
   } finally {
     isSubmitting.value = false
   }
@@ -146,20 +164,28 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
   <LookupIndustryScope v-model="industryScope" />
   <div class="page-wrapper meeting-type-excel-import">
     <div class="excel-warning">
-      <div class="warning-header"><span class="title">Meeting Type Excel Rules</span></div>
+      <div class="warning-header">
+        <span class="title">{{ $t('Meeting Type Excel Rules') }}</span>
+      </div>
       <div class="rule-description">
-        Fields: title, periodic_type, number_of_days. Periodic type: 1 = Daily, 2 = Weekly, 3 =
-        Monthly, 4 = Yearly, 5 = Dates. Leave number_of_days empty for Daily. Other types require a
-        positive whole number: Weekly up to 6, Monthly up to 29, Yearly up to 364.
+        {{
+          $t(
+            'Fields: title, periodic_type, number_of_days. Periodic type: 1 = Daily, 2 = Weekly, 3 = Monthly, 4 = Yearly, 5 = Dates. Leave number_of_days empty for Daily. Other types require a positive whole number: Weekly up to 6, Monthly up to 29, Yearly up to 364.',
+          )
+        }}
       </div>
       <p v-if="isAdmin" class="rule-description">
-        Choose All industries or select industries above. Your selection applies to every imported row.
+        {{
+          $t(
+            'Choose All industries or select industries above. Your selection applies to every imported row.',
+          )
+        }}
       </p>
     </div>
     <div v-if="errorMsg" class="error-banner" role="alert">{{ errorMsg }}</div>
     <div v-if="isLoading" class="loading-bar" role="status">
       <span class="loading-dot" /><span class="loading-dot" /><span class="loading-dot" />
-      <span class="loading-label">Processing file…</span>
+      <span class="loading-label">{{ $t('processing_file') }}</span>
     </div>
     <FileUpload
       v-if="!Data.length && !isLoading"
@@ -179,8 +205,8 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
       <template v-if="mappedData">
         <div class="table-container">
           <div class="table-header">
-            <h3 class="table-title">Mapped Data Preview</h3>
-            <span class="table-badge">{{ mappedData.length - 1 }} rows</span>
+            <h3 class="table-title">{{ $t('Mapped Data Preview') }}</h3>
+            <span class="table-badge">{{ mappedData.length - 1 }} {{ $t('rows') }}</span>
           </div>
           <div class="table-responsive">
             <table class="main-table">
@@ -201,8 +227,8 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
                     <button
                       class="btn-delete-row"
                       type="button"
-                      title="Delete row"
-                      :aria-label="`Delete row ${rowIndex + 1}`"
+                      :title="$t('delete_row')"
+                      :aria-label="$t('uiDynamic.deleteRow', { p0: rowIndex + 1 })"
                       :disabled="isSubmitting"
                       @click="deleteRow(rowIndex)"
                     >
@@ -220,7 +246,7 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
           :disabled="isSubmitting || mappedData.length < 2"
           @click="addMeetingTypes"
         >
-          {{ isSubmitting ? 'Importing…' : 'Confirm & Submit' }}
+          {{ isSubmitting ? $t('Importing…') : $t('Confirm & Submit') }}
         </button>
       </template>
     </template>

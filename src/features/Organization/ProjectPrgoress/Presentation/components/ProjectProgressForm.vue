@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
@@ -189,8 +191,10 @@ const SerialNumber = ref()
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
@@ -219,12 +223,13 @@ const fields = ref([
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="phone">{{ $t('phone') }}</label>
     <input
+      dir="auto"
       type="phone"
       id="phone"
       v-model="phone"
       @change="updateData"
       class="input"
-      placeholder="Enter Your phone"
+      :placeholder="$t('Enter Your phone')"
     />
   </div>
 </template>

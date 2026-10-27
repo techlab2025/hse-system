@@ -47,7 +47,7 @@
 
     .header p:last-child {
       position: relative;
-      padding-left: 12px;
+      padding-inline-start: 12px;
     }
 
     .header p:last-child::before {
@@ -57,7 +57,7 @@
       height: 6px;
       background-color: var(--status-success);
       border-radius: 50%;
-      margin-right: 4px;
+      margin-inline-end: 4px;
       vertical-align: middle;
     }
 

@@ -49,9 +49,9 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
           </svg>
         </span>
         <div>
-          <span class="eyebrow">Risk assessment</span>
-          <h2>{{ assessment?.activity || 'Assessment details' }}</h2>
-          <p>Review the activity, approval, description, and supporting evidence.</p>
+          <span class="eyebrow">{{ $t('Risk assessment') }}</span>
+          <h2>{{ assessment?.activity || $t('Assessment details') }}</h2>
+          <p>{{ $t('Review the activity, approval, description, and supporting evidence.') }}</p>
         </div>
       </div>
     </template>
@@ -60,35 +60,40 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
       <div v-if="loading" class="dialog-loading" role="status">
         <span class="loading-spinner"></span>
         <div>
-          <strong>Loading assessment details</strong><small>Retrieving the selected record…</small>
+          <strong>{{ $t('Loading assessment details') }}</strong
+          ><small>{{ $t('Retrieving the selected record…') }}</small>
         </div>
       </div>
 
       <div v-else-if="error" class="dialog-error" role="alert">
         <span aria-hidden="true">!</span>
         <div>
-          <strong>Unable to load details</strong><small>{{ error }}</small>
+          <strong>{{ $t('Unable to load details') }}</strong
+          ><small>{{ error }}</small>
         </div>
       </div>
 
       <template v-else-if="assessment">
-        <section class="overview-grid" aria-label="Assessment overview">
+        <section class="overview-grid" :aria-label="$t('Assessment overview')">
           <article>
             <span class="overview-icon" aria-hidden="true">⌖</span>
             <div>
-              <small>Work area</small><strong>{{ assessment.workAreaStrign || '—' }}</strong>
+              <small>{{ $t('Work area') }}</small
+              ><strong>{{ assessment.workAreaStrign || '—' }}</strong>
             </div>
           </article>
           <article>
             <span class="overview-icon" aria-hidden="true">◷</span>
             <div>
-              <small>Assessment date</small><strong>{{ assessment.date || '—' }}</strong>
+              <small>{{ $t('Assessment date') }}</small
+              ><strong>{{ assessment.date || '—' }}</strong>
             </div>
           </article>
           <article>
             <span class="overview-icon" aria-hidden="true">⌁</span>
             <div>
-              <small>Attachments</small><strong>{{ assessment.media.length }}</strong>
+              <small>{{ $t('Attachments') }}</small
+              ><strong>{{ assessment.media.length }}</strong>
             </div>
           </article>
         </section>
@@ -97,15 +102,15 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
           <div class="section-heading">
             <span class="section-number">01</span>
             <div>
-              <h3>Created By</h3>
-              <p>The employee responsible for this assessment.</p>
+              <h3>{{ $t('Created by') }}</h3>
+              <p>{{ $t('The employee responsible for this assessment.') }}</p>
             </div>
           </div>
           <div class="approver-card">
             <span class="approver-avatar">{{ approverInitial }}</span>
             <div class="approver-copy">
               <strong>{{ approverName }}</strong>
-              <span>{{ assessment.employeeApproverId?.email || 'No email available' }}</span>
+              <span>{{ assessment.employeeApproverId?.email || $t('No email available') }}</span>
             </div>
             <span v-if="assessment.employeeApproverId?.phone" class="approver-phone">
               {{ assessment.employeeApproverId.phone }}
@@ -117,21 +122,23 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
           <div class="section-heading">
             <span class="section-number">02</span>
             <div>
-              <h3>Activity description</h3>
-              <p>Documented work, hazards, and controls.</p>
+              <h3>{{ $t('Activity description') }}</h3>
+              <p>{{ $t('Documented work, hazards, and controls.') }}</p>
             </div>
           </div>
-          <p class="description-text">{{ assessment.desctiprion || 'No description provided.' }}</p>
+          <p class="description-text">
+            {{ assessment.desctiprion || $t('No description provided.') }}
+          </p>
         </section>
 
         <section class="detail-section">
           <div class="section-heading">
             <span class="section-number">03</span>
             <div>
-              <h3>Files attached to this assessment.</h3>
+              <h3>{{ $t('Files attached to this assessment.') }}</h3>
               <!-- <p>Files attached to this assessment.</p> -->
             </div>
-            <span class="file-count">{{ assessment.media.length }} files</span>
+            <span class="file-count">{{ assessment.media.length }} {{ $t('Files') }}</span>
           </div>
 
           <div v-if="assessment.media.length" class="media-grid">
@@ -149,7 +156,7 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
               </span>
               <span class="media-copy">
                 <strong>{{ mediaName(media, index) }}</strong>
-                <small>{{ media.mimeType || 'Supporting file' }}</small>
+                <small>{{ media.mimeType || $t('Supporting file') }}</small>
               </span>
               <span class="open-icon" aria-hidden="true">↗</span>
             </a>
@@ -157,8 +164,8 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
           <div v-else class="media-empty">
             <span aria-hidden="true">⌁</span>
             <div>
-              <strong>No attachments</strong
-              ><small>No supporting media was added to this assessment.</small>
+              <strong>{{ $t('No attachments') }}</strong
+              ><small>{{ $t('No supporting media was added to this assessment.') }}</small>
             </div>
           </div>
         </section>

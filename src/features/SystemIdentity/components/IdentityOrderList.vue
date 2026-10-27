@@ -73,7 +73,7 @@ const drop = (event: DragEvent, target: T) => {
       >
       <button
         type="button"
-        :aria-label="`Move ${field} earlier`"
+        :aria-label="$t('uiDynamic.moveEarlier', { p0: field })"
         :disabled="index === 0 || locked.includes(field) || locked.includes(model[index - 1])"
         @click="move(index, index - 1)"
       >
@@ -81,7 +81,7 @@ const drop = (event: DragEvent, target: T) => {
       </button>
       <button
         type="button"
-        :aria-label="`Move ${field} later`"
+        :aria-label="$t('uiDynamic.moveLater', { p0: field })"
         :disabled="
           index === model.length - 1 || locked.includes(field) || locked.includes(model[index + 1])
         "

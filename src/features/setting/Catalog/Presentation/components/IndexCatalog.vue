@@ -156,6 +156,7 @@ watch(
         <Search />
       </span>
       <input
+        dir="auto"
         v-model="word"
         :placeholder="$t('search')"
         class="input"
@@ -215,9 +216,9 @@ watch(
                     >{{ index + 1 }}
                   </span>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusTeamType-->
                   <!--                  v-if="item.TeamTypeStatus === TeamTypeStatusEnum.Draft"-->
                   <!--                  :TeamTypeId="item.id"-->
@@ -255,9 +256,13 @@ watch(
         >
           <DataEmpty
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
-            addText="Add Catalog"
-            description="You have no Catalog .. All your joined customers will appear here when you add your customer data"
-            title="You have No Catalog"
+            :addText="$t('Add_Catalog')"
+            :description="
+              $t(
+                'You have no Catalog .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Catalog')"
           />
         </permission-builder>
       </template>
@@ -272,9 +277,13 @@ watch(
         >
           <DataFailed
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/add`"
-            addText="Add Catalog"
-            description="You have no Catalog .. All your joined customers will appear here when you add your customer data"
-            title="You have No Catalog"
+            :addText="$t('Add_Catalog')"
+            :description="
+              $t(
+                'You have no Catalog .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Catalog')"
           />
         </permission-builder>
       </template>
@@ -290,8 +299,12 @@ watch(
         ]"
       >
         <DataFailed
-          addText="Have not  Permission"
-          description="You have no Catalog .. All your joined customers will appear here when you add your customer data"
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no Catalog .. All your joined customers will appear here when you add your customer data',
+            )
+          "
         />
       </permission-builder>
     </template>

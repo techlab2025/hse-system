@@ -12,9 +12,7 @@ type BreadCrumbItem = {
 export const buildBreadcrumb = (route: any, router: any): BreadCrumbItem[] => {
   const result: BreadCrumbItem[] = []
   const hierarchyDetails =
-    route.name === 'Edit Hierarchy'
-      ? ShowHerikalyController.getInstance().state.value.data
-      : null
+    route.name === 'Edit Hierarchy' ? ShowHerikalyController.getInstance().state.value.data : null
   const isDepartmentPage =
     (route.name === 'Add Hierarchy' && !route.params.parent_id) ||
     (hierarchyDetails?.id === Number(route.params.id) &&

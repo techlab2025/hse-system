@@ -15,7 +15,7 @@ defineProps<{
     <div class="valid-certificate">
       <div class="valid">
         <span class="not-required-date">
-          <span>Not Required</span>
+          <span>{{ $t('Not Required') }}</span>
         </span>
         <span class="not-required">
           <ValidIcon />

@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 function parseAttachments(value: unknown): { urls: string[]; fileNames: string[] } {
@@ -89,43 +90,46 @@ export default class InternalAuditPlanModel extends TitleInterface {
       rawAuditee) as Record<string, unknown> | null | undefined
     const attachments = parseAttachments(item.attachments)
 
-    return new InternalAuditPlanModel(
-      Number(item.id ?? 0),
-      String(item.title ?? item.audit_number ?? `IA-${item.id ?? 0}`),
-      String(item.audit_start_date ?? ''),
-      String(item.audit_end_date ?? ''),
-      String(item.status ?? 'draft'),
-      project
-        ? new TitleInterface({ id: Number(project.id ?? 0), title: String(project.title ?? '') })
-        : null,
-      Boolean(item.full_company),
-      auditStandards[0] ?? null,
-      Array.isArray(item.audit_team) ? item.audit_team : [],
-      Array.isArray(item.audit_scope) ? item.audit_scope : [],
-      Array.isArray(item.audit_schedule) ? item.audit_schedule : [],
-      String(item.serial_name ?? ''),
-      String(item.serial_number ?? ''),
-      Number(item.leader_id ?? leaderEmployee?.id ?? 0),
-      leaderEmployee
-        ? new TitleInterface({
-            id: Number(leaderEmployee.id ?? 0),
-            title: String(leaderEmployee.title ?? leaderEmployee.name ?? ''),
-          })
-        : null,
-      String(item.general_instructions ?? ''),
-      attachments.urls,
-      attachments.fileNames,
-      auditeeEmployee
-        ? new TitleInterface({
-            id: Number(auditeeEmployee.id ?? auditeeEmployee.organization_employee_id ?? 0),
-            title: String(auditeeEmployee.title ?? auditeeEmployee.name ?? ''),
-          })
-        : null,
-      auditStandards,
-      totalNcrs,
-      ClosedNcrs,
-      OpenNcrs,
-      String(item.reason_for_date_changes ?? ''),
+    return localizedRecord(
+      new InternalAuditPlanModel(
+        Number(item.id ?? 0),
+        String(item.title ?? item.audit_number ?? `IA-${item.id ?? 0}`),
+        String(item.audit_start_date ?? ''),
+        String(item.audit_end_date ?? ''),
+        String(item.status ?? 'draft'),
+        project
+          ? new TitleInterface({ id: Number(project.id ?? 0), title: String(project.title ?? '') })
+          : null,
+        Boolean(item.full_company),
+        auditStandards[0] ?? null,
+        Array.isArray(item.audit_team) ? item.audit_team : [],
+        Array.isArray(item.audit_scope) ? item.audit_scope : [],
+        Array.isArray(item.audit_schedule) ? item.audit_schedule : [],
+        String(item.serial_name ?? ''),
+        String(item.serial_number ?? ''),
+        Number(item.leader_id ?? leaderEmployee?.id ?? 0),
+        leaderEmployee
+          ? new TitleInterface({
+              id: Number(leaderEmployee.id ?? 0),
+              title: String(leaderEmployee.title ?? leaderEmployee.name ?? ''),
+            })
+          : null,
+        String(item.general_instructions ?? ''),
+        attachments.urls,
+        attachments.fileNames,
+        auditeeEmployee
+          ? new TitleInterface({
+              id: Number(auditeeEmployee.id ?? auditeeEmployee.organization_employee_id ?? 0),
+              title: String(auditeeEmployee.title ?? auditeeEmployee.name ?? ''),
+            })
+          : null,
+        auditStandards,
+        totalNcrs,
+        ClosedNcrs,
+        OpenNcrs,
+        String(item.reason_for_date_changes ?? ''),
+      ),
+      data,
     )
   }
 

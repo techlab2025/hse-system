@@ -172,7 +172,7 @@ const CreateAnswer = async () => {
       class="hse-project-root hse-project-button hse-project-button--primary btn btn-primary"
       @click="CreateAnswer"
     >
-      submit
+      {{ $t('submit') }}
     </button>
   </section>
 </template>

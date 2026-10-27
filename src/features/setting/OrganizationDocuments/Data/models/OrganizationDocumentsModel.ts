@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import OrganizationDocumentsDetailsModel from './OrganizationDocumentsDetailsModel'
 import type { OrganizationDocumentsFields } from '../../Core/params/addOrganizationDocumentsParams'
@@ -32,6 +33,9 @@ export default class OrganizationDocumentsModel
   }
 
   static fromMap(data: any): OrganizationDocumentsModel {
-    return new OrganizationDocumentsModel(OrganizationDocumentsDetailsModel.fromMap(data))
+    return localizedRecord(
+      new OrganizationDocumentsModel(OrganizationDocumentsDetailsModel.fromMap(data)),
+      data,
+    )
   }
 }

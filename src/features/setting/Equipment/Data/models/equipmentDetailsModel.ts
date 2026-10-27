@@ -1,3 +1,5 @@
+import { getCurrentLocale } from '@/localization/i18n'
+import { localizedRecord } from '@/localization/records'
 import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -145,65 +147,71 @@ export default class EquipmentDetailsModel {
   }
 
   static fromMap(data: any): EquipmentDetailsModel {
-    return new EquipmentDetailsModel(
-      data?.id,
-      data?.all_industries,
-      data?.certificate_image,
-      data?.date,
-      data?.inspection_duration,
-      data?.license_number,
-      data?.license_plate_number,
-      // this.getStatus(data.status),
-      data.status,
-      TranslationsParams.fromMap(data.titles).titles,
-      data.has_certificate,
-      0,
-      data.image,
-      data.industries.length > 0 ? data.industries.map((industry) => this.getTitle(industry)) : [],
-      data.equipment_type_id,
-      data.equipment_type ? EquipmentTypeDetailsModel?.fromMap(data.equipment_type) : null,
-      data.kilometer,
-      data.checkin_date,
-      data.period_type,
-      data.period,
-      data.wareHouse,
-      data.contractor ? ContractorDetailsModel?.fromMap(data.contractor) : null,
-      data.warehouse ? WhereHouseDetailsModel?.fromMap(data.warehouse) : null,
-      data.last_inspection_date,
-      data?.tasks_without_result?.length > 0
-        ? data.tasks_without_result.map((task) => InspectionModel?.fromMap(task))
-        : [],
-      data?.tasks_with_result?.length > 0
-        ? data.tasks_with_result.map((task) => InspectionModel?.fromMap(task))
-        : [],
-      data.certificate_exppired_date,
-      data.title,
-      data.inspections_count,
-      data.inspections_with_result_count,
-      data.lastest_inspection_result
-        ? LastInspectionModel.fromMap(data.lastest_inspection_result)
-        : null,
-      data.serial_name,
-      data.checkout_date,
-      data.qr_code_image,
-      data.equipment_condition ?? data.equipment_conditions ?? null,
-      data.equipment_used_status ?? null,
-      data?.worked_hours ? data?.worked_hours : '',
-      data?.ivms,
-      data?.equipment_worked_heavy,
-      data?.equipment_of_havy_status,
-      data?.manufacturing_year,
-      data?.ivms,
-      data?.equipment_worked_heavy,
+    return localizedRecord(
+      new EquipmentDetailsModel(
+        data?.id,
+        data?.all_industries,
+        data?.certificate_image,
+        data?.date,
+        data?.inspection_duration,
+        data?.license_number,
+        data?.license_plate_number,
+        // this.getStatus(data.status),
+        data.status,
+        TranslationsParams.fromMap(data.titles).titles,
+        data.has_certificate,
+        0,
+        data.image,
+        data.industries.length > 0
+          ? data.industries.map((industry) => this.getTitle(industry))
+          : [],
+        data.equipment_type_id,
+        data.equipment_type ? EquipmentTypeDetailsModel?.fromMap(data.equipment_type) : null,
+        data.kilometer,
+        data.checkin_date,
+        data.period_type,
+        data.period,
+        data.wareHouse,
+        data.contractor ? ContractorDetailsModel?.fromMap(data.contractor) : null,
+        data.warehouse ? WhereHouseDetailsModel?.fromMap(data.warehouse) : null,
+        data.last_inspection_date,
+        data?.tasks_without_result?.length > 0
+          ? data.tasks_without_result.map((task) => InspectionModel?.fromMap(task))
+          : [],
+        data?.tasks_with_result?.length > 0
+          ? data.tasks_with_result.map((task) => InspectionModel?.fromMap(task))
+          : [],
+        data.certificate_exppired_date,
+        data.title,
+        data.inspections_count,
+        data.inspections_with_result_count,
+        data.lastest_inspection_result
+          ? LastInspectionModel.fromMap(data.lastest_inspection_result)
+          : null,
+        data.serial_name,
+        data.checkout_date,
+        data.qr_code_image,
+        data.equipment_condition ?? data.equipment_conditions ?? null,
+        data.equipment_used_status ?? null,
+        data?.worked_hours ? data?.worked_hours : '',
+        data?.ivms,
+        data?.equipment_worked_heavy,
+        data?.equipment_of_havy_status,
+        data?.manufacturing_year,
+        data?.ivms,
+        data?.equipment_worked_heavy,
+      ),
+      data,
     )
   }
 
   static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     return new TitleInterface({
       id: data?.id,
       title: data?.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      localizedTitles: data?.titles,
     })
   }
   // static example: EquipmentDetailsModel = new EquipmentDetailsModel(

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import { computed, onMounted, ref } from 'vue'
@@ -59,11 +61,11 @@ const loadTeams = async () => {
 const submit = async () => {
   error.value = ''
   if (!drillType.value?.id || !projectTeam.value?.id || !date.value || !time.value) {
-    error.value = 'Drill type, project team, date and time are required.'
+    error.value = localizeUi('Drill type, project team, date and time are required.')
     return
   }
   if (!serialIsAuto.value && !serial.value.trim()) {
-    error.value = 'Serial number is required when manual serial numbering is enabled.'
+    error.value = localizeUi('Serial number is required when manual serial numbering is enabled.')
     return
   }
 
@@ -109,12 +111,13 @@ onMounted(loadTeams)
           ><FieldHelpIcon
             :text="
               serialIsAuto
-                ? 'The serial will be generated automatically.'
-                : 'Enter the drill serial number.'
+                ? $t('The serial will be generated automatically.')
+                : $t('Enter the drill serial number.')
             "
           />
         </div>
         <input
+          dir="auto"
           id="drill_serial"
           v-model="serial"
           class="hse-project-input input"
@@ -146,7 +149,7 @@ onMounted(loadTeams)
       <div class="hse-project-field input-wrapper">
         <div class="hse-project-field field-label">
           <label class="hse-project-field-label" for="drill_date">{{ $t('Drill date') }}</label
-          ><FieldHelpIcon text="Select the drill date." />
+          ><FieldHelpIcon :text="$t('Select the drill date.')" />
         </div>
         <DatePicker
           panel-class="hse-project-overlay hse-project-planning"
@@ -160,7 +163,7 @@ onMounted(loadTeams)
       <div class="hse-project-field input-wrapper">
         <div class="hse-project-field field-label">
           <label class="hse-project-field-label" for="drill_time">{{ $t('Drill time') }}</label
-          ><FieldHelpIcon text="Select the drill start time." />
+          ><FieldHelpIcon :text="$t('Select the drill start time.')" />
         </div>
         <DatePicker
           panel-class="hse-project-overlay hse-project-planning"
@@ -183,9 +186,10 @@ onMounted(loadTeams)
       <div class="hse-project-field input-wrapper full-field">
         <div class="hse-project-field field-label">
           <label class="hse-project-field-label" for="drill_notes">{{ $t('scenario') }}</label
-          ><FieldHelpIcon text="Add any supporting scenario for this drill." />
+          ><FieldHelpIcon :text="$t('Add any supporting scenario for this drill.')" />
         </div>
         <textarea
+          dir="auto"
           id="drill_notes"
           v-model="notes"
           class="hse-project-input input"

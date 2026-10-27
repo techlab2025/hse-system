@@ -185,10 +185,22 @@ const setIsFree = (value: boolean) => {
 
 const SubscriptionType = ref<TitleInterface>()
 const SubscriptionTypes = ref<TitleInterface[]>([
-  new TitleInterface({ id: SubscriptionTypeEnum.TRIAL, title: 'Trial' }),
-  new TitleInterface({ id: SubscriptionTypeEnum.LIFETIME, title: 'Lifetime' }),
-  new TitleInterface({ id: SubscriptionTypeEnum.MONTHLY, title: 'Monthly' }),
-  new TitleInterface({ id: SubscriptionTypeEnum.YEARLY, title: 'Yearly' }),
+  new TitleInterface({ id: SubscriptionTypeEnum.TRIAL, title: 'Trial', translationKey: 'Trial' }),
+  new TitleInterface({
+    id: SubscriptionTypeEnum.LIFETIME,
+    title: 'Lifetime',
+    translationKey: 'Lifetime',
+  }),
+  new TitleInterface({
+    id: SubscriptionTypeEnum.MONTHLY,
+    title: 'Monthly',
+    translationKey: 'Monthly',
+  }),
+  new TitleInterface({
+    id: SubscriptionTypeEnum.YEARLY,
+    title: 'Yearly',
+    translationKey: 'Yearly',
+  }),
 ])
 
 const setSubscriptionType = (value: TitleInterface) => {
@@ -205,10 +217,11 @@ const setSubscriptionType = (value: TitleInterface) => {
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="price">{{ $t('price') }}</label>
     <input
+      dir="auto"
       id="price"
       type="text"
       v-model="price"
-      placeholder="Enter Price"
+      :placeholder="$t('Enter Price')"
       class="input"
       @input="updateData"
     />
@@ -216,10 +229,11 @@ const setSubscriptionType = (value: TitleInterface) => {
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="days">{{ $t('days') }}</label>
     <input
+      dir="auto"
       id="days"
       type="text"
       v-model="days"
-      placeholder="Enter Days"
+      :placeholder="$t('Enter Days')"
       class="input"
       @input="updateData"
     />
@@ -227,7 +241,7 @@ const setSubscriptionType = (value: TitleInterface) => {
   <div class="input-wrapper col-span-2">
     <CustomCheckbox
       :index="4"
-      :title="`is_support_exists`"
+      :title="$t('is_support_exists')"
       :checked="isSupportExists"
       @update:checked="setIsSupportExists"
     />
@@ -235,10 +249,11 @@ const setSubscriptionType = (value: TitleInterface) => {
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="isSupportExists">
     <label for="support_days">{{ $t('support_days') }}</label>
     <input
+      dir="auto"
       id="support_days"
       type="text"
       v-model="support_days"
-      placeholder="Enter Support Days"
+      :placeholder="$t('Enter Support Days')"
       class="input"
       @input="updateData"
     />
@@ -246,17 +261,18 @@ const setSubscriptionType = (value: TitleInterface) => {
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="isSupportExists">
     <label for="support_price">{{ $t('support_price') }}</label>
     <input
+      dir="auto"
       id="support_price"
       type="text"
       v-model="support_price"
-      placeholder="Enter Support Price"
+      :placeholder="$t('Enter Support Price')"
       class="input"
       @input="updateData"
     />
   </div>
   <div class="input-wrapper col-span-2">
     <CustomCheckbox
-      :title="`is_active`"
+      :title="$t('is_active')"
       :checked="isActive"
       @update:checked="setIsActive"
       :index="1"
@@ -264,22 +280,27 @@ const setSubscriptionType = (value: TitleInterface) => {
   </div>
   <div class="input-wrapper col-span-2">
     <CustomCheckbox
-      :title="`is_default`"
+      :title="$t('is_default')"
       :checked="isDefault"
       @update:checked="setIsDefault"
       :index="2"
     />
   </div>
   <div class="input-wrapper col-span-2">
-    <CustomCheckbox :title="`is_free`" :checked="isFree" @update:checked="setIsFree" :index="3" />
+    <CustomCheckbox
+      :title="$t('is_free')"
+      :checked="isFree"
+      @update:checked="setIsFree"
+      :index="3"
+    />
   </div>
   <div class="input-wrapper col-span-2">
     <UpdatedCustomInputSelect
       :modelValue="SubscriptionType"
       :staticOptions="SubscriptionTypes"
-      label="Type"
+      :label="$t('Type')"
       id="Type"
-      placeholder="Select Type"
+      :placeholder="$t('Select Type')"
       @update:modelValue="setSubscriptionType"
     />
   </div>

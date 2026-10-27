@@ -58,8 +58,12 @@ export default class DrillModel {
     'Evacuation completed within the target time.',
     'Improve radio communication at the assembly point.',
     'All participants attended the debrief.',
-    new TitleInterface({ id: 1, title: 'Fire Drill' }),
-    new TitleInterface({ id: 4, title: 'Emergency Response Team' }),
+    new TitleInterface({ id: 1, title: 'Fire Drill', translationKey: 'Fire Drill' }),
+    new TitleInterface({
+      id: 4,
+      title: 'Emergency Response Team',
+      translationKey: 'Emergency Response Team',
+    }),
     [
       new DrillTimelineItemModel(
         1,

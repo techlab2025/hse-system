@@ -52,13 +52,7 @@ const fetchContractor = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const indexContractorParams = new IndexContractorParams(
-    query,
-    pageNumber,
-    perPage,
-    withPage,
-    id,
-  )
+  const indexContractorParams = new IndexContractorParams(query, pageNumber, perPage, withPage, id)
   await indexContractorController.getData(indexContractorParams)
 }
 
@@ -144,33 +138,46 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchContractorType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchContractorType" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchContractorType"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-      <permission-builder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.ORG_CONTRACTOR_CREATE,
-      ]">
-        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
-          class="btn btn-primary">
+      <permission-builder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.ORG_CONTRACTOR_CREATE,
+        ]"
+      >
+        <router-link
+          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
+          class="btn btn-primary"
+        >
           {{ $t('add_contractor') }}
         </router-link>
       </permission-builder>
     </div>
   </div>
 
-  <permission-builder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.ORG_CONTRACTOR_ALL,
-    PermissionsEnum.ORG_CONTRACTOR_DELETE,
-    PermissionsEnum.ORG_CONTRACTOR_FETCH,
-    PermissionsEnum.ORG_CONTRACTOR_UPDATE,
-    PermissionsEnum.ORG_CONTRACTOR_CREATE,
-  ]">
+  <permission-builder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_CONTRACTOR_ALL,
+      PermissionsEnum.ORG_CONTRACTOR_DELETE,
+      PermissionsEnum.ORG_CONTRACTOR_FETCH,
+      PermissionsEnum.ORG_CONTRACTOR_UPDATE,
+      PermissionsEnum.ORG_CONTRACTOR_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -193,31 +200,45 @@ watch(
                   <!-- <router-link
                     :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/edit/${item.id}`">
                   </router-link> -->
-                    {{  index + 1 }}
+                  {{ index + 1 }}
                 </td>
-                <td data-label="Name">{{ wordSlice(item?.title) }}</td>
-                <td data-label="Phone">{{ item?.phone }}</td>
-                <td data-label="Expire Date">{{ item?.expire_date }}</td>
-                <td data-label="Contract Status">
-                  <span :class="`badge badge-${item.status === ContractorStatusEnum.ACTIVE ? 'success' : 'danger'}`" :style="item.status === ContractorStatusEnum.ACTIVE ? 'color: #28a745;' : 'color: #dc3545;'">
+                <td :data-label="$t('Name')">{{ wordSlice(item?.title) }}</td>
+                <td :data-label="$t('Phone')">{{ item?.phone }}</td>
+                <td :data-label="$t('expire Date')">{{ item?.expire_date }}</td>
+                <td :data-label="$t('Contract Status')">
+                  <span
+                    :class="`badge badge-${item.status === ContractorStatusEnum.ACTIVE ? 'success' : 'danger'}`"
+                    :style="
+                      item.status === ContractorStatusEnum.ACTIVE
+                        ? 'color: #28a745;'
+                        : 'color: #dc3545;'
+                    "
+                  >
                     {{ item.status === ContractorStatusEnum.ACTIVE ? t('valid') : t('invalid') }}
                   </span>
                 </td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusContractorType-->
                   <!--                  v-if="item.ContractorTypeStatus === ContractorTypeStatusEnum.Draft"-->
                   <!--                  :ContractorTypeId="item.id"-->
                   <!--                  @ContractorTypeChangeStatus="fetchContractorType"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteContractor)" @delete="deleteContractor(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteContractor)"
+                    @delete="deleteContractor(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -226,38 +247,58 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <permission-builder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.ORG_CONTRACTOR_CREATE,
-        ]">
-          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
-            addText="Add Contractor"
-            description="You have no Contractor .. All your joined customers will appear here when you add your customer data"
-            title="You have No Contractor" />
+        <permission-builder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.ORG_CONTRACTOR_CREATE,
+          ]"
+        >
+          <DataEmpty
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
+            :addText="$t('Add Contractor')"
+            :description="
+              $t(
+                'You have no Contractor .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Contractor')"
+          />
         </permission-builder>
       </template>
       <template #failed>
-        <permission-builder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.ORG_CONTRACTOR_CREATE,
-        ]">
-          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
-            addText="Add Contractor"
-            description="You have no Contractor .. All your joined customers will appear here when you add your customer data"
-            title="You have No Contractor" />
+        <permission-builder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.ORG_CONTRACTOR_CREATE,
+          ]"
+        >
+          <DataFailed
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/contractor/add`"
+            :addText="$t('Add Contractor')"
+            :description="
+              $t(
+                'You have no Contractor .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No Contractor')"
+          />
         </permission-builder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no Contractor .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Contractor .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+      />
     </template>
   </permission-builder>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

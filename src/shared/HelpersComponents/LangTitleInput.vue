@@ -1,6 +1,11 @@
 <script setup lang="ts">
-import { computed, ref, watch, type Component } from 'vue'
+import { translate, translateKeyOrLiteral, i18n } from '@/localization/i18n'
+
+import { computed, ref, watch, useId, type Component } from 'vue'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
+
+const fieldId = `localized-field-${useId()}`
+const validationId = `${fieldId}-error`
 
 type LocalizedField = {
   locale: string
@@ -186,6 +191,10 @@ const getInitialActiveLang = () => {
   return props.langs[0]?.locale || ''
 }
 
+watch(i18n.global.locale, () => {
+  if (validationError.value) validateTitles()
+})
+
 // Active language - initialized properly
 const lang = ref(getInitialActiveLang())
 
@@ -208,7 +217,9 @@ const hasAtLeastOneValue = computed(() => {
 // Validate and emit validation status
 const validateTitles = () => {
   if (props.required && !hasAtLeastOneValue.value) {
-    validationError.value = `At least one language ${props.fieldType} is required`
+    validationError.value = translate('validation.localizedFieldRequired', {
+      field: translateKeyOrLiteral(props.fieldType),
+    })
     emit('validate', false)
     return false
   }
@@ -248,11 +259,18 @@ watch(fieldValue, (val) => {
 })
 
 const placeholderText = computed(() => {
-  return props.placeholder || props.label || `Enter ${props.fieldType}...`
+  return (
+    translateKeyOrLiteral(props.placeholder || props.label) || translateKeyOrLiteral('Enter text')
+  )
 })
 
 const inputAttrs = computed(() => ({
+  id: fieldId,
+  'aria-required': props.required,
+  'aria-invalid': Boolean(validationError.value),
+  'aria-describedby': validationError.value ? validationId : undefined,
   placeholder: placeholderText.value,
+  dir: lang.value === 'ar' ? 'rtl' : lang.value === 'en' ? 'ltr' : 'auto',
   maxlength: props.maxlength,
   disabled: props.disabled,
   class: isTextarea.value ? 'textarea-input' : 'text-input',
@@ -291,10 +309,10 @@ watch(hasAtLeastOneValue, (isValid) => {
 </script>
 
 <template>
-  <div class="input-wrapper">
+  <div class="input-wrapper localized-field">
     <div class="label-wrapper">
-      <label class="flex items-center gap-2">
-        {{ $t(label) }}
+      <label :for="fieldId" class="flex items-center gap-2">
+        {{ translateKeyOrLiteral(label) }}
         <!-- <span class="text-red-500" v-if="required">*</span> -->
         <span class="text-red-500" v-if="required">
           <!-- <StarRequiredInput /> -->
@@ -308,19 +326,20 @@ watch(hasAtLeastOneValue, (isValid) => {
         <div class="input-lang" v-for="(l, index) in langs" :key="index">
           <input
             type="radio"
-            :id="`${label}-${l.locale}`"
-            :name="label"
+            :id="`${fieldId}-${l.locale}`"
+            :name="`${fieldId}-language`"
             :value="l.locale"
             v-model="lang"
             :required="props.required"
           />
-          <label class="icon-lng" :for="`${label}-${l.locale}`">
+          <label class="icon-lng" :for="`${fieldId}-${l.locale}`" :title="l.locale.toUpperCase()">
             <component :is="l.icon" />
+            <span class="language-code">{{ l.locale.toUpperCase() }}</span>
             <!-- Visual indicator if this language has content for the current field type -->
             <span
               v-if="getFieldValue(titles.find((t) => t.locale === l.locale))"
               class="lang-indicator"
-              :title="`${l.locale.toUpperCase()} has content`"
+              :title="$t('uiDynamic.hasContent', { p0: l.locale.toUpperCase() })"
             >
               ✓
             </span>
@@ -350,12 +369,12 @@ watch(hasAtLeastOneValue, (isValid) => {
     />
 
     <!-- Selected Language Info -->
-    <span class="select-lang">
-      {{ lang ? lang.toUpperCase() : 'select language from the top' }}
+    <span class="select-lang" aria-hidden="true">
+      {{ lang ? lang.toUpperCase() : $t('select language from the top') }}
     </span>
 
     <!-- Validation Error -->
-    <div v-if="validationError" class="validation-error">
+    <div v-if="validationError" :id="validationId" role="alert" class="validation-error">
       {{ validationError }}
     </div>
   </div>

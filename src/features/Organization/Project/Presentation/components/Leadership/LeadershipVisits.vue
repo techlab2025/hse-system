@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { translate as localizeUi } from '@/localization/i18n'
+
 import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { vProjectPanels } from '../../composables/projectPanels'
@@ -79,7 +81,7 @@ const fetchReportDetails = async (visitId: number) => {
     }
   } catch {
     if (requestSequence === detailsRequestSequence) {
-      detailsError.value = 'Unable to load the leadership visit report.'
+      detailsError.value = localizeUi('Unable to load the leadership visit report.')
     }
   } finally {
     if (requestSequence === detailsRequestSequence) {
@@ -137,25 +139,26 @@ const DateUpdate = (date: unknown) => {
     <section class="hse-project-panel visits-card">
       <div class="section-heading">
         <div>
-          <h2>Reports</h2>
-          <p>Reports can be added once and reviewed here afterward.</p>
+          <h2>{{ $t('reports') }}</h2>
+          <p>{{ $t('Reports can be added once and reviewed here afterward.') }}</p>
         </div>
-        <span class="total-pill">{{ visits.length }} visits</span>
+        <span class="total-pill">{{ visits.length }} {{ $t('visits') }}</span>
       </div>
 
       <div class="filters">
         <div class="search">
-          <label class="hse-project-field-label" for="leadership-visit-search"
-            >Visit location</label
-          >
+          <label class="hse-project-field-label" for="leadership-visit-search">{{
+            $t('visit location')
+          }}</label>
           <div class="input-search">
             <span class="icon-remove" @click="((word = ''), searchVisits())">
               <Search />
             </span>
             <input
+              dir="auto"
               id="leadership-visit-search"
               v-model="word"
-              :placeholder="'search'"
+              :placeholder="$t('search')"
               class="hse-project-input input"
               type="text"
               @input="searchVisits"
@@ -168,7 +171,7 @@ const DateUpdate = (date: unknown) => {
               <label class="hse-project-field-label" for="leadership-filter-date">{{
                 $t('date')
               }}</label>
-              <FieldHelpIcon text="Select the date." />
+              <FieldHelpIcon :text="$t('Select the date.')" />
             </div>
             <DatePicker
               panel-class="hse-project-overlay hse-project-assurance"
@@ -189,22 +192,22 @@ const DateUpdate = (date: unknown) => {
             <table class="hse-project-table main-table">
               <thead>
                 <tr>
-                  <th>Visit Date</th>
-                  <th>Visit Location</th>
-                  <th>Visiting Managers</th>
-                  <th>complete by</th>
+                  <th>{{ $t('Visit Date') }}</th>
+                  <th>{{ $t('Visit Location') }}</th>
+                  <th>{{ $t('Visiting Managers') }}</th>
+                  <th>{{ $t('complete by') }}</th>
                   <!-- <th>Activity</th> -->
                   <!-- <th>Status</th> -->
-                  <th>Action</th>
+                  <th>{{ $t('Action') }}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="visit in visits" :key="visit.id">
-                  <td data-label="Date">
+                  <td :data-label="$t('Date')">
                     <strong>{{ visit.date }}</strong>
                   </td>
-                  <td data-label="Location">{{ visit.location || '—' }}</td>
-                  <td data-label="Employee">
+                  <td :data-label="$t('Location')">{{ visit.location || '—' }}</td>
+                  <td :data-label="$t('Employee')">
                     <span class="employee-cell">
                       <!-- <img
                         v-if="visit.organizationEmployeeName?.image"
@@ -217,7 +220,7 @@ const DateUpdate = (date: unknown) => {
                       <span>{{ visit.employees[0]?.employeeName || '—' }}</span>
                     </span>
                   </td>
-                  <td data-label="Activity">
+                  <td :data-label="$t('Activity')">
                     <span class="activity-pill">{{ visit?.creatable?.name || '—' }}</span>
                   </td>
                   <!-- <td data-label="Activity">
@@ -229,7 +232,7 @@ const DateUpdate = (date: unknown) => {
                       {{ visit.reportAdded ? 'Reported' : 'Pending report' }}
                     </span>
                   </td> -->
-                  <td data-label="Action">
+                  <td :data-label="$t('Action')">
                     <div class="visit-actions">
                       <button
                         v-if="(visit.hasReport || visit.report) && canViewDetails"
@@ -244,7 +247,7 @@ const DateUpdate = (date: unknown) => {
                           <circle cx="12" cy="12" r="3" />
                         </svg>
                         <span>{{
-                          loadingVisitId === visit.id ? 'Loading…' : 'Report details'
+                          loadingVisitId === visit.id ? $t('Loading…') : $t('Report details')
                         }}</span>
                       </button>
                       <RouterLink
@@ -257,7 +260,7 @@ const DateUpdate = (date: unknown) => {
                             d="M8 4H6a2 2 0 0 0-2 2v14h16V6a2 2 0 0 0-2-2h-2M8 3h8v4H8V3ZM8 12h8M8 16h5"
                           />
                         </svg>
-                        <span>Report visit</span>
+                        <span>{{ $t('Report visit') }}</span>
                       </RouterLink>
                     </div>
                   </td>
@@ -267,10 +270,10 @@ const DateUpdate = (date: unknown) => {
           </div>
           <div v-else class="empty-state">
             <span aria-hidden="true">◎</span>
-            <strong>No leadership visits yet</strong>
-            <p>Create visits from the monthly leadership plan first.</p>
+            <strong>{{ $t('No leadership visits yet') }}</strong>
+            <p>{{ $t('Create visits from the monthly leadership plan first.') }}</p>
             <RouterLink :to="`/organization/project-details/${projectId}/leadership`">
-              Open visit plan
+              {{ $t('Open visit plan') }}
             </RouterLink>
           </div>
         </template>
@@ -281,10 +284,12 @@ const DateUpdate = (date: unknown) => {
           <TableLoader :cols="6" :rows="5" />
         </template>
         <template #empty>
-          <div class="empty-state"><strong>No visits have been planned yet.</strong></div>
+          <div class="empty-state">
+            <strong>{{ $t('No visits have been planned yet.') }}</strong>
+          </div>
         </template>
         <template #failed>
-          <div class="notice notice--error">Unable to load leadership visits.</div>
+          <div class="notice notice--error">{{ $t('Unable to load leadership visits.') }}</div>
         </template>
       </DataStatus>
     </section>

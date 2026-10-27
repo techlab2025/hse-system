@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleModel from '@/base/core/Models/title_model'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import EquipmentTypeDetailsModel from './EquipmentTypeDetails'
@@ -82,34 +83,37 @@ export default class EquipmentModel extends TitleInterface {
   }
 
   static fromMap(data: any): EquipmentModel {
-    return new EquipmentModel(
-      data?.id,
-      data.title,
-      data.subtitle,
-      data.has_certificate,
-      data.all_industries,
-      data.industries.length > 0
-        ? data.industries.map((industry) => TitleModel.fromMap(industry))
-        : [],
-      data.parent_id,
-      data.image,
-      data.titles,
-      data.status,
-      data.equipment_type ? EquipmentTypeDetailsModel.fromMap(data.equipment_type) : null,
-      // data.equipment_type_id
-      data.project ? TitleModel.fromMap(data.project) : null,
-      data.project_zone,
-      data.certificate_image,
-      data.warehouse ? WhereHouseDetailsModel.fromMap(data.warehouse) : null,
-      data.contractor ? ContractorDetailsModel?.fromMap(data.contractor) : null,
-      data.period,
-      data.period_type,
-      data.checkin_date,
-      data.checkout_date,
-      data.license_plate_number,
-      data.date,
-      data.in_service,
-      data.serial_name ?? data.serial_number ?? data.serial ?? data.subtitle ?? '',
+    return localizedRecord(
+      new EquipmentModel(
+        data?.id,
+        data.title,
+        data.subtitle,
+        data.has_certificate,
+        data.all_industries,
+        data.industries.length > 0
+          ? data.industries.map((industry) => TitleModel.fromMap(industry))
+          : [],
+        data.parent_id,
+        data.image,
+        data.titles,
+        data.status,
+        data.equipment_type ? EquipmentTypeDetailsModel.fromMap(data.equipment_type) : null,
+        // data.equipment_type_id
+        data.project ? TitleModel.fromMap(data.project) : null,
+        data.project_zone,
+        data.certificate_image,
+        data.warehouse ? WhereHouseDetailsModel.fromMap(data.warehouse) : null,
+        data.contractor ? ContractorDetailsModel?.fromMap(data.contractor) : null,
+        data.period,
+        data.period_type,
+        data.checkin_date,
+        data.checkout_date,
+        data.license_plate_number,
+        data.date,
+        data.in_service,
+        data.serial_name ?? data.serial_number ?? data.serial ?? data.subtitle ?? '',
+      ),
+      data,
     )
   }
 

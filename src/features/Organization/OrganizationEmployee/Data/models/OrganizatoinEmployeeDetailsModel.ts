@@ -1,3 +1,4 @@
+import { getCurrentLocale } from '@/localization/i18n'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import RoleDetailsModel from '@/features/Organization/Role/Data/models/RoleDetailsModel'
 import acc from '@/assets/images/acc.png'
@@ -135,7 +136,7 @@ export default class OrganizatoinEmployeeDetailsModel {
   static getTitle(data: unknown) {
     const item = (data ?? {}) as Record<string, unknown>
     const titles = Array.isArray(item.titles) ? (item.titles as Array<Record<string, unknown>>) : []
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
 
     const title =
       titles.find((translation) => translation.locale === savedLocale)?.title ?? // try saved locale

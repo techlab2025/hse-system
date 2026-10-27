@@ -42,9 +42,13 @@ const UpdateData = () => {
   })
 }
 
-watch(() => props.options, (newValue) => {
-  Options.value = newValue
-}, { deep: true })
+watch(
+  () => props.options,
+  (newValue) => {
+    Options.value = newValue
+  },
+  { deep: true },
+)
 
 watch(textArea, () => {
   UpdateData()
@@ -57,7 +61,7 @@ watch(
       const answer = newValue.answers[0]
       const optionId = answer.templateItemOption?.id
 
-      const matchedOption = props.options.find(opt => opt.id === optionId)
+      const matchedOption = props.options.find((opt) => opt.id === optionId)
       if (matchedOption) {
         SelectedOption.value = matchedOption
       } else if (answer.templateItemOption) {
@@ -69,14 +73,16 @@ watch(
       }
     }
   },
-  { immediate: true, deep: true }
+  { immediate: true, deep: true },
 )
-
 
 const showTextArea = () => {
   const status = Number(SelectedOption.value?.kpi)
-  return (SelectedOption.value?.kpi != 0) && (String(status) === String(TextAreaStatusEnum.required) ||
-    String(status) === String(TextAreaStatusEnum.optional))
+  return (
+    SelectedOption.value?.kpi != 0 &&
+    (String(status) === String(TextAreaStatusEnum.required) ||
+      String(status) === String(TextAreaStatusEnum.optional))
+  )
 }
 </script>
 
@@ -84,15 +90,13 @@ const showTextArea = () => {
   <!-- <pre>{{ selected_data }}</pre> -->
 
   <div class="show-template-result-select-container" v-if="selected_data?.answers?.length > 0">
-
     <div class="show-template-result-select not-disabled flex gap-4">
       <div class="options-container">
         <span class="question">{{ title }}</span>
         <span class="answer">{{ selected_data?.answers?.[0]?.templateItemOption?.title }}</span>
       </div>
-
     </div>
-    <div class="w-full flex  gap-2">
+    <div class="w-full flex gap-2">
       <div class="textarea-conatneir" v-if="selected_data?.answers?.[0]?.answer">
         <p class="title">{{ $t('typing text') }}</p>
         <span class="textarea-answer">
@@ -100,18 +104,19 @@ const showTextArea = () => {
         </span>
       </div>
       <div v-if="selected_data?.files?.length > 0" class="ml-auto mt-4">
-        <UploadMultiImage @update:images="UpdateImg" class="image-upload"
-          :initialImages="selected_data?.files?.map((el) => el.url) || []" />
+        <UploadMultiImage
+          @update:images="UpdateImg"
+          class="image-upload"
+          :initialImages="selected_data?.files?.map((el) => el.url) || []"
+        />
       </div>
-
-
     </div>
   </div>
 </template>
 
 <style scoped>
 .ml-auto {
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 
 .animate-fade-in {

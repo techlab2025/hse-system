@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { getCurrentLocale } from '@/localization/i18n'
+
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
 
 import { computed, nextTick, ref, watch } from 'vue'
@@ -15,7 +19,8 @@ import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('WhereHouseForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('WhereHouseForm')
 
 const emit = defineEmits(['update:data'])
 
@@ -41,8 +46,10 @@ const SerialNumber = ref()
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.SerialNumber ? false : true,
   },
@@ -59,13 +66,12 @@ watch(
   ([newData]) => {
     console.log(newData, 'newData')
     Name.value = newData?.name
-    const savedLocale = localStorage.getItem('lang')
+    const savedLocale = getCurrentLocale()
     SelectedWhereHouseType.value = new TitleInterface({
-  id: newData?.warehouse_type?.id,
-  title: newData?.warehouse_type?.titles?.find(
-    item => item.locale === savedLocale
-  )?.title ?? ''
-})
+      id: newData?.warehouse_type?.id,
+      title:
+        newData?.warehouse_type?.titles?.find((item) => item.locale === savedLocale)?.title ?? '',
+    })
     // SelectedWhereHouseType.value = new TitleInterface({
     //   id: newData?.warehouse_type?.id,
     //   title: newData?.warehouse_type?.titles,
@@ -110,6 +116,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     isMissing: () => !SelectedWhereHouseType.value?.id,
   },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
 
@@ -122,7 +129,9 @@ const scrollToRequiredField = async (key: string) => {
 }
 
 const validateRequiredFields = async () => {
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors
@@ -144,6 +153,7 @@ defineExpose({
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
     <label for="serialNumber">{{ $t('serial_number') }}</label>
     <input
+      dir="auto"
       type="text"
       v-model="SerialNumber"
       @input="UpdateSerial"
@@ -151,8 +161,8 @@ defineExpose({
       :disabled="projtecStateus.isSerialNumberAuto()"
       :placeholder="
         projtecStateus.isSerialNumberAuto()
-          ? 'You can leave it (auto-generated)'
-          : 'Enter Your Serial Number'
+          ? $t('You can leave it (auto-generated)')
+          : $t('Enter Your Serial Number')
       "
     />
   </div>
@@ -160,6 +170,7 @@ defineExpose({
   <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Name">
     <label for="name">{{ $t('name') }}</label>
     <input
+      dir="auto"
       type="text"
       id="name"
       class="input"
@@ -184,21 +195,20 @@ defineExpose({
       @update:modelValue="setSelectedWhereHouseType"
        /> -->
 
-   
     <UpdatedCustomInputSelect
-    :model-value="SelectedWhereHouseType"
-    :controller="indexWhereHouseTypeController"
-    :params="indexWhereHouseTypeParams"
-    :label="$t('warehouse_type')"
-    :id="`where houese type`"
-    :placeholder="$t('Select Warehouse Type')"
-    @update:model-value="setSelectedWhereHouseType"
-    :isDialog="true"
-    v-model:dialogVisible="WarehouseTypeDialog"
-    :required="true"
+      :model-value="SelectedWhereHouseType"
+      :controller="indexWhereHouseTypeController"
+      :params="indexWhereHouseTypeParams"
+      :label="$t('warehouse_type')"
+      :id="`where houese type`"
+      :placeholder="$t('Select Warehouse Type')"
+      @update:model-value="setSelectedWhereHouseType"
+      :isDialog="true"
+      v-model:dialogVisible="WarehouseTypeDialog"
+      :required="true"
     >
       <template #LabelHeader>
-        <span class="add-dialog" @click="WarehouseTypeDialog = true">New</span>
+        <span class="add-dialog" @click="WarehouseTypeDialog = true">{{ $t('New') }}</span>
       </template>
       <template #Dialog>
         <AddWhereHouseType @update:data="WarehouseTypeDialog = false" />

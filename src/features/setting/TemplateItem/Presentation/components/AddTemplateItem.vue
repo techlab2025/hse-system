@@ -9,7 +9,9 @@ import TemplateItemForm from './TemplateItemForm.vue'
 import AddTemplateItemController from '../controllers/addTemplateItemController'
 import type AddTemplateItemParams from '../../Core/params/addTemplateItemParams'
 
-const validateSubmission = useSubmissionValidation('setting/TemplateItem/Core/params/addTemplateItemParams')
+const validateSubmission = useSubmissionValidation(
+  'setting/TemplateItem/Core/params/addTemplateItemParams',
+)
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
@@ -61,20 +63,24 @@ const routeToTemplate = () => {
 </script>
 
 <template>
-  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-8 mt-4" @submit.prevent="addTemplateItem">
+  <form
+    novalidate
+    class="grid grid-cols-1 md:grid-cols-4 gap-8 mt-4"
+    @submit.prevent="addTemplateItem"
+  >
     <TemplateItemForm :key="formKey" @update:data="setParams" />
     <div class="col-span-4 button-wrapper create-form-actions">
       <router-link
         to="/organization/template?type=1"
         class="btn btn-cancel w-full"
         @click.prevent=""
-        >cancel</router-link
+        >{{ $t('cancel') }}</router-link
       >
       <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button>
       <button type="button" @click.prevent="routeToTemplate" class="btn btn-primary w-full">
-        confirm
+        {{ $t('confirm') }}
       </button>
     </div>
   </form>

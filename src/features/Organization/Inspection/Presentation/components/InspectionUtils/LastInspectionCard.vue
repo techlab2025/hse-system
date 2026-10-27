@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getCurrentLocale } from '@/localization/i18n'
+
 import type InspectionModel from '../../../Data/models/InspectionModel'
 import type LastInspectionModel from '../../../Data/models/LastInspectionModel'
 import InspectionStartTemplate from '../InspectionDialog/InspectionStartTemplate.vue'
@@ -9,8 +11,7 @@ const props = defineProps<{
 }>()
 
 const GetInspectionTitle = (task: InspectionModel) => {
-  return task.template?.titles?.find((title: any) => title.locale === localStorage.getItem('lang'))
-    ?.title
+  return task.template?.titles?.find((title: any) => title.locale === getCurrentLocale())?.title
 }
 </script>
 <template>
@@ -19,12 +20,13 @@ const GetInspectionTitle = (task: InspectionModel) => {
     <div class="inspection-history-container">
       <div class="inspection-header-content">
         <div class="title-container">
-          <span class="title">Last Inspection</span>
+          <span class="title">{{ $t('Last Inspection') }}</span>
         </div>
         <div class="inspection-info-container">
           <div class="inspection-info">
             <p>
-              {{ $t('Inspected by') }} : <span>{{ task?.employee?.name || task?.created_by?.name }}</span>
+              {{ $t('Inspected by') }} :
+              <span>{{ task?.employee?.name || task?.created_by?.name }}</span>
             </p>
             <p>
               {{ $t('Date') }} : <span>{{ task?.date }}</span>
@@ -33,8 +35,12 @@ const GetInspectionTitle = (task: InspectionModel) => {
           </div>
           <div>
             <span class="view-inspection-btn">
-              <InspectionStartTemplate :templateId="fulltask?.template?.id" :taskId="fulltask?.id"
-                :status="fulltask?.status" :lastinspection="true" />
+              <InspectionStartTemplate
+                :templateId="fulltask?.template?.id"
+                :taskId="fulltask?.id"
+                :status="fulltask?.status"
+                :lastinspection="true"
+              />
             </span>
           </div>
         </div>

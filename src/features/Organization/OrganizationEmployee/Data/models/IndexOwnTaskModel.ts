@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import { ChangeTaskStatusEnum } from '../../Core/Enum/ChangeTaskStatusEnum'
 import ResponsblePresonTaskModel from './ResponsblePresonTaskModel'
 
@@ -44,22 +45,25 @@ export default class IndexOwnTaskModel {
   }
 
   static fromMap(data: any): IndexOwnTaskModel {
-    return new IndexOwnTaskModel({
-      id: data?.id,
-      title: data?.title ?? '',
-      status: data?.status ? data.status : 1,
-      created_at: data?.created_at,
-      actual_task_id: data?.actual_task_id,
-      investigation_task_id: data?.investigation_task_id,
-      reason: data?.reason,
-      due_date: data?.due_date,
-      due_time: data?.due_time,
-      assigned_to: data?.assigned_to,
-      responable_person: data?.responable_person
-        ? ResponsblePresonTaskModel.fromMap(data.responable_person)
-        : undefined,
-      hasReason: data.has_reason,
-    })
+    return localizedRecord(
+      new IndexOwnTaskModel({
+        id: data?.id,
+        title: data?.title ?? '',
+        status: data?.status ? data.status : 1,
+        created_at: data?.created_at,
+        actual_task_id: data?.actual_task_id,
+        investigation_task_id: data?.investigation_task_id,
+        reason: data?.reason,
+        due_date: data?.due_date,
+        due_time: data?.due_time,
+        assigned_to: data?.assigned_to,
+        responable_person: data?.responable_person
+          ? ResponsblePresonTaskModel.fromMap(data.responable_person)
+          : undefined,
+        hasReason: data.has_reason,
+      }),
+      data,
+    )
   }
 
   static example: IndexOwnTaskModel = new IndexOwnTaskModel({

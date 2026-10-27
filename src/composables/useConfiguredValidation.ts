@@ -1,4 +1,5 @@
-import { getCurrentInstance, nextTick } from 'vue'
+import { getCurrentInstance, nextTick, watch, type Ref } from 'vue'
+import { translateMessage } from '@/localization/messages'
 import { useI18n } from 'vue-i18n'
 import { formValidation } from '@/shared/config/formValidation'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
@@ -11,7 +12,7 @@ export interface RequiredFormField {
 
 /** Used by both create/edit forms and Save & New. Settings live in formValidation.ts. */
 export function useConfiguredValidation(form: string) {
-  const { t, te } = useI18n({ useScope: 'global' })
+  const { t, te, locale } = useI18n({ useScope: 'global' })
   const instance = getCurrentInstance()
   const configureRules = <T extends RequiredFormField>(rules: T[]): T[] => {
     const settings = formValidation.forms[form]
@@ -20,7 +21,10 @@ export function useConfiguredValidation(form: string) {
       .filter((rule) => settings?.fields[rule.key]?.enabled !== false)
       .map((rule) => {
         const message = settings?.fields[rule.key]?.message
-        return { ...rule, message: message ? (te(message) ? t(message) : message) : rule.message }
+        return {
+          ...rule,
+          message: message ? (te(message) ? t(message) : message) : translateMessage(rule.message),
+        }
       })
   }
 
@@ -53,5 +57,17 @@ export function useConfiguredValidation(form: string) {
     return false
   }
 
-  return { configureRules, showErrors }
+  // Update text for errors already shown without validating untouched fields or submitting.
+  const localizeErrors = (errors: Ref<Record<string, string>>, rules: Ref<RequiredFormField[]>) => {
+    watch(locale, () => {
+      const messages = new Map(configureRules(rules.value).map((rule) => [rule.key, rule.message]))
+      errors.value = Object.fromEntries(
+        Object.entries(errors.value).map(([key, message]) => [
+          key,
+          messages.get(key) ?? translateMessage(message),
+        ]),
+      )
+    })
+  }
+  return { configureRules, showErrors, localizeErrors }
 }

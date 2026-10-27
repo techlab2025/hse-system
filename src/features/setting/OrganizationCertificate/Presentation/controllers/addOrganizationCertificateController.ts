@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
@@ -27,20 +28,18 @@ export default class AddOrganizationCertificateController extends ControllerInte
     // useLoaderStore().setLoadingWithDialog();
 
     try {
-      const dataState: DataState<OrganizationCertificateModel> = await this.AddOrganizationCertificateUseCase.call(params)
+      const dataState: DataState<OrganizationCertificateModel> =
+        await this.AddOrganizationCertificateUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })
         if (!router.currentRoute.value?.fullPath.includes('project-progress')) {
-          if (!draft)
-            await router.push(
-              '/organization/organization-certificate',
-            )
+          if (!draft) await router.push('/organization/organization-certificate')
         }
 
         // useLoaderStore().endLoadingWithDialog();

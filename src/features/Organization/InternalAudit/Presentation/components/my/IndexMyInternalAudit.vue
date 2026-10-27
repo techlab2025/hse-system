@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { auditPlanStatusCode, auditPlanStatusLabel } from '../../utils/labels'
 import { computed, onMounted, ref } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
@@ -19,16 +20,28 @@ const page = ref(1)
 const perPage = ref(10)
 const statusFilter = ref<TitleInterface | null>(null)
 const statusOptions = [
-  new TitleInterface({ id: InrernalAuditStatusEnum.draft, title: 'draft' }),
-  new TitleInterface({ id: InrernalAuditStatusEnum.planned, title: 'planned' }),
-  new TitleInterface({ id: InrernalAuditStatusEnum.reported, title: 'reported' }),
+  new TitleInterface({
+    id: InrernalAuditStatusEnum.draft,
+    title: 'draft',
+    translationKey: 'Draft',
+  }),
+  new TitleInterface({
+    id: InrernalAuditStatusEnum.planned,
+    title: 'planned',
+    translationKey: 'Planned',
+  }),
+  new TitleInterface({
+    id: InrernalAuditStatusEnum.reported,
+    title: 'reported',
+    translationKey: 'internalAuditLabels.reported',
+  }),
 ]
 const filteredAudits = computed(() => {
   const audits = state.value.data ?? []
   return statusFilter.value
     ? audits.filter(
         (audit) =>
-          audit.status.toLowerCase() === String(statusFilter.value?.title ?? '').toLowerCase(),
+          auditPlanStatusCode(audit.status) === auditPlanStatusCode(statusFilter.value?.id),
       )
     : audits
 })
@@ -71,6 +84,7 @@ onMounted(fetchAudits)
       <div class="input-wrapper">
         <label for="my-audit-search">{{ $t('search') }}</label>
         <input
+          dir="auto"
           id="my-audit-search"
           v-model="word"
           class="input"
@@ -83,7 +97,7 @@ onMounted(fetchAudits)
         :model-value="statusFilter"
         :static-options="statusOptions"
         :auto-fill="false"
-        label="status"
+        :label="$t('status')"
         :placeholder="$t('select_audit_status')"
         @update:model-value="normalizeStatus"
       />
@@ -111,7 +125,7 @@ onMounted(fetchAudits)
                 <td>{{ audit.fullCompany ? $t('full_company') : audit.project?.title || '—' }}</td>
                 <td>{{ leadName(audit.auditTeam) }}</td>
                 <td>
-                  <span class="status">{{ audit.status }}</span>
+                  <span class="status">{{ auditPlanStatusLabel(audit.status) }}</span>
                 </td>
                 <td>
                   <PermissionBuilder

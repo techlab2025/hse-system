@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
@@ -206,8 +208,10 @@ const SerialNumber = ref()
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
@@ -239,7 +243,7 @@ const fields = ref([
   >
     <CustomCheckbox
       :index="3"
-      :title="`all_industries`"
+      :title="$t('all_industries')"
       :checked="allIndustries"
       @update:checked="setAllIndustries"
     />
@@ -252,9 +256,9 @@ const fields = ref([
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
-      label="industry"
+      :label="$t('industry')"
       id="Factory"
-      placeholder="Select industry"
+      :placeholder="$t('Select industry')"
       :type="2"
       @update:modelValue="setIndustry"
     />
@@ -266,9 +270,9 @@ const fields = ref([
       :required="true"
       :controller="factoryController"
       :params="factoryParams"
-      label="factor"
+      :label="$t('factor')"
       id="Factor"
-      placeholder="Select factor"
+      :placeholder="$t('Select factor')"
       @update:modelValue="setFactory"
       :type="1"
     />

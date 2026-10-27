@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
@@ -33,12 +34,12 @@ export default class AddPTWTypeController extends ControllerInterface<PTWTypeMod
     try {
       if (params instanceof AddPTWTypeExcelParams) {
         if (!params.data.length) {
-          new OpenWarningDilaog('At least one row is required').openDialog()
+          new OpenWarningDilaog(localizeUi('At least one row is required')).openDialog()
           return
         }
         for (const el of params.data) {
           if (!el.title) {
-            new OpenWarningDilaog('Title is required').openDialog()
+            new OpenWarningDilaog(localizeUi('Title Is Required')).openDialog()
             return
           }
         }
@@ -49,19 +50,20 @@ export default class AddPTWTypeController extends ControllerInterface<PTWTypeMod
           return
         }
       }
-      const dataState: DataState<PTWTypeModel> =
-        await this.AddPTWTypeUseCase.call(params)
+      const dataState: DataState<PTWTypeModel> = await this.AddPTWTypeUseCase.call(params)
       this.setLoading()
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })
         if (router.currentRoute.value.path.includes('ptw-type')) {
-          const root = router.currentRoute.value.path.startsWith('/admin') ? '/admin' : '/organization'
+          const root = router.currentRoute.value.path.startsWith('/admin')
+            ? '/admin'
+            : '/organization'
           if (!draft) await router.push(`${root}/ptw-types`)
         }
 

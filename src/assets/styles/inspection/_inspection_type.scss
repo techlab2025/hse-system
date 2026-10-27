@@ -9,7 +9,7 @@
   width: 100%;
   border-radius: calc($MdSize2 + 1px);
   padding: $XsSize $SmSize;
-  padding-left: 0;
+  padding-inline-start: 0;
   .inspection-header {
     width: 100%;
     @include flex-row(nowrap, flex-start, center);

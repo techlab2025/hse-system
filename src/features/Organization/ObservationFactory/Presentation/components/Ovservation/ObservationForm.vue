@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { computed, markRaw, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -277,19 +279,47 @@ const GetProjectId = (id: number) => {
 
 const SelectedSeverity = ref<TitleInterface>()
 const SeverityList = ref<TitleInterface[]>([
-  new TitleInterface({ id: SeverityEnum.Minor, title: 'S1 - Minor' }),
-  new TitleInterface({ id: SeverityEnum.Moderate, title: 'S2 - Moderate' }),
-  new TitleInterface({ id: SeverityEnum.Serious, title: 'S2 - Serious' }),
-  new TitleInterface({ id: SeverityEnum.Major, title: 'S3 - Major' }),
-  new TitleInterface({ id: SeverityEnum.Catastrophic, title: 'S4 - Catastrophic' }),
+  new TitleInterface({ id: SeverityEnum.Minor, title: 'S1 - Minor', translationKey: 'S1 - Minor' }),
+  new TitleInterface({
+    id: SeverityEnum.Moderate,
+    title: 'S2 - Moderate',
+    translationKey: 'S2 - Moderate',
+  }),
+  new TitleInterface({
+    id: SeverityEnum.Serious,
+    title: 'S2 - Serious',
+    translationKey: 'S2 - Serious',
+  }),
+  new TitleInterface({ id: SeverityEnum.Major, title: 'S3 - Major', translationKey: 'S3 - Major' }),
+  new TitleInterface({
+    id: SeverityEnum.Catastrophic,
+    title: 'S4 - Catastrophic',
+    translationKey: 'S4 - Catastrophic',
+  }),
 ])
 const SelectedLikelihood = ref<TitleInterface>()
 const LikelihoodList = ref<TitleInterface[]>([
-  new TitleInterface({ id: LikelihoodEnum.Rare, title: 'L1 - Rare' }),
-  new TitleInterface({ id: LikelihoodEnum.Unlikely, title: 'L2 - Unlikely' }),
-  new TitleInterface({ id: LikelihoodEnum.Possible, title: 'L3 - Possible' }),
-  new TitleInterface({ id: LikelihoodEnum.Likely, title: 'L4 - Likely' }),
-  new TitleInterface({ id: LikelihoodEnum.AlmostCertain, title: 'L5 - Almost Certain' }),
+  new TitleInterface({ id: LikelihoodEnum.Rare, title: 'L1 - Rare', translationKey: 'L1 - Rare' }),
+  new TitleInterface({
+    id: LikelihoodEnum.Unlikely,
+    title: 'L2 - Unlikely',
+    translationKey: 'L2 - Unlikely',
+  }),
+  new TitleInterface({
+    id: LikelihoodEnum.Possible,
+    title: 'L3 - Possible',
+    translationKey: 'L3 - Possible',
+  }),
+  new TitleInterface({
+    id: LikelihoodEnum.Likely,
+    title: 'L4 - Likely',
+    translationKey: 'L4 - Likely',
+  }),
+  new TitleInterface({
+    id: LikelihoodEnum.AlmostCertain,
+    title: 'L5 - Almost Certain',
+    translationKey: 'L5 - Almost Certain',
+  }),
 ])
 
 const setSeverity = (data: TitleInterface) => {
@@ -308,8 +338,10 @@ const SerialNumber = ref()
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
@@ -334,7 +366,7 @@ const setSelectedObservationType = (data: TitleInterface) => {
   <div class="observation-form col-span-6 md:col-span-6">
     <HeaderPage
       :title="$t('create Observations')"
-      subtitle="Document what you observe to improve workplace safety"
+      :subtitle="$t('Document what you observe to improve workplace safety')"
       :img="ToDoList"
     />
     <HeaderProjectsFilter
@@ -398,6 +430,7 @@ const setSelectedObservationType = (data: TitleInterface) => {
       <div class="input-wrapper col-span-6 md:grid-cols-12">
         <label for="time">{{ $t('place') }}</label>
         <input
+          dir="auto"
           type="text"
           v-model="PlaceText"
           @input="updateData"
@@ -423,6 +456,7 @@ const setSelectedObservationType = (data: TitleInterface) => {
       <div class="input-wrapper col-span-12 md:grid-cols-12">
         <label for="text">{{ $t('description') }}</label>
         <input
+          dir="auto"
           class="input"
           :placeholder="$t('add your description')"
           type="text"

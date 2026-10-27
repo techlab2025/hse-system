@@ -65,11 +65,7 @@ const createPermissions = [
   PermissionsEnum.ORG_PTW_TYPE_CREATE,
 ]
 
-const fetchPTWTypes = async (
-  query: string = '',
-  page: number = 1,
-  limit: number = 10,
-) => {
+const fetchPTWTypes = async (query: string = '', page: number = 1, limit: number = 10) => {
   await controller.getData(new IndexPTWTypeParams(query, page, limit, 1))
 }
 
@@ -138,11 +134,7 @@ const exportExcel = () =>
     })),
     'ptw_types.xlsx',
   )
-const downloadExample = () =>
-  saveWorkbook(
-    [{ title: 'Hot Work' }],
-    'ptw_type_template.xlsx',
-  )
+const downloadExample = () => saveWorkbook([{ title: 'Hot Work' }], 'ptw_type_template.xlsx')
 
 const showUploadDialog = ref(false)
 const pendingFile = ref<File | null>(null)
@@ -198,7 +190,13 @@ const headerActions = () => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <span class="icon-remove" @click="((word = ''), searchPTWTypes())"><Search /></span>
-      <input v-model="word" :placeholder="$t('search')" class="input" @input="searchPTWTypes" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        @input="searchPTWTypes"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ActionsList
@@ -210,10 +208,7 @@ const headerActions = () => [
         <template #custom><ExportPdf :is-drop-list="true" /></template>
       </ActionsList>
     </div>
-    <SystemPTWTypes
-      v-if="user?.type !== OrganizationTypeEnum.ADMIN"
-      :is-header-tap="true"
-    />
+    <SystemPTWTypes v-if="user?.type !== OrganizationTypeEnum.ADMIN" :is-header-tap="true" />
   </div>
 
   <PermissionBuilder :code="featurePermissions">
@@ -263,7 +258,7 @@ const headerActions = () => [
       </template>
     </DataStatus>
     <template #notPermitted>
-      <DataFailed add-text="Have not Permission" description="" link="" />
+      <DataFailed :add-text="$t('auditUi.you_do_not_have_permission')" description="" link="" />
     </template>
   </PermissionBuilder>
 
@@ -274,10 +269,7 @@ const headerActions = () => [
     :header="$t('import_ptw_types')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <UploadPTWTypeExcelSheet
-      :initial-file="pendingFile"
-      @uploaded="onUploaded"
-    />
+    <UploadPTWTypeExcelSheet :initial-file="pendingFile" @uploaded="onUploaded" />
   </Dialog>
   <input
     ref="fileInputRef"

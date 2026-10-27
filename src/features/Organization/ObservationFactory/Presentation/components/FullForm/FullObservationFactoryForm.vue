@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
 
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
@@ -71,7 +73,8 @@ import IndexPpeItemController from '@/features/Organization/ppeItem/Presentation
 import IndexPpeItemParams from '@/features/Organization/ppeItem/Core/params/indexPpeItemParams.ts'
 import { ObservationTypeStaticOptions } from '@/features/setting/ObserverationType/Core/Enum/ObservationTypeEnum.ts'
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('FullObservationFactoryForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('FullObservationFactoryForm')
 
 const emit = defineEmits(['update:data'])
 const { isDarkMode } = useThemeMode()
@@ -255,8 +258,10 @@ watch([date, SelctedTime], () => updateData(), { flush: 'sync' })
 const fields = ref([
   {
     key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
+    get label() {
+      return localizeUi('serial_number')
+    },
+    placeholder: localizeUi('You can leave it (auto-generated)'),
     value: SerialNumber.value,
     enabled: props?.data?.id ? false : true,
   },
@@ -269,47 +274,95 @@ const UpdateSerial = (data) => {
 }
 
 const SelectedSeverity = ref<TitleInterface>(
-  new TitleInterface({ id: SeverityEnum.Catastrophic, title: 'a - Catastrophic' }),
+  new TitleInterface({
+    id: SeverityEnum.Catastrophic,
+    title: 'a - Catastrophic',
+    translationKey: 'a - Catastrophic',
+  }),
 )
 const SeverityList = ref<TitleInterface[]>([
-  new TitleInterface({ id: SeverityEnum.Catastrophic, title: 'a - Catastrophic' }),
-  new TitleInterface({ id: SeverityEnum.Major, title: 'b - Major' }),
-  new TitleInterface({ id: SeverityEnum.Serious, title: 'c - Serious' }),
-  new TitleInterface({ id: SeverityEnum.Moderate, title: 'd - Moderate' }),
-  new TitleInterface({ id: SeverityEnum.Minor, title: 'e - Minor' }),
+  new TitleInterface({
+    id: SeverityEnum.Catastrophic,
+    title: 'a - Catastrophic',
+    translationKey: 'a - Catastrophic',
+  }),
+  new TitleInterface({ id: SeverityEnum.Major, title: 'b - Major', translationKey: 'b - Major' }),
+  new TitleInterface({
+    id: SeverityEnum.Serious,
+    title: 'c - Serious',
+    translationKey: 'c - Serious',
+  }),
+  new TitleInterface({
+    id: SeverityEnum.Moderate,
+    title: 'd - Moderate',
+    translationKey: 'd - Moderate',
+  }),
+  new TitleInterface({ id: SeverityEnum.Minor, title: 'e - Minor', translationKey: 'e - Minor' }),
 ])
 const SelectedLikelihood = ref<TitleInterface>(
-  new TitleInterface({ id: LikelihoodEnum.Rare, title: '1 - Rare' }),
+  new TitleInterface({ id: LikelihoodEnum.Rare, title: '1 - Rare', translationKey: '1 - Rare' }),
 )
 const LikelihoodList = ref<TitleInterface[]>([
-  new TitleInterface({ id: LikelihoodEnum.Rare, title: '1 - Rare' }),
-  new TitleInterface({ id: LikelihoodEnum.Unlikely, title: '2 - Unlikely' }),
-  new TitleInterface({ id: LikelihoodEnum.Possible, title: '3 - Possible' }),
-  new TitleInterface({ id: LikelihoodEnum.Likely, title: '4 - Likely' }),
-  new TitleInterface({ id: LikelihoodEnum.AlmostCertain, title: '5 - Almost Certain' }),
+  new TitleInterface({ id: LikelihoodEnum.Rare, title: '1 - Rare', translationKey: '1 - Rare' }),
+  new TitleInterface({
+    id: LikelihoodEnum.Unlikely,
+    title: '2 - Unlikely',
+    translationKey: '2 - Unlikely',
+  }),
+  new TitleInterface({
+    id: LikelihoodEnum.Possible,
+    title: '3 - Possible',
+    translationKey: '3 - Possible',
+  }),
+  new TitleInterface({
+    id: LikelihoodEnum.Likely,
+    title: '4 - Likely',
+    translationKey: '4 - Likely',
+  }),
+  new TitleInterface({
+    id: LikelihoodEnum.AlmostCertain,
+    title: '5 - Almost Certain',
+    translationKey: '5 - Almost Certain',
+  }),
 ])
 
 const PtwStatusList = ref<TitleInterface[]>([
-  new TitleInterface({ id: PtwStatusEnum.NOT_APPLICABLE, title: 'Not Applicable' }),
-  new TitleInterface({ id: PtwStatusEnum.ISSUED_AND_VALID, title: 'PTW Issued and Valid' }),
-  new TitleInterface({ id: PtwStatusEnum.ISSUED_BUT_EXPIRED, title: 'PTW Issued but Expired' }),
+  new TitleInterface({
+    id: PtwStatusEnum.NOT_APPLICABLE,
+    title: 'Not Applicable',
+    translationKey: 'Not Applicable',
+  }),
+  new TitleInterface({
+    id: PtwStatusEnum.ISSUED_AND_VALID,
+    title: 'PTW Issued and Valid',
+    translationKey: 'PTW Issued and Valid',
+  }),
+  new TitleInterface({
+    id: PtwStatusEnum.ISSUED_BUT_EXPIRED,
+    title: 'PTW Issued but Expired',
+    translationKey: 'PTW Issued but Expired',
+  }),
   new TitleInterface({
     id: PtwStatusEnum.NOT_ISSUED_REQUIRED,
     title: 'No PTW Issued (Required)',
+    translationKey: 'No PTW Issued (Required)',
   }),
 ])
 const ComplianceNotificationList = ref<TitleInterface[]>([
   new TitleInterface({
     id: ComplianceNotificationEnum.STATUTORY_AUTHORITY_INFORMED,
     title: 'Statutory Authority Informed',
+    translationKey: 'Statutory Authority Informed',
   }),
   new TitleInterface({
     id: ComplianceNotificationEnum.INSURANCE_NOTIFIED,
     title: 'Insurance Notified',
+    translationKey: 'Insurance Notified',
   }),
   new TitleInterface({
     id: ComplianceNotificationEnum.CLIENT_CUSTOMER_NOTIFIED,
     title: 'Client/Customer Notified',
+    translationKey: 'Client/Customer Notified',
   }),
 ])
 
@@ -433,7 +486,7 @@ const GetHeader = (value: number) => {
     ? 'Observation'
     : Observation[value] == 'HazardType'
       ? 'Hazard'
-      : 'incident'
+      : 'Incident'
 }
 
 watch(
@@ -531,7 +584,8 @@ const updateData = () => {
               ? AccidentsType.value?.id
               : HazardType.value?.id,
         uauc:
-          ObservationFactoryType.value == Observation.ObservationType && !sendObservationTypeAsTypeId
+          ObservationFactoryType.value == Observation.ObservationType &&
+          !sendObservationTypeAsTypeId
             ? SelectedObservationType.value?.id
             : 0,
         type: ObservationFactoryType.value,
@@ -820,6 +874,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     isMissing: () => Boolean(getInvalidFatalityMessage()),
   },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
 
@@ -842,7 +897,9 @@ const scrollToRequiredField = async (key: string) => {
 
 const validateRequiredFields = async () => {
   clearResolvedRequiredErrors()
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors
@@ -872,7 +929,7 @@ defineExpose({
       <div class="Hazard-form-header">
         <!-- <HazardIcon class="icon" /> -->
         <p class="title">
-          {{ GetHeader(ObservationFactoryType) }} {{ $t('Report') }}
+          {{ $t('observationForm.reportTitle', { kind: $t(GetHeader(ObservationFactoryType)) }) }}
           <!-- <span v-if="SerialNumber">( #{{ SerialNumber.SerialNumber }} )</span> -->
         </p>
       </div>
@@ -945,7 +1002,7 @@ defineExpose({
     <!-- title -->
     <!-- <div class="input-wrapper col-span-6 field-required" data-required-field="ObservationTitle">
       <div class="field-label">
-        <label for="title">{{ GetHeader(ObservationFactoryType) }} {{ $t('title') }}</label>
+        <label for="title">{{ $t('observationForm.title', { kind: $t(GetHeader(ObservationFactoryType)) }) }}</label>
         <FieldHelpIconppe_item_id
           text="A short, clear name that summarizes the reported event or observation."
         />
@@ -955,7 +1012,7 @@ defineExpose({
         id="title"
         v-model="ObservationTitle"
         @input="updateData"
-        :placeholder="$t(`Enter ${GetHeader(ObservationFactoryType)} title`)"
+        :placeholder="$t('observationForm.enterTitle', { kind: $t(GetHeader(ObservationFactoryType)) })"
       />
       <p v-if="getFieldError('ObservationTitle')" class="required-field-message">
         {{ getFieldError('ObservationTitle') }}
@@ -963,12 +1020,17 @@ defineExpose({
     </div> -->
     <div class="input-wrapper col-span-2 md:grid-cols-12" v-if="!data?.id">
       <div class="field-label">
-        <label for="serialNumber">{{ GetHeader(ObservationFactoryType) }} {{ $t(`serial`) }}.</label
+        <label for="serialNumber">{{
+          $t('observationForm.serial', { kind: $t(GetHeader(ObservationFactoryType)) })
+        }}</label
         ><FieldHelpIcon
-          text="The unique reference number for this report. It may be generated automatically."
+          :text="
+            $t('The unique reference number for this report. It may be generated automatically.')
+          "
         />
       </div>
       <input
+        dir="auto"
         type="text"
         v-model="SerialNumber"
         @input="UpdateSerial"
@@ -976,8 +1038,8 @@ defineExpose({
         :disabled="projtecStateus.isSerialNumberAuto()"
         :placeholder="
           projtecStateus.isSerialNumberAuto()
-            ? 'You can leave it (auto-generated)'
-            : 'Enter Your Serial Number'
+            ? $t('You can leave it (auto-generated)')
+            : $t('Enter Your Serial Number')
         "
       />
     </div>
@@ -990,6 +1052,7 @@ defineExpose({
         <label for="property-title">{{ $t('Property Damage') }}</label>
       </div>
       <input
+        dir="auto"
         id="property-title"
         v-model="PropertyTitle"
         type="text"
@@ -1001,8 +1064,10 @@ defineExpose({
     <!-- Date -->
     <div class="col-span-2 md:col-span-2 input-wrapper" data-required-field="date">
       <div class="field-label">
-        <label for="date">{{ GetHeader(ObservationFactoryType) }} {{ $t('date') }}</label
-        ><FieldHelpIcon text="The date when the event or observation occurred." />
+        <label for="date">{{
+          $t('observationForm.date', { kind: $t(GetHeader(ObservationFactoryType)) })
+        }}</label
+        ><FieldHelpIcon :text="$t('The date when the event or observation occurred.')" />
       </div>
       <DatePicker input-id="date" v-model="date" :Lplaceholder="$t('Add your date')" />
       <p v-if="getFieldError('date')" class="required-field-message">
@@ -1013,8 +1078,12 @@ defineExpose({
     <!-- Time -->
     <div class="input-wrapper col-span-2 md:grid-cols-12" data-required-field="SelctedTime">
       <div class="field-label">
-        <label for="time">{{ GetHeader(ObservationFactoryType) }} {{ $t('time') }}</label
-        ><FieldHelpIcon text="The approximate time when the event or observation occurred." />
+        <label for="time">{{
+          $t('observationForm.time', { kind: $t(GetHeader(ObservationFactoryType)) })
+        }}</label
+        ><FieldHelpIcon
+          :text="$t('The approximate time when the event or observation occurred.')"
+        />
       </div>
       <DatePicker
         v-model="SelctedTime"
@@ -1033,10 +1102,11 @@ defineExpose({
       <div class="field-label">
         <label for="place">{{ $t('Work Area / Facility') }}</label
         ><FieldHelpIcon
-          text="The specific work area, building, or facility where the event occurred."
+          :text="$t('The specific work area, building, or facility where the event occurred.')"
         />
       </div>
       <input
+        dir="auto"
         type="text"
         id="place"
         v-model="PlaceText"
@@ -1055,12 +1125,15 @@ defineExpose({
       v-if="ObservationFactoryType == Observation.ObservationType"
     >
       <CustomSelectInput
-      :required="false" :modelValue="SelectedObservationType"
+        :required="false"
+        :modelValue="SelectedObservationType"
         :controller="indexObservatioTyepController"
         :params="indexObservationTypeParams"
-         label="Observation Type "
-        id="Equipment" placeholder="Select Observation Type"
-        @update:modelValue="setSelectedObservationType" />
+        :label="$t('Observation Type')"
+        id="Equipment"
+        :placeholder="$t('Select Observation Type')"
+        @update:modelValue="setSelectedObservationType"
+      />
 
       <!-- <CustomSelectInput
                  New Update => Custom input Select inspection Observisoon Form
@@ -1116,9 +1189,9 @@ defineExpose({
         :controller="indexAccidentsTypeController"
         :params="indexAccidentsTypeParams"
         :label="$t('incident Type')"
-        help-text="The category that best describes the incident."
+        :help-text="$t('The category that best describes the incident.')"
         id="incident"
-        placeholder="Select Incident Type"
+        :placeholder="$t('Select Incident Type')"
         @update:modelValue="setAccidentsType"
         @close="acedentDialogRef = false"
         :isDialog="true"
@@ -1183,7 +1256,9 @@ defineExpose({
         :controller="indexEquipmentController"
         :params="indexEquipmentParams"
         :label="$t('Equipment / Tag No')"
-        help-text="The equipment involved in the event, including its tag number when available."
+        :help-text="
+          $t('The equipment involved in the event, including its tag number when available.')
+        "
         id="machine"
         :placeholder="$t('select Equipment')"
         showOptionLicensePlate
@@ -1199,11 +1274,11 @@ defineExpose({
         :controller="fetchOriganizatioEmployeeController"
         :params="fetchOrganizationEmployeeParams"
         v-model="Oragnizationemployee"
-        placeholder="Select Involved Persons"
+        :placeholder="$t('Select Involved Persons')"
         :required="false"
         class="mt-4 mr-2 input"
         :label="$t('Involved Persons')"
-        help-text="The employee or external person directly involved in the event."
+        :help-text="$t('The employee or external person directly involved in the event.')"
         @update:model-value="setOragnizationemployee"
         :hascontent="isSelectHasContent"
         :reload="false"
@@ -1230,10 +1305,11 @@ defineExpose({
         </template>
         <template #content>
           <input
+            dir="auto"
             type="text"
             v-model="OragnizationemployeeName"
             class="input"
-            placeholder="Select Employee"
+            :placeholder="$t('Select Employee')"
             @input="setOragnizationemployeeName"
           />
         </template>
@@ -1249,10 +1325,10 @@ defineExpose({
         :controller="shiftsContrller"
         :params="shiftsParams"
         v-model="Shifts"
-        placeholder="Select Shift"
+        :placeholder="$t('Select Shift')"
         class="mt-4 mr-2 input"
         :label="$t('work shift')"
-        help-text="The work shift during which the event or observation occurred."
+        :help-text="$t('The work shift during which the event or observation occurred.')"
         @update:model-value="setShifts"
         :reload="true"
         @close="ShiftsDialog = false"
@@ -1282,10 +1358,13 @@ defineExpose({
           }}
         </label>
         <FieldHelpIcon
-          text="Describe what happened, what was observed, and any important surrounding details."
+          :text="
+            $t('Describe what happened, what was observed, and any important surrounding details.')
+          "
         />
       </div>
       <input
+        dir="auto"
         :placeholder="$t('Add your description')"
         type="text"
         class="input"
@@ -1301,9 +1380,13 @@ defineExpose({
     <!-- Image -->
     <div class="col-span-6 md:col-span-6 input-wrapper w-full">
       <div class="field-label">
-        <label>{{ $t(`${ GetHeader(ObservationFactoryType) } Photos `) }}</label
+        <label>{{
+          $t('observationForm.photos', { kind: $t(GetHeader(ObservationFactoryType)) })
+        }}</label
         ><FieldHelpIcon
-          text="Attach photos that help document the location, condition, damage, or evidence."
+          :text="
+            $t('Attach photos that help document the location, condition, damage, or evidence.')
+          "
         />
       </div>
       <MultiImagesInput :initialImages="image" @update:images="setImages" />
@@ -1336,7 +1419,7 @@ defineExpose({
         :static-options="SeverityList"
         :reload="false"
         :label="$t('Consequence Severity')"
-        help-text="The potential seriousness of the outcome if the hazard causes harm."
+        :help-text="$t('The potential seriousness of the outcome if the hazard causes harm.')"
         id="Severity"
         :placeholder="$t('Select Consequence Severity')"
         @update:modelValue="setSeverity"
@@ -1357,7 +1440,7 @@ defineExpose({
         :static-options="LikelihoodList"
         :reload="false"
         :label="$t('Probability of Occurrence')"
-        help-text="How likely it is that this event or harmful outcome could occur."
+        :help-text="$t('How likely it is that this event or harmful outcome could occur.')"
         id="Likelihood"
         :placeholder="$t('Select Probability of Occurrence')"
         @update:modelValue="setLikelihood"
@@ -1412,7 +1495,7 @@ defineExpose({
         :controller="indexHazardTypeController"
         :params="indexHazardTypeParams"
         :label="$t('Hazard Classification')"
-        help-text="The main category of hazard associated with this report."
+        :help-text="$t('The main category of hazard associated with this report.')"
         id="HazardType"
         :placeholder="$t('Select Hazard Classification')"
         @update:modelValue="setHazardType"
@@ -1421,7 +1504,7 @@ defineExpose({
         v-model:dialogVisible="HazardTypeDialog"
       >
         <template #LabelHeader>
-          <span class="add-dialog" @click="HazardTypeDialog = true">New</span>
+          <span class="add-dialog" @click="HazardTypeDialog = true">{{ $t('New') }}</span>
         </template>
         <template #Dialog>
           <AddHazardType @update:data="HazardTypeDialog = false" />
@@ -1447,7 +1530,7 @@ defineExpose({
         :controller="indexSubHazardTypeController"
         :params="indexSubHazardTypeParams"
         :label="$t('Risk')"
-        help-text="Select the specific hazard or risk within the chosen classification."
+        :help-text="$t('Select the specific hazard or risk within the chosen classification.')"
         id="Hazard"
         :placeholder="$t('Select Risk')"
         @update:modelValue="setSubHazardType"
@@ -1457,7 +1540,7 @@ defineExpose({
         :type="2"
       >
         <template #LabelHeader>
-          <span class="add-dialog" @click="HazardDialog = true">New</span>
+          <span class="add-dialog" @click="HazardDialog = true">{{ $t('New') }}</span>
         </template>
         <template #Dialog>
           <AddHazard @update:data="HazardDialog = false" :hazardTypeId="HazardType.id" />
@@ -1478,7 +1561,7 @@ defineExpose({
       <div class="field-label w-full">
         <label for="is_stopedd">{{ $t('is_work_stopped') }} ?</label
         ><FieldHelpIcon
-          text="Indicate whether work was stopped because of this event or unsafe condition."
+          :text="$t('Indicate whether work was stopped because of this event or unsafe condition.')"
         />
       </div>
       <div class="meeting-status">
@@ -1517,7 +1600,11 @@ defineExpose({
           <div class="field-label">
             <label class="radio-title">{{ $t('action_taken') }}</label
             ><FieldHelpIcon
-              text="Indicate whether an immediate action was taken to control or correct the issue."
+              :text="
+                $t(
+                  'Indicate whether an immediate action was taken to control or correct the issue.',
+                )
+              "
             />
           </div>
           <div class="radio-answers flex">
@@ -1556,15 +1643,20 @@ defineExpose({
       <div class="field-label">
         <label for="action">{{ $t('immediatly_action_taken') }}</label
         ><FieldHelpIcon
-          text="Describe the immediate action taken to make the situation safe or prevent recurrence."
+          :text="
+            $t(
+              'Describe the immediate action taken to make the situation safe or prevent recurrence.',
+            )
+          "
         />
       </div>
       <textarea
+        dir="auto"
         id="action"
         class="input"
         v-model="preventive_action"
         @input="updateData"
-        placeholder="add your descripe"
+        :placeholder="$t('add your descripe')"
       ></textarea>
     </div>
 
@@ -1579,7 +1671,11 @@ defineExpose({
           <div class="field-label">
             <label class="radio-title">{{ $t('observation_status') }}</label
             ><FieldHelpIcon
-              text="Choose Closed when the issue is resolved, or Open when further action is required."
+              :text="
+                $t(
+                  'Choose Closed when the issue is resolved, or Open when further action is required.',
+                )
+              "
             />
           </div>
           <div class="radio-answers flex">
@@ -1622,15 +1718,16 @@ defineExpose({
       <div class="field-label">
         <label for="open-note">{{ $t('Reason for Keeping the Observation Open') }}</label
         ><FieldHelpIcon
-          text="Explain what remains open and what follow-up action is still needed."
+          :text="$t('Explain what remains open and what follow-up action is still needed.')"
         />
       </div>
       <textarea
+        dir="auto"
         id="open-note"
         class="input"
         v-model="preventive_action_open"
         @input="updateData"
-        placeholder="add your descripe"
+        :placeholder="$t('add your descripe')"
       ></textarea>
     </div>
 
@@ -1783,7 +1880,7 @@ defineExpose({
 /* .add-dialog {
   width: 20px;
   height: 20px;
-  margin-right: 6px;
+  margin-inline-end: 6px;
   cursor: pointer;
   color: var(--brand-primary-500);
   text-decoration: underline;
@@ -2169,6 +2266,6 @@ label {
   width: fit-content !important;
 }
 .meeting-status {
-  margin-right: auto !important;
+  margin-inline-end: auto !important;
 }
 </style>

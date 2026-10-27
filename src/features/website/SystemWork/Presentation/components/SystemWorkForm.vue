@@ -212,11 +212,12 @@ const setImage = async (data: File | string) => {
       {{ $t('alt_image') }}
     </label>
     <input
+      dir="auto"
       id="rate"
       v-model="alt"
       type="text"
       class="input"
-      placeholder="alt"
+      :placeholder="$t('alt_image')"
       @input="updateData"
     />
   </div>
@@ -225,9 +226,9 @@ const setImage = async (data: File | string) => {
     <SingleFileUpload
       v-model="image"
       @update:modelValue="setImage"
-      label="Image"
+      :label="$t('image')"
       id="image"
-      placeholder="Select image"
+      :placeholder="$t('Select image')"
       :isCrop="true"
       :aspectRatio="1 / 1"
     />

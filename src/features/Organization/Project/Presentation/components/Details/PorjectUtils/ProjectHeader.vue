@@ -205,8 +205,8 @@ defineProps<{
             </svg>
           </span>
           <span class="action-copy">
-            <strong>Leadership Engagement</strong>
-            <small>Plan visits and submit reports</small>
+            <strong>{{ $t('Leadership Engagement') }}</strong>
+            <small>{{ $t('Plan visits and submit reports') }}</small>
           </span>
           <span class="action-arrow" aria-hidden="true">→</span>
         </router-link>
@@ -238,8 +238,8 @@ defineProps<{
             </svg>
           </span>
           <span class="action-copy">
-            <strong>Risk assessments</strong>
-            <small>Review project safety</small>
+            <strong>{{ $t('Risk assessments') }}</strong>
+            <small>{{ $t('Review project safety') }}</small>
           </span>
           <span class="action-arrow" aria-hidden="true">→</span>
         </router-link>
@@ -274,8 +274,8 @@ defineProps<{
 .project-meta {
   background:
     radial-gradient(ellipse at 85% 0, rgba(75, 132, 255, 0.07), transparent 35%), #f4f7fb !important;
-    padding: 15px !important;
-    border-radius: 12px !important;
+  padding: 15px !important;
+  border-radius: 12px !important;
 }
 .btn-route {
   display: grid;

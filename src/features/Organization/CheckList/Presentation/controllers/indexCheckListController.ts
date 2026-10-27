@@ -1,10 +1,10 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import type CheckListDetailsModel from '../../Data/models/CheckListModel'
 import IndexCheckListUseCase from '../../Domain/useCase/indexCheckListUseCase'
-
 
 export default class IndexCheckListController extends SelectControllerInterface<
   CheckListDetailsModel[]
@@ -33,9 +33,9 @@ export default class IndexCheckListController extends SelectControllerInterface<
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
-    console.log('bbbbbbbbbbbbbbbbbbbbtate',this.state.value.data)
+    console.log('bbbbbbbbbbbbbbbbbbbbtate', this.state.value.data)
     super.handleResponseDialogs()
     return this.state
   }

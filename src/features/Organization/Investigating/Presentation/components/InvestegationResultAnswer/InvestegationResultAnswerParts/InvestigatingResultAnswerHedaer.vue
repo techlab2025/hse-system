@@ -39,38 +39,43 @@ const GetInvestigationType = (type: number) => {
   <div class="investigating-answer-header-container">
     <div class="investigating-answer-data">
       <div class="left-header-background">
-        <img class="left-blue-background" :src="EmployeeBg" alt="bg" />
-        <img class="left-yellow-background" :src="Yellowback" alt="bg" />
+        <img class="left-blue-background" :src="EmployeeBg" alt="" aria-hidden="true" />
+        <img class="left-yellow-background" :src="Yellowback" alt="" aria-hidden="true" />
       </div>
       <div class="investigating-header">
         <p class="title">
-          {{ `investigation / ${GetInvestigationType(props?.investegationType)}` }}
+          {{
+            $t('uiDynamic.investigationReference', {
+              p0: GetInvestigationType(props?.investegationType),
+            })
+          }}
         </p>
       </div>
       <div class="investigating-info">
         <p>
-          meetings : <span>{{ meetingsNumber }}</span>
+          {{ $t('meetings :') }} <span>{{ meetingsNumber }}</span>
         </p>
         <p>
-          created in : <span>{{ createdAt }}</span>
+          {{ $t('created in :') }} <span>{{ createdAt }}</span>
         </p>
         <p v-if="victim">
-          The victim : <span class="victim">{{ victim }}</span>
+          {{ $t('The victim :') }} <span class="victim">{{ victim }}</span>
         </p>
       </div>
       <div class="meeting-info-container">
         <div class="meeting-info">
           <p>
-            Investigation team leader : <span class="team-leader">{{ TeamLeader?.name }}</span>
+            {{ $t('Investigation team leader :') }}
+            <span class="team-leader">{{ TeamLeader?.name }}</span>
           </p>
           <p>
-            Num of team : <span class="team-number">{{ TeamNumbers }}</span>
+            {{ $t('Num of team :') }} <span class="team-number">{{ TeamNumbers }}</span>
           </p>
         </div>
       </div>
     </div>
     <div class="investigating-answer-complete-task">
-      <span>completed tasks</span>
+      <span>{{ $t('completed tasks') }}</span>
       <span
         >{{ `${solvedTasks} ` }} / <span class="total">{{ `${ToltalTasks}` }}</span></span
       >

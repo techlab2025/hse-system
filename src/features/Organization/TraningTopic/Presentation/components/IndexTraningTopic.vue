@@ -136,6 +136,7 @@ const downloadTemplate = () =>
         <Search />
       </span>
       <input
+        dir="auto"
         v-model="word"
         :placeholder="$t('search')"
         class="input"

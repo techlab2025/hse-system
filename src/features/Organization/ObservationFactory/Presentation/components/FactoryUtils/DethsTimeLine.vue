@@ -120,10 +120,14 @@ const toggleMode = (index: number, isManual: boolean) => {
                   :controller="fetchOriganizatioEmployeeController"
                   :params="fetchOrganizationEmployeeParams"
                   v-model="item.employee"
-                  placeholder="Select Employee"
+                  :placeholder="$t('Select Employee')"
                   class="mt-4 mr-2 input"
                   :label="$t('Employee')"
-                  help-text="Select the deceased employee, or enter the person's name manually if they are not an employee."
+                  :help-text="
+                    $t(
+                      'Select the deceased employee, or enter the person\'s name manually if they are not an employee.',
+                    )
+                  "
                   :excludedOptionIds="getSelectedEmployeeIds(index)"
                   @update:model-value="UpdateData"
                   :hascontent="isSelectHasContent[index]"
@@ -160,10 +164,11 @@ const toggleMode = (index: number, isManual: boolean) => {
                   </template>
                   <template #content>
                     <input
+                      dir="auto"
                       type="text"
                       v-model="item.employee.title"
                       class="input"
-                      placeholder="Select Employee"
+                      :placeholder="$t('Select Employee')"
                       @input="UpdateData"
                     />
                   </template>
@@ -175,10 +180,11 @@ const toggleMode = (index: number, isManual: boolean) => {
                     $t('circumstances of fatality')
                   }}</label>
                   <FieldHelpIcon
-                    text="Describe the known circumstances surrounding the fatality."
+                    :text="$t('Describe the known circumstances surrounding the fatality.')"
                   />
                 </div>
                 <input
+                  dir="auto"
                   type="text"
                   :id="`fatality-circumstances-${index}`"
                   v-model="item.text"
@@ -191,7 +197,11 @@ const toggleMode = (index: number, isManual: boolean) => {
                 <div class="flex items-center gap-2">
                   <label>{{ $t('sensitive content - legal evidence only') }}</label>
                   <FieldHelpIcon
-                    text="Attach only authorized evidence required for legal or official investigation purposes."
+                    :text="
+                      $t(
+                        'Attach only authorized evidence required for legal or official investigation purposes.',
+                      )
+                    "
                   />
                 </div>
                 <MultiImagesInput
@@ -255,7 +265,7 @@ const toggleMode = (index: number, isManual: boolean) => {
 
 @media (max-width: 768px) {
   .timeline-wrapper {
-    padding-left: 0;
+    padding-inline-start: 0;
     padding-inline-start: 0;
   }
 

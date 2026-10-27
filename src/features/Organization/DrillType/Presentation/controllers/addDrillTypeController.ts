@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
@@ -33,12 +34,12 @@ export default class AddDrillTypeController extends ControllerInterface<DrillTyp
     try {
       if (params instanceof AddDrillTypeExcelParams) {
         if (!params.data.length) {
-          new OpenWarningDilaog('At least one row is required').openDialog()
+          new OpenWarningDilaog(localizeUi('At least one row is required')).openDialog()
           return
         }
         for (const el of params.data) {
           if (!el.title || !el.description) {
-            new OpenWarningDilaog('Title and description are required').openDialog()
+            new OpenWarningDilaog(localizeUi('Title and description are required')).openDialog()
             return
           }
         }
@@ -49,19 +50,20 @@ export default class AddDrillTypeController extends ControllerInterface<DrillTyp
           return
         }
       }
-      const dataState: DataState<DrillTypeModel> =
-        await this.AddDrillTypeUseCase.call(params)
+      const dataState: DataState<DrillTypeModel> = await this.AddDrillTypeUseCase.call(params)
       this.setLoading()
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })
         if (router.currentRoute.value.path.includes('drill-type')) {
-          const root = router.currentRoute.value.path.startsWith('/admin') ? '/admin' : '/organization'
+          const root = router.currentRoute.value.path.startsWith('/admin')
+            ? '/admin'
+            : '/organization'
           if (!draft) await router.push(`${root}/drill-types`)
         }
 

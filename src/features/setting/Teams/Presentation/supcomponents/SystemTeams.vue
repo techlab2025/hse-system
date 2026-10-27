@@ -80,8 +80,11 @@ const submitData = async () => {
 
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
-      <HeaderSection :img="DialogSystem" title="Add System Teams"
-        subtitle="Select the teams you need and add them to your teams" />
+      <HeaderSection
+        :img="DialogSystem"
+        :title="$t('Add System Teams')"
+        :subtitle="$t('auditUi.select_the_teams_you_need_and_add_them_to_your_teams')"
+      />
     </template>
 
     <DataStatus :controller="state">
@@ -89,18 +92,30 @@ const submitData = async () => {
         <SystemDialogEmptyState v-if="!state.data?.length" />
         <div v-else class="system-dialog-content-container">
           <div v-for="item in state.data" :key="item.id" class="system-dialog-content">
-            <div class="row-content" :class="{ active: selectedIds.includes(item.id) }" @click="toggleTeam(item.id)">
+            <div
+              class="row-content"
+              :class="{ active: selectedIds.includes(item.id) }"
+              @click="toggleTeam(item.id)"
+            >
               <label :for="`team-${item.id}`" class="title">
                 {{ item.title }}
               </label>
-              <input :id="`team-${item.id}`" type="checkbox" :checked="selectedIds.includes(item.id)"
-                @click.stop="toggleTeam(item.id)" />
+              <input
+                :id="`team-${item.id}`"
+                type="checkbox"
+                :checked="selectedIds.includes(item.id)"
+                @click.stop="toggleTeam(item.id)"
+              />
             </div>
           </div>
         </div>
 
-        <button v-if="state.data?.length" class="btn btn-primary w-full mt-5 confirm-btn" :disabled="selectedIds.length === 0"
-          @click="submitData">
+        <button
+          v-if="state.data?.length"
+          class="btn btn-primary w-full mt-5 confirm-btn"
+          :disabled="selectedIds.length === 0"
+          @click="submitData"
+        >
           {{ $t('confirm') }}
         </button>
       </template>
@@ -109,7 +124,6 @@ const submitData = async () => {
       </template>
       <template #failed>
         <DataFailedState :link="''" :withbtn="false" />
-
       </template>
     </DataStatus>
   </Dialog>

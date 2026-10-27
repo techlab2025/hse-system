@@ -229,7 +229,7 @@ const logout = () => {
   gap: 8px;
 }
 .close .sidebar-toggle {
-  right: -16px;
+  inset-inline-end: -16px;
   position: relative;
 }
 .open .sidebar-toggle {
@@ -250,7 +250,7 @@ const logout = () => {
   border-radius: 6px;
   position: absolute;
   top: 0px;
-  right: -20px;
+  inset-inline-end: -20px;
   width: 40px;
   height: 40px;
   transition: all 0.5s ease;
@@ -471,7 +471,7 @@ const logout = () => {
 .sidebar.open :deep(.p-accordionheader) {
   margin-bottom: 4px !important;
   background: color-mix(in srgb, var(--surface-1) 16%, transparent) !important;
-  border-left: 3px solid var(--brand-primary-100) !important;
+  border-inline-start: 3px solid var(--brand-primary-100) !important;
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--surface-1) 8%, transparent);
 }
 .sidebar.open :deep(.p-accordionheader:hover) {

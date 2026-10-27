@@ -6,20 +6,18 @@ import InvestegationWitnessesParams from '@/features/Organization/Investigating/
 import type InjuryDetailsModel from '@/features/Organization/ObservationFactory/Data/models/InjuryModel.ts'
 
 const emit = defineEmits(['update:data'])
-const { viwers,isInvestigation } = defineProps<{
+const { viwers, isInvestigation } = defineProps<{
   viwers?: InjuryDetailsModel[]
   isInvestigation?: boolean
 }>()
 
 const UpdateData = (data) => {
-  const witnesses = data.map(
-    (item) => {
-      const employeeId = Number(item.employee?.id) || 0
-      const employeeName = employeeId ? undefined : item.employee?.title || ''
+  const witnesses = data.map((item) => {
+    const employeeId = Number(item.employee?.id) || 0
+    const employeeName = employeeId ? undefined : item.employee?.title || ''
 
-      return new InvestegationWitnessesParams(item.result, employeeId || undefined, employeeName)
-    },
-  )
+    return new InvestegationWitnessesParams(item.result, employeeId || undefined, employeeName)
+  })
 
   emit('update:data', witnesses)
 }
@@ -27,11 +25,15 @@ const UpdateData = (data) => {
 <template>
   <div class="viwers-result">
     <HeaderPage
-      :title="`viewers result`"
-      :subtitle="`Add a description of each witness to the incident.`"
+      :title="$t('viewers result')"
+      :subtitle="$t('Add a description of each witness to the incident.')"
       :img="ViewrResults"
       class="title-header"
     />
-    <ViewerResultsTree :isInvestigation="isInvestigation" :viwers="viwers" @update:data="UpdateData" />
+    <ViewerResultsTree
+      :isInvestigation="isInvestigation"
+      :viwers="viwers"
+      @update:data="UpdateData"
+    />
   </div>
 </template>

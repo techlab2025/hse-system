@@ -1,3 +1,4 @@
+import { translate as localizeUi } from '@/localization/i18n'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 
 import type Params from '@/base/core/params/params'
@@ -32,7 +33,7 @@ export default class AddNotificationPlanController extends ControllerInterface<N
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog',
-          titleContent: 'Added was successful',
+          titleContent: localizeUi('Added was successful'),
           imageElement: successImage,
           messageContent: null,
         })
@@ -55,7 +56,7 @@ export default class AddNotificationPlanController extends ControllerInterface<N
         dialogName: 'dialog',
         titleContent: this.state.value.error?.title ?? 'An Error Occurred',
         imageElement: errorImage,
-        messageContent: 'There is an error while adding the notification Plan',
+        messageContent: localizeUi('There is an error while adding the notification Plan'),
       })
     }
 

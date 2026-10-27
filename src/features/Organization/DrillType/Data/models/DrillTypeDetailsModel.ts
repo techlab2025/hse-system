@@ -1,3 +1,4 @@
+import { getCurrentLocale } from '@/localization/i18n'
 import TranslationsParams, {
   type DescriptionLocale,
   type TitleLocale,
@@ -47,10 +48,10 @@ export default class DrillTypeDetailsModel {
             id: industry.id,
             title:
               industry.title ??
-              industry.titles?.find((title) => title.locale === localStorage.getItem('lang'))
-                ?.title ??
+              industry.titles?.find((title) => title.locale === getCurrentLocale())?.title ??
               industry.titles?.[0]?.title ??
               '',
+            localizedTitles: industry.titles,
           }),
       ),
     )

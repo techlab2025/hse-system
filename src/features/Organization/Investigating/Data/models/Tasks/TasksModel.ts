@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
 
 export default class TasksModel {
@@ -37,24 +38,27 @@ export default class TasksModel {
   }
 
   static fromMap(data: any): TasksModel {
-    return new TasksModel(
-      data.id,
-      data.investigation_meeting_id,
-      data.status,
-      data.title,
-      data.due_date,
-      data.created_at,
-      data.description,
-      OrganizatoinEmployeeModel.fromMap(data.assigned_to),
-      OrganizatoinEmployeeModel.fromMap(data.responable_person),
-      data?.investigation_task_results?.[0]?.notes ||
-        data?.investigationTaskResults?.[0]?.notes ||
-        data?.task_results?.[0]?.notes ||
-        data?.taskResults?.[0]?.notes ||
-        data?.task_result?.notes ||
-        data?.taskResult?.notes ||
-        data?.notes ||
-        '',
+    return localizedRecord(
+      new TasksModel(
+        data.id,
+        data.investigation_meeting_id,
+        data.status,
+        data.title,
+        data.due_date,
+        data.created_at,
+        data.description,
+        OrganizatoinEmployeeModel.fromMap(data.assigned_to),
+        OrganizatoinEmployeeModel.fromMap(data.responable_person),
+        data?.investigation_task_results?.[0]?.notes ||
+          data?.investigationTaskResults?.[0]?.notes ||
+          data?.task_results?.[0]?.notes ||
+          data?.taskResults?.[0]?.notes ||
+          data?.task_result?.notes ||
+          data?.taskResult?.notes ||
+          data?.notes ||
+          '',
+      ),
+      data,
     )
   }
 

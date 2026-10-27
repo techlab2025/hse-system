@@ -8,7 +8,7 @@
     margin-top: $XlSize;
     gap: 3px;
     font-family: 'Light';
-    padding-left: calc($XlSize2 + 1px);
+    padding-inline-start: calc($XlSize2 + 1px);
     .title {
       color: var(--text-strong);
       font-size: $MdSize;

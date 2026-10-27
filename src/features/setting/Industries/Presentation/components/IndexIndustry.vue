@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -115,7 +114,14 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchLang())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchLang" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchLang"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
@@ -126,13 +132,15 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.LANGUAGE_ALL,
-    PermissionsEnum.LANGUAGE_FETCH,
-    PermissionsEnum.LANGUAGE_UPDATE,
-    PermissionsEnum.LANGUAGE_DELETE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.LANGUAGE_ALL,
+      PermissionsEnum.LANGUAGE_FETCH,
+      PermissionsEnum.LANGUAGE_UPDATE,
+      PermissionsEnum.LANGUAGE_DELETE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -140,7 +148,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">title</th>
+                <th scope="col">{{ $t('title') }}</th>
 
                 <!-- <th scope="col">Actions</th> -->
                 <th class="empty"></th>
@@ -151,22 +159,29 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
                 <td data-label="#">
                   <span :to="`/users/Lang/edit/${item.id}`">{{ index + 1 }} </span>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusLang-->
                   <!--                  v-if="item.LangStatus === LangStatusEnum.Draft"-->
                   <!--                  :LangId="item.id"-->
                   <!--                  @LangChangeStatus="fetchLang"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteLang)" @delete="deleteLang(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteLang)"
+                    @delete="deleteLang(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -175,20 +190,28 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/industry/add`" addText="Add Lang"
-          description="You have no industry .. All your joined customers will appear here when you add your customer data"
-          title="You have No industry" />
+        <DataEmpty
+          :link="`/industry/add`"
+          :addText="$t('Add_Lang')"
+          :description="$t('auditUi.industries_will_appear_here_after_you_add_them')"
+          :title="$t('auditUi.no_industries_yet')"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/industry/add`" addText="Add Lang"
-          description="You have no industry .. All your joined customers will appear here when you add your customer data"
-          title="You have No industry" />
+        <DataFailed
+          :link="`/industry/add`"
+          :addText="$t('Add_Lang')"
+          :description="$t('auditUi.industries_will_appear_here_after_you_add_them')"
+          :title="$t('auditUi.no_industries_yet')"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no industry .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="$t('auditUi.industries_will_appear_here_after_you_add_them')"
+      />
     </template>
   </PermissionBuilder>
 </template>

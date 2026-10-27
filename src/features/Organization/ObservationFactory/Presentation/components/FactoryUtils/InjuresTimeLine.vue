@@ -35,18 +35,38 @@ const employeeOptions = ref<TitleInterface[]>([])
 const injuryOptions = ref<TitleInterface[]>([])
 const incidentCategoryOptions = ref<TitleInterface[]>([])
 const ppeItemOptions = ref<TitleInterface[]>([
-  new TitleInterface({ id: PpeItemEnum.SAFETY_GLOVES, title: 'Safety Gloves' }),
-  new TitleInterface({ id: PpeItemEnum.SAFETY_GOGGLES, title: 'Safety Goggles' }),
-  new TitleInterface({ id: PpeItemEnum.SAFETY_SHOES, title: 'Safety Shoes' }),
-  new TitleInterface({ id: PpeItemEnum.HELMET, title: 'Helmet' }),
-  new TitleInterface({ id: PpeItemEnum.OTHERS, title: 'Others' }),
+  new TitleInterface({
+    id: PpeItemEnum.SAFETY_GLOVES,
+    title: 'Safety Gloves',
+    translationKey: 'Safety Gloves',
+  }),
+  new TitleInterface({
+    id: PpeItemEnum.SAFETY_GOGGLES,
+    title: 'Safety Goggles',
+    translationKey: 'Safety Goggles',
+  }),
+  new TitleInterface({
+    id: PpeItemEnum.SAFETY_SHOES,
+    title: 'Safety Shoes',
+    translationKey: 'Safety Shoes',
+  }),
+  new TitleInterface({ id: PpeItemEnum.HELMET, title: 'Helmet', translationKey: 'Helmet' }),
+  new TitleInterface({ id: PpeItemEnum.OTHERS, title: 'Others', translationKey: 'Others' }),
 ])
 const ppeItemContoller = IndexPpeItemController.getInstance()
 const ppeItemParams = new IndexPpeItemParams('', 1, 10, 0)
 const ppeItemConditionOptions = ref<TitleInterface[]>([
-  new TitleInterface({ id: PpeItemConditionEnum.GOOD, title: 'Good' }),
-  new TitleInterface({ id: PpeItemConditionEnum.DAMAGED, title: 'Damaged' }),
-  new TitleInterface({ id: PpeItemConditionEnum.DEFECTIVE, title: 'Defective' }),
+  new TitleInterface({ id: PpeItemConditionEnum.GOOD, title: 'Good', translationKey: 'Good' }),
+  new TitleInterface({
+    id: PpeItemConditionEnum.DAMAGED,
+    title: 'Damaged',
+    translationKey: 'Damaged',
+  }),
+  new TitleInterface({
+    id: PpeItemConditionEnum.DEFECTIVE,
+    title: 'Defective',
+    translationKey: 'Defective',
+  }),
 ])
 
 type AnswerModel = {
@@ -358,10 +378,14 @@ onMounted(async () => {
                 <UpdatedCustomInputSelect
                   :staticOptions="employeeOptions"
                   v-model="item.employee"
-                  placeholder="Select Incident"
+                  :placeholder="$t('Select Incident')"
                   class="mt-4 mr-2 input"
-                  :label="$t('Person')"
-                  help-text="Select the injured Incident, or enter the person's name manually if they are not an Incident."
+                  :label="$t('person')"
+                  :help-text="
+                    $t(
+                      'Select the injured Incident, or enter the person\'s name manually if they are not an Incident.',
+                    )
+                  "
                   :reload="true"
                   :excludedOptionIds="getSelectedEmployeeIds(index)"
                   @update:model-value="UpdateData"
@@ -401,10 +425,11 @@ onMounted(async () => {
                   </template>
                   <template #content>
                     <input
+                      dir="auto"
                       type="text"
                       v-model="item.employee.title"
                       class="input"
-                      placeholder="Select Employee"
+                      :placeholder="$t('Select Employee')"
                       @input="UpdateData"
                     />
                   </template>
@@ -421,7 +446,9 @@ onMounted(async () => {
                   :staticOptions="injuryOptions"
                   class="input"
                   :label="$t('Type and Nature of Injury')"
-                  help-text="Choose the classification that best describes the injury sustained."
+                  :help-text="
+                    $t('Choose the classification that best describes the injury sustained.')
+                  "
                   id="injury"
                   :placeholder="$t('select your injury Classification')"
                   @update:modelValue="UpdateInjury($event, index)"
@@ -453,12 +480,19 @@ onMounted(async () => {
               </div>
               <div class="injury-field input-wrapper w-full">
                 <div class="flex items-center gap-2">
-                  <label :for="`injury-description-${index}`">{{ $t('Description of Injury ') }}</label>
+                  <label :for="`injury-description-${index}`">{{
+                    $t('Description of Injury')
+                  }}</label>
                   <FieldHelpIcon
-                    text="Describe the injury, affected body part, and any relevant medical details."
+                    :text="
+                      $t(
+                        'Describe the injury, affected body part, and any relevant medical details.',
+                      )
+                    "
                   />
                 </div>
                 <input
+                  dir="auto"
                   type="text"
                   :id="`injury-description-${index}`"
                   class="input"
@@ -472,7 +506,11 @@ onMounted(async () => {
                 <div class="flex items-center gap-2">
                   <label>{{ $t('attach photo') }}</label>
                   <FieldHelpIcon
-                    text="Attach photos that document the injury or related evidence, where appropriate and permitted."
+                    :text="
+                      $t(
+                        'Attach photos that document the injury or related evidence, where appropriate and permitted.',
+                      )
+                    "
                   />
                 </div>
                 <MultiImagesInput
@@ -507,6 +545,7 @@ onMounted(async () => {
                   @update:modelValue="updatePpeItems($event, index)"
                 />
                 <input
+                  dir="auto"
                   v-if="item.ppeItems.some((ppeItem) => ppeItem.id === PpeItemEnum.OTHERS)"
                   v-model="item.customPpeItem"
                   type="text"

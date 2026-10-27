@@ -5,7 +5,6 @@ import SortIcon from '@/shared/icons/SortIcon.vue'
 import TrashIcon from '@/shared/icons/TrashIcon.vue'
 import wordSlice from '@/base/Presentation/utils/word_slice'
 
-
 import { ref } from 'vue'
 
 const actionList = (id: number, deleteStudents: (id: number) => void) => [
@@ -43,13 +42,13 @@ const ReverseTable = () => {
       <thead>
         <tr>
           <th scope="col" class="cursor-pointer flex align-center grp-[6px]" @click="ReverseTable">
-            <span> name </span>
+            <span> {{ $t('name') }} </span>
             <SortIcon />
           </th>
           <th scope="col">{{ $t('image') }}</th>
           <th scope="col">{{ $t('title') }}</th>
-          <th scope="col">phone</th>
-          <th scope="col">Actions</th>
+          <th scope="col">{{ $t('phone') }}</th>
+          <th scope="col">{{ $t('Actions') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -57,10 +56,12 @@ const ReverseTable = () => {
           <td data-label="#">
             <router-link :to="`/`">{{ index + 1 }}</router-link>
           </td>
-          <td :data-label="$t('image')"><img src="@/assets/images/error.png" alt="image" /></td>
+          <td :data-label="$t('image')">
+            <img src="@/assets/images/error.png" :alt="$t('image')" />
+          </td>
           <td :data-label="$t('title')">{{ wordSlice(item.title) }}</td>
           <td :data-label="$t('payment_status')">{{ $t('free') }}</td>
-          <td data-label="actions" class="cursor-pointer">
+          <td :data-label="$t('actions')" class="cursor-pointer">
             <!-- <ActionsIcon /> -->
             <DropList :show-actions="true" :actionList="actionList(10, function () {})"> </DropList>
           </td>

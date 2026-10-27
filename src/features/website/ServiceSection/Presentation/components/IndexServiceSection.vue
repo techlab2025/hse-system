@@ -156,7 +156,14 @@ const changeStatusServiceSection = async (id: number) => {
       <span class="icon-remove" @click="((word = ''), searchService())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchService" />
+      <input
+        dir="auto"
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchService"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
@@ -169,14 +176,16 @@ const changeStatusServiceSection = async (id: number) => {
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.WEBSITE,
-    PermissionsEnum.SERVICE_SECTION_ALL,
-    PermissionsEnum.SERVICE_SECTION_DELETE,
-    PermissionsEnum.SERVICE_SECTION_FETCH,
-    PermissionsEnum.SERVICE_SECTION_UPDATE,
-    PermissionsEnum.SERVICE_SECTION_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.WEBSITE,
+      PermissionsEnum.SERVICE_SECTION_ALL,
+      PermissionsEnum.SERVICE_SECTION_DELETE,
+      PermissionsEnum.SERVICE_SECTION_FETCH,
+      PermissionsEnum.SERVICE_SECTION_UPDATE,
+      PermissionsEnum.SERVICE_SECTION_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -198,38 +207,50 @@ const changeStatusServiceSection = async (id: number) => {
                 <td data-label="#">
                   <router-link :to="`/admin/services/${item.id}`">{{ index + 1 }} </router-link>
                 </td>
-                <td data-label="title">{{ wordSlice(item.title) }}</td>
-                <td data-label="subtitle">{{ wordSlice(item.subtitle) || '--' }}</td>
-                <td data-label="description" v-html="wordSlice(item.description, 50)"></td>
+                <td :data-label="$t('title')">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('subtitle')">{{ wordSlice(item.subtitle) || '--' }}</td>
+                <td :data-label="$t('description')" v-html="wordSlice(item.description, 50)"></td>
 
-                <td data-label="image">
+                <td :data-label="$t('image')">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td>
-                <td data-label="status">
-                  <PermissionBuilder :code="[
-                    PermissionsEnum.WEBSITE,
-                    PermissionsEnum.HOME_VIEW_PRICING_ALL,
-                    PermissionsEnum.HOME_VIEW_PRICING_CHANGE_STATUS,
-                  ]">
-                    <ToggleSwitch :modelValue="item.isActive === 1" binary
-                      @update:model-value="changeStatusServiceSection(item.id)" />
+                <td :data-label="$t('status')">
+                  <PermissionBuilder
+                    :code="[
+                      PermissionsEnum.WEBSITE,
+                      PermissionsEnum.HOME_VIEW_PRICING_ALL,
+                      PermissionsEnum.HOME_VIEW_PRICING_CHANGE_STATUS,
+                    ]"
+                  >
+                    <ToggleSwitch
+                      :modelValue="item.isActive === 1"
+                      binary
+                      @update:model-value="changeStatusServiceSection(item.id)"
+                    />
                   </PermissionBuilder>
                 </td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('Actions')">
                   <!--                <DialogChangeStatusService-->
                   <!--                  v-if="item.ServiceStatus === ServiceStatusEnum.Draft"-->
                   <!--                  :ServiceId="item.id"-->
                   <!--                  @ServiceChangeStatus="fetchService"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteService)" @delete="deleteService(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteService)"
+                    @delete="deleteService(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -238,20 +259,40 @@ const changeStatusServiceSection = async (id: number) => {
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/admin/home-contact-us/add`" addText="Add Service"
-          description="You have no Service .. All your joined customers will appear here when you add your customer data"
-          title="You have No Service" />
+        <DataEmpty
+          :link="`/admin/home-contact-us/add`"
+          :addText="$t('Add_Service')"
+          :description="
+            $t(
+              'You have no Service .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Service')"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/admin/home-contact-us/add`" addText="Add Service"
-          description="You have no Service .. All your joined customers will appear here when you add your customer data"
-          title="You have No Service" />
+        <DataFailed
+          :link="`/admin/home-contact-us/add`"
+          :addText="$t('Add_Service')"
+          :description="
+            $t(
+              'You have no Service .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Service')"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no Service .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="
+          $t(
+            'You have no Service .. All your joined customers will appear here when you add your customer data',
+          )
+        "
+      />
     </template>
   </PermissionBuilder>
 </template>

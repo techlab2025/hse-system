@@ -1,0 +1,92 @@
+{
+  "recordedAt": "2026-10-27T12:29:07.681250+00:00",
+  "status": "Refactor implemented and verified under fixtures; production acceptance has outstanding dependencies.",
+  "source": {
+    "files": 6644,
+    "vue": 1955,
+    "typescript": 4373,
+    "routes": 346,
+    "hardcodedCandidates": 781,
+    "reusableTranslations": 519,
+    "physicalStyleDeclarations": 807,
+    "catalogKeysPerLanguage": 6119,
+    "literalNavigationReferences": 251,
+    "catalogDefects": {
+      "missingArabic": 0,
+      "missingEnglish": 0,
+      "empty": 0,
+      "wrongScriptEnglish": 0,
+      "placeholderMismatch": 0,
+      "missingReferencedKeys": 0,
+      "missingNavigationKeys": 0
+    },
+    "candidateInventoryIsNotAZeroDefectCertification": true
+  },
+  "checks": {
+    "productionBuild": "passed; existing large-chunk warning remains",
+    "localizationContracts": {
+      "passed": 14,
+      "failed": 0
+    },
+    "businessUnitRegressions": {
+      "passed": 15,
+      "failed": 0
+    },
+    "localizationBrowser": {
+      "passed": 18,
+      "failed": 0,
+      "viewportWidths": [390, 768, 1440]
+    },
+    "documentationBrowser": {
+      "passed": 17,
+      "failed": 0
+    },
+    "identityApiAndStorageBrowser": {
+      "passed": 12,
+      "failed": 0,
+      "mode": "Both code flags explicitly selected in intercepted Vite modules in an isolated source copy."
+    },
+    "identityAppearanceBrowser": {
+      "passed": 3,
+      "failed": 0
+    },
+    "employeeAndOrganizationAccessBrowser": {
+      "passed": 4,
+      "failed": 0
+    },
+    "targetedEslint": "passed for localization infrastructure, editor toolbar, action helpers, internal audit labels and sidebar items",
+    "gitDiffWhitespace": "passed"
+  },
+  "routeSmoke": {
+    "fixtureData": true,
+    "registryEntries": 551,
+    "routeLocaleChecks": 1086,
+    "distinctPathPatterns": 529,
+    "pageErrorChecks": 40,
+    "consoleRenderErrorChecks": 52,
+    "navigationTimeoutChecks": 0,
+    "languageOrDirectionMismatches": 0,
+    "desktopPageOverflowChecks": 0,
+    "roles": ["organization master", "admin"],
+    "limitations": [
+      "Navigation smoke coverage; does not exercise every dialog, mutation, permission combination, or real backend response.",
+      "Required route parameters use fixture record ID 1 and may not represent every feature contract.",
+      "Wrong-language text is collected for human review because records, technical codes, and proper names must be preserved.",
+      "Production console warnings are stripped by the existing build configuration; catalog/reference checks and DOM text review complement console collection.",
+      "The route sweep precedes the last small accessible-label, spreadsheet-header and wording corrections; the final build and targeted browser suites validate those corrections."
+    ]
+  },
+  "typeChecking": {
+    "passed": false,
+    "unchangedHeadBaselineDiagnostics": 3608,
+    "currentDiagnostics": 3606,
+    "newLocalizationInfrastructureDiagnostics": 0,
+    "note": "Compared by source path and diagnostic after removing line numbers and checkout prefixes. Existing diagnostics change wording when inferred template props include dir, union ordering changes or component contexts gain imports. This is not a passing full-project type check."
+  },
+  "releaseFollowUp": [
+    "Validate 26 distinct routes with page or console render errors using valid backend detail responses; see runtime-issues.json.",
+    "Resolve existing application TypeScript diagnostics.",
+    "Backend must honor Accept-Language and supply stable error codes and localized managed records/notification payloads. Meaningful unknown backend messages are preserved.",
+    "Manually approve real-record permission flows, wording, long-text layouts and exports; fixture navigation does not exercise every business interaction."
+  ]
+}

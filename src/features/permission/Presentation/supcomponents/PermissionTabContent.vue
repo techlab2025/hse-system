@@ -22,9 +22,7 @@ const { permissions } = defineProps<{
 }>()
 
 const getGroupAllPermission = (group: any) =>
-  group.permissions?.find(
-    (permission: any) => permission.code === group.code || permission.label === 'All',
-  )
+  group.permissions?.find((permission: any) => permission.code === group.code)
 
 // ✅ Mark permissions as checked based on backend data
 const applyCheckedPermissions = () => {

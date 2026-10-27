@@ -1,8 +1,10 @@
 <script lang="ts" setup>
+import { translate as localizeUi } from '@/localization/i18n'
+
 import { ref, watch } from 'vue'
 import Check from '@/assets/images/check.png'
 import alert from '@/assets/images/alert-sign.png'
-import { SaveStatusEnum } from '../../../Core/Enums/save_status_enum';
+import { SaveStatusEnum } from '../../../Core/Enums/save_status_enum'
 // import { SaveStatusEnum } from '../../Core/Enums/save_status_enum'
 
 const props = defineProps<{
@@ -16,14 +18,29 @@ const selectedSaveStatus = ref<SaveStatusEnum | null>(props.modelValue || null)
 watch(selectedSaveStatus, (val) => emit('update:saveStatus', val))
 
 const options = [
-  { value: SaveStatusEnum.NotSaved, label: 'Negative', icon: alert },
-  { value: SaveStatusEnum.Saved, label: 'Positive', icon: Check }
+  {
+    value: SaveStatusEnum.NotSaved,
+    get label() {
+      return localizeUi('Negative')
+    },
+    icon: alert,
+  },
+  {
+    value: SaveStatusEnum.Saved,
+    get label() {
+      return localizeUi('Positive')
+    },
+    icon: Check,
+  },
 ]
 
 // إذا تغير modelValue من الخارج، حدّث selectedSaveStatus
-watch(() => props.modelValue, (val) => {
-  selectedSaveStatus.value = val || null
-})
+watch(
+  () => props.modelValue,
+  (val) => {
+    selectedSaveStatus.value = val || null
+  },
+)
 </script>
 
 <template>
@@ -35,12 +52,7 @@ watch(() => props.modelValue, (val) => {
       :class="{ selected: selectedSaveStatus === opt.value }"
     >
       <label>
-        <input
-          type="radio"
-          class="radio-input"
-          v-model="selectedSaveStatus"
-          :value="opt.value"
-        />
+        <input type="radio" class="radio-input" v-model="selectedSaveStatus" :value="opt.value" />
         <span>{{ opt.label }}</span>
         <img :src="opt.icon" :alt="opt.label" />
       </label>

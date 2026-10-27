@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getCurrentLocale } from '@/localization/i18n'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, ref, watch } from 'vue'
@@ -74,7 +76,7 @@ const formatDate = (date: string) => {
   if (!date) return 'Today'
   const parsedDate = new Date(`${date}T00:00:00`)
   if (Number.isNaN(parsedDate.getTime())) return date
-  return new Intl.DateTimeFormat(undefined, {
+  return new Intl.DateTimeFormat(getCurrentLocale(), {
     weekday: 'long',
     month: 'short',
     day: 'numeric',
@@ -115,15 +117,15 @@ watch(projectId, fetchTodayTalk, { immediate: true })
       v-if="historyTalks.length && !isLoading"
       type="button"
       class="hse-project-button history-button"
-      :aria-label="`Open ${historyTalks.length} previous talks`"
-      :title="`${historyTalks.length} previous talks`"
+      :aria-label="$t('uiDynamic.openPreviousTalks', { p0: historyTalks.length })"
+      :title="$t('uiDynamic.previousTalks', { p0: historyTalks.length })"
       @click="historyDialogVisible = true"
     >
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="12" cy="12" r="9" />
         <path d="M12 11v5M12 8h.01" />
       </svg>
-      <span>History</span>
+      <span>{{ $t('History') }}</span>
       <small>{{ historyTalks.length }}</small>
     </button>
 
@@ -140,7 +142,7 @@ watch(projectId, fetchTodayTalk, { immediate: true })
       class="talk-summary-body"
       role="button"
       tabindex="0"
-      aria-label="Open today's talk details"
+      :aria-label="$t('Open today\'s talk details')"
       @click="openTalkDetails"
       @keydown.enter="openTalkDetails"
       @keydown.space.prevent="openTalkDetails"
@@ -154,13 +156,13 @@ watch(projectId, fetchTodayTalk, { immediate: true })
             </svg>
           </span>
           <div>
-            <span class="talk-kicker">Daily safety conversation</span>
-            <h2 id="today-talk-title">Today’s Talk</h2>
+            <span class="talk-kicker">{{ $t('Daily safety conversation') }}</span>
+            <h2 id="today-talk-title">{{ $t('Today’s Talk') }}</h2>
           </div>
         </div>
         <div class="talk-date">
           <strong>{{ formatDate(talk.date) }}</strong>
-          <span>{{ talk.time || 'Time not provided' }}</span>
+          <span>{{ talk.time || $t('Time not provided') }}</span>
         </div>
       </header>
 
@@ -170,12 +172,14 @@ watch(projectId, fetchTodayTalk, { immediate: true })
         <div class="attendance-summary">
           <span class="attendance-ring">{{ attendingCount }}</span>
           <div>
-            <strong>{{ attendingCount }} of {{ talk.employees.length }} attended</strong>
-            <span>Attendance captured for today’s briefing</span>
+            <strong>{{
+              $t('attendanceSummary', { count: attendingCount, total: talk.employees.length })
+            }}</strong>
+            <span>{{ $t('Attendance captured for today’s briefing') }}</span>
           </div>
         </div>
         <div class="view-details">
-          <span>View all details and employees</span>
+          <span>{{ $t('View all details and employees') }}</span>
           <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6" /></svg>
         </div>
       </footer>
@@ -183,10 +187,14 @@ watch(projectId, fetchTodayTalk, { immediate: true })
 
     <div v-else class="talk-empty">
       <div class="empty-copy">
-        <span class="talk-kicker">Start the day aligned</span>
-        <h2 id="today-talk-title">No talk recorded today</h2>
+        <span class="talk-kicker">{{ $t('Start the day aligned') }}</span>
+        <h2 id="today-talk-title">{{ $t('No talk recorded today') }}</h2>
         <p>
-          Gather the project team, capture the discussion, and record who attended the briefing.
+          {{
+            $t(
+              'Gather the project team, capture the discussion, and record who attended the briefing.',
+            )
+          }}
         </p>
       </div>
       <div class="empty-action">
@@ -194,7 +202,7 @@ watch(projectId, fetchTodayTalk, { immediate: true })
         <RouterLink
           :to="createRoute"
           class="hse-project-button hse-project-button--primary btn btn-primary"
-          >Create today’s talk</RouterLink
+          >{{ $t('Create today’s talk') }}</RouterLink
         >
         <!-- <button type="button" class="retry-button" @click="fetchTodayTalk">Check again</button> -->
       </div>

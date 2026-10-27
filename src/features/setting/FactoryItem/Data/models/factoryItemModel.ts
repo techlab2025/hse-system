@@ -1,3 +1,4 @@
+import { localizedRecord } from '@/localization/records'
 import TitleModel from '@/base/core/Models/title_model'
 import TitleInterface from '@/base/Data/Models/title_interface'
 // import TitleModel from '@/base/Data/Models/title_model.ts'
@@ -38,19 +39,22 @@ export default class FactoryItemModel extends TitleInterface {
   }
 
   static fromMap(data: any): FactoryItemModel {
-    return new FactoryItemModel(
-      data?.id,
-      data.title,
-      data.subtitle,
-      // data.has_certificate,
-      data.all_industries,
-      data.industries?.length > 0
-        ? data.industries?.map((industry) => TitleModel.fromMap(industry))
-        : [],
-      data.parent_id,
-      data.image,
-      data.titles,
-      TitleModel.fromMap(data.factory),
+    return localizedRecord(
+      new FactoryItemModel(
+        data?.id,
+        data.title,
+        data.subtitle,
+        // data.has_certificate,
+        data.all_industries,
+        data.industries?.length > 0
+          ? data.industries?.map((industry) => TitleModel.fromMap(industry))
+          : [],
+        data.parent_id,
+        data.image,
+        data.titles,
+        TitleModel.fromMap(data.factory),
+      ),
+      data,
     )
   }
 }

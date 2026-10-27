@@ -1,4 +1,4 @@
-@use "sass:map";
+@use 'sass:map';
 
 $space: (
   0: 0,
@@ -22,10 +22,10 @@ $space: (
     margin-bottom: map.get($space, $i);
   }
   .ml-#{$i} {
-    margin-left: map.get($space, $i);
+    margin-inline-start: map.get($space, $i);
   }
   .mr-#{$i} {
-    margin-right: map.get($space, $i);
+    margin-inline-end: map.get($space, $i);
   }
 }
 
@@ -40,9 +40,9 @@ $space: (
     padding-bottom: map.get($space, $i);
   }
   .pl-#{$i} {
-    padding-left: map.get($space, $i);
+    padding-inline-start: map.get($space, $i);
   }
   .pr-#{$i} {
-    padding-right: map.get($space, $i);
+    padding-inline-end: map.get($space, $i);
   }
 }

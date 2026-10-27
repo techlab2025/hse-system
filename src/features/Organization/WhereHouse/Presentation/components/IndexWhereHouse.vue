@@ -119,6 +119,7 @@ watch(
         <Search />
       </span>
       <input
+        dir="auto"
         v-model="word"
         :placeholder="$t('search')"
         class="input"
@@ -157,7 +158,7 @@ watch(
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
-                <th scope="col">{{ $t('Warehouse Type') }}</th>
+                <th scope="col">{{ $t('wareHouse_type') }}</th>
                 <!-- <th scope="col">{{ $t('actions') }}</th> -->
                 <th class="empty"></th>
               </tr>
@@ -169,9 +170,11 @@ watch(
                     >{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="Wherehouse Type">{{ wordSlice(item?.warehouse_type?.title) }}</td>
-                <td data-label="Actions">
+                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                <td :data-label="$t('auditUi.warehouse_type')">
+                  {{ wordSlice(item?.warehouse_type?.title) }}
+                </td>
+                <td :data-label="$t('Actions')">
                   <DropList
                     :actionList="actionList(item.id, deleteWhereHouse)"
                     @delete="deleteWhereHouse(item.id)"
@@ -199,9 +202,9 @@ watch(
         >
           <DataEmpty
             :link="`/organization/where-house/add`"
-            addText="Add Warehouse"
-            description="You have no Warehouse .. All your joined customers will appear here when you add your customer data"
-            title="You have No Warehouse"
+            :addText="$t('add_warehouse')"
+            :description="$t('auditUi.warehouses_will_appear_here_after_you_add_them')"
+            :title="$t('auditUi.no_warehouses_yet')"
           />
         </PermissionBuilder>
       </template>
@@ -211,9 +214,9 @@ watch(
         >
           <DataFailed
             :link="`/organization/where-house/add`"
-            addText="Add Warehouse"
-            description="You have no Warehouse .. All your joined customers will appear here when you add your customer data"
-            title="You have No Warehouse"
+            :addText="$t('add_warehouse')"
+            :description="$t('auditUi.warehouses_will_appear_here_after_you_add_them')"
+            :title="$t('auditUi.no_warehouses_yet')"
           />
         </PermissionBuilder>
       </template>
@@ -221,8 +224,8 @@ watch(
 
     <template #notPermitted>
       <DataFailed
-        addText="Have not  Permission"
-        description="You have no Warehouse .. All your joined customers will appear here when you add your customer data"
+        :addText="$t('auditUi.you_do_not_have_permission')"
+        :description="$t('auditUi.warehouses_will_appear_here_after_you_add_them')"
         link=""
       />
     </template>

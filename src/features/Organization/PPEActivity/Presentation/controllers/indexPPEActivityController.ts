@@ -1,10 +1,10 @@
+import { translate as localizeUi } from '@/localization/i18n'
 // import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import type PPEActivityModel from '../../Data/models/PPEActivityModel'
 import IndexPPEActivityUseCase from '../../Domain/useCase/indexPPEActivityUseCase'
-
 
 export default class IndexPPEActivityController extends SelectControllerInterface<
   PPEActivityModel[]
@@ -26,14 +26,13 @@ export default class IndexPPEActivityController extends SelectControllerInterfac
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<PPEActivityModel[]> =
-      await this.IndexPPEActivityUseCase.call(params)
+    const dataState: DataState<PPEActivityModel[]> = await this.IndexPPEActivityUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
     } else {
-      throw new Error('Error while addServices')
+      throw new Error(localizeUi('Error while addServices'))
     }
     super.handleResponseDialogs()
     return this.state

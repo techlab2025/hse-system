@@ -20,7 +20,8 @@ import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import HandleFIlesUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
-const { configureRules: configureValidationRules } = useConfiguredValidation('ContractorForm')
+const { configureRules: configureValidationRules, localizeErrors: localizeValidationErrors } =
+  useConfiguredValidation('ContractorForm')
 
 const emit = defineEmits(['update:data'])
 
@@ -80,8 +81,16 @@ const CompanyEmail = ref<string>('')
 const SelectedStatus = ref<TitleInterface>()
 
 const StatusList = ref<TitleInterface[]>([
-  new TitleInterface({ id: ContractorStatusEnum.ACTIVE, title: 'active' }),
-  new TitleInterface({ id: ContractorStatusEnum.INACTIVE, title: 'inactive' }),
+  new TitleInterface({
+    id: ContractorStatusEnum.ACTIVE,
+    title: 'active',
+    translationKey: 'active',
+  }),
+  new TitleInterface({
+    id: ContractorStatusEnum.INACTIVE,
+    title: 'inactive',
+    translationKey: 'inactive',
+  }),
 ])
 
 watch(
@@ -218,6 +227,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     isMissing: () => !date.value,
   },
 ])
+localizeValidationErrors(requiredFieldErrors, requiredFields)
 
 const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
 
@@ -230,7 +240,9 @@ const scrollToRequiredField = async (key: string) => {
 }
 
 const validateRequiredFields = async () => {
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors
@@ -258,10 +270,10 @@ defineExpose({
       </div>
       <div class="contractor-form-hero__copy">
         <p class="contractor-form-hero__eyebrow">
-          {{ data?.id ? $t('edit') : $t('add') }} · Contractor registry
+          {{ data?.id ? $t('edit') : $t('add') }} {{ $t('· Contractor registry') }}
         </p>
-        <h2>{{ data?.id ? 'Update contractor profile' : 'Create contractor profile' }}</h2>
-        <p>Keep company, contact, service scope, and contract records together.</p>
+        <h2>{{ data?.id ? $t('Update contractor profile') : $t('Create contractor profile') }}</h2>
+        <p>{{ $t('Keep company, contact, service scope, and contract records together.') }}</p>
       </div>
       <span class="contractor-form-hero__status">
         <span aria-hidden="true"></span>
@@ -273,8 +285,8 @@ defineExpose({
       <div class="contractor-section-heading">
         <span class="contractor-section-heading__index">01</span>
         <div>
-          <h3 id="contractor-company-heading">Company identity</h3>
-          <p>Record the contractor’s primary identity and company contact details.</p>
+          <h3 id="contractor-company-heading">{{ $t('Company identity') }}</h3>
+          <p>{{ $t('Record the contractor’s primary identity and company contact details.') }}</p>
         </div>
       </div>
 
@@ -282,23 +294,27 @@ defineExpose({
         <div v-if="!data?.id" class="input-wrapper">
           <label for="serialNumber">{{ $t('serial_number') }}</label>
           <input
+            dir="auto"
             id="serialNumber"
             v-model="SerialNumber"
             type="text"
             :disabled="projtecStateus.isSerialNumberAuto()"
             :placeholder="
               projtecStateus.isSerialNumberAuto()
-                ? 'You can leave it (auto-generated)'
-                : 'Enter Your Serial Number'
+                ? $t('You can leave it (auto-generated)')
+                : $t('Enter Your Serial Number')
             "
             @input="UpdateSerial"
           />
-          <small class="field-helper">A unique reference can be generated automatically.</small>
+          <small class="field-helper">{{
+            $t('A unique reference can be generated automatically.')
+          }}</small>
         </div>
 
         <div class="input-wrapper field-required" data-required-field="Name">
           <label for="name">{{ $t('name') }}</label>
           <input
+            dir="auto"
             id="name"
             v-model="Name"
             type="text"
@@ -314,11 +330,12 @@ defineExpose({
         <div class="input-wrapper field-required" data-required-field="phoneNumber">
           <label for="company_number">{{ $t('phone_number') }}</label>
           <input
+            dir="ltr"
             id="company_number"
             v-model="phoneNumber"
             type="tel"
             class="input"
-            placeholder="Enter phone number"
+            :placeholder="$t('Enter phone number')"
             @input="setPhoneNumber"
           />
           <p v-if="getFieldError('phoneNumber')" class="required-field-message">
@@ -329,11 +346,12 @@ defineExpose({
         <div class="input-wrapper">
           <label for="company_email">{{ $t('email') }}</label>
           <input
+            dir="ltr"
             id="company_email"
             v-model="CompanyEmail"
             type="email"
             class="input"
-            placeholder="Enter company email"
+            :placeholder="$t('Enter company email')"
             @input="setCompanyEmail"
           />
         </div>
@@ -341,16 +359,17 @@ defineExpose({
         <div class="input-wrapper contractor-field--wide">
           <label for="company_address">{{ $t('address') }}</label>
           <input
+            dir="auto"
             id="company_address"
             v-model="CompanyAddress"
             type="text"
             class="input"
-            placeholder="Enter company address"
+            :placeholder="$t('Enter company address')"
             @input="setCompanyAddress"
           />
         </div>
 
-         <div class="input-wrapper" data-required-field="Scope">
+        <div class="input-wrapper" data-required-field="Scope">
           <UpdatedCustomInputSelect
             id="Scope"
             :modelValue="Scope"
@@ -358,7 +377,7 @@ defineExpose({
             :controller="indexScopeController"
             :params="indexScopeParams"
             :label="$t('scope of service')"
-            placeholder="Select scope of service"
+            :placeholder="$t('Select scope of service')"
             :type="2"
             :isDialog="true"
             v-model:dialogVisible="scopeDialogRef"
@@ -367,7 +386,7 @@ defineExpose({
           >
             <template #LabelHeader>
               <button class="inline-create-action" type="button" @click="scopeDialogRef = true">
-                + New
+                {{ $t('+ New') }}
               </button>
             </template>
             <template #Dialog>
@@ -387,7 +406,7 @@ defineExpose({
             :static-options="StatusList"
             :label="$t('status')"
             :reload="false"
-            placeholder="Select contractor status"
+            :placeholder="$t('Select contractor status')"
             @update:modelValue="setStatus"
           />
         </div>
@@ -398,8 +417,12 @@ defineExpose({
       <div class="contractor-section-heading">
         <span class="contractor-section-heading__index">02</span>
         <div>
-          <h3 id="contractor-contact-heading">Contact and service coverage</h3>
-          <p>Connect the responsible person with the contractor’s approved scopes and status.</p>
+          <h3 id="contractor-contact-heading">{{ $t('Contact and service coverage') }}</h3>
+          <p>
+            {{
+              $t('Connect the responsible person with the contractor’s approved scopes and status.')
+            }}
+          </p>
         </div>
       </div>
 
@@ -407,11 +430,12 @@ defineExpose({
         <div class="input-wrapper">
           <label for="contact_person">{{ $t('person_name') }}</label>
           <input
+            dir="auto"
             id="contact_person"
             v-model="contactPerson"
             type="text"
             class="input"
-            placeholder="Enter contact person"
+            :placeholder="$t('Enter contact person')"
             @input="setcontactPerson"
           />
         </div>
@@ -419,11 +443,12 @@ defineExpose({
         <div class="input-wrapper">
           <label for="contact_person_email">{{ $t('person_email') }}</label>
           <input
+            dir="ltr"
             id="contact_person_email"
             v-model="contactPersonEmail"
             type="email"
             class="input"
-            placeholder="Enter contact email"
+            :placeholder="$t('Enter contact email')"
             @input="setcontactPersonEmail"
           />
         </div>
@@ -431,19 +456,18 @@ defineExpose({
         <div class="input-wrapper field-required" data-required-field="contactPersonPhone">
           <label for="contact_person_phone">{{ $t('person_phone') }}</label>
           <input
+            dir="ltr"
             id="contact_person_phone"
             v-model="contactPersonPhone"
             type="tel"
             class="input"
-            placeholder="Enter contact phone"
+            :placeholder="$t('Enter contact phone')"
             @input="setcontactPersonPhone"
           />
           <p v-if="getFieldError('contactPersonPhone')" class="required-field-message">
             {{ getFieldError('contactPersonPhone') }}
           </p>
         </div>
-
-       
       </div>
     </section>
 
@@ -451,8 +475,8 @@ defineExpose({
       <div class="contractor-section-heading">
         <span class="contractor-section-heading__index">03</span>
         <div>
-          <h3 id="contractor-contract-heading">Contract validity and evidence</h3>
-          <p>Set the expiry date and attach the latest supporting contract document.</p>
+          <h3 id="contractor-contract-heading">{{ $t('Contract validity and evidence') }}</h3>
+          <p>{{ $t('Set the expiry date and attach the latest supporting contract document.') }}</p>
         </div>
       </div>
 
@@ -463,8 +487,8 @@ defineExpose({
             id="expiry_date"
             :modelValue="date"
             class="input"
-            label="Date"
-            placeholder="Select contract expiry date"
+            :label="$t('Date')"
+            :placeholder="$t('Select contract expiry date')"
             @update:modelValue="setExpiryDate"
           />
           <p v-if="getFieldError('date')" class="required-field-message">
@@ -477,7 +501,7 @@ defineExpose({
             <span class="contractor-upload-card__icon" aria-hidden="true">↑</span>
             <div>
               <strong>{{ $t('upload contract image') }}</strong>
-              <p>PDF, Office document, or image. One current contract file.</p>
+              <p>{{ $t('PDF, Office document, or image. One current contract file.') }}</p>
             </div>
           </div>
           <HandleFIlesUpload
