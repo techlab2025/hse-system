@@ -48,7 +48,11 @@ const rows = computed(() =>
     ><DashboardDonut :items="ownership" :caption="$t('command.ownershipRecords')" />
     <details v-if="rows.length" class="command-equipment-detail">
       <summary>{{ $t('command.equipmentByLocation') }}</summary>
-      <DashboardBars :rows="rows" :label="$t('command.equipmentByLocation')" />
+      <DashboardBars
+        chart-id="equipmentLocations"
+        :rows="rows"
+        :label="$t('command.equipmentByLocation')"
+      />
     </details>
     <template #footer
       ><p>{{ $t('command.equipmentCountsNote') }}</p></template

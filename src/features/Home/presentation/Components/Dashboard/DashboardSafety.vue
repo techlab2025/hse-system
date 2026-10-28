@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   displayName,
+  knownSum,
   type SummarySnapshot,
   type Resource,
   type ZoneReports,
@@ -23,11 +24,10 @@ const rows = computed(() =>
     label: displayName(zone, locale.value),
     segments: [
       { key: 'incident', label: t('command.incidents'), value: zone.incident, tone: 'red' },
-      { key: 'hazard', label: t('command.hazards'), value: zone.hazard, tone: 'amber' },
       {
         key: 'observation',
         label: t('command.observations'),
-        value: zone.observation,
+        value: knownSum([zone.hazard, zone.observation]),
         tone: 'blue',
       },
     ],

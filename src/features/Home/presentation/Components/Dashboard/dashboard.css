@@ -1478,3 +1478,25 @@
     height: 290px;
   }
 }
+
+/* User-selected spans yield to the single-column layout on small screens. */
+@media (min-width: 901px) {
+  .org-command .command-grid > [data-dashboard-width='half'] {
+    grid-column: span 12;
+  }
+  .org-command .command-grid > [data-dashboard-width='full'] {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .org-command .command-grid > [data-dashboard-width='half'] {
+    grid-column: span 1;
+  }
+  .org-command .command-grid > [data-dashboard-width='full'] {
+    grid-column: 1 / -1;
+  }
+}
+.org-command .command-grid.is-restricted > [data-dashboard-width='half'] {
+  grid-column: span 1;
+}

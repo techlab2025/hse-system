@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import DashboardCustomChart from './DashboardCustomChart.vue'
+import { useDashboardChart } from '@/composables/useDashboardPreferences'
+const { settings, customized } = useDashboardChart('workforce')
 import { useI18n } from 'vue-i18n'
 import type { Resource, SummarySnapshot } from '../../../data/Model/OrganizationDashboardModel'
 import DashboardPanel from './DashboardPanel.vue'
@@ -24,7 +27,28 @@ const number = (value: number | null | undefined) =>
     :status="resource.status"
     :link="link ? '/organization/employee-certificate' : ''"
     @retry="$emit('retry')"
-    ><dl class="command-record-counts">
+    ><DashboardCustomChart
+      v-if="customized"
+      :rows="
+        ['active', 'inactive', 'expired'].map((key) => ({
+          id: key,
+          label: $t(
+            `command.${key === 'active' ? 'activeRecords' : key === 'inactive' ? 'inactiveRecords' : 'expiredRecords'}`,
+          ),
+          segments: [
+            {
+              key: 'count',
+              label: $t('command.certificateTotal'),
+              value: resource.data?.certificates[key as 'active' | 'inactive' | 'expired'] ?? null,
+              tone: 'blue',
+            },
+          ],
+        }))
+      "
+      :label="$t('command.workforceTitle')"
+      :settings="settings"
+    />
+    <dl v-else class="command-record-counts">
       <div>
         <dt><i class="command-fill-teal"></i>{{ $t('command.activeRecords') }}</dt>
         <dd>

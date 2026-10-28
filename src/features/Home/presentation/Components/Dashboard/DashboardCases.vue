@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import DashboardCustomChart from './DashboardCustomChart.vue'
+import { useDashboardChart } from '@/composables/useDashboardPreferences'
+const { settings, customized } = useDashboardChart('cases')
 import { useI18n } from 'vue-i18n'
 import {
   displayName,
@@ -24,7 +27,21 @@ const tones = ['red', 'amber', 'blue', 'teal', 'purple', 'muted']
     :subtitle="$t('command.casesSubtitle')"
     :status="resource.status"
     @retry="$emit('retry')"
-    ><ol v-if="rows.length" class="command-case-ranking">
+    ><DashboardCustomChart
+      v-if="customized && rows.length"
+      :rows="
+        rows.map((row) => ({
+          id: row.id,
+          label: displayName(row, locale),
+          segments: [
+            { key: 'count', label: $t('command.casesTitle'), value: row.value, tone: 'blue' },
+          ],
+        }))
+      "
+      :label="$t('command.casesTitle')"
+      :settings="settings"
+    />
+    <ol v-else-if="rows.length" class="command-case-ranking">
       <li v-for="(row, index) in rows" :key="row.id">
         <span
           ><bdi dir="auto">{{

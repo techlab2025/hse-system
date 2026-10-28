@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import DashboardCustomChart from './DashboardCustomChart.vue'
+import { useDashboardChart } from '@/composables/useDashboardPreferences'
+const { settings, customized } = useDashboardChart('equipment')
 import { useI18n } from 'vue-i18n'
 import { knownSum, type Count } from '../../../data/Model/OrganizationDashboardModel'
 const props = defineProps<{
@@ -21,7 +24,20 @@ const number = (value: Count) =>
   value === null ? '—' : new Intl.NumberFormat(locale.value).format(value)
 </script>
 <template>
-  <div class="command-donut-layout">
+  <DashboardCustomChart
+    v-if="customized"
+    :rows="
+      items.map((item) => ({
+        id: item.key,
+        label: item.label,
+        segments: [{ key: 'count', label: caption, value: item.value, tone: item.tone }],
+      }))
+    "
+    :label="caption"
+    :settings="settings"
+    default-type="doughnut"
+  />
+  <div v-else class="command-donut-layout">
     <div class="command-donut" :aria-label="`${caption}: ${number(total)}`" role="img">
       <svg viewBox="0 0 120 120" aria-hidden="true">
         <circle class="command-donut-base" cx="60" cy="60" r="46" fill="none" stroke-width="19" />

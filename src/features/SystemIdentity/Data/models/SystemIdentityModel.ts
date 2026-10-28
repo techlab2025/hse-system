@@ -44,17 +44,22 @@ export const normalizeSystemIdentity = (value?: Partial<SystemIdentity>): System
 
 export const defaultSystemIdentity = (): SystemIdentity => normalizeSystemIdentity()
 
-/** API resource. The identity member contains the same JSON stored in the browser. */
+/** Accept the API's flat resource/list as well as the wrapped identity contract. */
 export default class SystemIdentityModel {
   constructor(
     public identity: SystemIdentity | null,
     public updatedAt: string | null,
   ) {}
 
-  static fromMap(data: Record<string, unknown>): SystemIdentityModel {
-    if (!Object.prototype.hasOwnProperty.call(data, 'identity'))
+  static fromMap(data: Record<string, unknown> | unknown[]): SystemIdentityModel {
+    if (Array.isArray(data)) {
+      if (data.length === 0) return new SystemIdentityModel(null, null)
+      if (data.length !== 1) throw new Error(localizeUi('Invalid system identity response'))
+      data = data[0] as Record<string, unknown>
+    }
+    if (!data || typeof data !== 'object' || Array.isArray(data))
       throw new Error(localizeUi('Invalid system identity response'))
-    const value = data.identity
+    const value = Object.prototype.hasOwnProperty.call(data, 'identity') ? data.identity : data
     if (value !== null && (!value || typeof value !== 'object' || Array.isArray(value)))
       throw new Error(localizeUi('Invalid system identity response'))
     if (value !== null) {

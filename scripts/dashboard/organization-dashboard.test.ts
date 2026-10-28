@@ -221,3 +221,18 @@ test('failed requests are not cached and retry can succeed without an apparent z
   assert.equal(retried.status, 'ready')
   assert.equal(retried.data?.incidents, 0)
 })
+
+test('safety chart combines hazards with observations and preserves unknown totals', () => {
+  const [zone] = parseSafety([
+    {
+      zone_id: 10,
+      zone_title: 'dsadas',
+      all_observations: { hazard: 4, accidents: 7, observation: 0 },
+    },
+  ])
+  assert.equal(zone!.incident, 7)
+  assert.equal(knownSum([zone!.hazard, zone!.observation]), 4)
+  const [missing] = parseSafety([{ all_observations: { hazard: 4, accidents: 0 } }])
+  assert.equal(knownSum([missing!.hazard, missing!.observation]), null)
+  assert.equal(knownSum([0, 0]), 0)
+})

@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import DashboardCustomChart from './DashboardCustomChart.vue'
+import { useDashboardChart } from '@/composables/useDashboardPreferences'
+import type { ChartId } from '@/features/SystemIdentity/dashboard'
 import { useI18n } from 'vue-i18n'
 import { knownSum, type BarRow, type Count } from '../../../data/Model/OrganizationDashboardModel'
-const props = defineProps<{ rows: BarRow[]; label: string }>()
+const props = withDefaults(defineProps<{ rows: BarRow[]; label: string; chartId?: ChartId }>(), {
+  chartId: 'inspection',
+})
+const { settings, customized } = useDashboardChart(props.chartId)
 const { t, locale } = useI18n()
 const ordered = computed(() =>
   props.rows
@@ -15,7 +21,8 @@ const number = (value: Count) =>
 const legend = computed(() => props.rows[0]?.segments ?? [])
 </script>
 <template>
-  <div class="command-chart" :aria-label="label">
+  <DashboardCustomChart v-if="customized" :rows="rows" :label="label" :settings="settings" />
+  <div v-else class="command-chart" :aria-label="label">
     <ul class="command-legend" :aria-label="$t('command.legend')">
       <li v-for="item in legend" :key="item.key">
         <i :class="`command-fill-${item.tone}`"></i>{{ item.label }}

@@ -22,7 +22,6 @@ const navigate = (page, path) =>
 
 async function backend(page, initial = sample()) {
   await installFixtures(page)
-  await enableApi(page)
   const state = { identity: initial, fetches: 0, writes: [], failure: false, loadFailure: false }
   await page.route('**/organization/*system_identity', async (route) => {
     expect(route.request().method()).toBe('POST')
@@ -51,6 +50,96 @@ async function backend(page, initial = sample()) {
     return route.fulfill({ json: resource(state.identity) })
   })
   return state
+}
+
+for (const loadFailure of [false, true]) {
+  test(`organization login waits for identity before navigating (${loadFailure ? 'fetch failure' : 'success'})`, async ({
+    page,
+  }) => {
+    const state = await backend(page)
+    state.loadFailure = loadFailure
+    await page.addInitScript(() => {
+      localStorage.removeItem('user')
+      localStorage.removeItem('token')
+    })
+    await page.route('**/organization/login', (route) =>
+      route.fulfill({
+        json: {
+          status: true,
+          data: {
+            id: 1,
+            name: 'Identity login test',
+            email: 'identity@example.com',
+            api_token: 'identity-login-token',
+            type: 2,
+            employee_type: 1,
+            is_master: 1,
+            permissions: [],
+            languages: [],
+          },
+        },
+      }),
+    )
+    let release
+    const pending = new Promise((resolve) => {
+      release = resolve
+    })
+    let fetchStarted = false
+    await page.route('**/organization/fetch_system_identity', async (route) => {
+      expect(route.request().headers().authorization).toBe('Bearer identity-login-token')
+      fetchStarted = true
+      await pending
+      await route.fallback()
+    })
+    await page.goto(`${baseURL}/login/organization`)
+    await page.locator('#email').fill('identity@example.com')
+    await page.locator('#password').fill('fixture-password')
+    await page.locator('button[type="submit"]').click()
+    await expect.poll(() => fetchStarted).toBe(true)
+    await expect(page).toHaveURL(`${baseURL}/login/organization`)
+    release()
+    await expect(page).toHaveURL(`${baseURL}/organization`)
+    await expect.poll(() => state.fetches).toBe(1)
+    await expect
+      .poll(() =>
+        page.locator('html').evaluate((el) => el.style.getPropertyValue('--identity-primary')),
+      )
+      .toBe(loadFailure ? '#246bfe' : example.primaryColor)
+    await navigate(page, '/organization/system-identity')
+    await expect(page.locator('#identity-name')).toHaveValue(
+      loadFailure ? 'HSE.Cloud.Ai' : example.name,
+    )
+    expect(state.fetches).toBe(1)
+  })
+}
+
+for (const shape of ['array', 'flat']) {
+  test(`${shape} API identity displays its base64 logo in the header and editor`, async ({
+    page,
+  }) => {
+    await backend(page)
+    const logo =
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aCWQAAAAASUVORK5CYII='
+    const value = { ...sample(), logo, updated_at: '2026-10-27T12:15:39Z' }
+    await page.route('**/organization/fetch_system_identity', (route) =>
+      route.fulfill({
+        json: {
+          status: true,
+          message: 'System identity loaded.',
+          data: shape === 'array' ? [value] : value,
+        },
+      }),
+    )
+    await page.goto(`${baseURL}/organization/documentation`)
+    const image = page.locator('.brand-link img')
+    await expect(image).toHaveAttribute('src', logo)
+    await expect(image).toBeVisible()
+    await expect(image).toHaveJSProperty('naturalWidth', 1)
+    await expect.poll(() => cache(page)).toMatchObject({ logo, name: value.name })
+    await navigate(page, '/organization/system-identity')
+    await expect(page.locator('#identity-name')).toHaveValue(value.name)
+    await expect(page.locator(`img[src="${logo}"]`).first()).toBeVisible()
+  })
 }
 
 test('organization entry applies the server identity before opening the editor, with one fetch across routes', async ({

@@ -55,7 +55,7 @@ const GetHeader = (value: number) => {
   return Observation[value] == 'ObservationType'
     ? 'Observation'
     : Observation[value] == 'HazardType'
-      ? 'Hazard'
+      ? 'Observation'
       : 'incident'
 }
 
@@ -153,3 +153,10 @@ const { user } = useUserStore()
     </DataStatus>
   </div>
 </template>
+<style scoped>
+.record-details-heading {
+  background-color: white;
+  padding: 15px;
+  border-radius: 12px;
+}
+</style>

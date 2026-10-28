@@ -10,7 +10,7 @@ export default class FetchSystemIdentityRepo extends RepoInterface<SystemIdentit
   get serviceInstance() {
     return FetchSystemIdentityApiService.getInstance()
   }
-  onParse(data: Record<string, unknown>): SystemIdentityModel {
+  onParse(data: Record<string, unknown> | Array<Record<string, unknown>>): SystemIdentityModel {
     const model = SystemIdentityModel.fromMap(data)
 
     return model

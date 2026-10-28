@@ -1,3 +1,4 @@
+import { defaultDashboard, normalizeDashboard, type DashboardSettings } from './dashboard'
 import { translate as localizeUi } from '@/localization/i18n'
 import { defaultTypography, normalizeTypography, type Typography } from './typography'
 import {
@@ -222,6 +223,7 @@ export type HeaderActionField = (typeof headerActionFields)[number]['key']
 export type HeaderField = (typeof headerFields)[number]['key']
 export const breadcrumbPositions = ['left', 'center', 'right'] as const
 export interface Appearance extends SidebarLayoutSettings {
+  dashboard: DashboardSettings
   sidebarMode: 'compact' | 'expanded'
   typography: Typography
   colors: Partial<Record<AppearanceColor, string>>
@@ -230,6 +232,7 @@ export interface Appearance extends SidebarLayoutSettings {
   breadcrumbPosition: (typeof breadcrumbPositions)[number]
 }
 export const defaultAppearance = (): Appearance => ({
+  dashboard: defaultDashboard(),
   sidebarMode: 'compact',
   typography: defaultTypography(),
   colors: {},
@@ -243,6 +246,7 @@ export const normalizeAppearance = (value: unknown): Appearance => {
   if (!value || typeof value !== 'object') return result
   const candidate = value as Partial<Appearance>
   result.sidebarMode = candidate.sidebarMode === 'expanded' ? 'expanded' : 'compact'
+  result.dashboard = normalizeDashboard(candidate.dashboard)
   result.typography = normalizeTypography(candidate.typography)
   Object.assign(result, normalizeSidebarLayout(candidate))
   for (const { key } of colorFields) {

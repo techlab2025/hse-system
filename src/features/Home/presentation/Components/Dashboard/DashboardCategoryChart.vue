@@ -5,6 +5,9 @@ import Chart from 'chart.js/auto'
 import type { ChartData, ChartOptions } from 'chart.js'
 import type { BarRow, Count } from '../../../data/Model/OrganizationDashboardModel'
 import DashboardIcon from './DashboardIcon.vue'
+import DashboardCustomChart from './DashboardCustomChart.vue'
+import { useDashboardChart } from '@/composables/useDashboardPreferences'
+const { settings, customized } = useDashboardChart('safety')
 const props = defineProps<{ rows: BarRow[]; label: string }>()
 const { locale, t } = useI18n()
 const host = ref<HTMLElement>()
@@ -17,12 +20,8 @@ const visible = computed(() => {
   const rows = props.rows.slice(page.value * capacity.value, (page.value + 1) * capacity.value)
   return rtl.value ? [...rows].reverse() : rows
 })
-const colors = ['#F04452', '#F59E0B', '#2864F0']
-const series = computed(() => [
-  t('command.incidents'),
-  t('command.hazards'),
-  t('command.observations'),
-])
+const colors = ['#F04452', '#2864F0']
+const series = computed(() => props.rows[0]?.segments.map((segment) => segment.label) ?? [])
 const number = (value: Count) =>
   value === null ? '—' : new Intl.NumberFormat(locale.value).format(value)
 const data = computed<ChartData<'bar', (number | null)[], string>>(() => ({
@@ -164,7 +163,19 @@ onBeforeUnmount(() => {
 })
 </script>
 <template>
-  <figure ref="host" class="command-category-chart command-grouped-chart" :aria-label="label">
+  <DashboardCustomChart
+    v-if="customized"
+    :rows="rows"
+    :label="label"
+    :settings="settings"
+    default-type="bar"
+  />
+  <figure
+    v-show="!customized"
+    ref="host"
+    class="command-category-chart command-grouped-chart"
+    :aria-label="label"
+  >
     <ul class="command-legend" :aria-label="t('command.legend')">
       <li v-for="(label, index) in series" :key="index">
         <i :style="{ background: colors[index] }"></i>{{ label }}
@@ -182,20 +193,10 @@ onBeforeUnmount(() => {
         })
       }}</span>
       <div>
-        <button
-          type="button"
-          :disabled="page === 0"
-          :aria-label="t('previous')"
-          @click="page--"
-        >
+        <button type="button" :disabled="page === 0" :aria-label="t('previous')" @click="page--">
           <DashboardIcon name="arrow" class="command-prev locale-directional-icon" />
         </button>
-        <button
-          type="button"
-          :disabled="page >= pages - 1"
-          :aria-label="t('next')"
-          @click="page++"
-        >
+        <button type="button" :disabled="page >= pages - 1" :aria-label="t('next')" @click="page++">
           <DashboardIcon name="arrow" class="locale-directional-icon" />
         </button>
       </div>

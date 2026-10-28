@@ -11,6 +11,7 @@ import IdentityTypographyEditor from '@/features/SystemIdentity/components/Ident
 import IdentityColorEditor from '@/features/SystemIdentity/components/IdentityColorEditor.vue'
 import IdentitySidebarEditor from '@/features/SystemIdentity/components/IdentitySidebarEditor.vue'
 import IdentityLayoutEditor from '@/features/SystemIdentity/components/IdentityLayoutEditor.vue'
+import IdentityDashboardEditor from '@/features/SystemIdentity/components/IdentityDashboardEditor.vue'
 import IdentityPreview from '@/features/SystemIdentity/components/IdentityPreview.vue'
 import { normalizeAppearance } from '@/features/SystemIdentity/appearance'
 import '@/features/SystemIdentity/identity-editor.css'
@@ -26,6 +27,28 @@ const {
   identityLoadError,
   identityCacheWarning,
 } = useSystemIdentity()
+const activeTab = ref('brand')
+const tabs = [
+  { id: 'brand', label: 'Brand identity' },
+  { id: 'colors', label: 'Interface colors' },
+  { id: 'fonts', label: 'Fonts and typography' },
+  { id: 'layout', label: 'Header and layout' },
+  { id: 'sidebar', label: 'Sidebar navigation' },
+  { id: 'charts', label: 'Home charts and layout' },
+  { id: 'preview', label: 'System preview' },
+]
+const navigateTab = (event: KeyboardEvent, index: number) => {
+  const next =
+    event.key === 'Home'
+      ? 0
+      : event.key === 'End'
+        ? tabs.length - 1
+        : (index + (event.key === 'ArrowUp' ? -1 : 1) + tabs.length) % tabs.length
+  activeTab.value = tabs[next]!.id
+  ;(event.currentTarget as HTMLElement).parentElement
+    ?.querySelectorAll<HTMLButtonElement>('button')
+    [next]?.focus()
+}
 const isInitializing = ref(true)
 const copySavedIdentity = () => {
   form.value = {
@@ -222,208 +245,292 @@ onMounted(() => void load())
       {{ $t('Loading organization identity…') }}
     </p>
     <fieldset v-else class="identity-controls" :disabled="isSaving">
-      <section class="identity-shell">
-        <header class="section-header">
-          <div>
-            <span class="eyebrow">{{ $t('Brand controls') }}</span>
-            <h2>{{ $t('Identity details') }}</h2>
-            <p>{{ $t('Manage the logo, active palette, and live system preview.') }}</p>
-          </div>
-          <button type="button" class="button ghost danger" @click="reset">
-            {{ $t('Reset identity') }}
+      <div class="identity-workspace">
+        <nav
+          class="identity-tabs"
+          role="tablist"
+          aria-orientation="vertical"
+          :aria-label="$t('System customization')"
+        >
+          <button
+            v-for="(tab, index) in tabs"
+            :id="`identity-tab-${tab.id}`"
+            :key="tab.id"
+            type="button"
+            role="tab"
+            :aria-selected="activeTab === tab.id"
+            :aria-controls="`identity-panel-${tab.id}`"
+            :tabindex="activeTab === tab.id ? 0 : -1"
+            @click="activeTab = tab.id"
+            @keydown.down.prevent="navigateTab($event, index)"
+            @keydown.up.prevent="navigateTab($event, index)"
+            @keydown.home.prevent="navigateTab($event, index)"
+            @keydown.end.prevent="navigateTab($event, index)"
+          >
+            {{ $t(tab.label) }}
           </button>
-        </header>
-
-        <div class="identity-grid">
-          <section class="identity-card logo-card">
-            <div class="field-group">
-              <div class="field-label">
-                <label for="identity-name">{{ $t('Identity name') }}</label>
-                <FieldHelpIcon
-                  :text="$t('A recognizable name for this organization identity profile.')"
-                />
-              </div>
-              <input
-                dir="auto"
-                id="identity-name"
-                v-model="form.name"
-                type="text"
-                placeholder="HSE.Cloud.Ai"
-              />
-            </div>
-
-            <div class="field-label">
-              <span>{{ $t('Organization logo') }}</span>
-              <FieldHelpIcon
-                :text="
-                  $t(
-                    'Upload a logo to use in the application header and automatically extract a matching palette.',
-                  )
-                "
-              />
-            </div>
-            <button type="button" class="logo-dropzone" @click="fileInput?.click()">
-              <img v-if="form.logo" :src="form.logo" :alt="$t('Organization logo preview')" />
-              <span v-else class="logo-placeholder"
-                ><b>+</b> {{ $t('Upload organization logo') }}</span
-              >
-              <small>{{
-                isExtracting ? $t('Extracting colors…') : $t('PNG, JPG, SVG or WebP · max 3.5 MB')
-              }}</small>
-            </button>
-            <input
-              ref="fileInput"
-              class="sr-only"
-              type="file"
-              accept="image/*"
-              @change="uploadLogo"
-            />
-
-            <label class="toggle-row" for="identity-active">
-              <input id="identity-active" v-model="form.isActive" type="checkbox" />
-              <span class="toggle"></span>
-              <span
-                ><b>{{ $t('Active identity') }}</b
-                ><small>{{ $t('Apply this identity throughout the system.') }}</small></span
-              >
-              <FieldHelpIcon
-                :text="
-                  $t(
-                    'Disable this option to temporarily use the default HSE identity without deleting your saved choices.',
-                  )
-                "
-              />
-            </label>
-          </section>
-
-          <section class="identity-card palette-card">
-            <div class="card-heading">
-              <div>
-                <span class="eyebrow">{{ $t('Color system') }}</span>
-                <h3>{{ $t('Current palette') }}</h3>
-              </div>
-              <div class="palette-dots">
-                <i :style="{ background: form.primaryColor }"></i
-                ><i :style="{ background: form.secondaryColor }"></i
-                ><i :style="{ background: form.accentColor }"></i>
-              </div>
-            </div>
-
-            <div
-              v-for="field in [
-                {
-                  key: 'primaryColor',
-                  label: 'Primary color',
-                  help: 'Used for primary buttons, links, active navigation, and key highlights.',
-                },
-                {
-                  key: 'secondaryColor',
-                  label: 'Secondary color',
-                  help: 'Used for strong headings, supporting surfaces, and contrasting brand elements.',
-                },
-                {
-                  key: 'accentColor',
-                  label: 'Accent color',
-                  help: 'Used for emphasis, alerts, badges, and complementary visual details.',
-                },
-              ]"
-              :key="field.key"
-              class="color-row"
-            >
-              <div class="field-label">
-                <label :for="`identity-${field.key}`">{{ translateMessage(field.label) }}</label
-                ><FieldHelpIcon :text="field.help" />
-              </div>
-              <div class="color-control">
-                <input
-                  :id="`identity-${field.key}`"
-                  v-model="form[field.key as keyof SystemIdentity]"
-                  type="color"
-                /><strong>{{ form[field.key as keyof SystemIdentity] }}</strong>
-              </div>
-            </div>
-
-            <div class="extracted-block">
-              <div class="field-label">
-                <span>{{ $t('Colors extracted from logo') }}</span
-                ><FieldHelpIcon
-                  :text="
-                    $t(
-                      'These dominant colors were detected from the uploaded logo. Select one to use it as the primary color.',
-                    )
-                  "
-                />
-              </div>
-              <div v-if="form.extractedColors.length" class="swatches">
-                <button
-                  v-for="color in form.extractedColors"
-                  :key="color"
-                  type="button"
-                  :style="{ background: color }"
-                  :title="$t('Use {color}', { color })"
-                  @click="form.primaryColor = color"
-                >
-                  <span>{{ color }}</span>
+        </nav>
+        <div class="identity-tab-content">
+          <div
+            v-show="activeTab === 'brand'"
+            id="identity-panel-brand"
+            role="tabpanel"
+            aria-labelledby="identity-tab-brand"
+          >
+            <section class="identity-shell">
+              <header class="section-header">
+                <div>
+                  <span class="eyebrow">{{ $t('Brand controls') }}</span>
+                  <h2>{{ $t('Identity details') }}</h2>
+                  <p>{{ $t('Manage the logo, active palette, and live system preview.') }}</p>
+                </div>
+                <button type="button" class="button ghost danger" @click="reset">
+                  {{ $t('Reset identity') }}
                 </button>
+              </header>
+
+              <div class="identity-grid">
+                <section class="identity-card logo-card">
+                  <div class="field-group">
+                    <div class="field-label">
+                      <label for="identity-name">{{ $t('Identity name') }}</label>
+                      <FieldHelpIcon
+                        :text="$t('A recognizable name for this organization identity profile.')"
+                      />
+                    </div>
+                    <input
+                      dir="auto"
+                      id="identity-name"
+                      v-model="form.name"
+                      type="text"
+                      placeholder="HSE.Cloud.Ai"
+                    />
+                  </div>
+
+                  <div class="field-label">
+                    <span>{{ $t('Organization logo') }}</span>
+                    <FieldHelpIcon
+                      :text="
+                        $t(
+                          'Upload a logo to use in the application header and automatically extract a matching palette.',
+                        )
+                      "
+                    />
+                  </div>
+                  <button type="button" class="logo-dropzone" @click="fileInput?.click()">
+                    <img v-if="form.logo" :src="form.logo" :alt="$t('Organization logo preview')" />
+                    <span v-else class="logo-placeholder"
+                      ><b>+</b> {{ $t('Upload organization logo') }}</span
+                    >
+                    <small>{{
+                      isExtracting
+                        ? $t('Extracting colors…')
+                        : $t('PNG, JPG, SVG or WebP · max 3.5 MB')
+                    }}</small>
+                  </button>
+                  <input
+                    ref="fileInput"
+                    class="sr-only"
+                    type="file"
+                    accept="image/*"
+                    @change="uploadLogo"
+                  />
+
+                  <label class="toggle-row" for="identity-active">
+                    <input id="identity-active" v-model="form.isActive" type="checkbox" />
+                    <span class="toggle"></span>
+                    <span
+                      ><b>{{ $t('Active identity') }}</b
+                      ><small>{{ $t('Apply this identity throughout the system.') }}</small></span
+                    >
+                    <FieldHelpIcon
+                      :text="
+                        $t(
+                          'Disable this option to temporarily use the default HSE identity without deleting your saved choices.',
+                        )
+                      "
+                    />
+                  </label>
+                </section>
+
+                <section class="identity-card palette-card">
+                  <div class="card-heading">
+                    <div>
+                      <span class="eyebrow">{{ $t('Color system') }}</span>
+                      <h3>{{ $t('Current palette') }}</h3>
+                    </div>
+                    <div class="palette-dots">
+                      <i :style="{ background: form.primaryColor }"></i
+                      ><i :style="{ background: form.secondaryColor }"></i
+                      ><i :style="{ background: form.accentColor }"></i>
+                    </div>
+                  </div>
+
+                  <div
+                    v-for="field in [
+                      {
+                        key: 'primaryColor',
+                        label: 'Primary color',
+                        help: 'Used for primary buttons, links, active navigation, and key highlights.',
+                      },
+                      {
+                        key: 'secondaryColor',
+                        label: 'Secondary color',
+                        help: 'Used for strong headings, supporting surfaces, and contrasting brand elements.',
+                      },
+                      {
+                        key: 'accentColor',
+                        label: 'Accent color',
+                        help: 'Used for emphasis, alerts, badges, and complementary visual details.',
+                      },
+                    ]"
+                    :key="field.key"
+                    class="color-row"
+                  >
+                    <div class="field-label">
+                      <label :for="`identity-${field.key}`">{{
+                        translateMessage(field.label)
+                      }}</label
+                      ><FieldHelpIcon :text="field.help" />
+                    </div>
+                    <div class="color-control">
+                      <input
+                        :id="`identity-${field.key}`"
+                        v-model="form[field.key as keyof SystemIdentity]"
+                        type="color"
+                      /><strong>{{ form[field.key as keyof SystemIdentity] }}</strong>
+                    </div>
+                  </div>
+
+                  <div class="extracted-block">
+                    <div class="field-label">
+                      <span>{{ $t('Colors extracted from logo') }}</span
+                      ><FieldHelpIcon
+                        :text="
+                          $t(
+                            'These dominant colors were detected from the uploaded logo. Select one to use it as the primary color.',
+                          )
+                        "
+                      />
+                    </div>
+                    <div v-if="form.extractedColors.length" class="swatches">
+                      <button
+                        v-for="color in form.extractedColors"
+                        :key="color"
+                        type="button"
+                        :style="{ background: color }"
+                        :title="$t('Use {color}', { color })"
+                        @click="form.primaryColor = color"
+                      >
+                        <span>{{ color }}</span>
+                      </button>
+                    </div>
+                    <p v-else>{{ $t('Upload a logo to generate a suggested color palette.') }}</p>
+                  </div>
+
+                  <div class="button-row">
+                    <button
+                      type="button"
+                      class="button"
+                      :disabled="form.extractedColors.length < 3"
+                      @click="applyDetectedColors"
+                    >
+                      {{ $t('Apply detected colors') }}
+                    </button>
+                    <button type="button" class="button ghost" @click="restoreDefaults">
+                      {{ $t('Use HSE defaults') }}
+                    </button>
+                  </div>
+                </section>
               </div>
-              <p v-else>{{ $t('Upload a logo to generate a suggested color palette.') }}</p>
-            </div>
-
-            <div class="button-row">
-              <button
-                type="button"
-                class="button"
-                :disabled="form.extractedColors.length < 3"
-                @click="applyDetectedColors"
-              >
-                {{ $t('Apply detected colors') }}
-              </button>
-              <button type="button" class="button ghost" @click="restoreDefaults">
-                {{ $t('Use HSE defaults') }}
-              </button>
-            </div>
-          </section>
-        </div>
-      </section>
-
-      <IdentityColorEditor v-model="form.appearance" />
-      <IdentityTypographyEditor v-model="form.appearance.typography" />
-      <IdentityLayoutEditor v-model="form.appearance" />
-      <section class="identity-shell">
-        <header class="section-header">
-          <div>
-            <h2>{{ $t('Sidebar navigation') }}</h2>
-            <p>
-              {{
-                $t(
-                  'Rename sidebar tabs and items, change their order, or move items between groups. Click Save and apply identity to apply your choice.',
-                )
-              }}
-            </p>
+            </section>
           </div>
-        </header>
-        <label class="toggle-row" for="identity-sidebar-expanded">
-          <input
-            id="identity-sidebar-expanded"
-            v-model="form.appearance.sidebarMode"
-            type="checkbox"
-            role="switch"
-            true-value="expanded"
-            false-value="compact"
-          />
-          <span class="toggle" aria-hidden="true"></span>
-          <span>
-            <b>{{ $t('Always-open sidebar') }}</b>
-            <small>{{
-              $t(
-                'Show all group titles and available routes together. Turn off to use the compact sidebar.',
-              )
-            }}</small>
-          </span>
-        </label>
-      </section>
-      <IdentitySidebarEditor v-model="form.appearance" />
-      <IdentityPreview :identity="form" />
+          <div
+            v-show="activeTab === 'colors'"
+            id="identity-panel-colors"
+            role="tabpanel"
+            aria-labelledby="identity-tab-colors"
+          >
+            <IdentityColorEditor v-model="form.appearance" />
+          </div>
+          <div
+            v-show="activeTab === 'fonts'"
+            id="identity-panel-fonts"
+            role="tabpanel"
+            aria-labelledby="identity-tab-fonts"
+          >
+            <IdentityTypographyEditor v-model="form.appearance.typography" />
+          </div>
+          <div
+            v-show="activeTab === 'layout'"
+            id="identity-panel-layout"
+            role="tabpanel"
+            aria-labelledby="identity-tab-layout"
+          >
+            <IdentityLayoutEditor v-model="form.appearance" />
+          </div>
+          <div
+            v-show="activeTab === 'sidebar'"
+            id="identity-panel-sidebar"
+            role="tabpanel"
+            aria-labelledby="identity-tab-sidebar"
+          >
+            <section class="identity-shell">
+              <header class="section-header">
+                <div>
+                  <h2>{{ $t('Sidebar navigation') }}</h2>
+                  <p>
+                    {{
+                      $t(
+                        'Rename sidebar tabs and items, change their order, or move items between groups. Click Save and apply identity to apply your choice.',
+                      )
+                    }}
+                  </p>
+                </div>
+              </header>
+              <label class="toggle-row" for="identity-sidebar-expanded">
+                <input
+                  id="identity-sidebar-expanded"
+                  v-model="form.appearance.sidebarMode"
+                  type="checkbox"
+                  role="switch"
+                  true-value="expanded"
+                  false-value="compact"
+                />
+                <span class="toggle" aria-hidden="true"></span>
+                <span>
+                  <b>{{ $t('Always-open sidebar') }}</b>
+                  <small>{{
+                    $t(
+                      'Show all group titles and available routes together. Turn off to use the compact sidebar.',
+                    )
+                  }}</small>
+                </span>
+              </label>
+            </section>
+            <IdentitySidebarEditor v-model="form.appearance" />
+          </div>
+          <div
+            v-if="activeTab === 'charts'"
+            id="identity-panel-charts"
+            role="tabpanel"
+            aria-labelledby="identity-tab-charts"
+          >
+            <IdentityDashboardEditor
+              v-model="form.appearance.dashboard"
+              :brand-colors="[form.primaryColor, form.accentColor, form.secondaryColor]"
+            />
+          </div>
+          <div
+            v-if="activeTab === 'preview'"
+            id="identity-panel-preview"
+            role="tabpanel"
+            aria-labelledby="identity-tab-preview"
+          >
+            <IdentityPreview :identity="form" />
+          </div>
+        </div>
+      </div>
 
       <button class="save-button" type="button" :disabled="isSaving" @click="save">
         {{ isSaving ? $t('Saving identity…') : $t('Save and apply identity') }}
@@ -433,6 +540,53 @@ onMounted(() => void load())
 </template>
 
 <style scoped>
+.identity-workspace {
+  display: grid;
+  grid-template-columns: 225px minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+.identity-tabs {
+  position: sticky;
+  top: 1rem;
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.6rem;
+  border: 1px solid var(--main-border);
+  border-radius: 16px;
+  background: var(--surface-1);
+}
+.identity-tabs button {
+  text-align: start;
+  border: 0;
+  border-radius: 10px;
+  padding: 0.9rem;
+  background: transparent;
+  color: var(--text-soft);
+  cursor: pointer;
+  font: inherit;
+}
+.identity-tabs button[aria-selected='true'] {
+  background: color-mix(in srgb, var(--PrimaryColor) 12%, var(--surface-1));
+  color: var(--PrimaryColor);
+  font-weight: 700;
+}
+.identity-tab-content {
+  min-width: 0;
+}
+.identity-tab-content > [role='tabpanel'] {
+  display: grid;
+  gap: 1.25rem;
+}
+@media (max-width: 850px) {
+  .identity-workspace {
+    grid-template-columns: 1fr;
+  }
+  .identity-tabs {
+    position: static;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 .identity-controls {
   display: contents;
 }

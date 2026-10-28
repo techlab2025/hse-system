@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { computed, onMounted } from 'vue'
+import { useDashboardPreferences } from '@/composables/useDashboardPreferences'
+const dashboardPreferences = useDashboardPreferences()
 import { useI18n } from 'vue-i18n'
 import { useOrganizationDashboard } from '../composables/useOrganizationDashboard'
 import { useUserStore } from '@/stores/user'
@@ -177,74 +179,89 @@ onMounted(async () => {
       {{ $t('command.summaryAccessNote') }}
     </p>
     <div class="command-grid" :class="{ 'is-restricted': !access.summary }">
-      <DashboardSafety
-        v-if="access.safety"
-        class="command-safety"
-        :resource="state.safety"
-        :link="access.observations"
-        :summary="access.summary ? state.summary : undefined"
-        data-testid="safety-panel"
-        @retry="retry('safety')"
-      />
-      <DashboardInspection
-        v-if="access.inspections"
-        class="command-inspection"
-        :resource="state.summary"
-        :link="access.inspections"
-        data-testid="inspection-panel"
-        @retry="retry('summary')"
-      />
-      <DashboardEquipment
-        v-if="access.equipment"
-        class="command-equipment"
-        :resource="state.equipment"
-        :link="access.equipment"
-        data-testid="equipment-panel"
-        @retry="retry('equipment')"
-      />
-      <DashboardCorrective
-        v-if="access.corrective"
-        class="command-corrective"
-        :resource="state.summary"
-        :link="access.corrective"
-        data-testid="corrective-panel"
-        @retry="retry('summary')"
-      />
-      <DashboardWorkforce
-        v-if="access.certificates"
-        class="command-workforce"
-        :resource="state.summary"
-        :link="access.certificates"
-        data-testid="workforce-panel"
-        @retry="retry('summary')"
-      />
-      <DashboardProjects
-        v-if="access.projects"
-        class="command-projects"
-        :resource="state.projects"
-        :can-open="access.projectDetails"
-        :show-incidents="access.incidents"
-        :show-equipment="access.equipment"
-        :show-inspections="access.inspections"
-        data-testid="projects-panel"
-        @retry="retry('projects')"
-        @page="goToPage"
+      <template
+        v-for="panel in dashboardPreferences.panels.filter((item) => item.visible)"
+        :key="panel.id"
       >
-        <DashboardActivities
-          class="command-activities"
-          :access="access"
-          data-testid="activities-panel"
+        <DashboardSafety
+          v-if="panel.id === 'safety' && access.safety"
+          :data-dashboard-width="panel.width"
+          class="command-safety"
+          :resource="state.safety"
+          :link="access.observations"
+          :summary="access.summary ? state.summary : undefined"
+          data-testid="safety-panel"
+          @retry="retry('safety')"
         />
-      </DashboardProjects>
-      <div class="command-side-stack">
-        <DashboardQuickActions :access="access" data-testid="quick-actions" /><DashboardAttention
-          v-if="access.summary"
+        <DashboardInspection
+          v-if="panel.id === 'inspection' && access.inspections"
+          :data-dashboard-width="panel.width"
+          class="command-inspection"
           :resource="state.summary"
-          :investigations="access.investigations"
-          data-testid="attention-panel"
+          :link="access.inspections"
+          data-testid="inspection-panel"
           @retry="retry('summary')"
         />
-      </div>
+        <DashboardEquipment
+          v-if="panel.id === 'equipment' && access.equipment"
+          :data-dashboard-width="panel.width"
+          class="command-equipment"
+          :resource="state.equipment"
+          :link="access.equipment"
+          data-testid="equipment-panel"
+          @retry="retry('equipment')"
+        />
+        <DashboardCorrective
+          v-if="panel.id === 'corrective' && access.corrective"
+          :data-dashboard-width="panel.width"
+          class="command-corrective"
+          :resource="state.summary"
+          :link="access.corrective"
+          data-testid="corrective-panel"
+          @retry="retry('summary')"
+        />
+        <DashboardWorkforce
+          v-if="panel.id === 'workforce' && access.certificates"
+          :data-dashboard-width="panel.width"
+          class="command-workforce"
+          :resource="state.summary"
+          :link="access.certificates"
+          data-testid="workforce-panel"
+          @retry="retry('summary')"
+        />
+        <DashboardProjects
+          v-if="panel.id === 'projects' && access.projects"
+          :data-dashboard-width="panel.width"
+          class="command-projects"
+          :resource="state.projects"
+          :can-open="access.projectDetails"
+          :show-incidents="access.incidents"
+          :show-equipment="access.equipment"
+          :show-inspections="access.inspections"
+          data-testid="projects-panel"
+          @retry="retry('projects')"
+          @page="goToPage"
+        >
+          <DashboardActivities
+            class="command-activities"
+            :access="access"
+            data-testid="activities-panel"
+          />
+        </DashboardProjects>
+        <div
+          v-if="panel.id === 'actions'"
+          class="command-side-stack"
+          :data-dashboard-width="panel.width"
+        >
+          <DashboardQuickActions :access="access" data-testid="quick-actions" /><DashboardAttention
+            v-if="access.summary"
+            :resource="state.summary"
+            :investigations="access.investigations"
+            data-testid="attention-panel"
+            @retry="retry('summary')"
+          />
+        </div>
+      </template>
     </div>
     <!-- <footer class="command-dashboard-note">
       <DashboardIcon name="shield" />

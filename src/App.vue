@@ -30,16 +30,15 @@ setIdentityStorageMode(USE_SYSTEM_IDENTITY_API)
 watch(
   () =>
     [
-      route.path.startsWith('/organization'),
       userStore.isAuth,
       userStore.user?.type,
       userStore.user?.organizationId,
       userStore.user?.apiToken,
     ] as const,
-  ([inOrganization, authenticated, type]) => {
-    if (inOrganization && authenticated && type === OrganizationTypeEnum.ORGANIZATION) {
+  ([authenticated, type]) => {
+    if (authenticated && type === OrganizationTypeEnum.ORGANIZATION) {
       void loadOrganizationIdentity()
-    } else if (!authenticated || !inOrganization || type !== OrganizationTypeEnum.ORGANIZATION) {
+    } else {
       clearOrganizationIdentity()
     }
   },

@@ -10,8 +10,8 @@ At the top of `src/views/Organization/SystemIdentity.vue`, change this boolean:
 export const USE_SYSTEM_IDENTITY_API = false
 ```
 
-- **False (default):** load/save `hse-system-identity` locally, and remove that key on Reset. No identity fetch or save requests are made.
-- **True:** fetch on organization entry and use the two endpoints for Save and Reset, with the cache/failure behavior described below.
+- **False (current default):** load/save `hse-system-identity` locally, and remove that key on Reset. No identity fetch or save requests are made.
+- **True:** fetch after organization login before navigating, restore on authenticated startup, and use the two endpoints for Save and Reset, with the cache/failure behavior described below. Requests are shared within the same session. A fetch failure keeps the matching cache or HSE defaults and allows login to finish.
 
 There is no UI switch. `App.vue` reads this exported constant before loading the organization identity, so it controls startup as well as the editor. Previous `hse-system-identity-use-api` browser preferences are ignored. This setting is not included in either API request. Change the code and rebuild for deployment.
 
@@ -162,7 +162,7 @@ curl --request POST \
   --data '{}'
 ```
 
-When configured, return HTTP `200` with the same `data.identity` resource shown in the save response and a suitable message. Do not return an array, pagination, only selected fields, or `data` as a string.
+When configured, return HTTP `200` with the same `data.identity` resource shown in the save response and a suitable message. The frontend also accepts the deployed response format `data: [{ ...identityFields, updated_at }]` and a flat identity object in `data`, including on save. A list must contain exactly one organization identity; an empty list applies defaults. Pagination, incomplete fields, and string data are invalid.
 
 When **no identity has been configured**, return HTTP `200`:
 
@@ -177,7 +177,7 @@ When **no identity has been configured**, return HTTP `200`:
 }
 ```
 
-The frontend then applies HSE defaults. `data: null`, `data: []`, HTTP `204`, or HTTP `404` are not the empty-success contract. A missing route or failed request is treated as a load failure and retains the matching browser cache rather than pretending a configuration was fetched.
+The frontend then applies HSE defaults. `data: []` is also accepted as an empty result. `data: null`, HTTP `204`, or HTTP `404` are not the empty-success contract. A missing route or failed request is treated as a load failure and retains the matching browser cache rather than pretending a configuration was fetched.
 
 ## Fields and validation
 
@@ -287,3 +287,40 @@ src/features/SystemIdentity/
 ```
 
 `ApiNames` contains both endpoint names. `useSystemIdentity.ts` coordinates cache/application and session changes; `App.vue` loads on organization entry; the existing editor calls Save and Reset. All API calls use the project's service → repository → use case → controller layers. Browser contract tests in `scripts/system-identity-api.spec.mjs` intercept requests and do not write to production.
+
+## Home chart and layout preferences
+
+The editor's **Home charts and layout** tab saves preferences under `appearance.dashboard` in the same identity request. The backend must persist and return this nested object unchanged. Missing dashboard preferences in older identities use the original Home layout and charts.
+
+```json
+{
+  "dashboard": {
+    "panels": [
+      { "id": "safety", "visible": true, "width": "default" },
+      { "id": "inspection", "visible": true, "width": "half" },
+      { "id": "equipment", "visible": true, "width": "full" },
+      { "id": "corrective", "visible": true, "width": "default" },
+      { "id": "workforce", "visible": true, "width": "default" },
+      { "id": "projects", "visible": true, "width": "default" },
+      { "id": "actions", "visible": true, "width": "default" }
+    ],
+    "charts": {
+      "equipment": {
+        "type": "doughnut",
+        "palette": "brand",
+        "legend": true,
+        "grid": true,
+        "height": 300
+      }
+    }
+  }
+}
+```
+
+- Array order determines panel order, including the reading/tab order on Home. Visibility and widths do not grant access to data. Existing dashboard permissions still apply.
+- Panel IDs: `safety`, `inspection`, `equipment`, `corrective`, `workforce`, `projects`, `actions`.
+- Chart IDs: `safety`, `inspection`, `equipment`, `equipmentLocations`, `workforce`, `cases`. Unspecified chart IDs get default settings.
+- Chart types: `default`, `bar`, `horizontalBar`, `stackedBar`, `line`, `area`, `pie`, `doughnut`, `polarArea`, `radar`, `roundedBar`, `horizontalStackedBar`, `straightLine`, `steppedLine`, `dashedLine`, `points`, `stackedArea`, `radarOutline`, `semiDoughnut`, `mixed`.
+- Palettes: `safety`, `brand`, `ocean`, `custom`. Each chart also accepts `customColors`, an array of up to 12 six-digit hex colors (default `[]`). With the custom palette, colors apply to series for grouped charts and to categories for circular and single-series charts; additional categories repeat the color list. Custom colors are saved per chart, including when a preset palette is temporarily selected. Height is constrained to 200–600 pixels. `legend` and `grid` are booleans. Default chart settings are `default`, `safety`, `true`, `true`, `300`.
+- Charts use real API counts and retain missing values as unknown. Grouped circular charts use one dataset per location and one colored slice per series, preserving separate counts. Safety charts show incidents (`accidents`) and observations (`hazard + observation`); incomplete observation totals remain unknown. Each customized chart includes an accessible data table.
+- Disabling the identity uses default dashboard settings. Reset dashboard edits only the dashboard draft; Save and apply identity persists it. Full identity reset also resets dashboard preferences.

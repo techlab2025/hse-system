@@ -11,7 +11,7 @@ export default class CreateSystemIdentityRepo extends RepoInterface<SystemIdenti
   get serviceInstance() {
     return CreateSystemIdentityApiService.getInstance()
   }
-  onParse(data: Record<string, unknown>): SystemIdentityModel {
+  onParse(data: Record<string, unknown> | Array<Record<string, unknown>>): SystemIdentityModel {
     const model = SystemIdentityModel.fromMap(data)
     if (!model.identity)
       throw new Error(localizeUi('The saved identity is missing from the response'))

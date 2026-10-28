@@ -12,6 +12,7 @@ import LoginOrganizationUseCase from '../../Domain/use_case/login_organization_u
 import axios from 'axios'
 import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
+import { useSystemIdentity } from '@/composables/useSystemIdentity'
 
 export default class LoginController extends ControllerInterface<UserModel> {
   private static instance: LoginController
@@ -61,6 +62,9 @@ export default class LoginController extends ControllerInterface<UserModel> {
           axios.defaults.headers.common['Authorization'] = `Bearer ${apiToken}`
           ProjectSelector.setProjectId(this.state?.value?.data?.Defaultproject)
           options?.onSuccessBeforeNavigate?.()
+          if (activeType === OrganizationTypeEnum.ORGANIZATION) {
+            await useSystemIdentity().loadOrganizationIdentity()
+          }
           if (!ConditionHandler.getInstance().shouldUseEmployeeInterface()) {
             await router.push({
               path: activeType === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization',
