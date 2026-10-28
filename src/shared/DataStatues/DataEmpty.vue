@@ -21,6 +21,7 @@ withDefaults(
 
 <template>
   <DataFailed
+    variant="empty"
     :title="title"
     :description="description"
     :link="link"
