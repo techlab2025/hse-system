@@ -82,7 +82,7 @@ export default class TemplateDetailsModel {
         data.title,
         data.type,
         data.tag,
-        data.template_item_tags?.map((el: any) => TemplateItemTagModel.fromMap(el)),
+        data.template_item_tags?.map((el: any) => TemplateItemTagModel.fromMap(el)) ?? [],
       ),
       data,
     )

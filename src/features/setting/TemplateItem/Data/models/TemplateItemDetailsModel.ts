@@ -47,7 +47,7 @@ export default class TemplateItemDetailsModel {
       data.action ?? 0,
       data.require_image,
       Number(data.required_type) || 0,
-      data.options.length > 0 ? data.options.map((item) => ItemModel.fromMap(item)) : [],
+      Array.isArray(data.options) ? data.options.map((item) => ItemModel.fromMap(item)) : [],
       data.has_textarea,
       data.template_item_tag,
     )

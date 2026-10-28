@@ -22,6 +22,9 @@ import Setting from '@/assets/images/Setting.png'
 import Geer from '@/assets/images/Geer.png'
 import hand from '@/assets/images/hand.png'
 import { TemplateType } from '../../Core/Enum/TemplateTypeEnum'
+import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import AddTemplateItemParams from '@/features/setting/TemplateItem/Core/params/addTemplateItemParams'
+import { ActionsEnum as ItemActionsEnum } from '@/features/setting/TemplateItem/Core/Enum/ActionsEnum'
 
 const emit = defineEmits(['update:data'])
 
@@ -39,6 +42,10 @@ const industry = ref<TitleInterface[]>([])
 
 const selectedIndustry = ref<TitleInterface[]>([])
 const Industries = ref<TitleInterface[]>([])
+const IndustrySelectOption = ref<number>()
+const SelectedTemplateType = ref<TitleInterface | null>(null)
+const needsWorkingHours = ref(false)
+const needsMileage = ref(false)
 const industryController = IndexIndustryController.getInstance()
 const industryParams = new IndexIndustryParams('', 0, 10, 1)
 
@@ -136,6 +143,40 @@ const updateData = () => {
         : null
       : null
 
+  const equipmentItems: AddTemplateItemParams[] = []
+  if (!props.data?.id && SelectedTemplateType.value?.id === TemplateType.Equipment) {
+    if (needsWorkingHours.value) {
+      equipmentItems.push(
+        new AddTemplateItemParams(
+          null,
+          'How many working hours?',
+          ItemActionsEnum.TEXTAREA,
+          [],
+          0,
+          0,
+          'Equipment readings',
+          1,
+          0,
+        ),
+      )
+    }
+    if (needsMileage.value) {
+      equipmentItems.push(
+        new AddTemplateItemParams(
+          null,
+          'What is the mileage?',
+          ItemActionsEnum.TEXTAREA,
+          [],
+          0,
+          0,
+          'Equipment readings',
+          0,
+          1,
+        ),
+      )
+    }
+  }
+
   const params = props.data?.id
     ? new EditTemplateParams(
         props.data?.id ?? 0,
@@ -152,9 +193,15 @@ const updateData = () => {
         industries ?? [],
         image.value || null,
         null,
-        [],
+        equipmentItems,
         SelectedTemplateType?.value?.id,
-        true,
+        1,
+        SelectedTemplateType.value?.id === TemplateType.Equipment
+          ? Number(needsWorkingHours.value)
+          : null,
+        SelectedTemplateType.value?.id === TemplateType.Equipment
+          ? Number(needsMileage.value)
+          : null,
       )
   emit('update:data', params)
 }
@@ -188,7 +235,6 @@ watch(
   { immediate: true },
 )
 
-const IndustrySelectOption = ref<number>()
 const setIndustry = (data: TitleInterface[]) => {
   industry.value = data
   console.log(industry.value, 'industry.value')
@@ -205,7 +251,6 @@ watch(
   },
 )
 
-const SelectedTemplateType = ref<TitleInterface | null>(null)
 const TemplateTypes = ref<TitleInterface[]>([
   new TitleInterface({
     id: TemplateType.Equipment,
@@ -240,8 +285,22 @@ const TemplateTypes = ref<TitleInterface[]>([
   // new TitleInterface({ id: TemplateType.machine, title: 'Machine', subtitle: '' }),
 ])
 
-const setTemplateType = (data: TitleInterface) => {
+const setTemplateType = (data: TitleInterface | null) => {
   SelectedTemplateType.value = data
+  if (data?.id !== TemplateType.Equipment) {
+    needsWorkingHours.value = false
+    needsMileage.value = false
+  }
+  updateData()
+}
+
+const updateNeedsWorkingHours = (checked: boolean) => {
+  needsWorkingHours.value = checked
+  updateData()
+}
+
+const updateNeedsMileage = (checked: boolean) => {
+  needsMileage.value = checked
   updateData()
 }
 </script>
@@ -277,6 +336,24 @@ const setTemplateType = (data: TitleInterface) => {
       @update:modelValue="setTemplateType"
     />
   </div>
+  <template v-if="!data?.id && SelectedTemplateType?.id === TemplateType.Equipment">
+    <div class="input-wrapper col-span-4 md:col-span-2">
+      <CustomCheckbox
+        index="template-working-hours"
+        :title="$t('Need working hours')"
+        :checked="needsWorkingHours"
+        @update:checked="updateNeedsWorkingHours"
+      />
+    </div>
+    <div class="input-wrapper col-span-4 md:col-span-2">
+      <CustomCheckbox
+        index="template-mileage"
+        :title="$t('Need mileage')"
+        :checked="needsMileage"
+        @update:checked="updateNeedsMileage"
+      />
+    </div>
+  </template>
   <!-- <div class="col-span-4 md:col-span-4" v-if="!data?.id">
     <SwitchInput
       :fields="fields"

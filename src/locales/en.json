@@ -6412,5 +6412,7 @@
   "Chart color {number}": "Chart color {number}",
   "Add chart color": "Add chart color",
   "Remove last color": "Remove last color",
-  "Reset chart colors": "Reset chart colors"
+  "Reset chart colors": "Reset chart colors",
+  "Need working hours": "Need working hours",
+  "Need mileage": "Need mileage"
 }

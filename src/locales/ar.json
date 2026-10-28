@@ -6412,5 +6412,7 @@
   "Chart color {number}": "لون الرسم البياني {number}",
   "Add chart color": "إضافة لون للرسم البياني",
   "Remove last color": "إزالة اللون الأخير",
-  "Reset chart colors": "إعادة ضبط ألوان الرسم البياني"
+  "Reset chart colors": "إعادة ضبط ألوان الرسم البياني",
+  "Need working hours": "يتطلب ساعات التشغيل",
+  "Need mileage": "يتطلب المسافة المقطوعة"
 }

@@ -13,8 +13,12 @@ export default class AddTemplateParams implements Params {
   items: AddTemplateItemParams[] = []
   template_type: number | null
   isInLiberary: number | null
+  needHoursCount: number | null
+  needKilometersCount: number | null
 
-  public static readonly validation = new ClassValidation("setting/Template/Core/params/addTemplateParams").setRules({
+  public static readonly validation = new ClassValidation(
+    'setting/Template/Core/params/addTemplateParams',
+  ).setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
     // items: { required: true },
   })
@@ -28,6 +32,8 @@ export default class AddTemplateParams implements Params {
     items: AddTemplateItemParams[] = [],
     template_type: number | null,
     isInLiberary: number | null,
+    needHoursCount: number | null = null,
+    needKilometersCount: number | null = null,
   ) {
     this.translation = translation
     this.allIndustries = allIndustries
@@ -37,6 +43,8 @@ export default class AddTemplateParams implements Params {
     this.action = action
     this.template_type = template_type
     this.isInLiberary = isInLiberary
+    this.needHoursCount = needHoursCount
+    this.needKilometersCount = needKilometersCount
   }
 
   toMap(): Record<string, unknown> {
@@ -53,7 +61,13 @@ export default class AddTemplateParams implements Params {
       data['items'] = this.items.map((item) => item.toMap())
     }
     if (this.template_type != null) data['type'] = this.template_type
-    if (this.isInLiberary != null) data['is_in_library'] = this.isInLiberary
+    if (this.needHoursCount != null) data['need_working_hourse'] = Boolean(this.needHoursCount)
+    if (this.needKilometersCount != null)
+      data['need_working_millage'] = Boolean(this.needKilometersCount)
+    if (this.isInLiberary != null) data['is_in_library'] = Number(this.isInLiberary)
+    if (this.needHoursCount != null) data['need_hours_count'] = Number(this.needHoursCount)
+    if (this.needKilometersCount != null)
+      data['need_kilometers_count'] = Number(this.needKilometersCount)
     return data
   }
   validate() {

@@ -4,25 +4,31 @@ import { TextAreaStatusEnum } from '../Enum/TextAreaStatusEnum'
 import { ActionsEnum } from '../Enum/ActionsEnum'
 
 export default class AddTemplateItemParams implements Params {
-  id: number
+  id: number | null
   title: string
   type: number
   answers: items[]
   isImageRequired: number
   imageType: number
   tag?: string
+  needWorkingHourse: number | null
+  needWorkingMillage: number | null
 
-  public static readonly validation = new ClassValidation("setting/TemplateItem/Core/params/addTemplateItemParams").setRules({
+  public static readonly validation = new ClassValidation(
+    'setting/TemplateItem/Core/params/addTemplateItemParams',
+  ).setRules({
     title: { required: true, minLength: 2, maxLength: 100 },
   })
   constructor(
-    id: number,
+    id: number | null,
     title: string,
     type: number,
     answers: items[],
     isImageRequired: number,
     imageType: number,
     tag?: string,
+    needWorkingHourse: number | null = null,
+    needWorkingMillage: number | null = null,
   ) {
     this.id = id
     this.title = title
@@ -31,10 +37,14 @@ export default class AddTemplateItemParams implements Params {
     this.isImageRequired = isImageRequired
     this.imageType = imageType
     this.tag = tag
+    this.needWorkingHourse = needWorkingHourse
+    this.needWorkingMillage = needWorkingMillage
   }
 
   toMap(): Record<
     string,
+    | null
+    | boolean
     | number
     | string
     | number[]
@@ -43,6 +53,8 @@ export default class AddTemplateItemParams implements Params {
   > {
     const data: Record<
       string,
+      | null
+      | boolean
       | number
       | string
       | number[]
@@ -71,6 +83,10 @@ export default class AddTemplateItemParams implements Params {
     data['require_image'] = this.isImageRequired || 0
     data['required_type'] = Number(this.imageType) || 0
     data['template_item_tag'] = this.tag || ''
+    if (this.needWorkingHourse != null)
+      data['need_working_hourse'] = Boolean(this.needWorkingHourse)
+    if (this.needWorkingMillage != null)
+      data['need_working_millage'] = Boolean(this.needWorkingMillage)
     return data
   }
 
