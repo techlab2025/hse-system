@@ -10,7 +10,7 @@
   :is(.main-content, .p-dialog-content, .p-drawer-content)
   form.identity-form-shell {
   position: relative;
-  gap: clamp(1rem, 1.7vw, 1.5rem);
+  gap: var(--hse-form-section-gap);
   padding: clamp(1rem, 2.5vw, 2rem);
   border: 1px solid var(--form-line);
   border-block-start: 3px solid var(--identity-primary);
@@ -39,13 +39,11 @@
   ):not(.create-form-actions):not(:has(.employee-header, .form-header, section, form)) {
   align-self: start;
   min-width: 0;
-  padding: clamp(0.875rem, 1.5vw, 1.25rem);
-  border: 1px solid var(--hse-color-divider);
-  border-radius: 1.125rem;
-  background: color-mix(in srgb, var(--hse-color-surface) 88%, transparent);
-  transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease;
+  padding: var(--hse-form-field-padding);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .hse-cloud-identity
@@ -53,8 +51,8 @@
   > :is(.input-wrapper, [data-required-field], .identity-form[class*='col-span']):not(
     .button-wrapper
   ):not(.create-form-actions):focus-within {
-  border-color: var(--form-line);
-  box-shadow: 0 4px 18px var(--form-ring);
+  border-color: transparent;
+  box-shadow: none;
   transform: none;
 }
 
@@ -114,8 +112,8 @@
 }
 
 .hse-cloud-identity :is(.identity-form, .identity-form-shell) textarea {
-  min-height: 8rem;
-  line-height: 1.7;
+  min-height: 96px;
+  line-height: 1.45;
   white-space: pre-wrap;
   resize: vertical;
 }
