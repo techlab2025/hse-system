@@ -213,10 +213,10 @@ const headerActions = () => [
         />
       </div>
       <div class="col-span-2 flex justify-end gap-2 items-center">
-        <SystemMangementChangeTopicType
+        <!-- <SystemMangementChangeTopicType
           v-if="user?.type !== OrganizationTypeEnum.ADMIN"
           :is-header-tap="true"
-        />
+        /> -->
         <ActionsList
           feature-name="action management types"
           :show-actions="true"
