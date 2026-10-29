@@ -597,7 +597,9 @@ const canCreateRecord = computed(() =>
                     <th scope="col">#</th>
                     <th scope="col">{{ $t('Serial') }}</th>
                     <th scope="col">{{ $t('observer') }}</th>
-                    <th scope="col">{{ $t('project') }}</th>
+                    <th scope="col" class="observation-report-project-column">
+                      {{ $t('project') }}
+                    </th>
                     <th scope="col">{{ $t('Date & Time') }}</th>
                     <th scope="col">{{ $t('Location') }} / {{ $t('Zone') }}</th>
                     <th scope="col">{{ $t('Machine') }}</th>
@@ -615,7 +617,9 @@ const canCreateRecord = computed(() =>
                     <td><span class="hse-table-row-number">{{ (currentPage - 1) * countPerPage + index + 1 }}</span></td>
                     <td>{{ item.serialName || '—' }}</td>
                     <td>{{ item.observer?.name || '—' }}</td>
-                    <td>{{ item.project?.title || '—' }}</td>
+                    <td class="observation-report-project-column">
+                      {{ item.project?.title || '—' }}
+                    </td>
                     <td>{{ item.date || '—' }} · {{ item.time || '—' }}</td>
                     <td>
                       <span class="report-cell-stack">
@@ -893,7 +897,25 @@ const canCreateRecord = computed(() =>
 }
 
 .observation-report-table {
-  min-width: 1700px;
+  min-width: 1900px;
+}
+
+:global(
+    html.hse-cloud-identity
+      .hse-table-scroll
+      > table.observation-report-table
+      > :is(thead, tbody)
+      > tr
+      > .observation-report-project-column
+  ) {
+  box-sizing: border-box;
+  width: 280px;
+  min-width: 280px;
+  max-width: 320px;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
 }
 
 .report-cell-stack {
