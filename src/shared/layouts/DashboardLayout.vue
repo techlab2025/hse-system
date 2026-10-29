@@ -93,38 +93,86 @@ const showSidebar = computed(() => {
     </div>
     <section class="content-wrapper">
       <Header @open="toggleSidebar" />
-      <div class="main-content minmize">
-        <BreadCrumb
-          v-if="!route.fullPath.includes('project-progress') && route.fullPath != `/organization`"
-        />
-        <slot />
+      <div class="content-body">
+        <div class="main-content minmize">
+          <BreadCrumb
+            v-if="!route.fullPath.includes('project-progress') && route.fullPath != `/organization`"
+          />
+          <slot />
+        </div>
       </div>
     </section>
-  </main>
-  <footer :class="['footer bottom-0 left-0 right-0 z-50', { 'is-dark': isDarkMode }]">
-    <div class="footer-shell">
-      <div class="footer-brand">
-        <p class="footer-copy">
-          {{ $t('all_rights_reserved', { year: 2026 }) }}
-          <a href="https://hse.techlabeg.com/">HSE.Cloud.Ai</a>.
-        </p>
-        <!-- <span class="footer-mark">HSE</span>
+    <footer :class="['footer', { 'is-dark': isDarkMode }]">
+      <div class="footer-shell">
+        <div class="footer-brand">
+          <p class="footer-copy">
+            {{ $t('all_rights_reserved', { year: 2026 }) }}
+            <a href="https://hse.techlabeg.com/">HSE.Cloud.Ai</a>.
+          </p>
+          <!-- <span class="footer-mark">HSE</span>
         <span class="footer-title">HSE.Cloud.Ai</span>
         <span class="footer-divider"></span> -->
-        <span class="footer-powered"
-          >{{ $t('powered_by') }} <a href="https://techlabeg.com/">TechLab</a></span
-        >
+          <span class="footer-powered"
+            >{{ $t('powered_by') }} <a href="https://techlabeg.com/">TechLab</a></span
+          >
+        </div>
       </div>
-    </div>
-  </footer>
+    </footer>
+  </main>
 </template>
 
 <style scoped lang="scss">
 .content {
-  // padding-bottom: 74px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  > .sidebar-container {
+    grid-column: 1;
+    grid-row: 1;
+    min-height: 0;
+
+    :deep(.sidebar) {
+      height: 100%;
+      max-height: 100dvh;
+    }
+
+    :deep(.sidebar-wrapper) {
+      height: 100%;
+    }
+
+    :deep(.side-pane) {
+      position: absolute;
+      height: 100%;
+    }
+
+    :deep(.expanded-navigation .side-pane) {
+      position: relative;
+    }
+  }
+
+  > .content-wrapper {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  // Keep page roots with percentage min-heights in normal block flow.
+  .content-body {
+    flex: 1 0 auto;
+    min-width: 0;
+  }
+
+  .main-content {
+    min-height: 0;
+  }
 }
 
 .footer {
+  grid-column: 2;
+  grid-row: 2;
   display: flex;
   justify-content: space-around;
   padding: 0;
@@ -132,6 +180,7 @@ const showSidebar = computed(() => {
   background: transparent;
   box-shadow: none;
   backdrop-filter: none;
+  flex: 0 0 auto;
 }
 
 .footer-shell {
@@ -254,7 +303,26 @@ const showSidebar = computed(() => {
 
 @media (max-width: 768px) {
   .content {
-    padding-bottom: 92px;
+    grid-template-columns: minmax(0, 1fr);
+
+    > .content-wrapper,
+    > .footer {
+      grid-column: 1;
+    }
+
+    > .sidebar-container :deep(.sidebar) {
+      height: 100dvh;
+    }
+
+    > .sidebar-container :deep(.side-pane) {
+      position: fixed;
+      height: 100dvh;
+    }
+
+    > .sidebar-container :deep(.expanded-navigation .side-pane) {
+      position: relative;
+      height: 100%;
+    }
   }
 
   .footer {
@@ -322,7 +390,6 @@ const showSidebar = computed(() => {
   .content {
     width: 100%;
     max-width: 100vw;
-    padding-bottom: 104px;
     overflow-x: clip;
   }
 
