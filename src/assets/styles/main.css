@@ -26030,7 +26030,7 @@ body,
 }
 
 input {
-  padding: var(--sm-size) !important;
+  padding: var(--hse-field-padding-block, 10px) var(--hse-field-padding-inline, 12px) !important;
 }
 input::-moz-placeholder {
   font-size: var(--sm-size);
@@ -26039,7 +26039,7 @@ input::placeholder {
   font-size: var(--sm-size);
 }
 input {
-  border-radius: calc(var(--xl-size-base) + 2px) !important;
+  border-radius: var(--hse-field-radius, 11px) !important;
 }
 input.py {
   padding-inline: 40px !important;
@@ -26051,7 +26051,7 @@ input.py {
 
 .p-multiselect,
 .p-select {
-  padding: var(--sm-size) !important;
+  padding: 0 !important;
   border-radius: calc(var(--xl-size-base) + 2px) !important;
 }
 
@@ -26169,18 +26169,18 @@ html[dir=ltr] .actions-container {
   width: -moz-fit-content;
   width: fit-content;
   text-align: start;
-  font-weight: 600;
-  font-size: var(--md-size);
-  color: var(--text-strong);
-  font-family: "Light";
+  font-weight: var(--hse-field-label-weight, 600);
+  font-size: var(--hse-field-label-size, 12px);
+  color: var(--hse-field-label-color, var(--text-strong));
+  font-family: var(--hse-field-font-family, "Light");
   margin-inline-start: auto;
 }
 
 label {
-  font-weight: 600 !important;
-  font-size: var(--md-size) !important;
-  color: var(--text-strong) !important;
-  font-family: "Light" !important;
+  font-weight: var(--hse-field-label-weight, 600) !important;
+  font-size: var(--hse-field-label-size, 12px) !important;
+  color: var(--hse-field-label-color, var(--text-strong)) !important;
+  font-family: var(--hse-field-font-family, "Light") !important;
 }
 
 .header-select .input-label {
@@ -26403,4 +26403,7 @@ label {
   .col-span-2:has(.actions-list-controls) > .btn {
     flex: 1 1 auto;
   }
+}
+.hse-select-field__header {
+  display: none !important;
 }/*# sourceMappingURL=main.css.map */

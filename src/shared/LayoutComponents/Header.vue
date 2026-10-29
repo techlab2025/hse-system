@@ -338,6 +338,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
+
 .hse-app-header {
   position: sticky;
   top: 0;
