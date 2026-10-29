@@ -86,7 +86,7 @@ const { locale } = useI18n()
     {{ $t('close_investegation') }}
   </button>
   <SystemDataHeader v-if="isHeaderTap" @click="visible = true" />
-  <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
+  <Dialog class="system-data-dialog" :base-z-index="11000" v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <!-- :img="DialogSystem" -->
       <HeaderSection

@@ -1,32 +1,243 @@
-@use '../variables' as *;
-@use '../mixins/flex' as *;
-.system-dialog-content-container {
-  height: 60vh;
-  overflow: auto;
-  .system-dialog-content {
-    @include flex-column(nowrap, flex-start, flex-start);
-    gap: $XsSize;
-    width: 100%;
+// Shared system-library picker. Scoped to these dialogs so ordinary forms keep their layout.
+.p-dialog.system-data-dialog {
+  --system-dialog-accent: var(--brand-primary-500);
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100dvh - 2rem);
+  border: 1px solid var(--surface-3);
+  border-radius: 24px;
+  background: var(--surface-1);
+  box-shadow: 0 24px 80px color-mix(in srgb, var(--text-strong) 18%, transparent);
+  overflow: hidden;
 
-    .row-content {
-      width: 100%;
-      padding: $XlSize $XsSize2;
-      border-bottom: 1px solid var(--surface-2);
-      &.active {
-        background-color: color-mix(in srgb, var(--brand-primary-500) 3.92%, transparent);
-      }
+  .p-dialog-header {
+    position: relative;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 28px;
+    border-block-end: 1px solid var(--surface-3);
+    background:
+      radial-gradient(
+        ellipse at 0 0,
+        color-mix(in srgb, var(--system-dialog-accent) 9%, transparent),
+        transparent 70%
+      ),
+      var(--surface-1);
 
-      @include flex-row(nowrap, space-between, center);
-      .title {
-        color: var(--text-strong);
-        font-size: $MdSize2;
-        font-weight: $BaseFontSemiBoldWeight;
-      }
+    &::before {
+      position: absolute;
+      content: '';
+      inset-block-start: 0;
+      inset-inline: 0;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        var(--system-dialog-accent),
+        color-mix(in srgb, var(--system-dialog-accent) 15%, transparent)
+      );
     }
   }
-  .confirm-btn {
-    display: fixed;
-    bottom: 0;
+
+  .section-header {
+    gap: 16px;
+  }
+
+  .section-img-wrap {
+    width: 60px;
+    height: 60px;
+    flex-basis: 60px;
+    border-radius: 18px;
+    border-color: color-mix(in srgb, var(--system-dialog-accent) 18%, transparent);
+    background: var(--surface-1);
+    box-shadow: 0 6px 20px color-mix(in srgb, var(--system-dialog-accent) 9%, transparent);
+  }
+
+  .header-text .title {
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    line-height: 1.4;
+  }
+
+  .header-text .subtitle {
+    margin-block-start: 6px;
+    font-size: 0.85rem;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+
+  .p-dialog-header-actions {
+    flex-shrink: 0;
+  }
+
+  .p-dialog-close-button {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--surface-3);
+    border-radius: 12px;
+    color: var(--text-soft);
+    background: var(--surface-1);
+
+    &:hover {
+      color: var(--text-strong);
+      background: var(--surface-2);
+    }
+  }
+
+  .p-dialog-content {
+    padding: 24px 28px 28px;
+    background: var(--surface-1);
+  }
+
+  .system-dialog-content-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    gap: 12px;
+    height: auto;
+    max-height: min(48dvh, 30rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--surface-3) transparent;
+    padding: 3px;
+    scroll-padding-block: 3px;
+  }
+
+  .system-dialog-content {
+    min-width: 0;
+    display: flex;
+  }
+
+  .row-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
     width: 100%;
+    min-height: 76px;
+    padding: 18px 20px;
+    border: 1px solid var(--surface-3);
+    border-radius: 16px;
+    background: var(--surface-1);
+    cursor: pointer;
+    transition:
+      border-color 160ms ease,
+      background-color 160ms ease,
+      box-shadow 160ms ease;
+
+    &:hover {
+      border-color: color-mix(in srgb, var(--system-dialog-accent) 45%, var(--surface-3));
+      background: color-mix(in srgb, var(--system-dialog-accent) 3%, var(--surface-1));
+    }
+
+    &.active {
+      border-color: var(--system-dialog-accent);
+      background: color-mix(in srgb, var(--system-dialog-accent) 7%, var(--surface-1));
+      box-shadow: inset 3px 0 var(--system-dialog-accent);
+
+      &:dir(rtl) {
+        box-shadow: inset -3px 0 var(--system-dialog-accent);
+      }
+    }
+
+    &:focus-within {
+      outline: 2px solid var(--system-dialog-accent);
+      outline-offset: 1px;
+    }
+
+    .title {
+      min-width: 0;
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 0.9rem;
+      font-weight: 600;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+      cursor: pointer;
+    }
+
+    input[type='checkbox'] {
+      flex: 0 0 22px;
+      width: 22px;
+      height: 22px;
+      margin: 0;
+      accent-color: var(--system-dialog-accent);
+      cursor: pointer;
+    }
+  }
+
+  .confirm-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    margin-block-start: 24px;
+    border-radius: 14px;
+    font-weight: 700;
+    box-shadow: 0 6px 16px color-mix(in srgb, var(--system-dialog-accent) 18%, transparent);
+
+    &:focus-visible {
+      outline: 2px solid var(--system-dialog-accent);
+      outline-offset: 3px;
+    }
+
+    &:disabled {
+      box-shadow: none;
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .p-dialog.system-data-dialog {
+    max-width: calc(100vw - 1rem);
+    max-height: calc(100dvh - 1rem);
+    border-radius: 20px;
+
+    .p-dialog-header {
+      gap: 12px;
+      padding: 20px 16px;
+    }
+
+    .section-header {
+      gap: 12px;
+    }
+
+    .section-img-wrap {
+      width: 44px;
+      height: 44px;
+      flex-basis: 44px;
+      border-radius: 14px;
+    }
+
+    .header-text .subtitle {
+      font-size: 0.78rem;
+    }
+
+    .p-dialog-content {
+      padding: 16px;
+    }
+
+    .system-dialog-content-container {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+      max-height: 45dvh;
+    }
+
+    .row-content {
+      min-height: 64px;
+      padding: 14px 16px;
+      border-radius: 14px;
+    }
+
+    .confirm-btn {
+      margin-block-start: 16px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .system-data-dialog .row-content {
+    transition: none;
   }
 }

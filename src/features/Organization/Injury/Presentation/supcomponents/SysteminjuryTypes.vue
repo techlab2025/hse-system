@@ -79,7 +79,7 @@ const SubmitData = async () => {
   <!-- <li>
    <button @click="visible = true" class="btn btn-primary">{{ $t('system_injury_types') }}</button>
  </li> -->
-  <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
+  <Dialog class="system-data-dialog" :base-z-index="11000" v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection
         :img="DialogSystem"
@@ -97,7 +97,7 @@ const SubmitData = async () => {
               :class="{ active: selectedIds.includes(item.id) }"
               @click="ChangeStatus(item.id)"
             >
-              <label :for="`${item.title}-${item.id}`" class="title">
+              <label :for="`${item.title}-${item.id}`" class="title" @click.stop>
                 {{ item.title }}
               </label>
               <input

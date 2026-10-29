@@ -78,7 +78,7 @@ const submitData = async () => {
 <template>
   <button class="btn btn-primary" type="button" @click="visible = true">{{ $t('system_data') }}</button>
 
-  <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
+  <Dialog class="system-data-dialog" :base-z-index="11000" v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection
         :img="DialogSystem"
@@ -98,7 +98,7 @@ const submitData = async () => {
               :class="{ active: selectedIds.includes(item.id) }"
               @click="toggleItem(item.id)"
             >
-              <label :for="`system-factor-item-${item.id}`" class="title item-title">
+              <label :for="`system-factor-item-${item.id}`" class="title item-title" @click.stop>
                 <span>{{ item.title }}</span>
                 <small v-if="item.factory?.title">{{ item.factory.title }}</small>
               </label>

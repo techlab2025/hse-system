@@ -49,7 +49,7 @@ const addSystemVisitActivities = async () => {
       <button type="button">{{ $t('system_data') }}</button>
     </li>
     <button v-if="isHeaderTap" class="btn btn-primary" type="button" @click="visible = true">{{ $t('system_data') }}</button>
-    <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
+    <Dialog class="system-data-dialog" :base-z-index="11000" v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
       <template #header>
         <HeaderSection :img="DialogSystem" :title="$t('add_system_visit_activities')" :subtitle="$t('select_system_visit_activities')" />
       </template>
@@ -59,7 +59,7 @@ const addSystemVisitActivities = async () => {
           <div v-else class="system-dialog-content-container">
             <div v-for="item in state.data" :key="item.id" class="system-dialog-content">
               <div class="row-content" :class="{ active: selectedIds.includes(item.id) }" @click="toggleSelection(item.id)">
-                <label :for="`${item.title}-${item.id}`" class="title">{{ item.title }}</label>
+                <label :for="`${item.title}-${item.id}`" class="title" @click.stop>{{ item.title }}</label>
                 <input :id="`${item.title}-${item.id}`" type="checkbox" :checked="selectedIds.includes(item.id)" @click.stop="toggleSelection(item.id)" />
               </div>
             </div>

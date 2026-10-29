@@ -79,7 +79,7 @@
     </button>
   </li>
   <button v-if="isHeaderTap" class="btn btn-primary" type="button" @click="visible = true">{{ $t('system_data') }}</button>
-  <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
+  <Dialog class="system-data-dialog" :base-z-index="11000" v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       
       <HeaderSection :img="DialogSystem" :title="$t('add_system_meeting_types')"
@@ -92,7 +92,7 @@
 
           <div class="system-dialog-content" v-for="item in state.data" :key="item.id">
             <div class="row-content" :class="{ active: selectedIds.includes(item.id) }" @click="toggleSelection(item.id)">
-              <label :for="`${item.title}-${item.id}`" class="title">
+              <label :for="`${item.title}-${item.id}`" class="title" @click.stop>
                 {{ item.title }}
               </label>
               <input :id="`${item.title}-${item.id}`" type="checkbox" :checked="selectedIds.includes(item.id)"
