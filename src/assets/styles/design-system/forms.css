@@ -21,6 +21,44 @@
   line-height: 1.45;
 }
 
+/* Normalize every recognized field header so optional header content (help,
+   language, toggle, reload, or inline actions) cannot move its control down. */
+.hse-cloud-identity
+  :is(.input-wrapper, .field, .form-group, .form-field, .localized-field, .zone-data-container)
+  > :is(label, .input-title, .label-wrapper, .label-container, .required-label, .input-label) {
+  box-sizing: border-box;
+  min-height: var(--hse-field-label-row-height);
+  align-items: center;
+  margin-block: 0;
+}
+
+.hse-cloud-identity
+  :is(.input-wrapper, .field, .form-group, .form-field)
+  > .required-label {
+  display: flex;
+  line-height: 1.45;
+}
+
+.hse-cloud-identity :is(.form-grid, .fields-grid, .grid-form) {
+  align-items: start;
+}
+
+.hse-cloud-identity :is(.form-grid, .fields-grid, .grid-form)
+  > :is(.input-wrapper, .field, .form-group, .form-field, [data-required-field]):not(.check-box) {
+  min-width: 0;
+  align-self: start;
+}
+
+.hse-cloud-identity .localized-field > .label-wrapper {
+  flex-wrap: nowrap;
+}
+
+@media (max-width: 40rem) {
+  .hse-cloud-identity .localized-field > .label-wrapper {
+    flex-wrap: wrap;
+  }
+}
+
 .hse-cloud-identity :is(.input-title, .label-wrapper, .label-container) {
   color: var(--hse-field-label-color);
   font-family: var(--hse-field-font-family);

@@ -121,7 +121,8 @@
   --hse-field-padding-block: 10px;
   --hse-field-label-gap: 8px;
   --hse-field-label-control-gap: 6px;
-  --hse-field-label-min-height: 22px;
+  --hse-field-label-row-height: 32px;
+  --hse-field-label-min-height: var(--hse-field-label-row-height);
   --hse-transition-fast: 140ms;
   --hse-transition: 200ms;
   --hse-ease: cubic-bezier(0.2, 0, 0, 1);

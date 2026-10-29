@@ -346,7 +346,7 @@
 .hse-project-root[data-hse-project].flow-page.hse-project-wizard .input-wrapper,
 .hse-project-root[data-hse-project].flow-page.hse-project-wizard .updated-custom-input-select {
   display: grid;
-  gap: 5px;
+  gap: var(--hse-field-label-control-gap, 6px);
   min-width: 0;
   padding: 0;
   border: 0;
@@ -589,7 +589,7 @@
 }
 .hse-project-root[data-hse-project].flow-page.hse-project-wizard .input-title,
 .hse-project-root[data-hse-project].flow-page.hse-project-wizard .label-wrapper {
-  min-height: 16.675px;
+  min-height: var(--hse-field-label-row-height, 32px);
   gap: 5px;
   margin: 0;
 }
