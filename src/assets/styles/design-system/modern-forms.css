@@ -68,11 +68,11 @@
 .hse-cloud-identity
   :is(.identity-form, .identity-form-shell)
   :is(.input-wrapper > label, .label-wrapper > label, .label-container > label) {
-  color: var(--hse-color-text-secondary);
-  font-family: inherit;
-  font-size: 0.8125rem;
-  font-weight: 700;
-  line-height: 1.5;
+  color: var(--hse-field-label-color);
+  font-family: var(--hse-field-font-family);
+  font-size: var(--hse-field-label-size);
+  font-weight: var(--hse-field-label-weight);
+  line-height: 1.45;
   white-space: normal;
 }
 
@@ -86,15 +86,21 @@
     select,
     .p-select,
     .p-multiselect,
-    .p-treeselect
+    .p-treeselect,
+    .p-autocomplete,
+    .p-cascadeselect,
+    .p-inputnumber,
+    .p-datepicker,
+    .p-password
   ) {
-  min-height: 3rem;
-  border-color: var(--form-line);
-  border-radius: 0.875rem !important;
-  background: var(--hse-color-surface);
-  color: var(--hse-color-text);
-  font-family: inherit;
-  font-size: 0.875rem;
+  min-height: var(--hse-field-height);
+  border-color: var(--hse-field-border);
+  border-radius: var(--hse-field-radius) !important;
+  background: var(--hse-field-bg);
+  color: var(--hse-field-text);
+  font-family: var(--hse-field-font-family);
+  font-size: var(--hse-field-font-size);
+  font-weight: var(--hse-field-font-weight);
 }
 
 .hse-cloud-identity

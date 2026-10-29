@@ -54,7 +54,7 @@ const HseCloudPreset = definePreset(Aura, {
     formField: {
       paddingX: '0.75rem',
       paddingY: '0.625rem',
-      borderRadius: '0.6875rem',
+      borderRadius: '11px',
       focusRing: {
         width: '3px',
         style: 'solid',

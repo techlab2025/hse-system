@@ -643,7 +643,7 @@ function closeDialog(): void {
 
 <style scoped lang="scss">
 .updated-custom-input-select.hse-identity label.input-label {
-  font-size: var(--md-size) !important;
+  font-size: var(--hse-field-label-size, 12px) !important;
 }
 
 .add-dialog {

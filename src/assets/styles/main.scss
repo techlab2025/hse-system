@@ -358,13 +358,13 @@ body,
 }
 
 input {
-  padding: $SmSize !important;
+  padding: var(--hse-field-padding-block, 10px) var(--hse-field-padding-inline, 12px) !important;
 
   &::placeholder {
     font-size: $SmSize;
   }
 
-  border-radius: calc($XlSize + 2px) !important;
+  border-radius: var(--hse-field-radius, 11px) !important;
 
   &.py {
     padding-inline: 40px !important;
@@ -379,7 +379,7 @@ input {
 
 .p-multiselect,
 .p-select {
-  padding: $SmSize !important;
+  padding: 0 !important;
   // padding-inline: 40px !important;
   border-radius: calc($XlSize + 2px) !important;
 }
@@ -527,18 +527,18 @@ html[dir='ltr'] .actions-container {
   margin-inline-end: auto;
   width: fit-content;
   text-align: start;
-  font-weight: 600;
-  font-size: var(--md-size);
-  color: var(--text-strong);
-  font-family: 'Light';
+  font-weight: var(--hse-field-label-weight, 600);
+  font-size: var(--hse-field-label-size, 12px);
+  color: var(--hse-field-label-color, var(--text-strong));
+  font-family: var(--hse-field-font-family, 'Light');
   margin-inline-start: auto;
 }
 
 label {
-  font-weight: 600 !important;
-  font-size: var(--md-size) !important;
-  color: var(--text-strong) !important;
-  font-family: 'Light' !important;
+  font-weight: var(--hse-field-label-weight, 600) !important;
+  font-size: var(--hse-field-label-size, 12px) !important;
+  color: var(--hse-field-label-color, var(--text-strong)) !important;
+  font-family: var(--hse-field-font-family, 'Light') !important;
 }
 
 .header-select {

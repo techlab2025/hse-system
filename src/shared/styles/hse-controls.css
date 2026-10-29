@@ -1,6 +1,9 @@
 /* One control skin for the shared select and PrimeVue's date/time variants.
    Every selector is opt-in, including portals rendered outside the form. */
 .hse-select-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hse-field-label-control-gap, 6px);
   min-width: 0;
   width: 100%;
 }
@@ -9,14 +12,16 @@
   flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  min-height: 22px;
-  margin-bottom: 6px;
+  gap: var(--hse-field-label-gap, 8px);
+  min-height: var(--hse-field-label-min-height, 22px);
+  margin: 0;
 }
 .hse-select-field.hse-identity label.input-label {
+  min-height: var(--hse-field-label-min-height, 22px);
   margin: 0;
-  color: var(--hse-project-ink) !important;
-  font: 600 12px/1.45 var(--hse-control-font) !important;
+  color: var(--hse-field-label-color, var(--hse-project-ink)) !important;
+  font: var(--hse-field-label-weight, 600) var(--hse-field-label-size, 12px) / 1.45
+    var(--hse-field-font-family, var(--hse-control-font)) !important;
   text-transform: none;
 }
 .hse-select-field .reload-icon {
@@ -47,12 +52,13 @@
 .hse-date-picker .hse-control.hse-date-input {
   min-width: 0;
   max-width: 100%;
-  min-height: 42px;
-  border: 1px solid var(--hse-project-line) !important;
-  border-radius: var(--hse-control-radius, 9px) !important;
-  background: var(--hse-project-input-bg) !important;
-  color: var(--hse-project-ink) !important;
-  font: 400 13px/1.45 var(--hse-control-font) !important;
+  min-height: var(--hse-field-height, 42px);
+  border: 1px solid var(--hse-field-border, var(--hse-project-line)) !important;
+  border-radius: var(--hse-field-radius, 11px) !important;
+  background: var(--hse-field-bg, var(--hse-project-input-bg)) !important;
+  color: var(--hse-field-text, var(--hse-project-ink)) !important;
+  font: var(--hse-field-font-weight, 400) var(--hse-field-font-size, 13px) / 1.45
+    var(--hse-field-font-family, var(--hse-control-font)) !important;
   box-shadow: none;
   transition:
     border-color 180ms ease,
@@ -66,12 +72,12 @@
 }
 .hse-control.hse-select-control:not(.p-disabled):hover,
 .hse-date-picker .hse-control.hse-date-input:not(:disabled):hover {
-  border-color: #b8c9df !important;
+  border-color: color-mix(in srgb, var(--hse-field-border, #e2e9f2) 35%, var(--hse-field-text, #10243f)) !important;
 }
 .hse-control.hse-select-control:focus-within,
 .hse-date-picker .hse-control.hse-date-input:focus {
-  border-color: #6b9dff !important;
-  box-shadow: var(--hse-control-focus);
+  border-color: var(--hse-field-focus-border, var(--hse-project-blue)) !important;
+  box-shadow: 0 0 0 3px var(--hse-field-focus-ring, rgb(16 43 82 / 12%));
   outline: 0;
 }
 .hse-control.hse-select-control:is(.p-invalid, [aria-invalid='true']),
@@ -80,21 +86,23 @@
 }
 .hse-control.hse-select-control.p-disabled,
 .hse-date-picker .hse-control.hse-date-input:disabled {
-  background: var(--hse-project-surface-soft) !important;
-  color: var(--hse-project-muted) !important;
-  opacity: 0.65;
+  background: var(--hse-field-disabled-bg, var(--hse-project-surface-soft)) !important;
+  color: var(--hse-field-disabled-text, var(--hse-project-muted)) !important;
+  opacity: 1;
   cursor: not-allowed;
 }
 .hse-select-control :is(.p-select-label, .p-multiselect-label) {
   min-width: 0;
-  padding: 10px 12px !important;
-  color: var(--hse-project-ink);
-  font: 400 13px/1.45 var(--hse-control-font) !important;
+  min-height: calc(var(--hse-field-height, 42px) - 2px);
+  padding: var(--hse-field-padding-block, 10px) var(--hse-field-padding-inline, 12px) !important;
+  color: var(--hse-field-text, var(--hse-project-ink));
+  font: var(--hse-field-font-weight, 400) var(--hse-field-font-size, 13px) / 1.45
+    var(--hse-field-font-family, var(--hse-control-font)) !important;
   text-transform: none;
 }
 .hse-select-control :is(.p-select-label.p-placeholder, .p-multiselect-label.p-placeholder),
 .hse-date-input::placeholder {
-  color: var(--hse-project-muted);
+  color: var(--hse-field-placeholder, var(--hse-project-muted));
   opacity: 1;
 }
 .hse-select-control :is(.p-select-dropdown, .p-multiselect-dropdown) {
@@ -143,16 +151,17 @@
 .hse-select-panel :is(.p-select-filter, .p-multiselect-filter) {
   min-height: 38px;
   border: 1px solid var(--hse-project-line);
-  border-radius: 9px;
-  padding: 8px 12px;
+  border-radius: var(--hse-field-radius, 11px);
+  padding: var(--hse-field-padding-block, 10px) var(--hse-field-padding-inline, 12px);
   padding-inline-end: 34px;
   background: var(--hse-project-input-bg);
   color: var(--hse-project-ink);
-  font: 400 13px/1.45 var(--hse-control-font);
+  font: var(--hse-field-font-weight, 400) var(--hse-field-font-size, 13px) / 1.45
+    var(--hse-field-font-family, var(--hse-control-font));
 }
 .hse-select-panel :is(.p-select-filter, .p-multiselect-filter):focus {
-  border-color: var(--hse-project-blue) !important;
-  box-shadow: var(--hse-control-focus);
+  border-color: var(--hse-field-focus-border, var(--hse-project-blue)) !important;
+  box-shadow: 0 0 0 3px var(--hse-field-focus-ring, rgb(16 43 82 / 12%));
   outline: 0;
 }
 .hse-select-panel :is(.p-select-list, .p-multiselect-list) {

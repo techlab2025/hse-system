@@ -179,8 +179,8 @@
 }
 .hse-project-root[data-hse-project] :is(.hse-project-field-label, .input-label label) {
   color: var(--hse-project-ink);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--hse-field-label-size, 12px);
+  font-weight: var(--hse-field-label-weight, 600);
   text-align: start;
 }
 .hse-project-root[data-hse-project]
@@ -200,16 +200,18 @@
   ) {
   min-width: 0;
   max-width: 100%;
-  min-height: var(--hse-project-control-height);
-  border: 1px solid var(--hse-project-line);
-  background: var(--hse-project-input-bg);
-  color: var(--hse-project-ink);
-  font-size: 13px;
+  min-height: var(--hse-field-height, var(--hse-project-control-height));
+  border: 1px solid var(--hse-field-border, var(--hse-project-line));
+  background: var(--hse-field-bg, var(--hse-project-input-bg));
+  color: var(--hse-field-text, var(--hse-project-ink));
+  font-family: var(--hse-field-font-family, inherit);
+  font-size: var(--hse-field-font-size, 13px);
+  font-weight: var(--hse-field-font-weight, 400);
   box-shadow: none;
   /* Existing app input/select rules use !important. These two local properties
      must match that specificity; they apply only inside Project. */
-  border-radius: var(--hse-project-radius-control) !important;
-  padding: 10px 12px !important;
+  border-radius: var(--hse-field-radius, var(--hse-project-radius-control)) !important;
+  padding: var(--hse-field-padding-block, 10px) var(--hse-field-padding-inline, 12px) !important;
 }
 .hse-project-root[data-hse-project]
   :is(.p-select:not(.hse-control), .p-multiselect:not(.hse-control)) {
@@ -221,8 +223,8 @@
 }
 .hse-project-root[data-hse-project]
   :is(.hse-project-input, .p-inputtext:not(.hse-control), .p-textarea):focus {
-  border-color: var(--hse-project-blue);
-  box-shadow: 0 0 0 3px rgb(37 109 244 / 10%);
+  border-color: var(--hse-field-focus-border, var(--hse-project-blue));
+  box-shadow: 0 0 0 3px var(--hse-field-focus-ring, rgb(16 43 82 / 12%));
 }
 .hse-project-root[data-hse-project] textarea.hse-project-input {
   min-height: 88px;

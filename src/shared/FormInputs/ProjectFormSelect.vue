@@ -116,7 +116,7 @@ onMounted(() => {
 .project-form-select input {
   width: 100%;
   min-width: 0;
-  min-height: 46px;
+  min-height: var(--hse-field-height, 42px);
 }
 .red {
   color: red;

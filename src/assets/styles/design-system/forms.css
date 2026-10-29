@@ -2,12 +2,31 @@
   min-width: 0;
 }
 
-.hse-cloud-identity :is(.input-wrapper, .field, .form-group, .form-field) > label {
+.hse-cloud-identity .input-wrapper:not(.check-box) {
+  row-gap: var(--hse-field-label-control-gap);
+}
+
+.hse-cloud-identity
+  :is(.input-wrapper, .field, .form-group, .form-field, .localized-field, .zone-data-container)
+  > :is(label, .input-title, .label-wrapper, .label-container) {
   display: inline-flex;
   align-items: center;
-  gap: var(--hse-space-1);
-  margin-block-end: 0.375rem;
-  color: var(--hse-color-text-secondary);
+  gap: var(--hse-field-label-gap);
+  min-height: var(--hse-field-label-min-height);
+  margin-block: 0;
+  color: var(--hse-field-label-color);
+  font-family: var(--hse-field-font-family);
+  font-size: var(--hse-field-label-size);
+  font-weight: var(--hse-field-label-weight);
+  line-height: 1.45;
+}
+
+.hse-cloud-identity :is(.input-title, .label-wrapper, .label-container) {
+  color: var(--hse-field-label-color);
+  font-family: var(--hse-field-font-family);
+  font-size: var(--hse-field-label-size);
+  font-weight: var(--hse-field-label-weight);
+  line-height: 1.45;
 }
 
 .hse-cloud-identity
@@ -24,12 +43,17 @@
     .p-password
   ) {
   min-width: 0;
-  min-height: var(--hse-control-height);
-  border-color: var(--hse-color-border);
-  border-radius: var(--hse-control-radius, 9px) !important;
-  background: #fbfdff;
-  color: var(--hse-color-text);
-  font-size: var(--hse-text-base);
+  min-height: var(--hse-field-height);
+  border: 1px solid var(--hse-field-border);
+  border-radius: var(--hse-field-radius) !important;
+  background: var(--hse-field-bg);
+  color: var(--hse-field-text);
+  font-family: var(--hse-field-font-family);
+  font-size: var(--hse-field-font-size);
+  font-weight: var(--hse-field-font-weight);
+  line-height: 1.45;
+  padding-block: var(--hse-field-padding-block);
+  padding-inline: var(--hse-field-padding-inline);
   box-shadow: none;
   transition:
     border-color var(--hse-transition-fast) var(--hse-ease),
@@ -39,7 +63,11 @@
 
 .hse-cloud-identity :is(input, textarea)::placeholder,
 .hse-cloud-identity :is(.p-placeholder, .p-select-label.p-placeholder) {
-  color: #91a1b6;
+  color: var(--hse-field-placeholder);
+  font-family: var(--hse-field-font-family);
+  font-size: var(--hse-field-font-size) !important;
+  font-weight: var(--hse-field-font-weight) !important;
+  line-height: 1.45;
   opacity: 1;
 }
 
@@ -55,7 +83,7 @@
     .p-datepicker,
     .p-password
   ):hover:not(:disabled):not(.p-disabled) {
-  border-color: #b8c9df;
+  border-color: color-mix(in srgb, var(--hse-field-border) 35%, var(--hse-field-text));
 }
 
 .hse-cloud-identity
@@ -72,14 +100,183 @@
   ):focus,
 .hse-cloud-identity
   :is(.p-select, .p-multiselect, .p-inputnumber, .p-datepicker, .p-password):focus-within {
-  border-color: var(--identity-primary, var(--hse-color-primary));
-  background: var(--hse-color-surface);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--identity-primary, var(--hse-color-primary)) 12%, transparent);
+  border-color: var(--hse-field-focus-border);
+  background: var(--hse-field-bg);
+  box-shadow: 0 0 0 3px var(--hse-field-focus-ring);
   outline: 0;
 }
 
+/* Keep PrimeVue value and placeholder insets identical in wrapped and plain selects. */
+.hse-cloud-identity :is(.p-select, .p-multiselect) {
+  padding: 0 !important;
+}
+
+.hse-cloud-identity :is(.p-select-label, .p-multiselect-label) {
+  min-height: calc(var(--hse-field-height) - 2px);
+  padding-block: var(--hse-field-padding-block) !important;
+  padding-inline: var(--hse-field-padding-inline) !important;
+  color: var(--hse-field-text) !important;
+  font-family: var(--hse-field-font-family) !important;
+  font-size: var(--hse-field-font-size) !important;
+  font-weight: var(--hse-field-font-weight) !important;
+  line-height: 1.45;
+}
+
+.hse-cloud-identity
+  :is(.p-placeholder, .p-select-label.p-placeholder, .p-multiselect-label.p-placeholder) {
+  color: var(--hse-field-placeholder) !important;
+  font-family: var(--hse-field-font-family) !important;
+  font-size: var(--hse-field-font-size) !important;
+  font-weight: var(--hse-field-font-weight) !important;
+  line-height: 1.45;
+  opacity: 1;
+}
+
+/* Keep plain PrimeVue selects aligned with the shared wrapper select. The
+   legacy custom-select rule removes label padding on selects without the
+   hse-control class, so explicitly normalize both structures here. */
+.hse-cloud-identity .p-select.p-component > .p-select-label,
+.hse-cloud-identity .p-multiselect.p-component > .p-multiselect-label {
+  min-height: calc(var(--hse-field-height) - 2px);
+  padding-block: var(--hse-field-padding-block) !important;
+  padding-inline: var(--hse-field-padding-inline) !important;
+  color: var(--hse-field-text) !important;
+  font-family: var(--hse-field-font-family) !important;
+  font-size: var(--hse-field-font-size) !important;
+  font-weight: var(--hse-field-font-weight) !important;
+  line-height: 1.45;
+}
+
+.hse-cloud-identity .p-select.p-component > .p-select-label.p-placeholder,
+.hse-cloud-identity .p-multiselect.p-component > .p-multiselect-label.p-placeholder {
+  color: var(--hse-field-placeholder) !important;
+  font-family: var(--hse-field-font-family) !important;
+  font-size: var(--hse-field-font-size) !important;
+  font-weight: var(--hse-field-font-weight) !important;
+  opacity: 1;
+}
+
 .hse-cloud-identity :is(.p-invalid, [aria-invalid='true'], .input-error) {
-  border-color: var(--hse-color-danger) !important;
+  border-color: var(--hse-field-error) !important;
+}
+
+.hse-cloud-identity
+  :is(
+    input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']),
+    textarea,
+    select,
+    .p-inputtext,
+    .p-textarea,
+    .p-select,
+    .p-multiselect,
+    .p-autocomplete,
+    .p-cascadeselect,
+    .p-treeselect,
+    .p-inputnumber,
+    .p-datepicker,
+    .p-password
+  ):disabled,
+.hse-cloud-identity
+  :is(
+    .p-disabled,
+    [aria-disabled='true']
+  )
+  :is(.p-inputtext, .p-select, .p-multiselect, .p-autocomplete, .p-inputnumber, .p-datepicker) {
+  border-color: var(--hse-field-border);
+  background: var(--hse-field-disabled-bg);
+  color: var(--hse-field-disabled-text);
+  box-shadow: none;
+  opacity: 1;
+}
+
+.hse-cloud-identity
+  form
+  :is(.input-wrapper, .field, .form-group, .form-field)
+  > :is(label, .input-title, .label-wrapper, .label-container) {
+  color: var(--hse-field-label-color);
+  font-family: var(--hse-field-font-family);
+  font-size: var(--hse-field-label-size);
+  font-weight: var(--hse-field-label-weight);
+  line-height: 1.45;
+}
+
+.hse-cloud-identity
+  :is(.p-inputtext, .p-select, .p-multiselect, .p-autocomplete, .p-cascadeselect, .p-treeselect,
+    .p-inputnumber, .p-datepicker, .p-password, .p-textarea)
+  :is(.p-select-label, .p-multiselect-label, .p-autocomplete-input, .p-inputtext, .p-textarea) {
+  color: var(--hse-field-text);
+  font-family: var(--hse-field-font-family);
+  font-size: var(--hse-field-font-size);
+  font-weight: var(--hse-field-font-weight);
+  line-height: 1.45;
+}
+
+/* PrimeVue 4 overlays are teleported out of the page root, so style only its
+   form-control panels globally while leaving unrelated overlays untouched. */
+:is(.p-select-overlay, .p-multiselect-overlay, .p-autocomplete-overlay,
+  .p-cascadeselect-overlay, .p-treeselect-overlay, .p-datepicker-panel) {
+  border: 1px solid var(--hse-field-border);
+  border-radius: var(--hse-field-radius);
+  background: var(--hse-field-bg);
+  color: var(--hse-field-text);
+  font-family: var(--hse-field-font-family);
+  font-size: var(--hse-field-font-size);
+}
+
+.hse-cloud-identity
+  :is(.p-select-overlay, .p-multiselect-overlay, .p-autocomplete-overlay,
+    .p-cascadeselect-overlay, .p-treeselect-overlay):not(.hse-select-panel) {
+  border: 1px solid var(--hse-field-border) !important;
+  border-radius: var(--hse-field-radius) !important;
+  background: var(--hse-field-bg) !important;
+  color: var(--hse-field-text) !important;
+}
+
+:is(.p-select-overlay, .p-multiselect-overlay, .p-autocomplete-overlay,
+  .p-cascadeselect-overlay, .p-treeselect-overlay)
+  :is(.p-select-option-selected, .p-multiselect-option-selected, .p-autocomplete-option-selected,
+    .p-cascadeselect-option-selected, .p-treeselect-option-selected) {
+  background: var(--hse-color-primary-subtle) !important;
+  color: var(--hse-color-primary) !important;
+}
+
+:is(.p-select-overlay, .p-multiselect-overlay, .p-autocomplete-overlay,
+  .p-cascadeselect-overlay, .p-treeselect-overlay)
+  :is(.p-select-option, .p-multiselect-option, .p-autocomplete-option, .p-cascadeselect-option,
+    .p-treeselect-option) {
+  color: var(--hse-field-text);
+  font-family: var(--hse-field-font-family);
+  font-size: var(--hse-field-font-size);
+  padding-block: 0.625rem;
+  padding-inline: var(--hse-field-padding-inline);
+}
+
+.hse-cloud-identity
+  :is(.p-select-overlay, .p-multiselect-overlay, .p-autocomplete-overlay,
+    .p-cascadeselect-overlay, .p-treeselect-overlay):not(.hse-select-panel)
+  :is(.p-select-option, .p-multiselect-option, .p-autocomplete-option, .p-cascadeselect-option,
+    .p-treeselect-option) {
+  background: transparent !important;
+  color: var(--hse-field-text) !important;
+  font-family: var(--hse-field-font-family) !important;
+  font-size: var(--hse-field-font-size) !important;
+  font-weight: var(--hse-field-font-weight) !important;
+  padding-block: 0.625rem !important;
+  padding-inline: var(--hse-field-padding-inline) !important;
+}
+
+:is(.p-select-overlay, .p-multiselect-overlay, .p-autocomplete-overlay,
+  .p-cascadeselect-overlay, .p-treeselect-overlay)
+  :is(.p-select-option:not(.p-disabled):hover, .p-multiselect-option:not(.p-disabled):hover,
+    .p-autocomplete-option:not(.p-disabled):hover, .p-cascadeselect-option:not(.p-disabled):hover,
+    .p-treeselect-option:not(.p-disabled):hover) {
+  background: var(--hse-color-primary-subtle) !important;
+  color: var(--hse-color-primary) !important;
+}
+
+.hse-cloud-identity :is(.p-checkbox, .p-radiobutton, .p-toggleswitch):focus-within {
+  outline: 3px solid var(--hse-field-focus-ring);
+  outline-offset: 2px;
 }
 
 .hse-cloud-identity :is(.error-message, .p-error, small.error) {

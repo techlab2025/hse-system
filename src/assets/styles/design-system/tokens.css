@@ -75,7 +75,7 @@
 
   --hse-radius-input: 0.6875rem;
   --hse-radius-button: 0.75rem;
-  --hse-control-radius: 9px;
+  --hse-control-radius: 11px;
   --hse-radius-card: 1.125rem;
   --hse-radius-dialog: 1.375rem;
   --hse-radius-badge: 999px;
@@ -95,6 +95,33 @@
   --hse-page-padding-block: clamp(1rem, 2vw, 1.625rem);
   --hse-content-max: 100rem;
   --hse-control-height: 2.625rem;
+  /* Measured from Project → Create Project → Basic Project Data. */
+  --hse-field-font-family: var(--hse-project-font, var(--font-family, var(--hse-font-sans)));
+  --hse-field-font-size: 13px;
+  --hse-field-label-size: 12px;
+  --hse-field-font-weight: 400;
+  --hse-field-label-weight: 600;
+  --hse-field-text: var(--hse-color-text);
+  --hse-field-label-color: var(--hse-color-text);
+  --hse-field-placeholder: #91a1b6;
+  --hse-field-bg: var(--hse-color-surface);
+  --hse-field-border: var(--hse-color-border);
+  --hse-field-focus-border: var(--identity-primary, var(--hse-color-primary));
+  --hse-field-focus-ring: color-mix(
+    in srgb,
+    var(--identity-primary, var(--hse-color-primary)) 12%,
+    transparent
+  );
+  --hse-field-disabled-bg: #f8fafc;
+  --hse-field-disabled-text: #94a3b8;
+  --hse-field-error: var(--hse-color-danger);
+  --hse-field-height: 42px;
+  --hse-field-radius: 11px;
+  --hse-field-padding-inline: 12px;
+  --hse-field-padding-block: 10px;
+  --hse-field-label-gap: 8px;
+  --hse-field-label-control-gap: 6px;
+  --hse-field-label-min-height: 22px;
   --hse-transition-fast: 140ms;
   --hse-transition: 200ms;
   --hse-ease: cubic-bezier(0.2, 0, 0, 1);
