@@ -13,7 +13,7 @@ import { useI18n } from 'vue-i18n'
 import TranslationsParams from '@/base/core/params/translations_params'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import USA from '@/shared/icons/USA.vue'
-import SA from '@/shared/icons/SA.vue'
+import IQ from '@/shared/icons/IQ.vue'
 import { LangsMap } from '@/constant/langs'
 import { useUserStore } from '@/stores/user'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
@@ -179,14 +179,14 @@ const fetchLanguages = async () => {
     locale: item.code,
     title: '',
     icon: markRaw(
-      LangsMap[item.code as keyof typeof LangsMap]?.icon ?? (item.code === 'ar' ? SA : USA),
+      item.code === 'ar' ? IQ : (LangsMap[item.code as keyof typeof LangsMap]?.icon ?? USA),
     ),
   }))
   langDefaultDescription.value = languageItems.map((item: any) => ({
     locale: item.code,
     description: '',
     icon: markRaw(
-      LangsMap[item.code as keyof typeof LangsMap]?.icon ?? (item.code === 'ar' ? SA : USA),
+      item.code === 'ar' ? IQ : (LangsMap[item.code as keyof typeof LangsMap]?.icon ?? USA),
     ),
   }))
   langs.value = langDefault.value.map((item) => ({ ...item }))

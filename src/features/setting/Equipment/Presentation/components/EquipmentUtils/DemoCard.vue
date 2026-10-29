@@ -137,11 +137,14 @@ const imageFallback = (event: Event) => {
           <dt>{{ $t('License number') }}</dt>
           <dd>{{ licenseNumber }}</dd>
         </div>
-        <div v-for="field in labelDates" :key="field.label">
+        <div v-for="field in labelDates" :key="field.label" >
+          <div v-if="field.value">
+            
           <dt>{{ $t(field.label) }}</dt>
-          <dd dir="ltr">
+          <dd dir="ltr" >
             {{ displayDate(field.value, field.label !== 'eq_certificate_expiry_date') }}
           </dd>
+          </div>
         </div>
         <div v-if="inspectionDuration">
           <dt>{{ $t('eq_inspection_frequency') }}</dt>
