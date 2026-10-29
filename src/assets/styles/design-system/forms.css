@@ -156,6 +156,17 @@
   opacity: 1;
 }
 
+/* PrimeVue DatePicker is a wrapper around its actual input. Keep the wrapper
+   visually transparent so the input is the only bordered control. */
+.hse-cloud-identity .p-datepicker:has(.p-datepicker-input) {
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
 .hse-cloud-identity :is(.p-invalid, [aria-invalid='true'], .input-error) {
   border-color: var(--hse-field-error) !important;
 }
