@@ -6,8 +6,8 @@ import { useUserStore } from '../../stores/user'
 import { OrganizationTypeEnum } from '../../features/auth/Core/Enum/organization_type'
 
 export const lookupExcelHints = [
-  'Please fill in the cells under the Title column, starting from row 4.',
-  'Only Title cells are editable. Instructions, column headings and all other fields are locked.',
+  'Please fill in the cells under the column headings, starting from row 4.',
+  'All template columns are editable from row 4. Instructions, column headings and cells outside the template are locked.',
 ] as const
 export const lookupExcelHintText = lookupExcelHints.join('\n')
 export const lookupExcelAdminHint = 'This data is for all industries.'
@@ -71,7 +71,7 @@ export async function createLookupExcelBuffer(
   options: { allIndustries?: boolean } = {},
 ): Promise<ArrayBuffer> {
   const workbook = XLSX.utils.book_new()
-  const titleColumns: number[] = []
+  const editableColumns: number[][] = []
   for (const name of source.SheetNames) {
     const original = source.Sheets[name]!
     const rows = XLSX.utils.sheet_to_json<unknown[]>(original, {
@@ -87,7 +87,9 @@ export async function createLookupExcelBuffer(
     )
     if (titleColumn < 0)
       throw new Error(localizeUi('Lookup Excel files must contain a Title column.'))
-    titleColumns.push(titleColumn)
+    editableColumns.push(
+      rows[0]!.flatMap((value, index) => (String(value ?? '').trim() ? [index] : [])),
+    )
     rows[0]![titleColumn] = 'Title'
     const hintText = options.allIndustries
       ? `${lookupExcelHintText}\n${lookupExcelAdminHint}`
@@ -116,7 +118,7 @@ export async function createLookupExcelBuffer(
   }
 
   // SheetJS CE writes sheet protection but omits cell protection styles.
-  // Add those styles to the generated XLSX so Excel enforces Title-only editing.
+  // Add those styles to the generated XLSX so Excel protects instructions while allowing all defined template fields.
   const zip = await JSZip.loadAsync(XLSX.write(workbook, { bookType: 'xlsx', type: 'array' }))
   const styles = await zip.file('xl/styles.xml')!.async('string')
   const styleCount = Number(styles.match(/<cellXfs count="(\d+)"/)?.[1])
@@ -149,13 +151,13 @@ export async function createLookupExcelBuffer(
       ),
   )
 
-  for (const [index, titleColumn] of titleColumns.entries()) {
+  for (const [index, columns] of editableColumns.entries()) {
     const path = `xl/worksheets/sheet${index + 1}.xml`
     let xml = await zip.file(path)!.async('string')
-    // A column style also unlocks future blank Title cells without creating a million rows.
+    // A column style also unlocks future blank template cells without creating a million rows.
     xml = xml.replace(/<col\b[^>]*\/>/g, (column) => {
       const min = Number(column.match(/\bmin="(\d+)"/)?.[1])
-      if (min !== titleColumn + 1) return column
+      if (!columns.includes(min - 1)) return column
       return column.replace(/\sstyle="\d+"/, '').replace('/>', ` style="${unlockedStyle}"/>`)
     })
     xml = xml.replace(/<c\b([^>]*)>/g, (cell, attributes: string) => {
@@ -168,7 +170,7 @@ export async function createLookupExcelBuffer(
           ? hintStyle
           : row === 3
             ? headerStyle
-            : column !== titleColumn
+            : !columns.includes(column)
               ? lockedStyle
               : unlockedStyle
       return `<c${attributes.replace(/\ss="\d+"/, '')} s="${style}">`

@@ -13,7 +13,7 @@ export default class EditMangementChangeTopicTypeParams implements Params {
     return {
       changement_topic_id: this.id,
       translations: this.translation.toMap(),
-      status: this.status,
+      type: this.status,
     }
   }
 }

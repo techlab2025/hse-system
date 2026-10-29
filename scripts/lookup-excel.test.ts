@@ -39,7 +39,7 @@ test('capitalized Title headers produce title values in the upload payload', () 
   }
 })
 
-test('lookup downloads lock hints, headings and other fields, and unlock only Title', async () => {
+test('lookup downloads lock hints and headings, and unlock every template field', async () => {
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(
     workbook,
@@ -93,12 +93,12 @@ test('lookup downloads lock hints, headings and other fields, and unlock only Ti
     assert.match(fonts[hintFont]!, /<color rgb="FFCC0000"/)
     assert.match(fonts[hintFont]!, /<b\/>/)
     const otherCell = titleLetter === 'A' ? 'B4' : 'A4'
-    assert.match(xfs[styleAt(otherCell)]!, /<protection locked="1"/)
+    assert.match(xfs[styleAt(otherCell)]!, /<protection locked="0"/)
     const column = xml.match(new RegExp(`<col\\b[^>]*\\bmin="${titleNumber}"[^>]*/>`))![0]
     assert.equal(
       Number(column.match(/\bstyle="(\d+)"/)![1]),
       styleAt(`${titleLetter}4`),
-      'new blank Title cells inherit the unlocked style',
+      'new blank template cells inherit the unlocked style',
     )
   }
 })
@@ -133,5 +133,31 @@ test('only admin downloads include the all industries hint and both formats uplo
       readLookupRows(sheet, { header: 1, raw: false, defval: '', blankrows: false }),
       [['title'], ['Example']],
     )
+  }
+})
+
+test('all defined columns in one through five-column templates are editable', async () => {
+  for (const count of [1, 2, 3, 4, 5]) {
+    const workbook = XLSX.utils.book_new()
+    const headers = ['title', 'code', 'description', 'type', 'days'].slice(0, count)
+    XLSX.utils.book_append_sheet(
+      workbook,
+      XLSX.utils.aoa_to_sheet([headers, headers.map(() => 'value')]),
+      'Template',
+    )
+    const zip = await JSZip.loadAsync(await createLookupExcelBuffer(workbook))
+    const styles = await zip.file('xl/styles.xml')!.async('string')
+    const xfs = styles
+      .match(/<cellXfs[^>]*>([\s\S]*?)<\/cellXfs>/)![1]!
+      .match(/<xf\b[^>]*?\/>|<xf\b[^>]*>[\s\S]*?<\/xf>/g)!
+    const xml = await zip.file('xl/worksheets/sheet1.xml')!.async('string')
+    for (let column = 0; column < count; column++) {
+      const letter = XLSX.utils.encode_col(column)
+      const cell = xml.match(new RegExp(`<c\\b[^>]*\\br="${letter}4"[^>]*>`))![0]
+      const style = Number(cell.match(/\bs="(\d+)"/)![1])
+      assert.match(xfs[style]!, /<protection locked="0"/)
+      const definition = xml.match(new RegExp(`<col\\b[^>]*\\bmin="${column + 1}"[^>]*/>`))![0]
+      assert.equal(Number(definition.match(/\bstyle="(\d+)"/)![1]), style)
+    }
   }
 })

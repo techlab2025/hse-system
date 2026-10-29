@@ -194,9 +194,9 @@ body {
   gap: 12px;
   width: 100%;
 
-  > .btn,
-  > button,
-  > a {
+  >.btn,
+  >button,
+  >a {
     flex: 1 1 0;
     width: auto !important;
     min-width: 0;
@@ -205,9 +205,9 @@ body {
   @media (max-width: 480px) {
     flex-wrap: wrap;
 
-    > .btn,
-    > button,
-    > a {
+    >.btn,
+    >button,
+    >a {
       flex-basis: 100%;
     }
   }
@@ -231,8 +231,8 @@ body,
   color: $Gray-3 !important;
 }
 
-.p-accordionpanel:not(.p-disabled).p-accordionpanel-active > .p-accordionheader,
-.p-accordionpanel:not(.p-accordionpanel-active):not(.p-disabled) > .p-accordionheader:hover {
+.p-accordionpanel:not(.p-disabled).p-accordionpanel-active>.p-accordionheader,
+.p-accordionpanel:not(.p-accordionpanel-active):not(.p-disabled)>.p-accordionheader:hover {
   color: $PrimaryColor !important;
 
   svg {
@@ -279,6 +279,7 @@ body,
     border-radius: 50px !important;
   }
 }
+
 .p-radiobutton-box {
   border: 1px solid color-mix(in srgb, var(--text-soft) 34.9%, transparent) !important;
 }
@@ -300,6 +301,7 @@ body,
   border-radius: 4px;
   width: 20px;
   height: 20px;
+
   svg {
     margin-inline-start: auto;
 
@@ -344,9 +346,11 @@ body,
     0% {
       transform: translateY(0px);
     }
+
     50% {
       transform: translateY(-15px);
     }
+
     100% {
       transform: translateY(0px);
     }
@@ -355,14 +359,18 @@ body,
 
 input {
   padding: $SmSize !important;
+
   &::placeholder {
     font-size: $SmSize;
   }
+
   border-radius: calc($XlSize + 2px) !important;
+
   &.py {
     padding-inline: 40px !important;
   }
 }
+
 .input-search {
   input {
     padding-inline: 40px !important;
@@ -385,26 +393,29 @@ input {
 .input-wrapper {
   border-radius: calc($XlSize + 2px) !important;
 }
+
 .mt-6 {
   margin-top: 6px;
 }
+
 .mt-10 {
   margin-top: 10px;
 }
+
 .p-multiselect.p-inputwrapper-filled {
   padding: 6px !important;
   // padding-inline: 40px !important;
   border-radius: calc($XlSize + 2px) !important;
 }
+
 .highlight-active .description {
   color: var(--text-on-brand) !important;
 }
+
 .highlight-active .project-progress-header-container {
-  background-image: linear-gradient(
-    to right,
-    color-mix(in srgb, var(--text-soft) 33.73%, transparent),
-    color-mix(in srgb, var(--main-border) 63.53%, transparent)
-  );
+  background-image: linear-gradient(to right,
+      color-mix(in srgb, var(--text-soft) 33.73%, transparent),
+      color-mix(in srgb, var(--main-border) 63.53%, transparent));
 }
 
 .image_certificate_container .p-image-preview-mask {
@@ -427,11 +438,13 @@ input {
   // background-color: var(--text-on-brand) !important;
   box-shadow: 0px 1px 3px color-mix(in srgb, var(--text-strong) 10%, transparent) !important;
 }
+
 .p-selectbutton {
   width: 100% !important;
   margin-block: 8px !important;
   // background-color: $PrimaryColor !important;
 }
+
 .p-togglebutton {
   background-color: color-mix(in srgb, var(--brand-primary-500) 5.88%, transparent) !important;
   width: 50% !important;
@@ -440,6 +453,7 @@ input {
 .p-accordionpanel {
   width: 100% !important;
 }
+
 .template-selector-container-AccordionPanel {
   width: 100% !important;
   display: grid;
@@ -508,6 +522,7 @@ html[dir='ltr'] .actions-container {
     padding: 10px !important;
   }
 }
+
 .input-label label {
   margin-inline-end: auto;
   width: fit-content;
@@ -545,25 +560,52 @@ label {
   background-color: color-mix(in srgb, var(--brand-primary-500) 5.1%, transparent) !important;
   color: var(--text-on-brand);
   grid-column: span 2 !important;
+  padding: 12px;
 
+  svg {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  .system-data-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    h2 {
+      font-size: 16px;
+    }
+
+    p {
+      font-size: 12px;
+
+    }
+  }
 }
+
+
 
 @media (max-width: 768px) {
   .investigation-result .p-accordioncontent-content {
     margin: 0 !important;
   }
+
   .investigation-result .p-accordionpanel {
     margin-block: 14px !important;
   }
+
   .input-image {
     overflow: hidden;
   }
+
   .input-label-images {
     max-width: 50% !important;
   }
+
   .input-wrapper {
     grid-column: span 24;
   }
+
   header {
     width: 96% !important;
     margin-inline: auto !important;
@@ -573,6 +615,7 @@ label {
 .capa-index-page .project-filter-content {
   display: none;
 }
+
 .p-dialog-mask {
   position: fixed !important;
   inset: 0 !important;
@@ -601,7 +644,9 @@ label {
   max-height: calc(100dvh - 8rem);
   overflow-y: auto;
 }
+
 .export-actions {
+
   .btn-secondary,
   .btn,
   .btns-filter .btn,
@@ -610,6 +655,7 @@ label {
     border: 1px solid #80808036;
   }
 }
+
 .side-pane-icon {
   svg {
     width: 37px !important;

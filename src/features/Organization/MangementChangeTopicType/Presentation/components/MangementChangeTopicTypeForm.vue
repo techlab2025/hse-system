@@ -63,6 +63,25 @@ const fetchLanguages = async () => {
       ]
 }
 
+const mangementChangeTopicTypes = ref<TitleInterface[]>([
+  new TitleInterface({
+    id: MangementChangeTopicTypeEnum.employee,
+    title: 'employee',
+    translationKey: 'employee',
+  }),
+  new TitleInterface({
+    id: MangementChangeTopicTypeEnum.equipment,
+    title: 'equipment',
+    translationKey: 'equipment',
+  }),
+  new TitleInterface({
+    id: MangementChangeTopicTypeEnum.other,
+    title: 'other',
+    translationKey: 'Other',
+  }),
+])
+const mangementChangeTopicType = ref<TitleInterface>(mangementChangeTopicTypes.value[0])
+
 const updateData = () => {
   const translations = new TranslationsParams(languages.value.map((item) => item.locale))
 
@@ -99,7 +118,7 @@ watch(
     )
 
     mangementChangeTopicType.value =
-      mangementChangeTopicTypes.value.find((type) => type.id === data?.status) ??
+      mangementChangeTopicTypes.value.find((type) => type.id === Number(data?.type)) ??
       mangementChangeTopicTypes.value[0]
 
     updateData()
@@ -148,24 +167,6 @@ const updateMangementChangeTopicType = (data: TitleInterface) => {
   console.log(mangementChangeTopicType.value, 'mangementChangeTopicType')
   updateData()
 }
-const mangementChangeTopicTypes = ref<TitleInterface[]>([
-  new TitleInterface({
-    id: MangementChangeTopicTypeEnum.employee,
-    title: 'employee',
-    translationKey: 'employee',
-  }),
-  new TitleInterface({
-    id: MangementChangeTopicTypeEnum.equipment,
-    title: 'equipment',
-    translationKey: 'equipment',
-  }),
-  new TitleInterface({
-    id: MangementChangeTopicTypeEnum.other,
-    title: 'other',
-    translationKey: 'Other',
-  }),
-])
-const mangementChangeTopicType = ref<TitleInterface>(mangementChangeTopicTypes.value[0])
 </script>
 
 <template>

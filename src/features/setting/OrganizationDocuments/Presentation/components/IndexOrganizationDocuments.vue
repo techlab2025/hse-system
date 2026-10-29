@@ -221,12 +221,12 @@ onMounted(fetchDocuments)
         />
       </div>
       <div class="flex flex-wrap gap-2">
-        <IndexFilterDialog
+        <!-- <IndexFilterDialog
           show-date
           :initial-date="filterDate"
           @apply="applyFilters"
           @reset="resetFilters"
-        />
+        /> -->
         <PermissionBuilder :code="createPermissions">
           <router-link :to="`${baseRoute}/add`" class="btn btn-primary">
             <ActionsListAddIcon />

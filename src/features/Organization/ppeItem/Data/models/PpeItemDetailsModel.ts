@@ -8,6 +8,7 @@ type PpeItemDetailsResponse = {
   titles?: TitleLocale[]
   all_industries?: number | boolean
   industries?: IndustryDetails[]
+  type:number
 }
 
 export default class PpeItemDetailsModel {
@@ -15,17 +16,20 @@ export default class PpeItemDetailsModel {
   public titles: TitleLocale[]
   public allIndustries: boolean
   public industries: TitleInterface[]
+  public type: number
 
   constructor(
     id: number,
     titles: TitleLocale[],
     allIndustries = false,
     industries: TitleInterface[] = [],
+    type: number
   ) {
     this.id = id
     this.titles = titles
     this.allIndustries = allIndustries
     this.industries = industries
+    this.type = type
   }
 
   static fromMap(data: PpeItemDetailsResponse): PpeItemDetailsModel {
@@ -46,10 +50,11 @@ export default class PpeItemDetailsModel {
             localizedTitles: industry.titles,
           }),
       ),
+      data.type
     )
   }
 
-  static example: PpeItemDetailsModel = new PpeItemDetailsModel(1, [
-    { title: 'Safety helmet', locale: 'en' },
-  ])
+  // static example: PpeItemDetailsModel = new PpeItemDetailsModel(1, [
+  //   { title: 'Safety helmet', locale: 'en' },
+  // ])
 }
