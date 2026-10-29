@@ -200,30 +200,15 @@ const updateSlot = (data: unknown) => {
 </script>
 
 <template>
-  <div
-    class="input-label flex justify-between w-full"
-    :class="{ full: !onclick, fullReload: enableReload && !onclick }"
-  >
-    <span
-      v-if="enableReload"
-      class="reload-icon cursor-pointer flex items-center w-full"
-      @click="reloadData"
-    >
-      <span>
-        <component @update:data="updateSlot" v-if="component" :is="component" />
-      </span>
-      <span class="optional-text" v-if="optional">({{ $t('optional') }})</span>
-      <IconBackStage />
-    </span>
-
-    <div class="label-container flex justify-center items-center gap-2">
+  <div class="hse-select-field__header" :class="{ full: !onclick, fullReload: enableReload && !onclick }">
+    <div class="hse-select-field__label-group">
       <label
         :id="labelId"
         :for="`${labelId}-input`"
         :class="{ required: required }"
-        class="input-label flex items-center gap-2"
+        class="hse-select-field__label"
       >
-        <span v-if="required" class="text-red-500">
+        <span v-if="required" class="hse-select-field__required" aria-hidden="true">
           <StarRequiredInput />
         </span>
         {{ translateKeyOrLiteral(label) }}
@@ -233,6 +218,16 @@ const updateSlot = (data: unknown) => {
 
       <span v-if="onclick" @click="onclick" class="add-dialog">
         {{ $t('new') }}
+      </span>
+    </div>
+
+    <div class="hse-select-field__utilities">
+      <span v-if="enableReload" class="reload-icon cursor-pointer" @click="reloadData">
+        <span>
+          <component @update:data="updateSlot" v-if="component" :is="component" />
+        </span>
+        <span class="optional-text" v-if="optional">({{ $t('optional') }})</span>
+        <IconBackStage />
       </span>
     </div>
   </div>
@@ -272,9 +267,6 @@ const updateSlot = (data: unknown) => {
 //   color: red !important;
 // }
 .add-dialog {
-  width: 20px;
-  height: 20px;
-  margin-inline-end: 6px;
   cursor: pointer;
   color: var(--brand-primary-500);
   text-decoration: underline;

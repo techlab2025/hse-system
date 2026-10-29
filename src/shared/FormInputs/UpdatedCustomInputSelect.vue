@@ -530,32 +530,30 @@ function closeDialog(): void {
 
 <template>
   <div v-bind="attrs" class="updated-custom-input-select hse-identity hse-select-field">
-    <div class="input-label flex w-full justify-between">
-      <slot v-if="!hasHeader">
-        <div class="flex items-center">
-          <slot name="reloadHeader" />
-
-          <span
-            v-if="reload"
-            class="reload-icon me-2 flex w-full cursor-pointer items-center gap-sm"
-            @click="reloadData"
+    <div class="hse-select-field__header">
+      <template v-if="!hasHeader">
+        <div class="hse-select-field__label-group">
+          <label
+            :id="labelId"
+            :for="`${labelId}-input`"
+            class="hse-select-field__label"
+            :class="{ required }"
           >
-            <span v-if="optional" class="optional-text"> ({{ $t('optional') }}) </span>
-
-            <IconBackStage />
-          </span>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <label :id="labelId" :for="`${labelId}-input`" class="input-label" :class="{ required }">
-            <span v-if="required" class="text-red-500"> * </span>
-
+            <span v-if="required" class="hse-select-field__required" aria-hidden="true">*</span>
             {{ translateKeyOrLiteral(label) }}
           </label>
 
           <slot name="LabelHeader" />
         </div>
-      </slot>
+
+        <div class="hse-select-field__utilities">
+          <slot name="reloadHeader" />
+          <span v-if="reload" class="reload-icon" @click="reloadData">
+            <span v-if="optional" class="optional-text">({{ $t('optional') }})</span>
+            <IconBackStage />
+          </span>
+        </div>
+      </template>
 
       <slot v-else name="Header" />
     </div>
@@ -642,14 +640,7 @@ function closeDialog(): void {
 </template>
 
 <style scoped lang="scss">
-.updated-custom-input-select.hse-identity label.input-label {
-  font-size: var(--hse-field-label-size, 12px) !important;
-}
-
 .add-dialog {
-  width: 20px;
-  height: 20px;
-  margin-inline-end: 6px;
   cursor: pointer;
 
   svg {

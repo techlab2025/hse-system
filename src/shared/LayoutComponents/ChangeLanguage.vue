@@ -3,14 +3,14 @@ import { computed } from 'vue'
 import { setLocale } from '@/localization/i18n'
 import { useI18n } from 'vue-i18n'
 
-import IconSaudiArabia from '@/shared/icons/SA.vue'
+import IconIraq from '@/shared/icons/IQ.vue'
 import IconEnglish from '@/shared/icons/IconEnglish.vue'
 
 const { locale, t } = useI18n({ useScope: 'global' })
 
 const targetLanguage = computed(() => (locale.value === 'ar' ? 'en' : 'ar'))
 const targetLanguageIcon = computed(() =>
-  targetLanguage.value === 'ar' ? IconSaudiArabia : IconEnglish,
+  targetLanguage.value === 'ar' ? IconIraq : IconEnglish,
 )
 const targetLanguageLabel = computed(() =>
   targetLanguage.value === 'ar' ? t('switch_to_arabic') : t('switch_to_english'),

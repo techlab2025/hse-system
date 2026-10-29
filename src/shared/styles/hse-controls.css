@@ -7,29 +7,78 @@
   min-width: 0;
   width: 100%;
 }
-.hse-select-field > .input-label {
+.hse-select-field__header {
+  box-sizing: border-box;
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   gap: var(--hse-field-label-gap, 8px);
-  min-height: var(--hse-field-label-min-height, 22px);
+  min-height: var(--hse-field-label-row-height, 32px);
+  width: 100%;
   margin: 0;
 }
-.hse-select-field.hse-identity label.input-label {
-  min-height: var(--hse-field-label-min-height, 22px);
+.hse-select-field__label-group,
+.hse-select-field__utilities {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hse-field-label-gap, 8px);
+  min-width: 0;
+}
+.hse-select-field__label-group {
+  flex-wrap: wrap;
+}
+.hse-select-field__utilities {
+  justify-content: flex-end;
+  flex: 0 0 auto;
+}
+.hse-select-field__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 0;
   margin: 0;
-  color: var(--hse-field-label-color, var(--hse-project-ink)) !important;
-  font: var(--hse-field-label-weight, 600) var(--hse-field-label-size, 12px) / 1.45
-    var(--hse-field-font-family, var(--hse-control-font)) !important;
+  padding: 0;
+  color: var(--hse-field-label-color, var(--hse-project-ink));
+  font: var(--hse-field-label-weight, 600) var(--hse-field-label-size, 12px) / 1.4
+    var(--hse-field-font-family, var(--hse-control-font));
   text-transform: none;
 }
-.hse-select-field .reload-icon {
+.hse-select-field__required {
+  color: var(--hse-project-red, #dc3545);
+  line-height: inherit;
+}
+.hse-select-field :is(.add-dialog, .inline-create-action),
+.hse-select-field__header :is(.add-dialog, .inline-create-action) {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-width: 20px;
+  height: auto;
+  min-height: 20px;
   margin: 0;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.hse-select-field__utilities .reload-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0;
   gap: 6px;
   color: var(--hse-project-muted);
+  cursor: pointer;
 }
-.hse-select-field .reload-icon:hover {
+.hse-select-field__utilities .reload-icon > svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+}
+.hse-select-field__utilities .reload-icon:hover {
   color: var(--hse-project-blue);
 }
 .hse-select-field .optional-text {
