@@ -229,6 +229,7 @@ const headerActions = () => [
         />
       </div>
       <div class="col-span-2 flex justify-end gap-2">
+        <SystemMeetingTypes v-if="user?.type !== OrganizationTypeEnum.ADMIN" :is-header-tap="true" />
         <ActionsList
           :feature-name="`${$t('action_feature_meeting_types')}`"
           :show-actions="true"
@@ -238,7 +239,6 @@ const headerActions = () => [
           <template #custom><ExportPdf :is-drop-list="true" /></template>
         </ActionsList>
       </div>
-      <SystemMeetingTypes v-if="user?.type !== OrganizationTypeEnum.ADMIN" :is-header-tap="true" />
     </div>
 
     <PermissionBuilder :code="featurePermissions">
@@ -257,7 +257,11 @@ const headerActions = () => [
               </thead>
               <tbody>
                 <tr v-for="(item, index) in state.data" :key="item.id">
-                  <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
+                  <td>
+                    <span class="hse-table-row-number">{{
+                      (currentPage - 1) * countPerPage + index + 1
+                    }}</span>
+                  </td>
                   <td>{{ item.title }}</td>
                   <td>{{ periodLabel(item.periodicType) }}</td>
                   <td>

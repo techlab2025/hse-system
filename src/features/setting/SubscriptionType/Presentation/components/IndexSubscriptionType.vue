@@ -199,7 +199,7 @@ watch(
               <tbody>
                 <tr v-for="(item, index) in state.data" :key="item.id">
                   <td data-label="#">
-                    <span :to="`/admin/subscription-type/edit/${item.id}`">{{ index + 1 }}</span>
+                    <span :to="`/admin/subscription-type/edit/${item.id}`" class="hse-table-row-number">{{ index + 1 }}</span>
                   </td>
                   <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
                   <td :data-label="$t('Actions')">

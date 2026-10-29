@@ -163,7 +163,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
               <tbody>
                 <tr v-for="(item, index) in state.data" :key="item.id">
                   <td data-label="#">
-                    <span :to="`/users/Lang/edit/${item.id}`">{{ index + 1 }} </span>
+                    <span :to="`/users/Lang/edit/${item.id}`" class="hse-table-row-number">{{ index + 1 }} </span>
                   </td>
                   <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
                   <td :data-label="$t('Code')">{{ item.code ?? '--' }}</td>

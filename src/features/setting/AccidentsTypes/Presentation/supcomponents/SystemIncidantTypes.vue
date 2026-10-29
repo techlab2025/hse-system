@@ -11,7 +11,6 @@ import AddSystemAccidentsTypeController from '../controllers/addSystemAccidentsT
 import AddSystemAccidentsTypeParams from '../../Core/params/addSystemAccidentsTypeParams'
 import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue'
 import IndexSystemAccidentsTypeController from '../controllers/indexSystemAccidentsTypeController'
-import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue'
 
 const visible = ref(false)
 const route = useRoute()
@@ -89,7 +88,7 @@ const props = defineProps<{ isHeaderTap?: boolean }>()
       {{ $t('system_incidant_types') }}
     </button>
   </li>
-  <SystemDataHeader v-if="isHeaderTap" @click="visible = true" />
+  <button v-if="isHeaderTap" class="btn btn-primary" type="button" @click="visible = true">{{ $t('system_data') }}</button>
 
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>

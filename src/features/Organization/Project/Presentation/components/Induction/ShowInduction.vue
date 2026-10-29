@@ -254,7 +254,7 @@ onMounted(() => {
                     :key="topic.inductionTrainingTopicId || topic.trainingTopicId || index"
                     class="topic-item"
                   >
-                    <span>{{ index + 1 }}</span>
+                    <span class="hse-table-row-number">{{ index + 1 }}</span>
                     <strong>{{ topic.displayTitle }}</strong>
                   </article>
                 </div>
@@ -311,7 +311,7 @@ onMounted(() => {
                       preview
                       image-class="attachment-image"
                     />
-                    <span class="attachment-index" aria-hidden="true">{{ index + 1 }}</span>
+                    <span class="hse-table-row-number attachment-index" aria-hidden="true">{{ index + 1 }}</span>
                   </article>
                 </div>
                 <p v-else class="empty-text">{{ $t('No attachments') }}</p>
@@ -386,7 +386,7 @@ onMounted(() => {
                           v-for="(employee, index) in induction.organisationEmployee"
                           :key="index"
                         >
-                          <td>{{ index + 1 }}</td>
+                          <td><span class="hse-table-row-number">{{ index + 1 }}</span></td>
                           <td>{{ employee.displayTitle }}</td>
                           <td>{{ employee.displaySubtitle || $t('external_attendee') }}</td>
                         </tr>

@@ -11,7 +11,6 @@ import IndexInjuryParams from '../../Core/params/indexInjuryParams'
 import AddInjurycloneController from '../controllers/addInjurycloneController'
 import AddinjuryClonesParams from '../../Core/params/AddinjuryCloneParams'
 import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue'
-import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue'
 
 const visible = ref(false)
 const props = defineProps<{ isHeaderTap?: boolean }>()
@@ -75,7 +74,7 @@ const SubmitData = async () => {
       {{ $t('system_injury_types') }}
     </button>
   </li>
-  <SystemDataHeader v-if="isHeaderTap" @click="visible = true" />
+  <button v-if="isHeaderTap" class="btn btn-primary" type="button" @click="visible = true">{{ $t('system_data') }}</button>
 
   <!-- <li>
    <button @click="visible = true" class="btn btn-primary">{{ $t('system_injury_types') }}</button>

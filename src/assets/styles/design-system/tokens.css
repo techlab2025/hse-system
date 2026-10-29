@@ -27,10 +27,10 @@
 }
 
 :root {
-  --hse-color-primary: #246bfe;
-  --hse-color-primary-hover: #1f65f6;
-  --hse-color-primary-active: #174fca;
-  --hse-color-primary-subtle: #eef5ff;
+  --hse-color-primary: #102b52;
+  --hse-color-primary-hover: #0d2547;
+  --hse-color-primary-active: #091b35;
+  --hse-color-primary-subtle: #e7eef8;
   --hse-color-navy: #0e2a4d;
   --hse-color-navy-secondary: #183d68;
   --hse-color-text: #10233f;

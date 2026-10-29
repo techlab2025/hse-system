@@ -187,9 +187,7 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
             </thead>
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  {{ (currentPage - 1) * countPerPage + index + 1 }}
-                </td>
+                <td data-label="#"><span class="hse-table-row-number">{{ (currentPage - 1) * countPerPage + index + 1 }}</span></td>
                 <td :data-label="$t('date')">{{ item.date || '-' }}</td>
                 <td :data-label="$t('change type')">
                   {{

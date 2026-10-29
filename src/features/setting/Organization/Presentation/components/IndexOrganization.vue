@@ -197,7 +197,7 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
               <tbody>
                 <tr v-for="(item, index) in state.data" :key="item.id">
                   <td data-label="#">
-                    <span :to="`/admin/accidents-type/${item.id}`">{{ index + 1 }} </span>
+                    <span :to="`/admin/accidents-type/${item.id}`" class="hse-table-row-number">{{ index + 1 }} </span>
                   </td>
                   <td :data-label="$t('Name')">{{ item.name }}</td>
                   <td :data-label="$t('email')">{{ item.email }}</td>

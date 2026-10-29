@@ -282,6 +282,11 @@ const IndexObservationTypesactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.OBSERVATION_TYPE_CREATE]">
         <SystemObservationTypes />
       </PermissionBuilder> -->
+        <SystemObservationTypes
+          v-if="user?.type != OrganizationTypeEnum.ADMIN"
+          :isHeaderTap="true"
+          @confirmed="fetchObserverationType('', currentPage, countPerPage)"
+        />
         <ActionsList
           feature-name="action_feature_observation_types"
           :show-actions="true"
@@ -294,11 +299,6 @@ const IndexObservationTypesactionList = () => [
           </template>
         </ActionsList>
       </div>
-      <SystemObservationTypes
-        v-if="user?.type != OrganizationTypeEnum.ADMIN"
-        :isHeaderTap="true"
-        @confirmed="fetchObserverationType('', currentPage, countPerPage)"
-      />
     </div>
 
     <PermissionBuilder

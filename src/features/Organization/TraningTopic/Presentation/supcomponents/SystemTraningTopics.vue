@@ -12,7 +12,6 @@ import IndexSystemTraningTopicController from '../controllers/indexSystemTraning
 import AddTraningTopicCloneController from '../controllers/addTraningTopicCloneController'
 import IndexTraningTopicParams from '../../Core/params/indexTraningTopicParams'
 import AddTraningTopicClonesParams from '../../Core/params/AddTraningTopicClonesParams'
-import TraningTopicSystemDataHeader from './TraningTopicSystemDataHeader.vue'
 import TraningTopicTableSkeleton from './TraningTopicTableSkeleton.vue'
 
 const props = defineProps<{
@@ -88,7 +87,7 @@ const cloneSelected = async () => {
         {{ $t('system_data') }}
       </button>
     </li>
-    <TraningTopicSystemDataHeader v-if="isHeaderTap" @click="internalVisible = true" />
+    <button v-if="isHeaderTap" class="btn btn-primary" type="button" @click="visible = true">{{ $t('system_data') }}</button>
 
     <Dialog v-model:visible="internalVisible" modal :style="{ width: '60rem' }" @click.stop>
       <template #header>

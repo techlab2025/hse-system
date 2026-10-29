@@ -7,7 +7,6 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import SystemDialogEmptyState from '@/shared/DataStatues/SystemDialogEmptyState.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue'
 import IndexFactoryItemParams from '../../Core/params/indexFactoryItemParams'
 import CloneFactoryItemsParams from '../../Core/params/cloneFactoryItemsParams'
 import IndexSystemFactoryItemController from '../controllers/indexSystemFactoryItemController'
@@ -77,7 +76,7 @@ const submitData = async () => {
 </script>
 
 <template>
-  <SystemDataHeader @click="visible = true" />
+  <button class="btn btn-primary" type="button" @click="visible = true">{{ $t('system_data') }}</button>
 
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>

@@ -2,7 +2,11 @@
    Screen presentation only: API data, table spans, permissions and print layouts stay intact. */
 @media screen {
   html.hse-cloud-identity {
-    --hse-table-primary: var(--identity-primary, var(--hse-color-primary));
+    --hse-table-primary: #102b52;
+    --hse-table-header-gradient: linear-gradient(110deg, #112b52 0%, #17436f 65%, #12345d 100%);
+    --hse-table-row-even: #f0f5fc;
+    --hse-table-row-hover: #e7f0ff;
+    --hse-table-border: #e1eaf6;
     --hse-table-primary-soft: color-mix(
       in srgb,
       var(--hse-table-primary) 8%,
@@ -195,9 +199,10 @@
   html.hse-cloud-identity .p-datatable-thead > tr > th {
     padding-block: 12px !important;
     border-block: 1px solid var(--hse-color-border);
-    background: var(--hse-color-surface-muted);
-    color: var(--hse-color-text-secondary);
-    font-size: 12px !important;
+    background: transparent;
+    color: #fff;
+    height: 54px;
+    font-size: 14px !important;
     font-weight: 600;
     letter-spacing: normal;
     text-align: start;
@@ -221,7 +226,7 @@
     > tbody
     > tr:not(:hover)
     > td:not([style]):not([class]) {
-    background: var(--hse-color-surface);
+    background: inherit;
     color: var(--hse-color-text);
   }
   html.hse-cloud-identity
@@ -240,8 +245,8 @@
     > thead
     > tr
     > th:not([style]):not([class*='risk']):not([class*='status']):not([class*='bg-']) {
-    background: var(--hse-color-surface-muted) !important;
-    color: var(--hse-color-text-secondary) !important;
+    background: transparent !important;
+    color: #fff !important;
     font-weight: 600 !important;
   }
   html.hse-cloud-identity table.hse-data-table .not-req-span {
@@ -265,7 +270,7 @@
     inset-inline-end: 0 !important;
     inset-inline-start: auto !important;
     z-index: 2;
-    background: var(--hse-color-surface);
+    background: var(--hse-row-bg, var(--hse-color-surface));
     box-shadow: -1px 0 0 var(--hse-color-divider);
   }
 
@@ -462,5 +467,148 @@
     overflow: visible !important;
     border: 0 !important;
     box-shadow: none !important;
+  }
+}
+
+/* Navy listing identity: authored tables opt in through the existing table directive. */
+@media screen {
+  html.hse-cloud-identity :is(table.hse-data-table, .p-datatable-table) > thead {
+    background: var(--hse-table-header-gradient);
+    color: #fff;
+  }
+  html.hse-cloud-identity :is(table.hse-data-table, .p-datatable-table) > thead > tr > :is(th, td) {
+    background: transparent !important;
+    color: #fff !important;
+    border: 0;
+    height: 54px;
+    font-size: 14px !important;
+  }
+  html.hse-cloud-identity
+    .p-datatable-thead
+    :is(.p-datatable-sort-icon, .p-datatable-column-filter-button) {
+    color: inherit;
+  }
+  html.hse-cloud-identity :is(table.hse-data-table, .p-datatable-table) > tbody > tr {
+    --hse-row-bg: #fff;
+    background: var(--hse-row-bg);
+  }
+  html.hse-cloud-identity
+    :is(table.hse-data-table, .p-datatable-table)
+    > tbody
+    > tr:nth-child(even) {
+    --hse-row-bg: var(--hse-table-row-even);
+  }
+  html.hse-cloud-identity :is(table.hse-data-table, .p-datatable-table) > tbody > tr:hover {
+    --hse-row-bg: var(--hse-table-row-hover);
+  }
+  html.hse-cloud-identity :is(table.hse-data-table, .p-datatable-table) > tbody > tr > :is(td, th) {
+    background: var(--hse-row-bg);
+  }
+  html.hse-cloud-identity .p-datatable-table > tbody > tr.p-datatable-row-selected {
+    --hse-row-bg: #dce7f6;
+  }
+  .hse-register-page > .hse-register-header {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 108px;
+    padding: 26px 30px;
+    margin: 12px;
+    border-radius: 13px;
+    background: var(--hse-table-header-gradient);
+    color: #fff;
+  }
+  .hse-register-page > .hse-register-header::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+    width: 240px;
+    height: 240px;
+    inset-inline-end: -40px;
+    top: -110px;
+    border: 28px solid rgb(110 169 230 / 9%);
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 28px rgb(110 169 230 / 6%),
+      0 0 0 56px rgb(110 169 230 / 4%);
+  }
+  .hse-register-header .hse-register-title {
+    color: #fff;
+    font-size: clamp(24px, 3vw, 36px);
+  }
+  .hse-register-header .hse-register-description {
+    color: #dce7f6;
+  }
+  .hse-register-content .input-search input {
+    min-height: 52px !important;
+    background: #fff;
+    border-color: #ccdcf0;
+  }
+  .hse-register-content .btn-primary {
+    background: var(--hse-table-primary);
+    border-color: var(--hse-table-primary);
+    color: #fff;
+  }
+  .hse-register-content .btn-secondary {
+    background: #e7f0ff;
+    color: #102b52;
+    border-color: #ccdcf0;
+  }
+  html.hse-cloud-identity .hse-table-action {
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    color: #173b67;
+    border-color: #d7e3f2;
+  }
+  .hse-table-row-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 35px;
+    height: 38px;
+    padding-inline: 8px;
+    border-radius: 8px;
+    background: #dce7f6;
+    color: #102b52;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  html.hse-cloud-identity .p-paginator-page.p-paginator-page-selected {
+    background: var(--hse-table-primary);
+    color: #fff;
+  }
+}
+
+@media screen {
+  html.hse-cloud-identity
+    table.main-table.hse-data-table
+    > tbody
+    > tr
+    > td:not([style]):not([class]),
+  html.hse-cloud-identity
+    table.main-table.hse-data-table
+    > tbody
+    > tr:hover
+    > td:not([style]):not([class]) {
+    background: var(--hse-row-bg);
+  }
+  html.hse-cloud-identity .hse-register-content .system-data-add {
+    background: #e7f0ff !important;
+    color: #102b52;
+    border: 1px solid #d7e3f2;
+    border-radius: 12px;
+    padding: 18px 22px;
+  }
+}
+@media screen {
+  /* Legacy table and identity rules use important backgrounds; override at the shared table boundary. */
+  html.hse-cloud-identity :is(table.hse-data-table, .p-datatable-table) > tbody > tr > :is(td, th) {
+    background-color: var(--hse-row-bg) !important;
+  }
+  html.hse-cloud-identity .hse-register-content .btn-primary {
+    background: var(--hse-table-primary) !important;
+    border-color: var(--hse-table-primary) !important;
   }
 }

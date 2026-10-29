@@ -302,9 +302,7 @@ watch(
                 </thead>
                 <tbody>
                   <tr v-for="(item, index) in state.data" :key="item.id">
-                    <td class="induction-number">
-                      {{ (currentPage - 1) * countPerPage + index + 1 }}
-                    </td>
+                    <td class="induction-number"><span class="hse-table-row-number">{{ (currentPage - 1) * countPerPage + index + 1 }}</span></td>
                     <td>
                       <div class="induction-person">
                         <span class="induction-avatar" aria-hidden="true">{{

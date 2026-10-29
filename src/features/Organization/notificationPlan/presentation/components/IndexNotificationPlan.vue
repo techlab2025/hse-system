@@ -241,9 +241,7 @@ const handleCountPerPage = (count: number) => {
             </thead>
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.notification_plan_id">
-                <td data-label="#">
-                  {{ index + 1 }}
-                </td>
+                <td data-label="#"><span class="hse-table-row-number">{{ index + 1 }}</span></td>
                 <td :data-label="$t('title')">{{ item.title || emptyValue }}</td>
                 <td :data-label="$t('employees')">
                   {{ item.employees.map((e) => e.title).join(', ') || emptyValue }}

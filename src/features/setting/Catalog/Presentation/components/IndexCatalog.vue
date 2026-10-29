@@ -216,7 +216,7 @@ watch(
                   <td data-label="#">
                     <span
                       :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog/edit/${item.id}`"
-                      >{{ index + 1 }}
+                       class="hse-table-row-number">{{ index + 1 }}
                     </span>
                   </td>
                   <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>

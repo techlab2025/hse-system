@@ -304,7 +304,9 @@ const IndexEquipmentTypeactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.EQUIPMENT_TYPE_ALL]">
         <SystemEquipmentTypes />
       </PermissionBuilder> -->
-
+        <SystemEquipmentTypes
+          v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true"
+        />
         <ActionsList
           feature-name="action_feature_equipment_types"
           :show-actions="true"
@@ -317,7 +319,6 @@ const IndexEquipmentTypeactionList = () => [
           </template>
         </ActionsList>
       </div>
-      <SystemEquipmentTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
     </div>
 
     <PermissionBuilder
@@ -360,7 +361,7 @@ const IndexEquipmentTypeactionList = () => [
               <tbody>
                 <tr v-for="(item, index) in state.data" :key="item.id">
                   <td data-label="#">
-                    {{ index + 1 }}
+                    <span class="hse-table-row-number">{{ index + 1 }}</span>
                   </td>
                   <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
                   <!-- <td data-label="certificate">{{ item.hasCertificate ? $t('yes') : $t('no') }}</td> -->

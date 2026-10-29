@@ -5,17 +5,17 @@ import Aura from '@primeuix/themes/aura'
 const HseCloudPreset = definePreset(Aura, {
   semantic: {
     primary: {
-      50: '#eef5ff',
-      100: '#dce9ff',
-      200: '#bfd5ff',
-      300: '#94b8ff',
-      400: '#5a8dff',
-      500: '#246bfe',
-      600: '#1f65f6',
-      700: '#174fca',
-      800: '#183d68',
-      900: '#0e2a4d',
-      950: '#0b2341',
+      50: '#f1f5fa',
+      100: '#e3eaf4',
+      200: '#c7d5e7',
+      300: '#a2b8d2',
+      400: '#6684ad',
+      500: '#102b52',
+      600: '#0d2547',
+      700: '#0b203e',
+      800: '#091b35',
+      900: '#07172d',
+      950: '#051123',
     },
     colorScheme: {
       light: {
@@ -58,7 +58,7 @@ const HseCloudPreset = definePreset(Aura, {
       focusRing: {
         width: '3px',
         style: 'solid',
-        color: 'rgba(36, 107, 254, 0.10)',
+        color: 'rgba(16, 43, 82, 0.12)',
         offset: '0',
       },
     },

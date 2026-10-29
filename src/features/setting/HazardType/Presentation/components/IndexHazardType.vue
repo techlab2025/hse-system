@@ -358,7 +358,9 @@ const IndexHazardTypeactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HAZARD_TYPE_CREATE]">
         <SystemHazardTypes />
       </PermissionBuilder> -->
-
+        <SystemHazardTypes
+          v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true"
+        />
         <ActionsList
           :feature-name="
             route.params?.parent_id ? 'action_feature_hazards' : 'action_feature_hazard_types'
@@ -373,8 +375,6 @@ const IndexHazardTypeactionList = () => [
           </template>
         </ActionsList>
       </div>
-
-      <SystemHazardTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
     </div>
 
     <PermissionBuilder
@@ -419,6 +419,7 @@ const IndexHazardTypeactionList = () => [
                   <td data-label="#">
                     <span
                       :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${item.id}`"
+                      class="hse-table-row-number"
                       >{{ index + 1 }}
                     </span>
                   </td>

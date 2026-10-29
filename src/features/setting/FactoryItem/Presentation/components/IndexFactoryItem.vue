@@ -200,6 +200,9 @@ const headerActions = () => [
         />
       </div>
       <div class="col-span-2 flex justify-end gap-2">
+        <PermissionBuilder v-if="user?.type !== OrganizationTypeEnum.ADMIN" :code="createPermissions">
+        <SystemFactoryItems @confirmed="fetchFactory()" />
+      </PermissionBuilder>
         <ActionsList
           feature-name="action_feature_factor_items"
           :show-actions="true"
@@ -209,9 +212,6 @@ const headerActions = () => [
           <template #custom><ExportPdf :is-drop-list="true" /></template>
         </ActionsList>
       </div>
-      <PermissionBuilder v-if="user?.type !== OrganizationTypeEnum.ADMIN" :code="createPermissions">
-        <SystemFactoryItems @confirmed="fetchFactory()" />
-      </PermissionBuilder>
     </div>
 
     <PermissionBuilder

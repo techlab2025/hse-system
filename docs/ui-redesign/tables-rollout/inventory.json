@@ -2,7 +2,7 @@
   "files": 204,
   "tables": 208,
   "registers": 90,
-  "featureScriptsVerifiedUnchanged": 204,
+  "featureScriptsVerifiedUnchanged": 0,
   "inventory": [
     {
       "file": "src/components/Tables/DataTable.vue",

@@ -10,8 +10,6 @@ const props = defineProps<{
   linkText: string
   icon: string
 }>()
-
-
 const staticZones = ref([
   { zoonId: 1, zoonTitle: 'show all' },
   { zoonId: 2, zoonTitle: 'incedant' },
@@ -27,8 +25,6 @@ const UpdateData = (id: number) => {
   // emit('update:data', [...SelectedFilter.value])
 }
 </script>
-
-
 <template>
   <div class="idnex-filter">
     <div class="filter-container">

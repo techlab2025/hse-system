@@ -10,7 +10,6 @@
   import AddMeetingTypeCloneController from '../controllers/addMeetingTypeCloneController';
   import AddMeetingTypeClonesParams from '../../Core/params/AddMeetingTypeClonesParams';
   import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
-  import MeetingTypeSystemDataHeader from './MeetingTypeSystemDataHeader.vue';
 
   defineProps<{
     isHeaderTap?: boolean
@@ -79,7 +78,7 @@
       }}
     </button>
   </li>
-  <MeetingTypeSystemDataHeader v-if="isHeaderTap" @click="visible = true" />
+  <button v-if="isHeaderTap" class="btn btn-primary" type="button" @click="visible = true">{{ $t('system_data') }}</button>
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       

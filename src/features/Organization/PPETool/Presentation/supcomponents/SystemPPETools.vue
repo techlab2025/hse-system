@@ -12,7 +12,6 @@
   import AddPPEToolCloneController from '../controllers/addPPEToolCloneController';
   import AddPPEToolClonesParams from '../../Core/params/AddPPEToolClonesParams';
   import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
-  import PPEToolSystemDataHeader from './PPEToolSystemDataHeader.vue';
 
   defineProps<{
     isHeaderTap?: boolean
@@ -83,7 +82,7 @@
       }}
     </button>
   </li>
-  <PPEToolSystemDataHeader v-if="isHeaderTap" @click="visible = true" />
+  <button v-if="isHeaderTap" class="btn btn-primary" type="button" @click="visible = true">{{ $t('system_data') }}</button>
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection :img="DialogSystem" :title="$t('add_system_ppe_tools')"

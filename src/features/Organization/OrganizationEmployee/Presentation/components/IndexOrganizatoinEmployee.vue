@@ -467,8 +467,6 @@ const IndexOrganizationEmployeectionList = () => [
         <router-link to="/organization/organization-employee/add" class="btn btn-primary">
           {{ $t('add_organizatoin_employee') }}
         </router-link>
-
-
       </PermissionBuilder>
       <router-link v-if="!route.query.heirarchy_id && !route.query.certificate_id"
         to="/organization/organization-employee/upload" class="btn btn-primary">
@@ -518,7 +516,7 @@ const IndexOrganizationEmployeectionList = () => [
                 <tr v-for="(item, index) in state.data" :key="item.id">
                   <td data-label="#">
                     <span :to="`/organization/organization-employee/${item.id}`"
-                      >{{ index + 1 }}
+                       class="hse-table-row-number">{{ index + 1 }}
                     </span>
                   </td>
                   <td :data-label="$t('image')">

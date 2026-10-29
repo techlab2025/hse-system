@@ -253,6 +253,7 @@ const IndexInjuryactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
         <SysteminjuryTypes />
       </PermissionBuilder> -->
+        <SysteminjuryTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
         <ActionsList
           feature-name="action_feature_injuries"
           :show-actions="true"
@@ -265,7 +266,6 @@ const IndexInjuryactionList = () => [
           </template>
         </ActionsList>
       </div>
-      <SysteminjuryTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
     </div>
 
     <PermissionBuilder

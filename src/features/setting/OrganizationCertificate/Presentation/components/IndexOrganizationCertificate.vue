@@ -492,6 +492,5 @@ const organizationCertificateActionList = () => [
 <style scoped>
 /* .certificate_index{
   align-items: center;
-  
 } */
 </style>

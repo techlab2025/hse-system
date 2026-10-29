@@ -247,6 +247,7 @@ const IndexWhereHouseTypeactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
         <SystemWarehouseTypes />
       </PermissionBuilder> -->
+        <SystemWarehouseTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
         <ActionsList
           feature-name="action_feature_warehouse_types"
           :show-actions="true"
@@ -259,7 +260,6 @@ const IndexWhereHouseTypeactionList = () => [
           </template>
         </ActionsList>
       </div>
-      <SystemWarehouseTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
     </div>
 
     <PermissionBuilder

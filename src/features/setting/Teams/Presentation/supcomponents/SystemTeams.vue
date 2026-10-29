@@ -6,7 +6,6 @@ import DialogSystem from '@/assets/images/DialogSystem.png'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import SystemDialogEmptyState from '@/shared/DataStatues/SystemDialogEmptyState.vue'
 import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue'
-import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue'
 import IndexSystemTeamParams from '../../Core/params/indexSystemTeamParams'
 import AddSystemTeamParams from '../../Core/params/addSystemTeamParams'
 import IndexSystemTeamController from '../controllers/indexSystemTeamController'
@@ -76,7 +75,7 @@ const submitData = async () => {
     </button>
   </li>
 
-  <SystemDataHeader v-else @click="visible = true" />
+  <button v-if="isHeaderTap" class="btn btn-primary" type="button" @click="visible = true">{{ $t('system_data') }}</button>
 
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>

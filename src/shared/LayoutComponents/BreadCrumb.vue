@@ -163,9 +163,9 @@ const ShowBackBtn = computed(() => {
       </button>
 
       <div class="hse-breadcrumb-content">
-        <h2 v-if="items.length" class="hse-breadcrumb-title">
+        <!-- <h2 v-if="items.length" class="hse-breadcrumb-title">
           {{ items[items.length - 1].label }}
-        </h2>
+        </h2> -->
         <Breadcrumb :model="items" class="hse-breadcrumb" :aria-label="$t('Breadcrumb')">
           <template #item="{ item, props }">
             <a v-if="item.url" v-bind="props.action" :href="item.url" class="hse-breadcrumb-link">
@@ -197,12 +197,14 @@ const ShowBackBtn = computed(() => {
 
 <style scoped>
 .hse-breadcrumb-bar {
-  --breadcrumb-accent: var(--hse-project-blue, var(--identity-primary));
-  --breadcrumb-banner: color-mix(in srgb, var(--breadcrumb-accent) 8%, transparent);
+  /* --breadcrumb-accent: var(--hse-project-blue, var(--identity-primary)); */
+  /* --breadcrumb-banner: color-mix(in srgb, var(--breadcrumb-accent) 8%, transparent); */
   width: 100%;
   min-width: 0;
   margin-bottom: 16px;
   font-family: var(--hse-project-font, var(--font-family));
+  /* background:white; */
+
 }
 .hse-breadcrumb-bar > .hse-breadcrumb-trail {
   position: relative;
@@ -210,19 +212,16 @@ const ShowBackBtn = computed(() => {
   display: flex;
   align-items: center;
   gap: 14px;
-  width: 100%;
+  width: fit-content;
   min-width: 0;
-  min-height: 96px;
-  padding: 14px 20px;
+  /* min-height: 96px; */
+  padding: 7px 20px;
   box-sizing: border-box;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--breadcrumb-accent) 18%, var(--surface-1));
   border-radius: 16px;
-  background: linear-gradient(
-    110deg,
-    color-mix(in srgb, var(--surface-1) 88%, transparent),
-    color-mix(in srgb, var(--breadcrumb-accent) 9%, var(--surface-1))
-  );
+    background:white;
+
   box-shadow: 0 4px 14px color-mix(in srgb, var(--breadcrumb-accent) 8%, transparent);
   color: var(--text-strong);
 }

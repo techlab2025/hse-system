@@ -258,6 +258,11 @@ const indexTeamActionList = () => [
         />
       </div>
       <div class="col-span-2 flex justify-end gap-2">
+        <SystemTeams
+          v-if="user?.type != OrganizationTypeEnum.ADMIN"
+          :isHeaderTap="true"
+          @confirmed="handleSystemTeamsConfirmed"
+        />
         <ActionsList
           feature-name="action_feature_teams"
           :show-actions="true"
@@ -269,12 +274,6 @@ const indexTeamActionList = () => [
           </template>
         </ActionsList>
       </div>
-
-      <SystemTeams
-        v-if="user?.type != OrganizationTypeEnum.ADMIN"
-        :isHeaderTap="true"
-        @confirmed="handleSystemTeamsConfirmed"
-      />
     </div>
 
     <permission-builder

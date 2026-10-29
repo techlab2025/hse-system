@@ -153,7 +153,7 @@ const isExternalUrl = (value: unknown) => typeof value === 'string' && /^https?:
         </thead>
         <tbody>
           <tr v-for="(row, index) in rows" :key="String(row.values.id ?? index)">
-            <td class="dynamic-report-table__number">{{ startIndex + index + 1 }}</td>
+            <td class="dynamic-report-table__number"><span class="hse-table-row-number">{{ startIndex + index + 1 }}</span></td>
             <td v-for="column in visibleColumns" :key="column.key">
               <a
                 v-if="isExternalUrl(row.values[column.key])"

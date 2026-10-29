@@ -26283,4 +26283,124 @@ label {
 .side-pane-icon svg {
   width: 37px !important;
   height: 35px !important;
+}
+
+/* Actions Container */
+.col-span-2:has(.actions-list-controls) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Existing Actions Wrapper */
+.actions-list-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Shared Button Style */
+.actions-list-controls .primary-action-button,
+.actions-list-controls .action-list-trigger,
+.col-span-2:has(.actions-list-controls) > .btn {
+  min-height: 48px;
+  height: 48px;
+  padding: 0 18px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  box-sizing: border-box;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* Add Button */
+.actions-list-controls .primary-action-button {
+  background: #102b52;
+  color: #fff;
+  border: 1px solid #102b52;
+  white-space: nowrap;
+}
+
+.actions-list-controls .primary-action-button:hover {
+  background: #1b416f;
+}
+
+/* Import Actions Button */
+.actions-list-controls .action-list-trigger {
+  background: #eef3fc;
+  border: 1px solid #e1e9f6;
+  color: #1749bf;
+  padding: 0 14px;
+}
+
+.actions-list-controls .action-list-trigger:hover {
+  background: #e2ecff;
+}
+
+/* Import Button Internal Text */
+.actions-list-controls .action-list-trigger .action-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Import Counter */
+.actions-list-controls .action-icon span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 5px;
+  background: #d6e3ff;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* System Data Button */
+.col-span-2:has(.actions-list-controls) > .btn {
+  background: #e9f1ff;
+  color: #1749bf;
+  border: 1px solid #cddfff;
+  white-space: nowrap;
+}
+
+.col-span-2:has(.actions-list-controls) > .btn:hover {
+  background: #dce9ff;
+}
+
+/* Icons */
+.actions-list-controls svg {
+  flex-shrink: 0;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .col-span-2:has(.actions-list-controls) {
+    justify-content: stretch;
+  }
+  .actions-list-controls {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .actions-list-controls .primary-action-button,
+  .actions-list-controls .action-list-trigger,
+  .col-span-2:has(.actions-list-controls) > .btn {
+    flex: 1 1 auto;
+  }
 }/*# sourceMappingURL=main.css.map */

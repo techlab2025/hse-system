@@ -10,7 +10,6 @@ import AddWhereHouseTypeCloneController from '../controllers/addWhereHouseTypeCl
 import AddWarehouseTypeClonesParams from '../../Core/params/AddWarehouseTypeClonesParams'
 import { useRouter } from 'vue-router'
 import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue'
-import SystemDataHeader from './SystemDataHeader.vue'
 
 const props = defineProps<{
   isHeaderTap?: boolean
@@ -89,7 +88,7 @@ const SubmitData = async () => {
       {{ $t('system_data') }}
     </button>
   </li>
-  <SystemDataHeader v-if="isHeaderTap" @click="visible = true" />
+  <button v-if="isHeaderTap" class="btn btn-primary" type="button" @click="visible = true">{{ $t('system_data') }}</button>
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
       <HeaderSection

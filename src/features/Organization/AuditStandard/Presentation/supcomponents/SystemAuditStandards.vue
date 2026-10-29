@@ -12,7 +12,6 @@ import IndexSystemAuditStandardController from '../controllers/indexSystemAuditS
 import AddAuditStandardCloneController from '../controllers/addAuditStandardCloneController'
 import AddAuditStandardClonesParams from '../../Core/params/AddAuditStandardClonesParams'
 import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue'
-import AuditStandardSystemDataHeader from './AuditStandardSystemDataHeader.vue'
 
 defineProps<{
   isHeaderTap?: boolean
@@ -88,7 +87,7 @@ const cloneAuditStandards = async () => {
         {{ $t('system_data') }}
       </button>
     </li>
-    <AuditStandardSystemDataHeader v-if="isHeaderTap" @click="visible = true" />
+    <button v-if="isHeaderTap" class="btn btn-primary" type="button" @click="visible = true">{{ $t('system_data') }}</button>
     <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
       <template #header>
         <HeaderSection

@@ -239,6 +239,7 @@ const IndexIncidantTypeactionList = () => [
       </div>
     </PermissionBuilder> -->
       <div class="col-span-2 flex justify-end gap-2">
+        <SystemIncidantTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
         <ActionsList
           feature-name="action_feature_incident_types"
           :show-actions="true"
@@ -251,7 +252,6 @@ const IndexIncidantTypeactionList = () => [
           </template>
         </ActionsList>
       </div>
-      <SystemIncidantTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
     </div>
 
     <PermissionBuilder

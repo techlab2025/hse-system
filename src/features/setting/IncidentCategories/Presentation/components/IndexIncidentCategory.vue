@@ -248,6 +248,10 @@ const IndexIncidentCategoryactionList = () => [
       </div>
     </PermissionBuilder> -->
       <div class="col-span-2 flex justify-end gap-2">
+        <SystemIncidentCategories
+          v-if="user?.type != OrganizationTypeEnum.ADMIN"
+          :isHeaderTap="true"
+        />
         <ActionsList
           feature-name="action_feature_incident_categories"
           :show-actions="true"
@@ -260,10 +264,6 @@ const IndexIncidentCategoryactionList = () => [
           </template>
         </ActionsList>
       </div>
-      <SystemIncidentCategories
-        v-if="user?.type != OrganizationTypeEnum.ADMIN"
-        :isHeaderTap="true"
-      />
     </div>
 
     <PermissionBuilder

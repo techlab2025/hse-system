@@ -116,7 +116,7 @@ const getZoneTitle = (item: InvestigatingTableItem) =>
 
       <tbody>
         <tr v-for="(item, index) in props.items || []" :key="item.Investegationid">
-          <td data-label="#">{{ startIndex + index + 1 }}</td>
+          <td data-label="#"><span class="hse-table-row-number">{{ startIndex + index + 1 }}</span></td>
           <td :data-label="$t('Report')">
             <router-link :to="getObservationLink(item)" class="report-reference">
               {{ getReportReference(item) }}

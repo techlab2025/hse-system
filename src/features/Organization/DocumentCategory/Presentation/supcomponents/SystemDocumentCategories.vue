@@ -12,7 +12,6 @@ import IndexSystemDocumentCategoryController from '../controllers/indexSystemDoc
 import AddDocumentCategoryCloneController from '../controllers/addDocumentCategoryCloneController'
 import AddDocumentCategoryClonesParams from '../../Core/params/AddDocumentCategoryClonesParams'
 import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue'
-import DocumentCategorySystemDataHeader from './DocumentCategorySystemDataHeader.vue'
 
 defineProps<{
   isHeaderTap?: boolean
@@ -88,7 +87,7 @@ const cloneDocumentCategories = async () => {
         {{ $t('system_data') }}
       </button>
     </li>
-    <DocumentCategorySystemDataHeader v-if="isHeaderTap" @click="visible = true" />
+    <button v-if="isHeaderTap" class="btn btn-primary" type="button" @click="visible = true">{{ $t('system_data') }}</button>
     <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
       <template #header>
         <HeaderSection

@@ -12,7 +12,6 @@ import IndexRootCausesParams from '../../Core/params/indexRootCausesParams'
 import AddSystemRootCausesController from '../controllers/addSystemRootCausesController'
 import AddSystemRootCausesParams from '../../Core/params/AddStstemRootCausesParams'
 import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue'
-import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue'
 
 const visible = ref(false)
 const props = defineProps<{ isHeaderTap?: boolean }>()
@@ -87,7 +86,7 @@ const SubmitData = async () => {
       {{ $t('system_data') }}
     </button>
   </li>
-  <SystemDataHeader v-if="isHeaderTap" @click="visible = true" />
+  <button v-if="isHeaderTap" class="btn btn-primary" type="button" @click="visible = true">{{ $t('system_data') }}</button>
 
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>

@@ -155,6 +155,11 @@ const headerActions = () => [
         />
       </div>
       <div class="col-span-2 flex justify-end gap-2">
+        <SystemVisitThemes
+          v-if="user?.type !== OrganizationTypeEnum.ADMIN"
+          :is-header-tap="true"
+          @added="fetchVisitThemes(word, currentPage, countPerPage)"
+        />
         <ActionsList
           :feature-name="$t('action_feature_visit_themes')"
           :show-actions="true"
@@ -164,11 +169,6 @@ const headerActions = () => [
           <template #custom><ExportPdf :is-drop-list="true" /></template>
         </ActionsList>
       </div>
-      <SystemVisitThemes
-        v-if="user?.type !== OrganizationTypeEnum.ADMIN"
-        :is-header-tap="true"
-        @added="fetchVisitThemes(word, currentPage, countPerPage)"
-      />
     </div>
     <PermissionBuilder :code="permissions">
       <DataStatus :controller="state">
@@ -184,7 +184,11 @@ const headerActions = () => [
               </thead>
               <tbody>
                 <tr v-for="(item, index) in state.data" :key="item.id">
-                  <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
+                  <td>
+                    <span class="hse-table-row-number">{{
+                      (currentPage - 1) * countPerPage + index + 1
+                    }}</span>
+                  </td>
                   <td>{{ item.title }}</td>
                   <td><DropList :action-list="rowActions(item.id)" /></td>
                 </tr>

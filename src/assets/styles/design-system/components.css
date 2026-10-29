@@ -30,7 +30,7 @@
   border-color: var(--identity-primary, var(--hse-color-primary));
   background: var(--identity-primary, var(--hse-color-primary));
   color: #fff;
-  box-shadow: 0 10px 22px rgb(36 107 254 / 18%);
+  /* box-shadow: 0 10px 22px rgb(36 107 254 / 18%); */
 }
 
 .hse-cloud-identity
@@ -43,7 +43,7 @@
   ):hover {
   border-color: var(--hse-color-primary-hover);
   background: var(--hse-color-primary-hover);
-  box-shadow: 0 12px 26px rgb(36 107 254 / 24%);
+  /* box-shadow: 0 12px 26px rgb(36 107 254 / 24%); */
   transform: translateY(-1px);
 }
 

@@ -211,6 +211,7 @@ const IndexActionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
         <SystemWarehouseTypes />
       </PermissionBuilder> -->
+        <SystemWarehouseTypes :isHeaderTap="true" />
         <ActionsList
           feature-name="action_feature_checklists"
           :show-actions="true"
@@ -223,7 +224,6 @@ const IndexActionList = () => [
           </template>
         </ActionsList>
       </div>
-      <SystemWarehouseTypes :isHeaderTap="true" />
     </div>
 
     <PermissionBuilder

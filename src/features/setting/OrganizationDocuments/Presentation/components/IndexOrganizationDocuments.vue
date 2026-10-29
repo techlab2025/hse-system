@@ -271,7 +271,7 @@ onMounted(fetchDocuments)
               </thead>
               <tbody>
                 <tr v-for="(item, index) in state.data" :key="item.id">
-                  <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
+                  <td><span class="hse-table-row-number">{{ (currentPage - 1) * countPerPage + index + 1 }}</span></td>
                   <td>{{ item.document_title }}</td>
                   <td>{{ item.document_ref }}</td>
                   <td>{{ item.document_version }}</td>

@@ -204,7 +204,7 @@ watch(
               <tbody>
                 <tr v-for="(item, index) in state.data" :key="item.id">
                   <td data-label="#">
-                    <span>{{ index + 1 }} </span>
+                    <span class="hse-table-row-number">{{ index + 1 }} </span>
                   </td>
                   <td :data-label="$t('Name')" v-html="item.description || item.title"></td>
 

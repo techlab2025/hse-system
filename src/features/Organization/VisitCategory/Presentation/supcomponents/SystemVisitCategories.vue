@@ -6,7 +6,6 @@ import HeaderSection from '@/features/Organization/Project/Presentation/componen
 import DialogSystem from '@/assets/images/DialogSystem.png'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import SystemDialogEmptyState from '@/shared/DataStatues/SystemDialogEmptyState.vue'
-import TitleSystemDataHeader from '@/shared/DataStatues/TitleSystemDataHeader.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import IndexVisitCategoryParams from '../../Core/params/indexVisitCategoryParams'
 import type VisitCategoryModel from '../../Data/models/VisitCategoryModel'
@@ -49,12 +48,7 @@ const addSystemVisitCategories = async () => {
     <li v-if="!isHeaderTap" class="list-item cursor-pointer" @click="visible = true">
       <button type="button">{{ $t('system_data') }}</button>
     </li>
-    <TitleSystemDataHeader
-      v-if="isHeaderTap"
-      :title="$t('add_system_visit_categories')"
-      :subtitle="$t('select_system_visit_categories')"
-      @click="visible = true"
-    />
+    <button v-if="isHeaderTap" class="btn btn-primary" type="button" @click="visible = true">{{ $t('system_data') }}</button>
     <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
       <template #header>
         <HeaderSection :img="DialogSystem" :title="$t('add_system_visit_categories')" :subtitle="$t('select_system_visit_categories')" />

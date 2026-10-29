@@ -190,7 +190,7 @@ onMounted(() => fetchIncidents('', 1, countPerPage.value))
 
               <tbody>
                 <tr v-for="(item, index) in state.data" :key="item.id">
-                  <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
+                  <td><span class="hse-table-row-number">{{ (currentPage - 1) * countPerPage + index + 1 }}</span></td>
                   <td>{{ item.serialName || '--' }}</td>
                   <!-- <td>{{ item.title || '--' }}</td> -->
                   <td>{{ item.observer?.name || '--' }}</td>
