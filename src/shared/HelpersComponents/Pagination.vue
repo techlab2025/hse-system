@@ -6,6 +6,8 @@ import IconArrowDown from '@/shared/icons/IconArrowDown.vue'
 import Popover from 'primevue/popover'
 import { computed, ref } from 'vue'
 
+defineOptions({ name: 'HsePagination' })
+
 const emit = defineEmits(['changePage', 'countPerPage'])
 
 const op = ref()
@@ -17,12 +19,15 @@ const props = defineProps<{
 }>()
 
 const numberOfPages = computed(() => {
-  return Array.from({ length: props.pagination?.last! }, (_, i) => i + 1)
+  return Array.from({ length: Math.max(0, props.pagination?.last ?? 0) }, (_, i) => i + 1)
 })
 </script>
 
 <template>
-  <div v-if="pagination && pagination.last > 1" class="pagination-wrapper">
+  <div
+    v-if="pagination && (pagination.last ?? 0) > 1"
+    class="pagination-wrapper hse-register-pagination"
+  >
     <span class="show-results">
       {{
         $t('pagination_results', {

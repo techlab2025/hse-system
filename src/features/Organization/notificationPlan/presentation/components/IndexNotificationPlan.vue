@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -199,126 +201,134 @@ const handleCountPerPage = (count: number) => {
 }
 </script>
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-2" :style="{ marginBottom: '20px' }">
-    <div class="col-span-1 md:col-span-1 input-wrapper">
-      <CustomSelectInput
-        id="is-active-filter"
-        :modelValue="selectedActive ?? activeOptions[0]"
-        :label="$t('status')"
-        :static-options="activeOptions"
-        :reload="false"
-        :placeholder="$t('all_statuses')"
-        @update:modelValue="updateActive"
-      />
-    </div>
-
-    <div class="col-span-1 md:col-span-2 flex justify-end">
-      <router-link to="notification-plan/add" class="btn btn-primary">{{
-        $t('add_notification_plan')
-      }}</router-link>
-    </div>
-  </div>
-  <DataStatus :controller="state">
-    <template #success>
-      <div class="table-responsive">
-        <table class="main-table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">{{ $t('title') }}</th>
-              <th scope="col">{{ $t('employees') }}</th>
-              <th scope="col">{{ $t('hierarchies') }}</th>
-              <th scope="col">{{ $t('actions') }}</th>
-              <th scope="col">{{ $t('status') }}</th>
-              <th scope="col">{{ $t('management') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in state.data" :key="item.notification_plan_id">
-              <td data-label="#">
-                {{ index + 1 }}
-              </td>
-              <td :data-label="$t('title')">{{ item.title || emptyValue }}</td>
-              <td :data-label="$t('employees')">
-                {{ item.employees.map((e) => e.title).join(', ') || emptyValue }}
-              </td>
-              <td :data-label="$t('hierarchies')">
-                {{ item.hierarchies.map((h) => h.title).join(', ') || emptyValue }}
-              </td>
-              <td :data-label="$t('actions')">
-                <ul v-if="item.actions.length > 0" class="action-list-tree">
-                  <li
-                    v-for="(action, actionIndex) in item.actions"
-                    :key="notificationActionKey(action, actionIndex)"
-                  >
-                    <span>{{ notificationActionName(action) }}</span>
-                    <ul v-if="notificationSubActionName(action.sub_action)" class="sub-action-list">
-                      <li>{{ notificationSubActionName(action.sub_action) }}</li>
-                    </ul>
-                  </li>
-                </ul>
-                <span v-else>{{ emptyValue }}</span>
-              </td>
-              <td :data-label="$t('status')">
-                <button
-                  type="button"
-                  role="switch"
-                  :aria-checked="item.is_active"
-                  :aria-busy="activatingPlanId === item.notification_plan_id"
-                  :aria-label="`${item.is_active ? $t('inactive') : $t('active')} ${item.title}`"
-                  :class="['status-toggle', item.is_active ? 'is-active' : 'is-inactive']"
-                  :disabled="activatingPlanId !== null"
-                  @click="ActiveAction(item.notification_plan_id)"
-                >
-                  <span class="toggle-track" aria-hidden="true">
-                    <i></i>
-                  </span>
-                  <span class="toggle-label">
-                    {{ item.is_active ? $t('active') : $t('inactive') }}
-                  </span>
-                  <span
-                    v-if="activatingPlanId === item.notification_plan_id"
-                    class="toggle-spinner"
-                    aria-hidden="true"
-                  ></span>
-                </button>
-              </td>
-              <td :data-label="$t('management')">
-                <DropList
-                  :action-list="managementActions(item.notification_plan_id)"
-                  :show-actions="deletingPlanId === null"
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+  <RegisterPage>
+    <div
+      class="grid grid-cols-1 md:grid-cols-3 items-center gap-2"
+      :style="{ marginBottom: '20px' }"
+    >
+      <div class="col-span-1 md:col-span-1 input-wrapper">
+        <CustomSelectInput
+          id="is-active-filter"
+          :modelValue="selectedActive ?? activeOptions[0]"
+          :label="$t('status')"
+          :static-options="activeOptions"
+          :reload="false"
+          :placeholder="$t('all_statuses')"
+          @update:modelValue="updateActive"
+        />
       </div>
-      <Pagination
-        :pagination="state.pagination"
-        @changePage="handleChangePage"
-        @countPerPage="handleCountPerPage"
-      />
-    </template>
-    <template #failed>
-      <DataFailed
-        :link="`/organization/notification-plan/add`"
-        :addText="$t('add_notification_plan')"
-        :description="$t('no_notification_plans_description')"
-        :title="$t('no_notification_plans')"
-      />
-    </template>
-    <template #loader>
-      <TableLoader :cols="3" :rows="10" />
-    </template>
-    <template #empty>
-      <DataEmpty
-        :link="`/organization/notification-plan/add`"
-        :addText="$t('add_notification_plan')"
-        :description="$t('no_notification_plans_description')"
-        :title="$t('no_notification_plans')"
-      />
-    </template>
-  </DataStatus>
+
+      <div class="col-span-1 md:col-span-2 flex justify-end">
+        <router-link to="notification-plan/add" class="btn btn-primary">{{
+          $t('add_notification_plan')
+        }}</router-link>
+      </div>
+    </div>
+    <DataStatus :controller="state">
+      <template #success>
+        <div class="table-responsive hse-table-scroll">
+          <table v-table-identity class="main-table hse-data-table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">{{ $t('title') }}</th>
+                <th scope="col">{{ $t('employees') }}</th>
+                <th scope="col">{{ $t('hierarchies') }}</th>
+                <th scope="col">{{ $t('actions') }}</th>
+                <th scope="col">{{ $t('status') }}</th>
+                <th scope="col">{{ $t('management') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in state.data" :key="item.notification_plan_id">
+                <td data-label="#">
+                  {{ index + 1 }}
+                </td>
+                <td :data-label="$t('title')">{{ item.title || emptyValue }}</td>
+                <td :data-label="$t('employees')">
+                  {{ item.employees.map((e) => e.title).join(', ') || emptyValue }}
+                </td>
+                <td :data-label="$t('hierarchies')">
+                  {{ item.hierarchies.map((h) => h.title).join(', ') || emptyValue }}
+                </td>
+                <td :data-label="$t('actions')">
+                  <ul v-if="item.actions.length > 0" class="action-list-tree">
+                    <li
+                      v-for="(action, actionIndex) in item.actions"
+                      :key="notificationActionKey(action, actionIndex)"
+                    >
+                      <span>{{ notificationActionName(action) }}</span>
+                      <ul
+                        v-if="notificationSubActionName(action.sub_action)"
+                        class="sub-action-list"
+                      >
+                        <li>{{ notificationSubActionName(action.sub_action) }}</li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <span v-else>{{ emptyValue }}</span>
+                </td>
+                <td :data-label="$t('status')">
+                  <button
+                    type="button"
+                    role="switch"
+                    :aria-checked="item.is_active"
+                    :aria-busy="activatingPlanId === item.notification_plan_id"
+                    :aria-label="`${item.is_active ? $t('inactive') : $t('active')} ${item.title}`"
+                    :class="['status-toggle', item.is_active ? 'is-active' : 'is-inactive']"
+                    :disabled="activatingPlanId !== null"
+                    @click="ActiveAction(item.notification_plan_id)"
+                  >
+                    <span class="toggle-track" aria-hidden="true">
+                      <i></i>
+                    </span>
+                    <span class="toggle-label">
+                      {{ item.is_active ? $t('active') : $t('inactive') }}
+                    </span>
+                    <span
+                      v-if="activatingPlanId === item.notification_plan_id"
+                      class="toggle-spinner"
+                      aria-hidden="true"
+                    ></span>
+                  </button>
+                </td>
+                <td :data-label="$t('management')">
+                  <DropList
+                    :action-list="managementActions(item.notification_plan_id)"
+                    :show-actions="deletingPlanId === null"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
+      </template>
+      <template #failed>
+        <DataFailed
+          :link="`/organization/notification-plan/add`"
+          :addText="$t('add_notification_plan')"
+          :description="$t('no_notification_plans_description')"
+          :title="$t('no_notification_plans')"
+        />
+      </template>
+      <template #loader>
+        <TableLoader :cols="3" :rows="10" />
+      </template>
+      <template #empty>
+        <DataEmpty
+          :link="`/organization/notification-plan/add`"
+          :addText="$t('add_notification_plan')"
+          :description="$t('no_notification_plans_description')"
+          :title="$t('no_notification_plans')"
+        />
+      </template>
+    </DataStatus>
+  </RegisterPage>
 </template>
 
 <style scoped>

@@ -309,12 +309,15 @@ onMounted(async () => {
 
         <div
           v-if="rows.length"
-          class="tool-table-wrap matrix-scroll"
+          class="tool-table-wrap matrix-scroll hse-table-scroll"
           role="region"
           :aria-label="$t('PPE delivery matrix')"
           tabindex="0"
         >
-          <table class="hse-project-table main-table tool-table delivery-matrix">
+          <table
+            v-table-identity
+            class="hse-project-table main-table tool-table delivery-matrix hse-data-table"
+          >
             <thead>
               <tr>
                 <th scope="col" class="recipient-col">{{ $t('Recipient') }}</th>

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -177,97 +179,99 @@ const headerActions = () => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchPPETools())"><Search /></span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        @input="searchPPETools"
-      />
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <span class="icon-remove" @click="((word = ''), searchPPETools())"><Search /></span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          @input="searchPPETools"
+        />
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <ActionsList
+          feature-name="action_feature_ppe_tools"
+          :show-actions="true"
+          :action-list="headerActions()"
+          :actions-number="5"
+        >
+          <template #custom><ExportPdf :is-drop-list="true" /></template>
+        </ActionsList>
+      </div>
+      <SystemPPETools v-if="user?.type !== OrganizationTypeEnum.ADMIN" :is-header-tap="true" />
     </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <ActionsList
-        feature-name="action_feature_ppe_tools"
-        :show-actions="true"
-        :action-list="headerActions()"
-        :actions-number="5"
-      >
-        <template #custom><ExportPdf :is-drop-list="true" /></template>
-      </ActionsList>
-    </div>
-    <SystemPPETools v-if="user?.type !== OrganizationTypeEnum.ADMIN" :is-header-tap="true" />
-  </div>
 
-  <PermissionBuilder :code="featurePermissions">
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
-                <td>{{ item.title }}</td>
-                <td><DropList :action-list="rowActions(item.id)" /></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @change-page="changePage"
-          @count-per-page="changePageSize"
-        />
+    <PermissionBuilder :code="featurePermissions">
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('title') }}</th>
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
+                  <td>{{ item.title }}</td>
+                  <td><DropList :action-list="rowActions(item.id)" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @change-page="changePage"
+            @count-per-page="changePageSize"
+          />
+        </template>
+        <template #loader><TableLoader :cols="3" :rows="10" /></template>
+        <template #initial><TableLoader :cols="3" :rows="10" /></template>
+        <template #empty>
+          <DataEmpty
+            :link="`${basePath}/ppe-tool/add`"
+            :add-text="$t('add_ppe_tool')"
+            :description="$t('no_ppe_tools_description')"
+            :title="$t('no_ppe_tools')"
+          />
+        </template>
+        <template #failed>
+          <DataFailed
+            :link="`${basePath}/ppe-tool/add`"
+            :add-text="$t('add_ppe_tool')"
+            :description="$t('no_ppe_tools_description')"
+            :title="$t('no_ppe_tools')"
+          />
+        </template>
+      </DataStatus>
+      <template #notPermitted>
+        <DataFailed :add-text="$t('permission_denied')" description="" link="" />
       </template>
-      <template #loader><TableLoader :cols="3" :rows="10" /></template>
-      <template #initial><TableLoader :cols="3" :rows="10" /></template>
-      <template #empty>
-        <DataEmpty
-          :link="`${basePath}/ppe-tool/add`"
-          :add-text="$t('add_ppe_tool')"
-          :description="$t('no_ppe_tools_description')"
-          :title="$t('no_ppe_tools')"
-        />
-      </template>
-      <template #failed>
-        <DataFailed
-          :link="`${basePath}/ppe-tool/add`"
-          :add-text="$t('add_ppe_tool')"
-          :description="$t('no_ppe_tools_description')"
-          :title="$t('no_ppe_tools')"
-        />
-      </template>
-    </DataStatus>
-    <template #notPermitted>
-      <DataFailed :add-text="$t('permission_denied')" description="" link="" />
-    </template>
-  </PermissionBuilder>
+    </PermissionBuilder>
 
-  <Dialog
-    v-model:visible="showUploadDialog"
-    modal
-    :dismissable-mask="true"
-    :header="$t('import_ppe_tools')"
-    :style="{ width: '80vw', maxWidth: '900px' }"
-  >
-    <UploadPPEToolExcelSheet :initial-file="pendingFile" @uploaded="onUploaded" />
-  </Dialog>
-  <input
-    ref="fileInputRef"
-    type="file"
-    accept=".xls,.xlsx"
-    style="display: none"
-    @change="onFileSelected"
-  />
+    <Dialog
+      v-model:visible="showUploadDialog"
+      modal
+      :dismissable-mask="true"
+      :header="$t('import_ppe_tools')"
+      :style="{ width: '80vw', maxWidth: '900px' }"
+    >
+      <UploadPPEToolExcelSheet :initial-file="pendingFile" @uploaded="onUploaded" />
+    </Dialog>
+    <input
+      ref="fileInputRef"
+      type="file"
+      accept=".xls,.xlsx"
+      style="display: none"
+      @change="onFileSelected"
+    />
+  </RegisterPage>
 </template>
 
 <style scoped></style>

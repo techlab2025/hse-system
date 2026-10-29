@@ -544,6 +544,8 @@ label {
 .system-data-add {
   background-color: color-mix(in srgb, var(--brand-primary-500) 5.1%, transparent) !important;
   color: var(--text-on-brand);
+  grid-column: span 2 !important;
+
 }
 
 @media (max-width: 768px) {

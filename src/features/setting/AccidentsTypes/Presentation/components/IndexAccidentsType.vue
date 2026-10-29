@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { translate as localizeUi } from '@/localization/i18n'
 import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import { onMounted, ref, watch } from 'vue'
@@ -202,21 +204,22 @@ const IndexIncidantTypeactionList = () => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 mt-2">
-    <div class="input-search col-span-1">
-      <span class="icon-remove" @click=";((word = ''), searchAccidentType())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchAccidentType"
-      />
-    </div>
-    <!-- <PermissionBuilder :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]">
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 mt-2">
+      <div class="input-search col-span-1">
+        <span class="icon-remove" @click=";((word = ''), searchAccidentType())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchAccidentType"
+        />
+      </div>
+      <!-- <PermissionBuilder :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]">
       <div class="col-span-2 flex justify-end gap-2">
         <ExportPdf />
         <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
@@ -235,181 +238,188 @@ const IndexIncidantTypeactionList = () => [
         </PermissionBuilder>
       </div>
     </PermissionBuilder> -->
-    <div class="col-span-2 flex justify-end gap-2">
-      <ActionsList
-        feature-name="action_feature_incident_types"
-        :show-actions="true"
-        :actionList="IndexIncidantTypeactionList()"
-        :actionsNumber="5"
-      >
-        <template #custom>
-          <!-- <SystemIncidantTypes /> -->
-          <ExportPdf :isDropList="true" />
-        </template>
-      </ActionsList>
+      <div class="col-span-2 flex justify-end gap-2">
+        <ActionsList
+          feature-name="action_feature_incident_types"
+          :show-actions="true"
+          :actionList="IndexIncidantTypeactionList()"
+          :actionsNumber="5"
+        >
+          <template #custom>
+            <!-- <SystemIncidantTypes /> -->
+            <ExportPdf :isDropList="true" />
+          </template>
+        </ActionsList>
+      </div>
+      <SystemIncidantTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
     </div>
-    <SystemIncidantTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
-  </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
-      PermissionsEnum.ORG_ACCIDENTS_TYPE_DELETE,
-      PermissionsEnum.ORG_ACCIDENTS_TYPE_FETCH,
-      PermissionsEnum.ORG_ACCIDENTS_TYPE_UPDATE,
-      PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE,
-      PermissionsEnum.ACCIDENTS_TYPE_ALL,
-      PermissionsEnum.ACCIDENTS_TYPE_DELETE,
-      PermissionsEnum.ACCIDENTS_TYPE_FETCH,
-      PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
-      PermissionsEnum.ACCIDENTS_TYPE_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <th scope="col" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
-                  {{ $t('all_industries') }}
-                </th>
-                <th scope="col" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
-                  {{ $t('industries') }}
-                </th>
-                <!-- <th scope="col">{{ $t('actions') }}</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link
-                    :to="`/${
-                      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-                    }/accidents-type/${item.id}`"
-                    >{{ index + 1 }}
-                  </router-link>
-                </td>
-                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
-                <td
-                  :data-label="$t('all_industries')"
-                  v-if="user?.type == OrganizationTypeEnum?.ADMIN"
-                >
-                  {{ item.allIndustries ? $t('yes') : $t('no') }}
-                </td>
-                <td
-                  :data-label="$t('all_industries')"
-                  v-if="user?.type == OrganizationTypeEnum?.ADMIN"
-                >
-                  {{
-                    item.industries.length > 0
-                      ? item.industries.map((industry) => industry.title).join(', ')
-                      : '---'
-                  }}
-                </td>
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.ORG_ACCIDENTS_TYPE_ALL,
+        PermissionsEnum.ORG_ACCIDENTS_TYPE_DELETE,
+        PermissionsEnum.ORG_ACCIDENTS_TYPE_FETCH,
+        PermissionsEnum.ORG_ACCIDENTS_TYPE_UPDATE,
+        PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE,
+        PermissionsEnum.ACCIDENTS_TYPE_ALL,
+        PermissionsEnum.ACCIDENTS_TYPE_DELETE,
+        PermissionsEnum.ACCIDENTS_TYPE_FETCH,
+        PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
+        PermissionsEnum.ACCIDENTS_TYPE_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('title') }}</th>
+                  <th scope="col" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
+                    {{ $t('all_industries') }}
+                  </th>
+                  <th scope="col" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
+                    {{ $t('industries') }}
+                  </th>
+                  <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    <router-link
+                      :to="`/${
+                        user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+                      }/accidents-type/${item.id}`"
+                      >{{ index + 1 }}
+                    </router-link>
+                  </td>
+                  <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                  <td
+                    :data-label="$t('all_industries')"
+                    v-if="user?.type == OrganizationTypeEnum?.ADMIN"
+                  >
+                    {{ item.allIndustries ? $t('yes') : $t('no') }}
+                  </td>
+                  <td
+                    :data-label="$t('all_industries')"
+                    v-if="user?.type == OrganizationTypeEnum?.ADMIN"
+                  >
+                    {{
+                      item.industries.length > 0
+                        ? item.industries.map((industry) => industry.title).join(', ')
+                        : '---'
+                    }}
+                  </td>
 
-                <td :data-label="$t('Actions')">
-                  <DropList
-                    :actionList="actionList(item.id, deleteAccidentsType)"
-                    @delete="deleteAccidentsType(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
+                  <td :data-label="$t('Actions')">
+                    <DropList
+                      :actionList="actionList(item.id, deleteAccidentsType)"
+                      @delete="deleteAccidentsType(item.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #empty>
+          <PermissionBuilder
+            :code="[
+              PermissionsEnum.ACCIDENTS_TYPE_CREATE,
+              PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE,
+            ]"
+          >
+            <DataEmpty
+              :link="`/${
+                user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+              }/accidents-type/add`"
+              :addText="$t('add_incident_type')"
+              :description="
+                $t(
+                  'You have no Incident Type .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Incident Type')"
+            />
+          </PermissionBuilder>
+        </template>
+        <template #failed>
+          <PermissionBuilder
+            :code="[
+              PermissionsEnum.ACCIDENTS_TYPE_CREATE,
+              PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE,
+            ]"
+          >
+            <DataFailed
+              :link="`/${
+                user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+              }/accidents-type/add`"
+              :addText="$t('add_incident_type')"
+              :description="
+                $t(
+                  'You have no Incident Type .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Incident Type')"
+            />
+          </PermissionBuilder>
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
+        <DataFailed
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no Permission .. All your joined customers will appear here when you add your customer data',
+            )
+          "
         />
       </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
-        <PermissionBuilder
-          :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]"
-        >
-          <DataEmpty
-            :link="`/${
-              user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/accidents-type/add`"
-            :addText="$t('add_incident_type')"
-            :description="
-              $t(
-                'You have no Incident Type .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Incident Type')"
-          />
-        </PermissionBuilder>
-      </template>
-      <template #failed>
-        <PermissionBuilder
-          :code="[PermissionsEnum.ACCIDENTS_TYPE_CREATE, PermissionsEnum.ORG_ACCIDENTS_TYPE_CREATE]"
-        >
-          <DataFailed
-            :link="`/${
-              user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/accidents-type/add`"
-            :addText="$t('add_incident_type')"
-            :description="
-              $t(
-                'You have no Incident Type .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Incident Type')"
-          />
-        </PermissionBuilder>
-      </template>
-    </DataStatus>
+    </PermissionBuilder>
 
-    <template #notPermitted>
-      <DataFailed
-        :addText="$t('auditUi.you_do_not_have_permission')"
-        :description="
-          $t(
-            'You have no Permission .. All your joined customers will appear here when you add your customer data',
-          )
+    <Dialog
+      v-model:visible="showUploadDialog"
+      modal
+      :dismissable-mask="true"
+      :header="$t('import_accidents_type')"
+      :style="{ width: '80vw', maxWidth: '900px' }"
+    >
+      <UploadIncidantTypeExeclSheet
+        :initial-file="pendingFile"
+        @uploaded="
+          () => {
+            showUploadDialog = false
+            pendingFile = null
+            fetchAccidentsType()
+          }
         "
       />
-    </template>
-  </PermissionBuilder>
+    </Dialog>
 
-  <Dialog
-    v-model:visible="showUploadDialog"
-    modal
-    :dismissable-mask="true"
-    :header="$t('import_accidents_type')"
-    :style="{ width: '80vw', maxWidth: '900px' }"
-  >
-    <UploadIncidantTypeExeclSheet
-      :initial-file="pendingFile"
-      @uploaded="
-        () => {
-          showUploadDialog = false
-          pendingFile = null
-          fetchAccidentsType()
-        }
-      "
+    <input
+      ref="fileInputRef"
+      type="file"
+      accept=".xls,.xlsx"
+      style="display: none"
+      @change="onFileSelected"
     />
-  </Dialog>
-
-  <input
-    ref="fileInputRef"
-    type="file"
-    accept=".xls,.xlsx"
-    style="display: none"
-    @change="onFileSelected"
-  />
+  </RegisterPage>
 </template>
 
 <style scoped></style>

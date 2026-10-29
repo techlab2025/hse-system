@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -127,147 +129,149 @@ watch(
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchPartner())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchPartner"
-      />
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
+        <span class="icon-remove" @click="((word = ''), searchPartner())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchPartner"
+        />
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <!-- <ExportExcel :data="state.data" /> -->
+        <ExportPdf />
+        <PermissionBuilder
+          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.PARTNER_CREATE]"
+        >
+          <router-link to="/organization/partner/add" class="btn btn-primary">
+            {{ $t('Add_Partner') }}
+          </router-link>
+        </PermissionBuilder>
+      </div>
     </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
-      <ExportPdf />
-      <PermissionBuilder
-        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.PARTNER_CREATE]"
-      >
-        <router-link to="/organization/partner/add" class="btn btn-primary">
-          {{ $t('Add_Partner') }}
-        </router-link>
-      </PermissionBuilder>
-    </div>
-  </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.PARTNER_ALL,
-      PermissionsEnum.PARTNER_DELETE,
-      PermissionsEnum.PARTNER_FETCH,
-      PermissionsEnum.PARTNER_UPDATE,
-      PermissionsEnum.PARTNER_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive mt-2">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.PARTNER_ALL,
+        PermissionsEnum.PARTNER_DELETE,
+        PermissionsEnum.PARTNER_FETCH,
+        PermissionsEnum.PARTNER_UPDATE,
+        PermissionsEnum.PARTNER_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive mt-2 hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('title') }}</th>
 
-                <th scope="col">{{ $t('phone') }}</th>
-                <!-- <th scope="col">{{ $t('status') }}</th> -->
+                  <th scope="col">{{ $t('phone') }}</th>
+                  <!-- <th scope="col">{{ $t('status') }}</th> -->
 
-                <!-- <th scope="col">{{ $t('actions') }}</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link :to="`/organization/partner/${item.id}`"
-                    >{{ index + 1 }}
-                  </router-link>
-                </td>
-                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                  <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    <router-link :to="`/organization/partner/${item.id}`"
+                      >{{ index + 1 }}
+                    </router-link>
+                  </td>
+                  <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
 
-                <td :data-label="$t('phone')">
-                  {{ item.phone }}
-                </td>
+                  <td :data-label="$t('phone')">
+                    {{ item.phone }}
+                  </td>
 
-                <td :data-label="$t('Actions')">
-                  <!--                <DialogChangeStatusPartner-->
-                  <!--                  v-if="item.PartnerStatus === PartnerStatusEnum.Draft"-->
-                  <!--                  :PartnerId="item.id"-->
-                  <!--                  @PartnerChangeStatus="fetchPartner"-->
-                  <!--                />-->
+                  <td :data-label="$t('Actions')">
+                    <!--                <DialogChangeStatusPartner-->
+                    <!--                  v-if="item.PartnerStatus === PartnerStatusEnum.Draft"-->
+                    <!--                  :PartnerId="item.id"-->
+                    <!--                  @PartnerChangeStatus="fetchPartner"-->
+                    <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deletePartner)"
-                    @delete="deletePartner(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
+                    <DropList
+                      :actionList="actionList(item.id, deletePartner)"
+                      @delete="deletePartner(item.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #empty>
+          <PermissionBuilder
+            :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.PARTNER_CREATE]"
+          >
+            <DataEmpty
+              :link="`/organization/partner/add`"
+              :addText="$t('add_partner')"
+              :description="
+                $t(
+                  'You have no Partner .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Partner')"
+            />
+          </PermissionBuilder>
+        </template>
+        <template #failed>
+          <PermissionBuilder
+            :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.PARTNER_CREATE]"
+          >
+            <DataFailed
+              :link="`/organization/partner/add`"
+              :addText="$t('add_partner')"
+              :description="
+                $t(
+                  'You have no Partner .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Partner')"
+            />
+          </PermissionBuilder>
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
+        <DataFailed
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no Partner .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          link=""
         />
       </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
-        <PermissionBuilder
-          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.PARTNER_CREATE]"
-        >
-          <DataEmpty
-            :link="`/organization/partner/add`"
-            :addText="$t('add_partner')"
-            :description="
-              $t(
-                'You have no Partner .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Partner')"
-          />
-        </PermissionBuilder>
-      </template>
-      <template #failed>
-        <PermissionBuilder
-          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.PARTNER_CREATE]"
-        >
-          <DataFailed
-            :link="`/organization/partner/add`"
-            :addText="$t('add_partner')"
-            :description="
-              $t(
-                'You have no Partner .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Partner')"
-          />
-        </PermissionBuilder>
-      </template>
-    </DataStatus>
-
-    <template #notPermitted>
-      <DataFailed
-        :addText="$t('auditUi.you_do_not_have_permission')"
-        :description="
-          $t(
-            'You have no Partner .. All your joined customers will appear here when you add your customer data',
-          )
-        "
-        link=""
-      />
-    </template>
-  </PermissionBuilder>
+    </PermissionBuilder>
+  </RegisterPage>
 </template>
 
 <style scoped></style>

@@ -99,8 +99,8 @@ const getZoneTitle = (item: InvestigatingTableItem) =>
 </script>
 
 <template>
-  <div class="table-responsive report-board investigating-report-table">
-    <table class="main-table">
+  <div class="table-responsive report-board investigating-report-table hse-table-scroll">
+    <table v-table-identity class="main-table hse-data-table">
       <thead>
         <tr>
           <th scope="col">#</th>

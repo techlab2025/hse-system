@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 // import IndexTeamTypeParams from '@/features/setting/TeamType/Core/params/indexTeamTypeParams'
 // import IndexTeamTypeController from '@/features/setting/TeamType/Presentation/controllers/indexTeamTypeController'
 
@@ -175,110 +177,25 @@ watch(
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchCatalogItemsType())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchCatalogItemsType"
-      />
-    </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
-      <ExportPdf />
-      <permission-builder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.CATALOG_CREATE,
-        ]"
-      >
-        <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/add`"
-          class="btn btn-primary"
-        >
-          {{ $t('Add_Catalog_Item') }}
-        </router-link>
-      </permission-builder>
-    </div>
-  </div>
-
-  <permission-builder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.CATALOG_ALL,
-      PermissionsEnum.CATALOG_DELETE,
-      PermissionsEnum.CATALOG_FETCH,
-      PermissionsEnum.CATALOG_UPDATE,
-      PermissionsEnum.CATALOG_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-
-                <!-- <th scope="col">{{ $t('Actions') }}</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <span
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/edit/${item.id}`"
-                    >{{ index + 1 }}
-                  </span>
-                </td>
-                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
-
-                <td :data-label="$t('Actions')">
-                  <!--                <DialogChangeStatusTeamType-->
-                  <!--                  v-if="item.TeamTypeStatus === TeamTypeStatusEnum.Draft"-->
-                  <!--                  :TeamTypeId="item.id"-->
-                  <!--                  @TeamTypeChangeStatus="fetchTeamType"-->
-                  <!--                />-->
-
-                  <DropList
-                    :actionList="actionList(item.id, deleteCatalog)"
-                    @delete="deleteCatalog(item.id)"
-                    v-if="item?.guideCategoryItem?.id"
-                  />
-                  <DropList
-                    :actionList="actionListWithItem(item.id, deleteCatalog)"
-                    @delete="deleteCatalog(item.id)"
-                    v-else
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
+        <span class="icon-remove" @click="((word = ''), searchCatalogItemsType())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchCatalogItemsType"
         />
-      </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <!-- <ExportExcel :data="state.data" /> -->
+        <ExportPdf />
         <permission-builder
           :code="[
             PermissionsEnum.ADMIN,
@@ -286,15 +203,119 @@ watch(
             PermissionsEnum.CATALOG_CREATE,
           ]"
         >
-          <DataEmpty
-            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/add`"
-            :addText="$t('auditUi.add_catalog_item')"
-            :description="$t('auditUi.catalog_items_will_appear_here_after_you_add_them')"
-            :title="$t('auditUi.no_catalog_items_yet')"
-          />
+          <router-link
+            :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/add`"
+            class="btn btn-primary"
+          >
+            {{ $t('Add_Catalog_Item') }}
+          </router-link>
         </permission-builder>
-      </template>
-      <template #failed>
+      </div>
+    </div>
+
+    <permission-builder
+      :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.CATALOG_ALL,
+        PermissionsEnum.CATALOG_DELETE,
+        PermissionsEnum.CATALOG_FETCH,
+        PermissionsEnum.CATALOG_UPDATE,
+        PermissionsEnum.CATALOG_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('title') }}</th>
+
+                  <!-- <th scope="col">{{ $t('Actions') }}</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    <span
+                      :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/edit/${item.id}`"
+                      >{{ index + 1 }}
+                    </span>
+                  </td>
+                  <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+
+                  <td :data-label="$t('Actions')">
+                    <!--                <DialogChangeStatusTeamType-->
+                    <!--                  v-if="item.TeamTypeStatus === TeamTypeStatusEnum.Draft"-->
+                    <!--                  :TeamTypeId="item.id"-->
+                    <!--                  @TeamTypeChangeStatus="fetchTeamType"-->
+                    <!--                />-->
+
+                    <DropList
+                      :actionList="actionList(item.id, deleteCatalog)"
+                      @delete="deleteCatalog(item.id)"
+                      v-if="item?.guideCategoryItem?.id"
+                    />
+                    <DropList
+                      :actionList="actionListWithItem(item.id, deleteCatalog)"
+                      @delete="deleteCatalog(item.id)"
+                      v-else
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #empty>
+          <permission-builder
+            :code="[
+              PermissionsEnum.ADMIN,
+              PermissionsEnum.ORGANIZATION_EMPLOYEE,
+              PermissionsEnum.CATALOG_CREATE,
+            ]"
+          >
+            <DataEmpty
+              :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/add`"
+              :addText="$t('auditUi.add_catalog_item')"
+              :description="$t('auditUi.catalog_items_will_appear_here_after_you_add_them')"
+              :title="$t('auditUi.no_catalog_items_yet')"
+            />
+          </permission-builder>
+        </template>
+        <template #failed>
+          <permission-builder
+            :code="[
+              PermissionsEnum.ADMIN,
+              PermissionsEnum.ORGANIZATION_EMPLOYEE,
+              PermissionsEnum.CATALOG_CREATE,
+            ]"
+          >
+            <DataFailed
+              :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/add`"
+              :addText="$t('auditUi.add_catalog_item')"
+              :description="$t('auditUi.catalog_items_will_appear_here_after_you_add_them')"
+              :title="$t('auditUi.no_catalog_items_yet')"
+            />
+          </permission-builder>
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
         <permission-builder
           :code="[
             PermissionsEnum.ADMIN,
@@ -303,34 +324,17 @@ watch(
           ]"
         >
           <DataFailed
-            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/add`"
-            :addText="$t('auditUi.add_catalog_item')"
-            :description="$t('auditUi.catalog_items_will_appear_here_after_you_add_them')"
-            :title="$t('auditUi.no_catalog_items_yet')"
+            :addText="$t('auditUi.you_do_not_have_permission')"
+            :description="
+              $t(
+                'You have no Catalog .. All your joined customers will appear here when you add your customer data',
+              )
+            "
           />
         </permission-builder>
       </template>
-    </DataStatus>
-
-    <template #notPermitted>
-      <permission-builder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.CATALOG_CREATE,
-        ]"
-      >
-        <DataFailed
-          :addText="$t('auditUi.you_do_not_have_permission')"
-          :description="
-            $t(
-              'You have no Catalog .. All your joined customers will appear here when you add your customer data',
-            )
-          "
-        />
-      </permission-builder>
-    </template>
-  </permission-builder>
+    </permission-builder>
+  </RegisterPage>
 </template>
 
 <style scoped></style>

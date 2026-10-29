@@ -40,8 +40,8 @@ function assignedToLabel(ncr: InternalAuditNcrModel, action: 'corrective' | 'pre
     <span v-for="index in 4" :key="index"></span>
   </div>
   <div v-else-if="ncrs.length" class="ncr-index">
-    <div class="ncr-table-wrap">
-      <table class="ncr-table">
+    <div class="ncr-table-wrap hse-table-scroll">
+      <table v-table-identity class="ncr-table hse-data-table">
         <thead>
           <tr>
             <th>{{ $t('NCR') }}</th>

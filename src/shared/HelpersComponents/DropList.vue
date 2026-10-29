@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { isDeleteAction } from './actionItems'
 import { translateMessage } from '@/localization/messages'
-import { ref, computed } from 'vue'
+import { ref, computed, type Component } from 'vue'
 import Popover from 'primevue/popover'
 import DeleteDialog from '@/base/Presentation/Dialogs/MainDialogs/DeleteDialog.vue'
-import ActionsIcon from '../icons/ActionsIcon.vue'
 import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import type { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ActionCloseIcon from '../icons/ActionCloseIcon.vue'
 
 interface ActionItem {
   text: string
-  icon: any
+  icon: Component
   link?: string
   action?: () => void
   permission?: PermissionsEnum[]
@@ -19,11 +17,10 @@ interface ActionItem {
   isDelete?: boolean
 }
 
-const emit = defineEmits(['delete'])
+defineEmits(['delete'])
 defineOptions({ inheritAttrs: false })
 
 const op = ref()
-const ActionIconsToggle = ref(false)
 
 const isVisible = computed(() => {
   return op.value?.visible
@@ -32,9 +29,14 @@ const isVisible = computed(() => {
 const toggle = (event: Event) => {
   op.value.toggle(event)
 }
-const { actionList = [], showActions = true } = defineProps<{
+const {
+  actionList = [],
+  showActions = true,
+  actionLabel,
+} = defineProps<{
   actionList: ActionItem[]
   showActions?: boolean
+  actionLabel?: string
 }>()
 
 // ✅ Filter actions by permission
@@ -48,10 +50,20 @@ const permittedActions = computed(() =>
 </script>
 
 <template>
-  <div class="list-trigger" @click.stop="toggle">
-    <ActionsIcon v-show="!isVisible" />
-    <ActionCloseIcon v-show="isVisible" />
-  </div>
+  <button
+    type="button"
+    class="list-trigger hse-table-action"
+    :aria-label="actionLabel || translateMessage('Actions')"
+    aria-haspopup="dialog"
+    :aria-expanded="isVisible || false"
+    @click.stop="toggle"
+  >
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <circle cx="5" cy="12" r="1.6" />
+      <circle cx="12" cy="12" r="1.6" />
+      <circle cx="19" cy="12" r="1.6" />
+    </svg>
+  </button>
 
   <Popover ref="op">
     <div class="list-body">

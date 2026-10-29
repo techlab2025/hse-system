@@ -447,56 +447,60 @@ onMounted(async () => {
                   <div v-if="savedVisitsForMonth(month.key).length" class="saved-visits-table">
                     <h3>{{ $t('plans') }}</h3>
 
-                    <table class="hse-project-table">
-                      <thead>
-                        <tr>
-                          <th>{{ $t('plan') }}</th>
-                          <th>{{ $t('Date') }}</th>
-                          <th>{{ $t('Visit Location') }}</th>
-                          <th>{{ $t('Report Status') }}</th>
-                          <th v-if="canEdit">{{ $t('Actions') }}</th>
-                          <!-- <th>Employee</th> -->
-                          <!-- <th>Activity</th> -->
-                        </tr>
-                      </thead>
+                    <div class="hse-table-scroll">
+                      <table v-table-identity class="hse-project-table hse-data-table">
+                        <thead>
+                          <tr>
+                            <th>{{ $t('plan') }}</th>
+                            <th>{{ $t('Date') }}</th>
+                            <th>{{ $t('Visit Location') }}</th>
+                            <th>{{ $t('Report Status') }}</th>
+                            <th v-if="canEdit">{{ $t('Actions') }}</th>
+                            <!-- <th>Employee</th> -->
+                            <!-- <th>Activity</th> -->
+                          </tr>
+                        </thead>
 
-                      <tbody>
-                        <tr
-                          v-for="(visit, index) in savedVisitsForMonth(month.key)"
-                          :key="visit.id"
-                        >
-                          <td>{{ $t('plan') }} {{ index + 1 }}</td>
+                        <tbody>
+                          <tr
+                            v-for="(visit, index) in savedVisitsForMonth(month.key)"
+                            :key="visit.id"
+                          >
+                            <td>{{ $t('plan') }} {{ index + 1 }}</td>
 
-                          <td>
-                            {{ visit.date }}
-                          </td>
+                            <td>
+                              {{ visit.date }}
+                            </td>
 
-                          <td>
-                            {{ visit.location }}
-                          </td>
-                          <td>
-                            {{ visit.hasReport ? $t('Report Submitted') : $t('not submitted yet') }}
-                          </td>
-                          <td v-if="canEdit">
-                            <button
-                              type="button"
-                              class="hse-project-button hse-project-button--secondary"
-                              @click="openEditVisit(visit)"
-                            >
-                              {{ $t('Edit') }}
-                            </button>
-                          </td>
+                            <td>
+                              {{ visit.location }}
+                            </td>
+                            <td>
+                              {{
+                                visit.hasReport ? $t('Report Submitted') : $t('not submitted yet')
+                              }}
+                            </td>
+                            <td v-if="canEdit">
+                              <button
+                                type="button"
+                                class="hse-project-button hse-project-button--secondary"
+                                @click="openEditVisit(visit)"
+                              >
+                                {{ $t('Edit') }}
+                              </button>
+                            </td>
 
-                          <!-- <td>
+                            <!-- <td>
                             {{ visit.employees?.[0]?.employeeName ?? '-' }}
                           </td>
 
                           <td>
                             {{ visit.activities?.[0]?.title ?? '-' }}
                           </td> -->
-                        </tr>
-                      </tbody>
-                    </table>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
 
                   <!-- <div v-else class="draft-list"> -->

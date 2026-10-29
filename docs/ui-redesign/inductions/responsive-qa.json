@@ -1,0 +1,73 @@
+{
+  "source": "Actual authenticated local route with real API records; Chrome DevTools MCP emulation and screenshots, DOM measurements through CDP.",
+  "sizes": [
+    {
+      "viewport": 1440,
+      "documentWidth": 1425,
+      "tableWidth": 1277,
+      "tableViewport": 1277,
+      "columns": 8,
+      "rows": 2,
+      "rowHeight": 68,
+      "inputHeight": 40,
+      "inputFont": "13px",
+      "actionWidth": 36,
+      "actionInsideViewport": true,
+      "headerColor": "rgb(80, 97, 120)",
+      "headerBackground": "rgb(248, 251, 255)"
+    },
+    {
+      "viewport": 1024,
+      "documentWidth": 1009,
+      "tableWidth": 881,
+      "tableViewport": 881,
+      "columns": 8,
+      "rows": 2,
+      "rowHeight": 68,
+      "inputHeight": 40,
+      "inputFont": "13px",
+      "actionWidth": 36,
+      "actionInsideViewport": true,
+      "headerColor": "rgb(80, 97, 120)",
+      "headerBackground": "rgb(248, 251, 255)"
+    },
+    {
+      "viewport": 768,
+      "documentWidth": 753,
+      "tableWidth": 880,
+      "tableViewport": 719,
+      "columns": 8,
+      "rows": 2,
+      "rowHeight": 68,
+      "inputHeight": 40,
+      "inputFont": "13px",
+      "actionWidth": 40,
+      "actionInsideViewport": true,
+      "headerColor": "rgb(80, 97, 120)",
+      "headerBackground": "rgb(248, 251, 255)"
+    },
+    {
+      "viewport": 390,
+      "documentWidth": 375,
+      "tableWidth": 880,
+      "tableViewport": 361,
+      "columns": 8,
+      "rows": 2,
+      "rowHeight": 68,
+      "inputHeight": 40,
+      "inputFont": "16px",
+      "actionWidth": 40,
+      "actionInsideViewport": true,
+      "headerColor": "rgb(80, 97, 120)",
+      "headerBackground": "rgb(248, 251, 255)"
+    }
+  ],
+  "rtl": {
+    "direction": "rtl",
+    "documentWidth": 375,
+    "viewport": 390,
+    "columns": 8,
+    "visualStatus": "Unresolved: navy application-shell surface covers Arabic mobile captures despite correct RTL table DOM and hit testing. Reproduced in MCP and direct CDP screenshots; not marked as visually passed."
+  },
+  "rowsAfterHorizontalScroll": 2
+}

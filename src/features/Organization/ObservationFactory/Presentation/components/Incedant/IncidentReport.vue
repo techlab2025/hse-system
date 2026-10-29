@@ -170,8 +170,8 @@ onMounted(() => fetchIncidents('', 1, countPerPage.value))
 
       <DataStatus :controller="state">
         <template #success>
-          <div class="table-responsive incident-report-board">
-            <table class="main-table">
+          <div class="table-responsive incident-report-board hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
               <thead>
                 <tr>
                   <th scope="col">#</th>

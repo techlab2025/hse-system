@@ -82,7 +82,8 @@ export default class AddTemplateItemParams implements Params {
       }))
     data['require_image'] = this.isImageRequired || 0
     data['required_type'] = Number(this.imageType) || 0
-    data['template_item_tag'] = this.tag || ''
+    // Template details expose questions through named groups; an empty tag hides them.
+    data['template_item_tag'] = this.tag?.trim() || 'General'
     if (this.needWorkingHourse != null)
       data['need_working_hourse'] = Boolean(this.needWorkingHourse)
     if (this.needWorkingMillage != null)

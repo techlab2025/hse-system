@@ -191,8 +191,8 @@ onMounted(fetchAttendance)
     <div v-else-if="attendance.length" class="attendance-groups">
       <section v-if="auditTeam.length" class="attendance-group">
         <h3>{{ $t('Audit team') }}</h3>
-        <div class="attendance-table-wrap">
-          <table class="attendance-table">
+        <div class="attendance-table-wrap hse-table-scroll">
+          <table v-table-identity class="attendance-table hse-data-table">
             <thead>
               <tr>
                 <th>{{ $t('Name') }}</th>
@@ -241,8 +241,8 @@ onMounted(fetchAttendance)
 
       <section v-if="participants.length" class="attendance-group">
         <h3>{{ $t('Participants') }}</h3>
-        <div class="attendance-table-wrap">
-          <table class="attendance-table">
+        <div class="attendance-table-wrap hse-table-scroll">
+          <table v-table-identity class="attendance-table hse-data-table">
             <thead>
               <tr>
                 <th>{{ $t('Name') }}</th>

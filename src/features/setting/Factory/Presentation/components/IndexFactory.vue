@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -181,200 +183,202 @@ const headerActions = () => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchFactory())"><Search /></span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        @input="searchFactory"
-      />
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <span class="icon-remove" @click="((word = ''), searchFactory())"><Search /></span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          @input="searchFactory"
+        />
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <ActionsList
+          feature-name="action_feature_factors"
+          :show-actions="true"
+          :action-list="headerActions()"
+          :actions-number="5"
+        >
+          <template #custom><ExportPdf :is-drop-list="true" /></template>
+        </ActionsList>
+      </div>
     </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <ActionsList
-        feature-name="action_feature_factors"
-        :show-actions="true"
-        :action-list="headerActions()"
-        :actions-number="5"
-      >
-        <template #custom><ExportPdf :is-drop-list="true" /></template>
-      </ActionsList>
-    </div>
-  </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.FACTORY_ALL,
-      PermissionsEnum.FACTORY_DELETE,
-      PermissionsEnum.FACTORY_FETCH,
-      PermissionsEnum.FACTORY_UPDATE,
-      PermissionsEnum.FACTORY_CREATE,
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.FACTORY_ALL,
+        PermissionsEnum.FACTORY_DELETE,
+        PermissionsEnum.FACTORY_FETCH,
+        PermissionsEnum.FACTORY_UPDATE,
+        PermissionsEnum.FACTORY_CREATE,
 
-      PermissionsEnum.ORG_FACTORY_ALL,
-      PermissionsEnum.ORG_FACTORY_DELETE,
-      PermissionsEnum.ORG_FACTORY_FETCH,
-      PermissionsEnum.ORG_FACTORY_UPDATE,
-      PermissionsEnum.ORG_FACTORY_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
-                  {{ $t('all_industries') }}
-                </th>
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
-                  {{ $t('industries') }}
-                </th>
-                <!--                <th scope="col">{{ $t('image') }}</th>-->
+        PermissionsEnum.ORG_FACTORY_ALL,
+        PermissionsEnum.ORG_FACTORY_DELETE,
+        PermissionsEnum.ORG_FACTORY_FETCH,
+        PermissionsEnum.ORG_FACTORY_UPDATE,
+        PermissionsEnum.ORG_FACTORY_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('title') }}</th>
+                  <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
+                  <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                    {{ $t('all_industries') }}
+                  </th>
+                  <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                    {{ $t('industries') }}
+                  </th>
+                  <!--                <th scope="col">{{ $t('image') }}</th>-->
 
-                <!-- <th scope="col">{{ $t('actions') }}</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/${item.id}`"
-                    >{{ (currentPage - 1) * countPerPage + index + 1 }}
-                  </router-link>
-                </td>
-                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
-                <td
-                  :data-label="$t('all_industries')"
-                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
-                >
-                  {{ item.allIndustries ? $t('yes') : $t('no') }}
-                </td>
-                <td
-                  :data-label="$t('all_industries')"
-                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
-                >
-                  {{
-                    item.industries.length > 0
-                      ? item.industries.map((industry) => industry.title).join(', ')
-                      : '---'
-                  }}
-                </td>
-                <!--                <td data-label="all_industries">-->
-                <!--                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />-->
-                <!--                </td>-->
+                  <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    <router-link
+                      :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/${item.id}`"
+                      >{{ (currentPage - 1) * countPerPage + index + 1 }}
+                    </router-link>
+                  </td>
+                  <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                  <td
+                    :data-label="$t('all_industries')"
+                    v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                  >
+                    {{ item.allIndustries ? $t('yes') : $t('no') }}
+                  </td>
+                  <td
+                    :data-label="$t('all_industries')"
+                    v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                  >
+                    {{
+                      item.industries.length > 0
+                        ? item.industries.map((industry) => industry.title).join(', ')
+                        : '---'
+                    }}
+                  </td>
+                  <!--                <td data-label="all_industries">-->
+                  <!--                  <img :src="item.image" @error="setDefaultImage($event)" alt="" />-->
+                  <!--                </td>-->
 
-                <td :data-label="$t('Actions')">
-                  <!--                <DialogChangeStatusFactory-->
-                  <!--                  v-if="item.FactoryStatus === FactoryStatusEnum.Draft"-->
-                  <!--                  :FactoryId="item.id"-->
-                  <!--                  @FactoryChangeStatus="fetchFactory"-->
-                  <!--                />-->
+                  <td :data-label="$t('Actions')">
+                    <!--                <DialogChangeStatusFactory-->
+                    <!--                  v-if="item.FactoryStatus === FactoryStatusEnum.Draft"-->
+                    <!--                  :FactoryId="item.id"-->
+                    <!--                  @FactoryChangeStatus="fetchFactory"-->
+                    <!--                />-->
 
-                  <DropList :action-list="rowActions(item.id)" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
+                    <DropList :action-list="rowActions(item.id)" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #empty>
+          <PermissionBuilder
+            :code="[
+              PermissionsEnum.ADMIN,
+              PermissionsEnum.ORGANIZATION_EMPLOYEE,
+              PermissionsEnum.FACTORY_CREATE,
+              PermissionsEnum.ORG_FACTORY_CREATE,
+            ]"
+          >
+            <DataEmpty
+              :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
+              :addText="$t('add_hazard_factor')"
+              :description="
+                $t(
+                  'You have no Factor .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Factor')"
+            />
+          </PermissionBuilder>
+        </template>
+        <template #failed>
+          <PermissionBuilder
+            :code="[
+              PermissionsEnum.ADMIN,
+              PermissionsEnum.ORGANIZATION_EMPLOYEE,
+              PermissionsEnum.FACTORY_CREATE,
+              PermissionsEnum.ORG_FACTORY_CREATE,
+            ]"
+          >
+            <DataFailed
+              :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
+              :addText="$t('add_hazard_factor')"
+              :description="
+                $t(
+                  'You have no Factor .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Factor')"
+            />
+          </PermissionBuilder>
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
+        <DataFailed
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no Factor .. All your joined customers will appear here when you add your customer data',
+            )
+          "
         />
       </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
-        <PermissionBuilder
-          :code="[
-            PermissionsEnum.ADMIN,
-            PermissionsEnum.ORGANIZATION_EMPLOYEE,
-            PermissionsEnum.FACTORY_CREATE,
-            PermissionsEnum.ORG_FACTORY_CREATE,
-          ]"
-        >
-          <DataEmpty
-            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
-            :addText="$t('add_hazard_factor')"
-            :description="
-              $t(
-                'You have no Factor .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Factor')"
-          />
-        </PermissionBuilder>
-      </template>
-      <template #failed>
-        <PermissionBuilder
-          :code="[
-            PermissionsEnum.ADMIN,
-            PermissionsEnum.ORGANIZATION_EMPLOYEE,
-            PermissionsEnum.FACTORY_CREATE,
-            PermissionsEnum.ORG_FACTORY_CREATE,
-          ]"
-        >
-          <DataFailed
-            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
-            :addText="$t('add_hazard_factor')"
-            :description="
-              $t(
-                'You have no Factor .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Factor')"
-          />
-        </PermissionBuilder>
-      </template>
-    </DataStatus>
+    </PermissionBuilder>
 
-    <template #notPermitted>
-      <DataFailed
-        :addText="$t('auditUi.you_do_not_have_permission')"
-        :description="
-          $t(
-            'You have no Factor .. All your joined customers will appear here when you add your customer data',
-          )
-        "
+    <Dialog
+      v-model:visible="showUploadDialog"
+      modal
+      :dismissable-mask="!importBusy"
+      :closable="!importBusy"
+      :close-on-escape="!importBusy"
+      :header="$t('import_factors')"
+      :style="{ width: '80vw', maxWidth: '900px' }"
+    >
+      <UploaFactorExeclSheet
+        v-if="showUploadDialog"
+        :initial-file="pendingFile"
+        @uploaded="onUploaded"
+        @busy="importBusy = $event"
       />
-    </template>
-  </PermissionBuilder>
-
-  <Dialog
-    v-model:visible="showUploadDialog"
-    modal
-    :dismissable-mask="!importBusy"
-    :closable="!importBusy"
-    :close-on-escape="!importBusy"
-    :header="$t('import_factors')"
-    :style="{ width: '80vw', maxWidth: '900px' }"
-  >
-    <UploaFactorExeclSheet
-      v-if="showUploadDialog"
-      :initial-file="pendingFile"
-      @uploaded="onUploaded"
-      @busy="importBusy = $event"
+    </Dialog>
+    <input
+      ref="fileInputRef"
+      type="file"
+      accept=".xls,.xlsx"
+      style="display: none"
+      @change="onFileSelected"
     />
-  </Dialog>
-  <input
-    ref="fileInputRef"
-    type="file"
-    accept=".xls,.xlsx"
-    style="display: none"
-    @change="onFileSelected"
-  />
+  </RegisterPage>
 </template>
 
 <style scoped></style>

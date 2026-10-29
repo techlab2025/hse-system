@@ -270,8 +270,8 @@ onMounted(() => fetchLessons())
       <DataStatus :controller="state">
         <template #success>
           <section v-if="visibleLessons.length" class="lessons-board">
-            <div class="lessons-table-scroll">
-              <table class="lessons-table">
+            <div class="lessons-table-scroll hse-table-scroll">
+              <table v-table-identity class="lessons-table hse-data-table">
                 <thead>
                   <tr>
                     <th class="number-column">#</th>

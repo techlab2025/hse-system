@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -142,146 +144,148 @@ const actionList = (id: number, deleteAboutUsCore: (id: number) => void) => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchAboutUsCore())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchAboutUsCore"
-      />
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
+        <span class="icon-remove" @click="((word = ''), searchAboutUsCore())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchAboutUsCore"
+        />
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <!-- <ExportExcel :data="state.data" /> -->
+        <ExportPdf />
+        <PermissionBuilder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.ABOUT_US_CORE_CREATE]">
+          <router-link to="/admin/about-us-core/add" class="btn btn-primary">
+            {{ $t('add_about_us') }}
+          </router-link>
+        </PermissionBuilder>
+      </div>
     </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
-      <ExportPdf />
-      <PermissionBuilder :code="[PermissionsEnum.WEBSITE, PermissionsEnum.ABOUT_US_CORE_CREATE]">
-        <router-link to="/admin/about-us-core/add" class="btn btn-primary">
-          {{ $t('add_about_us') }}
-        </router-link>
-      </PermissionBuilder>
-    </div>
-  </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.WEBSITE,
-      PermissionsEnum.ABOUT_US_CORE_ALL,
-      PermissionsEnum.ABOUT_US_CORE_DELETE,
-      PermissionsEnum.ABOUT_US_CORE_FETCH,
-      PermissionsEnum.ABOUT_US_CORE_UPDATE,
-      PermissionsEnum.ABOUT_US_CORE_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col">{{ $t('subtitle') }}</th>
-                <th scope="col">{{ $t('image') }}</th>
-                <th scope="col">{{ $t('status') }}</th>
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.WEBSITE,
+        PermissionsEnum.ABOUT_US_CORE_ALL,
+        PermissionsEnum.ABOUT_US_CORE_DELETE,
+        PermissionsEnum.ABOUT_US_CORE_FETCH,
+        PermissionsEnum.ABOUT_US_CORE_UPDATE,
+        PermissionsEnum.ABOUT_US_CORE_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('title') }}</th>
+                  <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
+                  <th scope="col">{{ $t('subtitle') }}</th>
+                  <th scope="col">{{ $t('image') }}</th>
+                  <th scope="col">{{ $t('status') }}</th>
 
-                <!-- <th scope="col">{{ $t('actions') }}</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link :to="`/admin/about-us-core/${item.id}`"
-                    >{{ index + 1 }}
-                  </router-link>
-                </td>
-                <td :data-label="$t('title')">{{ wordSlice(item.title) }}</td>
-                <td :data-label="$t('subtitle')">{{ wordSlice(item.subtitle) }}</td>
-                <td :data-label="$t('image')">
-                  <img :src="item.image" width="100" height="100" />
-                </td>
-                <td :data-label="$t('status')">
-                  <PermissionBuilder
-                    :code="[
-                      PermissionsEnum.WEBSITE,
-                      PermissionsEnum.ABOUT_US_CORE_ALL,
-                      PermissionsEnum.ABOUT_US_CORE_CHANGE_STATUS,
-                    ]"
-                  >
-                    <ToggleSwitch
-                      :modelValue="item.is_active === 1"
-                      binary
-                      @update:model-value="changeStatusAboutUsCore(item.id)"
+                  <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    <router-link :to="`/admin/about-us-core/${item.id}`"
+                      >{{ index + 1 }}
+                    </router-link>
+                  </td>
+                  <td :data-label="$t('title')">{{ wordSlice(item.title) }}</td>
+                  <td :data-label="$t('subtitle')">{{ wordSlice(item.subtitle) }}</td>
+                  <td :data-label="$t('image')">
+                    <img :src="item.image" width="100" height="100" />
+                  </td>
+                  <td :data-label="$t('status')">
+                    <PermissionBuilder
+                      :code="[
+                        PermissionsEnum.WEBSITE,
+                        PermissionsEnum.ABOUT_US_CORE_ALL,
+                        PermissionsEnum.ABOUT_US_CORE_CHANGE_STATUS,
+                      ]"
+                    >
+                      <ToggleSwitch
+                        :modelValue="item.is_active === 1"
+                        binary
+                        @update:model-value="changeStatusAboutUsCore(item.id)"
+                      />
+                    </PermissionBuilder>
+                  </td>
+
+                  <td :data-label="$t('Actions')">
+                    <DropList
+                      :actionList="actionList(item.id, deleteAboutUsCore)"
+                      @delete="deleteAboutUsCore(item.id)"
                     />
-                  </PermissionBuilder>
-                </td>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #empty>
+          <DataEmpty
+            :link="`/admin/about-us-core/add`"
+            :addText="$t('auditUi.add_core_value')"
+            :description="
+              $t(
+                'You have no AboutUsCore .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No AboutUsCore')"
+          />
+        </template>
+        <template #failed>
+          <DataFailed
+            :link="`/admin/about-us-core/add`"
+            :addText="$t('auditUi.add_core_value')"
+            :description="
+              $t(
+                'You have no AboutUsCore .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No AboutUsCore')"
+          />
+        </template>
+      </DataStatus>
 
-                <td :data-label="$t('Actions')">
-                  <DropList
-                    :actionList="actionList(item.id, deleteAboutUsCore)"
-                    @delete="deleteAboutUsCore(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
-      </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
-        <DataEmpty
-          :link="`/admin/about-us-core/add`"
-          :addText="$t('auditUi.add_core_value')"
-          :description="
-            $t(
-              'You have no AboutUsCore .. All your joined customers will appear here when you add your customer data',
-            )
-          "
-          :title="$t('You have No AboutUsCore')"
-        />
-      </template>
-      <template #failed>
+      <template #notPermitted>
         <DataFailed
-          :link="`/admin/about-us-core/add`"
-          :addText="$t('auditUi.add_core_value')"
+          :addText="$t('auditUi.you_do_not_have_permission')"
           :description="
             $t(
               'You have no AboutUsCore .. All your joined customers will appear here when you add your customer data',
             )
           "
-          :title="$t('You have No AboutUsCore')"
         />
       </template>
-    </DataStatus>
-
-    <template #notPermitted>
-      <DataFailed
-        :addText="$t('auditUi.you_do_not_have_permission')"
-        :description="
-          $t(
-            'You have no AboutUsCore .. All your joined customers will appear here when you add your customer data',
-          )
-        "
-      />
-    </template>
-  </PermissionBuilder>
+    </PermissionBuilder>
+  </RegisterPage>
 </template>
 
 <style scoped></style>

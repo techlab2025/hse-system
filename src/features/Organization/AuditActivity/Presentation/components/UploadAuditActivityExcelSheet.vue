@@ -197,8 +197,8 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
                 $t('row_count', { count: mappedData.length - 1 })
               }}</span>
             </div>
-            <div class="table-responsive">
-              <table class="main-table">
+            <div class="table-responsive hse-table-scroll">
+              <table v-table-identity class="main-table hse-data-table">
                 <thead>
                   <tr>
                     <th v-for="(item, i) in mappedData[0]" :key="i">

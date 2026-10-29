@@ -306,17 +306,17 @@ const certificateTypes = ref<TitleInterface[]>([
   new TitleInterface({
     id: CertificateTypeEnum.SCALE,
     title: 'skill',
-    translationKey: 'organization_certificate_type_skill',
+    translationKey: 'certificate_type_skill',
   }),
   new TitleInterface({
     id: CertificateTypeEnum.AWARENESS,
     title: 'awareness',
-    translationKey: 'organization_certificate_type_awareness',
+    translationKey: 'certificate_type_awareness',
   }),
   new TitleInterface({
     id: CertificateTypeEnum.KNOWLEDGE,
     title: 'knowledge',
-    translationKey: 'organization_certificate_type_knowledge',
+    translationKey: 'certificate_type_knowledge',
   }),
 ])
 const certificateType = ref<TitleInterface>(certificateTypes.value[0])
@@ -402,8 +402,8 @@ defineExpose({
       :modelValue="langs"
       @update:modelValue="(val) => (langs = val)"
       :required="true"
-      :label="$t('certtificate_title')"
-      :placeholder="$t('certtificate_title')"
+      :label="$t('certificate_title')"
+      :placeholder="$t('certificate_title')"
     />
     <p v-if="getFieldError('langs')" class="required-field-message">
       {{ getFieldError('langs') }}

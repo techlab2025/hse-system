@@ -191,8 +191,8 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
     >
       <DataStatus :controller="state">
         <template #success>
-          <div class="table-responsive employee-certificates-matrix">
-            <table class="main-table">
+          <div class="table-responsive employee-certificates-matrix hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
               <thead>
                 <tr>
                   <th class="w-fit">{{ $t('emp') }}</th>

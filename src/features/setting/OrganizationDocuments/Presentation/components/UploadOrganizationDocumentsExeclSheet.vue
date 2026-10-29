@@ -187,8 +187,8 @@ const submit = async () => {
           <h3 class="table-title">{{ $t('Mapped Data Preview') }}</h3>
           <span class="table-badge">{{ mappedRows.length }} {{ $t('rows') }}</span>
         </div>
-        <div class="table-responsive">
-          <table class="main-table">
+        <div class="table-responsive hse-table-scroll">
+          <table v-table-identity class="main-table hse-data-table">
             <thead>
               <tr>
                 <th v-for="column in previewColumns" :key="column">{{ $t(column) }}</th>

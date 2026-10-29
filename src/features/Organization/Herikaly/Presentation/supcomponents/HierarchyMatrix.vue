@@ -233,8 +233,8 @@ const ChangeCertificatioRequired = async (
         <template #success>
           <!-- {{ state.data }} -->
 
-          <div class="table-responsive employee-certificates-matrix">
-            <table class="main-table">
+          <div class="table-responsive employee-certificates-matrix hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
               <thead>
                 <tr>
                   <th class="w-fit">{{ $t('positions') }}</th>

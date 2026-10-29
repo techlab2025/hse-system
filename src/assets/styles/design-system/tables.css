@@ -1,54 +1,466 @@
-.hse-cloud-identity :is(.table-responsive, .table-container, .p-datatable) {
-  overflow: hidden;
-  border: 1px solid var(--hse-color-border);
-  border-radius: var(--hse-radius-card);
-  background: var(--hse-color-surface);
-  box-shadow: var(--hse-shadow-sm);
-}
+/* Shared register language, based on the approved Inductions iteration.
+   Screen presentation only: API data, table spans, permissions and print layouts stay intact. */
+@media screen {
+  html.hse-cloud-identity {
+    --hse-table-primary: var(--identity-primary, var(--hse-color-primary));
+    --hse-table-primary-soft: color-mix(
+      in srgb,
+      var(--hse-table-primary) 8%,
+      var(--hse-color-surface)
+    );
+    --hse-table-control-height: 40px;
+    --hse-table-row-height: 64px;
+    --hse-table-radius: 12px;
+    --hse-table-cell-space: 18px;
+  }
 
-.hse-cloud-identity :is(table, .main-table) {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  color: var(--hse-color-text);
-  font-size: var(--hse-text-sm);
-}
+  /* Runtime HTML (for example document previews) has no Vue directive.
+     Keep a low-priority fallback so authored inline formats still win. */
+  html.hse-cloud-identity table:not(.hse-data-table):not(.p-datatable-table) {
+    width: 100%;
+    border-spacing: 0;
+    color: var(--hse-color-text);
+    font-family: inherit;
+    font-size: 13px;
+  }
+  html.hse-cloud-identity table:not(.hse-data-table):not(.p-datatable-table) :is(th, td) {
+    padding: 12px 16px;
+    border-block-end: 1px solid var(--hse-color-divider);
+    text-align: start;
+    vertical-align: middle;
+  }
+  html.hse-cloud-identity table:not(.hse-data-table):not(.p-datatable-table) thead th {
+    background: var(--hse-color-surface-muted);
+    color: var(--hse-color-text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+  }
 
-.hse-cloud-identity :is(table, .main-table, .p-datatable-table) :is(th, .p-datatable-header-cell) {
-  padding: 0.75rem 1rem;
-  border-block-end: 1px solid var(--hse-color-border);
-  background: var(--hse-color-surface-muted);
-  color: var(--hse-color-text-secondary);
-  text-align: start;
-  text-transform: none;
-}
+  .hse-register-page {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--hse-color-border);
+    border-radius: var(--hse-table-radius);
+    background: var(--hse-color-surface);
+    color: var(--hse-color-text);
+    box-shadow: 0 3px 14px rgb(18 48 84 / 3%);
+  }
+  .hse-register-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 20px 24px;
+  }
+  .hse-register-title {
+    margin: 0;
+    color: var(--hse-color-text);
+    font-size: 30px;
+    font-weight: 650;
+    line-height: 1.2;
+    letter-spacing: -0.6px;
+  }
+  .hse-register-description {
+    margin: 9px 0 0;
+    color: var(--hse-color-text-secondary);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .hse-register-content {
+    min-width: 0;
+    padding: 12px;
+    gap: 20px;
+    display: flex;
+    flex-direction: column !important;
+  }
+  .hse-register-page .hse-register-page {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .hse-register-page .hse-register-page > .hse-register-header {
+    display: none;
+  }
 
-.hse-cloud-identity :is(table, .main-table, .p-datatable-table) :is(td, .p-datatable-body-cell) {
-  padding: 0.75rem 1rem;
-  border-block-end: 1px solid var(--hse-color-divider);
-  background: var(--hse-color-surface);
-  color: var(--hse-color-text);
-  vertical-align: middle;
-}
+  /* Native and PrimeVue containers scroll internally; no mobile record-card conversion. */
+  html.hse-cloud-identity :is(.hse-table-scroll, .p-datatable) {
+    min-width: 0;
+    max-width: 100%;
+    border: 1px solid var(--hse-color-border);
+    border-radius: var(--hse-table-radius);
+    background: var(--hse-color-surface);
+    box-shadow: 0 3px 14px rgb(18 48 84 / 3%);
+  }
+  html.hse-cloud-identity .hse-table-scroll {
+    display: block;
+    width: 100%;
+    overflow-x: auto !important;
+    padding: 0 !important;
+    scrollbar-width: thin;
+    scrollbar-color: var(--hse-color-border) transparent;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  html.hse-cloud-identity .hse-table-scroll::-webkit-scrollbar {
+    height: 7px;
+  }
+  html.hse-cloud-identity .hse-table-scroll::-webkit-scrollbar-track {
+    background: var(--hse-color-surface-muted);
+  }
+  html.hse-cloud-identity .hse-table-scroll::-webkit-scrollbar-thumb {
+    border: 0;
+    border-radius: 4px;
+    background: var(--hse-color-border);
+  }
+  html.hse-cloud-identity .hse-register-page .hse-table-scroll {
+    margin-block: 0 !important;
+    border-inline: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  html.hse-cloud-identity :is(.p-datatable-table-container, .p-datatable-wrapper) {
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  html.hse-cloud-identity .hse-table-scroll > table.hse-data-table,
+  html.hse-cloud-identity .p-datatable-table {
+    display: table;
+    width: 100%;
+    max-width: none;
+    min-width: var(--hse-table-min-width, 100%);
+    margin: 0;
+    border: 0;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    background: var(--hse-color-surface);
+    color: var(--hse-color-text);
+    font-family: inherit;
+    font-size: 13px;
+    text-align: start;
+  }
+  /* Restore semantic table layout after the legacy mobile-card rules.
+     Display is deliberately not !important: v-show's inline display:none still wins. */
+  html.hse-cloud-identity .hse-table-scroll > table.hse-data-table > thead {
+    display: table-header-group;
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    clip: auto !important;
+    clip-path: none !important;
+    white-space: normal;
+  }
+  html.hse-cloud-identity .hse-table-scroll > table.hse-data-table > tbody {
+    display: table-row-group;
+    width: auto;
+    padding: 0;
+  }
+  html.hse-cloud-identity .hse-table-scroll > table.hse-data-table > tfoot {
+    display: table-footer-group;
+  }
+  html.hse-cloud-identity .hse-table-scroll > table.hse-data-table > :is(thead, tbody, tfoot) > tr {
+    display: table-row;
+    position: static;
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+  }
+  html.hse-cloud-identity
+    .hse-table-scroll
+    > table.hse-data-table
+    > :is(thead, tbody, tfoot)
+    > tr
+    > :is(th, td),
+  html.hse-cloud-identity .p-datatable-table :is(th, td) {
+    display: table-cell;
+    max-width: none;
+    padding: 14px var(--hse-table-cell-space) !important;
+    border-radius: 0;
+    border-block-end: 1px solid var(--hse-color-divider);
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.5;
+    vertical-align: middle;
+    box-shadow: none;
+  }
+  html.hse-cloud-identity .hse-table-scroll > table.hse-data-table > thead > tr > :is(th, td),
+  html.hse-cloud-identity .p-datatable-thead > tr > th {
+    padding-block: 12px !important;
+    border-block: 1px solid var(--hse-color-border);
+    background: var(--hse-color-surface-muted);
+    color: var(--hse-color-text-secondary);
+    font-size: 12px !important;
+    font-weight: 600;
+    letter-spacing: normal;
+    text-align: start;
+    text-transform: none;
+    white-space: nowrap !important;
+  }
+  html.hse-cloud-identity .hse-table-scroll > table.hse-data-table > tbody > tr > td {
+    height: var(--hse-table-row-height);
+    border-block-start: 0;
+    border-inline: 0;
+    font-size: 13px;
+    font-weight: 400;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  html.hse-cloud-identity table.hse-data-table > tbody > tr:last-child > :is(td, th) {
+    border-block-end: 0;
+  }
+  html.hse-cloud-identity
+    table.main-table.hse-data-table
+    > tbody
+    > tr:not(:hover)
+    > td:not([style]):not([class]) {
+    background: var(--hse-color-surface);
+    color: var(--hse-color-text);
+  }
+  html.hse-cloud-identity
+    table.main-table.hse-data-table
+    > tbody
+    > tr:hover
+    > td:not([style]):not([class]) {
+    background: var(--hse-color-surface-muted);
+  }
+  html.hse-cloud-identity table.main-table.hse-data-table td[data-label]::before {
+    display: none !important;
+  }
+  html.hse-cloud-identity
+    .hse-table-scroll
+    > table.hse-data-table
+    > thead
+    > tr
+    > th:not([style]):not([class*='risk']):not([class*='status']):not([class*='bg-']) {
+    background: var(--hse-color-surface-muted) !important;
+    color: var(--hse-color-text-secondary) !important;
+    font-weight: 600 !important;
+  }
+  html.hse-cloud-identity table.hse-data-table .not-req-span {
+    white-space: nowrap;
+    overflow-wrap: normal;
+  }
+  /* Remove legacy pinned index/end cells. Explicit matrix/frozen-column classes keep their own rules. */
+  html.hse-cloud-identity
+    table.main-table.hse-data-table:not([class*='matrix']):not(.delivery-table)
+    > :is(thead, tbody)
+    > tr
+    > :is(th, td):is(:first-child, :last-child) {
+    position: static;
+    inset-inline: auto;
+  }
+  html.hse-cloud-identity table.hse-data-table td:has(.list-trigger) {
+    white-space: nowrap;
+  }
+  html.hse-cloud-identity table.hse-data-table td:last-child:has(.list-trigger) {
+    position: sticky !important;
+    inset-inline-end: 0 !important;
+    inset-inline-start: auto !important;
+    z-index: 2;
+    background: var(--hse-color-surface);
+    box-shadow: -1px 0 0 var(--hse-color-divider);
+  }
 
-.hse-cloud-identity :is(table, .main-table, .p-datatable-table) tbody tr {
-  transition: background-color var(--hse-transition-fast) var(--hse-ease);
-}
+  html.hse-cloud-identity
+    table.hse-data-table[data-hse-index-column]
+    > :is(thead, tbody)
+    > tr
+    > :is(th, td):first-child {
+    width: 56px;
+  }
+  html.hse-cloud-identity
+    table.hse-data-table[data-hse-index-column]
+    > tbody
+    > tr
+    > td:nth-child(2) {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  html.hse-cloud-identity
+    table.hse-data-table[data-hse-actions-column]
+    > :is(thead, tbody)
+    > tr
+    > :is(th, td):last-child {
+    width: 72px;
+    text-align: center;
+  }
 
-.hse-cloud-identity :is(table, .main-table, .p-datatable-table) tbody tr:hover > td {
-  background: var(--hse-color-surface-muted);
-}
+  .hse-register-content > :is(.grid, .input_search_btn):has(.input-search),
+  .hse-register-content > .input-search {
+    margin: 0 !important;
+    padding: 16px 24px;
+    border-block-start: 1px solid var(--hse-color-divider);
+    background: var(--hse-color-surface);
+  }
+  .hse-register-content > :is(.grid, .input_search_btn):has(.input-search) {
+    display: grid;
+    grid-template-columns: minmax(200px, 340px) minmax(0, 1fr);
+    align-items: center;
+    gap: 16px;
+  }
+  .hse-register-content > :is(.grid, .input_search_btn):has(.input-search) > * {
+    grid-column: auto;
+    min-width: 0;
+  }
+  .hse-register-content :is(.input-search, .input_search) {
+    position: relative;
+    min-width: 0;
+  }
+  .hse-register-content .input-search input {
+    width: 100%;
+    min-height: var(--hse-table-control-height) !important;
+    padding: 8px 36px !important;
+    border: 1px solid var(--hse-color-border);
+    border-radius: 7px;
+    background: var(--hse-color-surface-muted);
+    color: var(--hse-color-text);
+    font-size: 13px !important;
+    box-shadow: none;
+  }
+  .hse-register-content .input-search .icon-remove {
+    position: absolute;
+    inset-inline-start: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+  }
+  .hse-register-content .input-search .icon-remove svg {
+    width: 18px;
+    height: 18px;
+  }
+  .hse-register-content :is(.btn-primary, .btn-secondary) {
+    min-height: var(--hse-table-control-height);
+    border-radius: 7px;
+    padding: 9px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: none;
+  }
+  html.hse-cloud-identity .hse-table-action {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid var(--hse-color-border);
+    border-radius: 7px;
+    background: var(--hse-color-surface);
+    color: var(--hse-color-text-secondary);
+    cursor: pointer;
+  }
+  html.hse-cloud-identity .hse-table-action:hover {
+    border-color: var(--hse-table-primary);
+    background: var(--hse-table-primary-soft);
+    color: var(--hse-table-primary);
+  }
+  html.hse-cloud-identity .hse-table-action svg {
+    width: 18px;
+    height: 18px;
+  }
+  html.hse-cloud-identity :is(.hse-register-pagination, .p-paginator) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 0;
+    padding: 14px 24px;
+    border: 0;
+    border-block-start: 1px solid var(--hse-color-border);
+    border-radius: 0 0 var(--hse-table-radius) var(--hse-table-radius);
+    background: var(--hse-color-surface-muted);
+    color: var(--hse-color-text-secondary);
+    font-size: 12px;
+    box-shadow: none;
+  }
+  html.hse-cloud-identity .hse-register-pagination :is(.pagination, .count-per-page) {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+  html.hse-cloud-identity :is(.hse-register-pagination button, .p-paginator button) {
+    min-width: 34px;
+    min-height: 34px;
+    padding: 6px 10px;
+    border: 1px solid var(--hse-color-border);
+    border-radius: 6px;
+    background: var(--hse-color-surface);
+    color: var(--hse-color-text-secondary);
+    font-size: 12px;
+    box-shadow: none;
+  }
+  html.hse-cloud-identity .hse-register-pagination .active {
+    border-color: var(--hse-table-primary);
+    background: var(--hse-table-primary);
+    color: white;
+  }
+  html.hse-cloud-identity .hse-register-pagination button:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+  html.hse-cloud-identity
+    :is(.hse-table-scroll, .hse-table-action, .hse-register-pagination button):focus-visible {
+    outline: 2px solid var(--hse-table-primary);
+    outline-offset: -3px;
+  }
 
-.hse-cloud-identity :is(.p-paginator, .pagination) {
-  gap: 0.25rem;
-  border-block-start: 1px solid var(--hse-color-divider);
-  background: var(--hse-color-surface);
-  padding: 0.75rem;
+  @media (max-width: 1024px) {
+    html.hse-cloud-identity {
+      --hse-table-cell-space: 14px;
+    }
+    .hse-register-header {
+      padding: 20px;
+    }
+  }
+  @media (max-width: 768px) {
+    .hse-register-title {
+      font-size: 24px;
+    }
+    .hse-register-header {
+      padding: 20px 16px;
+    }
+    .hse-register-content > :is(.grid, .input_search_btn):has(.input-search) {
+      grid-template-columns: 1fr;
+      padding: 14px 16px;
+    }
+    .hse-register-content .input-search input {
+      font-size: 16px !important;
+    }
+    html.hse-cloud-identity .hse-table-action {
+      width: 40px;
+      height: 40px;
+    }
+    html.hse-cloud-identity :is(.hse-register-pagination, .p-paginator) {
+      padding: 13px 16px;
+      justify-content: flex-start !important;
+    }
+  }
 }
-
-.hse-cloud-identity
-  :is(.p-paginator-page, .p-paginator-next, .p-paginator-prev, .pagination button) {
-  min-width: 2.25rem;
-  min-height: 2.25rem;
-  border-radius: 0.625rem;
+@media print {
+  .hse-register-page {
+    border: 0;
+    box-shadow: none;
+  }
+  .hse-register-header {
+    display: none;
+  }
+  .hse-table-scroll {
+    overflow: visible !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
 }

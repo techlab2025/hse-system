@@ -140,8 +140,8 @@ const isExternalUrl = (value: unknown) => typeof value === 'string' && /^https?:
 
 <template>
   <div class="dynamic-report-table-container">
-    <div class="dynamic-report-table-wrap">
-      <table class="main-table dynamic-report-table">
+    <div class="dynamic-report-table-wrap hse-table-scroll">
+      <table v-table-identity class="main-table dynamic-report-table hse-data-table">
         <thead>
           <tr>
             <th class="dynamic-report-table__number" scope="col">#</th>

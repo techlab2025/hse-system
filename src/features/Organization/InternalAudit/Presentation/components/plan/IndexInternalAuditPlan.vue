@@ -245,8 +245,8 @@ const handleCountPerPage = (count: number) => {
 
     <DataStatus :controller="state">
       <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
+        <div class="table-responsive hse-table-scroll">
+          <table v-table-identity class="main-table hse-data-table">
             <thead>
               <tr>
                 <th>{{ $t('audit_number') }}</th>

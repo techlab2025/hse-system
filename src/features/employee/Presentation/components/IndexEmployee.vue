@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 // import IndexEmployeeTypeParams from '@/features/setting/EmployeeType/Core/params/indexEmployeeTypeParams'
 // import IndexEmployeeTypeController from '@/features/setting/EmployeeType/Presentation/controllers/indexEmployeeTypeController'
 
@@ -152,157 +154,159 @@ watch(
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchEmployeeType())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchEmployeeType"
-      />
-    </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
-      <ExportPdf />
-      <permission-builder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.EQUIPMENT_CREATE,
-        ]"
-      >
-        <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add`"
-          class="btn btn-primary"
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
+        <span class="icon-remove" @click="((word = ''), searchEmployeeType())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchEmployeeType"
+        />
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <!-- <ExportExcel :data="state.data" /> -->
+        <ExportPdf />
+        <permission-builder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.EQUIPMENT_CREATE,
+          ]"
         >
-          {{ $t('Add_Employee') }}
-        </router-link>
-      </permission-builder>
+          <router-link
+            :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add`"
+            class="btn btn-primary"
+          >
+            {{ $t('Add_Employee') }}
+          </router-link>
+        </permission-builder>
+      </div>
     </div>
-  </div>
 
-  <permission-builder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.EQUIPMENT_ALL,
-      PermissionsEnum.EQUIPMENT_DELETE,
-      PermissionsEnum.EQUIPMENT_FETCH,
-      PermissionsEnum.EQUIPMENT_UPDATE,
-      PermissionsEnum.EQUIPMENT_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col">{{ $t('all_industries') }}</th>
-                <th scope="col">{{ $t('industries') }}</th>
-                <th scope="col">{{ $t('EmployeeType') }}</th>
+    <permission-builder
+      :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.EQUIPMENT_ALL,
+        PermissionsEnum.EQUIPMENT_DELETE,
+        PermissionsEnum.EQUIPMENT_FETCH,
+        PermissionsEnum.EQUIPMENT_UPDATE,
+        PermissionsEnum.EQUIPMENT_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('title') }}</th>
+                  <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
+                  <th scope="col">{{ $t('all_industries') }}</th>
+                  <th scope="col">{{ $t('industries') }}</th>
+                  <th scope="col">{{ $t('EmployeeType') }}</th>
 
-                <!-- <th scope="col">Actions</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/edit/${item.id}`"
-                    >{{ index + 1 }}
-                  </router-link>
-                </td>
-                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
-                <td :data-label="$t('all_industries')">
-                  {{ item.allIndustries ? $t('yes') : $t('no') }}
-                </td>
-                <td :data-label="$t('industries')">
-                  {{
-                    item.industries.length > 0
-                      ? item.industries.map((industry) => industry.title).join(', ')
-                      : $t('no')
-                  }}
-                </td>
-                <td :data-label="$t('EmployeeType')">
-                  {{ item.equipmentType?.title }}
-                </td>
+                  <!-- <th scope="col">Actions</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    <router-link
+                      :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/edit/${item.id}`"
+                      >{{ index + 1 }}
+                    </router-link>
+                  </td>
+                  <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                  <td :data-label="$t('all_industries')">
+                    {{ item.allIndustries ? $t('yes') : $t('no') }}
+                  </td>
+                  <td :data-label="$t('industries')">
+                    {{
+                      item.industries.length > 0
+                        ? item.industries.map((industry) => industry.title).join(', ')
+                        : $t('no')
+                    }}
+                  </td>
+                  <td :data-label="$t('EmployeeType')">
+                    {{ item.equipmentType?.title }}
+                  </td>
 
-                <td :data-label="$t('Actions')">
-                  <!--                <DialogChangeStatusEmployeeType-->
-                  <!--                  v-if="item.EmployeeTypeStatus === EmployeeTypeStatusEnum.Draft"-->
-                  <!--                  :EmployeeTypeId="item.id"-->
-                  <!--                  @EmployeeTypeChangeStatus="fetchEmployeeType"-->
-                  <!--                />-->
+                  <td :data-label="$t('Actions')">
+                    <!--                <DialogChangeStatusEmployeeType-->
+                    <!--                  v-if="item.EmployeeTypeStatus === EmployeeTypeStatusEnum.Draft"-->
+                    <!--                  :EmployeeTypeId="item.id"-->
+                    <!--                  @EmployeeTypeChangeStatus="fetchEmployeeType"-->
+                    <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteEmployee)"
-                    @delete="deleteEmployee(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
-      </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
-        <DataEmpty
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EmployeeType`"
-          :addText="$t('auditUi.add_employee_type')"
-          :description="
-            $t(
-              'You have no EmployeeTypes .. All your joined customers will appear here when you add your customer data',
-            )
-          "
-          :title="$t('You have No EmployeeTypes')"
-        />
-      </template>
-      <template #failed>
+                    <DropList
+                      :actionList="actionList(item.id, deleteEmployee)"
+                      @delete="deleteEmployee(item.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #empty>
+          <DataEmpty
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EmployeeType`"
+            :addText="$t('auditUi.add_employee_type')"
+            :description="
+              $t(
+                'You have no EmployeeTypes .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No EmployeeTypes')"
+          />
+        </template>
+        <template #failed>
+          <DataFailed
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EmployeeType`"
+            :addText="$t('auditUi.add_employee_type')"
+            :description="
+              $t(
+                'You have no EmployeeType .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No EmployeeTypes')"
+          />
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
         <DataFailed
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EmployeeType`"
-          :addText="$t('auditUi.add_employee_type')"
+          :addText="$t('auditUi.you_do_not_have_permission')"
           :description="
             $t(
               'You have no EmployeeType .. All your joined customers will appear here when you add your customer data',
             )
           "
-          :title="$t('You have No EmployeeTypes')"
         />
       </template>
-    </DataStatus>
-
-    <template #notPermitted>
-      <DataFailed
-        :addText="$t('auditUi.you_do_not_have_permission')"
-        :description="
-          $t(
-            'You have no EmployeeType .. All your joined customers will appear here when you add your customer data',
-          )
-        "
-      />
-    </template>
-  </permission-builder>
+    </permission-builder>
+  </RegisterPage>
 </template>
 
 <style scoped></style>

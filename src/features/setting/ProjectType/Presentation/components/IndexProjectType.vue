@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import IndexProjectTypeParams from '@/features/setting/ProjectType/Core/params/indexProjectTypeParams'
 import IndexProjectTypeController from '@/features/setting/ProjectType/Presentation/controllers/indexProjectTypeController'
 
@@ -137,144 +139,148 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchProjectType())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchProjectType"
-      />
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
+        <span class="icon-remove" @click="((word = ''), searchProjectType())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchProjectType"
+        />
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <!-- <ExportExcel :data="state.data" /> -->
+        <ExportPdf />
+        <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.PROJECT_TYPE_CREATE]">
+          <router-link to="/admin/project-type/add" class="btn btn-primary">
+            {{ $t('Add_ProjectType') }}
+          </router-link>
+        </PermissionBuilder>
+      </div>
     </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
-      <ExportPdf />
-      <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.PROJECT_TYPE_CREATE]">
-        <router-link to="/admin/project-type/add" class="btn btn-primary">
-          {{ $t('Add_ProjectType') }}
-        </router-link>
-      </PermissionBuilder>
-    </div>
-  </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.PROJECT_TYPE_ALL,
-      PermissionsEnum.PROJECT_TYPE_DELETE,
-      PermissionsEnum.PROJECT_TYPE_FETCH,
-      PermissionsEnum.PROJECT_TYPE_UPDATE,
-      PermissionsEnum.PROJECT_TYPE_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col">{{ $t('all_industries') }}</th>
-                <th scope="col">{{ $t('industries') }}</th>
-                <!-- <th scope="col">{{ $t('image') }}</th> -->
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.PROJECT_TYPE_ALL,
+        PermissionsEnum.PROJECT_TYPE_DELETE,
+        PermissionsEnum.PROJECT_TYPE_FETCH,
+        PermissionsEnum.PROJECT_TYPE_UPDATE,
+        PermissionsEnum.PROJECT_TYPE_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('title') }}</th>
+                  <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
+                  <th scope="col">{{ $t('all_industries') }}</th>
+                  <th scope="col">{{ $t('industries') }}</th>
+                  <!-- <th scope="col">{{ $t('image') }}</th> -->
 
-                <!-- <th scope="col">{{ $t('actions') }}</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link :to="`/admin/Project-type/${item.id}`">{{ index + 1 }} </router-link>
-                </td>
-                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
-                <td :data-label="$t('all_industries')">
-                  {{ item.allIndustries ? $t('yes') : $t('no') }}
-                </td>
-                <td :data-label="$t('all_industries')">
-                  {{
-                    item.industries.length > 0
-                      ? item.industries.map((industry) => industry.title).join(', ')
-                      : '---'
-                  }}
-                </td>
-                <!-- <td data-label="all_industries">
+                  <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    <router-link :to="`/admin/Project-type/${item.id}`"
+                      >{{ index + 1 }}
+                    </router-link>
+                  </td>
+                  <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                  <td :data-label="$t('all_industries')">
+                    {{ item.allIndustries ? $t('yes') : $t('no') }}
+                  </td>
+                  <td :data-label="$t('all_industries')">
+                    {{
+                      item.industries.length > 0
+                        ? item.industries.map((industry) => industry.title).join(', ')
+                        : '---'
+                    }}
+                  </td>
+                  <!-- <td data-label="all_industries">
                   <img :src="item.image" @error="setDefaultImage($event)" alt="" />
                 </td> -->
 
-                <td :data-label="$t('Actions')">
-                  <!--                <DialogChangeStatusProjectType-->
-                  <!--                  v-if="item.ProjectTypeStatus === ProjectTypeStatusEnum.Draft"-->
-                  <!--                  :ProjectTypeId="item.id"-->
-                  <!--                  @ProjectTypeChangeStatus="fetchProjectType"-->
-                  <!--                />-->
+                  <td :data-label="$t('Actions')">
+                    <!--                <DialogChangeStatusProjectType-->
+                    <!--                  v-if="item.ProjectTypeStatus === ProjectTypeStatusEnum.Draft"-->
+                    <!--                  :ProjectTypeId="item.id"-->
+                    <!--                  @ProjectTypeChangeStatus="fetchProjectType"-->
+                    <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteProjectType)"
-                    @delete="deleteProjectType(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
-      </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
-        <DataEmpty
-          :link="`/add/ProjectType`"
-          :addText="$t('auditUi.add_project_type')"
-          :description="
-            $t(
-              'You have no ProjectTypeuages .. All your joined customers will appear here when you add your customer data',
-            )
-          "
-          :title="$t('You have No ProjectTypeuages')"
-        />
-      </template>
-      <template #failed>
+                    <DropList
+                      :actionList="actionList(item.id, deleteProjectType)"
+                      @delete="deleteProjectType(item.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #empty>
+          <DataEmpty
+            :link="`/add/ProjectType`"
+            :addText="$t('auditUi.add_project_type')"
+            :description="
+              $t(
+                'You have no ProjectTypeuages .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No ProjectTypeuages')"
+          />
+        </template>
+        <template #failed>
+          <DataFailed
+            :link="`/add/ProjectType`"
+            :addText="$t('auditUi.add_project_type')"
+            :description="
+              $t(
+                'You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No ProjectTypeuages')"
+          />
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
         <DataFailed
-          :link="`/add/ProjectType`"
-          :addText="$t('auditUi.add_project_type')"
+          :addText="$t('auditUi.you_do_not_have_permission')"
           :description="
             $t(
               'You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data',
             )
           "
-          :title="$t('You have No ProjectTypeuages')"
         />
       </template>
-    </DataStatus>
-
-    <template #notPermitted>
-      <DataFailed
-        :addText="$t('auditUi.you_do_not_have_permission')"
-        :description="
-          $t(
-            'You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data',
-          )
-        "
-      />
-    </template>
-  </PermissionBuilder>
+    </PermissionBuilder>
+  </RegisterPage>
 </template>
 
 <style scoped></style>

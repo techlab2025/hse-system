@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { translate as localizeUi } from '@/localization/i18n'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
@@ -276,29 +278,30 @@ const IndexOrganizationEmployeectionList = () => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchCertificate())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search certificates')"
-        class="input"
-        type="text"
-        @input="searchCertificate"
-      />
-    </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <IndexFilterDialog
-        show-date
-        :initial-date="filterDate"
-        @apply="applyFilters"
-        @reset="resetFilters"
-      />
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <span class="icon-remove" @click="((word = ''), searchCertificate())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search certificates')"
+          class="input"
+          type="text"
+          @input="searchCertificate"
+        />
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <IndexFilterDialog
+          show-date
+          :initial-date="filterDate"
+          @apply="applyFilters"
+          @reset="resetFilters"
+        />
 
-      <!-- <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
+        <!-- <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
         <router-link
           :to="`/${
             user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
@@ -308,171 +311,172 @@ const IndexOrganizationEmployeectionList = () => [
           {{ $t('import_certificate') }}
         </router-link>
       </PermissionBuilder> -->
-      <!-- <a href="/ExcelForm.xlsx" class="btn btn-secondary" download>
+        <!-- <a href="/ExcelForm.xlsx" class="btn btn-secondary" download>
         <ExcelSheetIcon class="icon" />
         <span class="download-title">Excel Sheet</span>
       </a> -->
-      <ActionsList
-        feature-name="action_feature_training"
-        :show-actions="true"
-        :actionList="IndexOrganizationEmployeectionList()"
-        :actionsNumber="5"
-      >
-        <template #custom>
-          <ExportPdf :isDropList="true" />
-        </template>
-      </ActionsList>
-      <!-- <DropList :actionList="actionList"  /> -->
+        <ActionsList
+          feature-name="action_feature_training"
+          :show-actions="true"
+          :actionList="IndexOrganizationEmployeectionList()"
+          :actionsNumber="5"
+        >
+          <template #custom>
+            <ExportPdf :isDropList="true" />
+          </template>
+        </ActionsList>
+        <!-- <DropList :actionList="actionList"  /> -->
+      </div>
     </div>
-  </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.CERTIFICATE_ALL,
-      PermissionsEnum.CERTIFICATE_DELETE,
-      PermissionsEnum.CERTIFICATE_FETCH,
-      PermissionsEnum.CERTIFICATE_UPDATE,
-      PermissionsEnum.CERTIFICATE_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive mt-2">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('certificate_title') }}</th>
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
-                  {{ $t('all_industries') }}
-                </th>
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
-                  {{ $t('industries') }}
-                </th>
-                <th scope="col">{{ $t('certificate_type') }}</th>
-                <th scope="col">{{ $t('expiry_date_required') }}</th>
-                <th scope="col">{{ $t('require_certificate') }}</th>
-                <!-- <th scope="col">{{ $t('image') }}</th> -->
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.CERTIFICATE_ALL,
+        PermissionsEnum.CERTIFICATE_DELETE,
+        PermissionsEnum.CERTIFICATE_FETCH,
+        PermissionsEnum.CERTIFICATE_UPDATE,
+        PermissionsEnum.CERTIFICATE_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive mt-2 hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('certificate_title') }}</th>
+                  <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                    {{ $t('all_industries') }}
+                  </th>
+                  <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                    {{ $t('industries') }}
+                  </th>
+                  <th scope="col">{{ $t('certificate_type') }}</th>
+                  <th scope="col">{{ $t('expiry_date_required') }}</th>
+                  <th scope="col">{{ $t('require_certificate') }}</th>
+                  <!-- <th scope="col">{{ $t('image') }}</th> -->
 
-                <!-- <th scope="col">{{ $t('actions') }}</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/${item.id}`"
-                    >{{ index + 1 }}
-                  </router-link>
-                </td>
-                <td :data-label="$t('Name')">{{ wordSlice(item?.title) }}</td>
-                <td
-                  :data-label="$t('all_industries')"
-                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
-                >
-                  {{ item.allIndustries ? $t('yes') : $t('no') }}
-                </td>
-                <td
-                  :data-label="$t('all_industries')"
-                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
-                >
-                  {{
-                    item.industries.length > 0
-                      ? item.industries.map((industry) => industry.title).join(', ')
-                      : $t('no')
-                  }}
-                </td>
-                <td :data-label="$t('certificate_type')">
-                  {{ getCertificateTypeLabel(item.certificateType) }}
-                </td>
-                <td :data-label="$t('require_expired_date')">
-                  {{ item.requireExpiredDate ? $t('yes') : $t('no') }}
-                </td>
-                <td :data-label="$t('require_certificate')">
-                  {{ item.requireCertificate ? $t('yes') : $t('no') }}
-                </td>
-                <!-- <td data-label="image">
+                  <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    <router-link
+                      :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/${item.id}`"
+                      >{{ index + 1 }}
+                    </router-link>
+                  </td>
+                  <td :data-label="$t('Name')">{{ wordSlice(item?.title) }}</td>
+                  <td
+                    :data-label="$t('all_industries')"
+                    v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                  >
+                    {{ item.allIndustries ? $t('yes') : $t('no') }}
+                  </td>
+                  <td
+                    :data-label="$t('all_industries')"
+                    v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                  >
+                    {{
+                      item.industries.length > 0
+                        ? item.industries.map((industry) => industry.title).join(', ')
+                        : $t('no')
+                    }}
+                  </td>
+                  <td :data-label="$t('certificate_type')">
+                    {{ getCertificateTypeLabel(item.certificateType) }}
+                  </td>
+                  <td :data-label="$t('require_expired_date')">
+                    {{ item.requireExpiredDate ? $t('yes') : $t('no') }}
+                  </td>
+                  <td :data-label="$t('require_certificate')">
+                    {{ item.requireCertificate ? $t('yes') : $t('no') }}
+                  </td>
+                  <!-- <td data-label="image">
                   <div class="image_certificate_container">
                     <Image v-if="item.image" :src="item.image" alt="Image" preview />
                     <span v-else>---</span>
                   </div>
                 </td> -->
 
-                <td :data-label="$t('Actions')">
-                  <DropList
-                    :actionList="actionList(item.id, deleteCertificate)"
-                    @delete="deleteCertificate(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <!-- <div class="index-certificate-container">
+                  <td :data-label="$t('Actions')">
+                    <DropList
+                      :actionList="actionList(item.id, deleteCertificate)"
+                      @delete="deleteCertificate(item.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- <div class="index-certificate-container">
           <CertificateCard v-for="(certificate, index) in state.data" :key="index" :cerificate="certificate" />
         </div> -->
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #empty>
+          <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
+            <DataEmpty
+              :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
+              :addText="$t('add_certificate')"
+              :description="$t('training_empty_description')"
+              :title="$t('training_empty_title')"
+            />
+          </PermissionBuilder>
+        </template>
+        <template #failed>
+          <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
+            <DataFailed
+              :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
+              :addText="$t('add_certificate')"
+              :description="$t('training_empty_description')"
+              :title="$t('training_empty_title')"
+            />
+          </PermissionBuilder>
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
+        <DataFailed
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data',
+            )
+          "
         />
       </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
-        <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
-          <DataEmpty
-            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
-            :addText="$t('add_certificate')"
-            :description="$t('training_empty_description')"
-            :title="$t('training_empty_title')"
-          />
-        </PermissionBuilder>
-      </template>
-      <template #failed>
-        <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
-          <DataFailed
-            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
-            :addText="$t('add_certificate')"
-            :description="$t('training_empty_description')"
-            :title="$t('training_empty_title')"
-          />
-        </PermissionBuilder>
-      </template>
-    </DataStatus>
+    </PermissionBuilder>
 
-    <template #notPermitted>
-      <DataFailed
-        :addText="$t('auditUi.you_do_not_have_permission')"
-        :description="
-          $t(
-            'You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data',
-          )
-        "
-      />
-    </template>
-  </PermissionBuilder>
+    <Dialog
+      v-model:visible="showUploadDialog"
+      modal
+      :dismissable-mask="true"
+      :header="$t('upload_certificate_sheet')"
+      :style="{ width: '80vw', maxWidth: '900px' }"
+    >
+      <UploadCertificateExeclSheet :initial-file="pendingFile" @uploaded="handleUploadComplete" />
+    </Dialog>
 
-  <Dialog
-    v-model:visible="showUploadDialog"
-    modal
-    :dismissable-mask="true"
-    :header="$t('upload_certificate_sheet')"
-    :style="{ width: '80vw', maxWidth: '900px' }"
-  >
-    <UploadCertificateExeclSheet :initial-file="pendingFile" @uploaded="handleUploadComplete" />
-  </Dialog>
-
-  <input
-    ref="fileInputRef"
-    type="file"
-    accept=".xls,.xlsx"
-    style="display: none"
-    @change="onFileSelected"
-  />
+    <input
+      ref="fileInputRef"
+      type="file"
+      accept=".xls,.xlsx"
+      style="display: none"
+      @change="onFileSelected"
+    />
+  </RegisterPage>
 </template>

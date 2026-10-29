@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -117,145 +119,149 @@ watch(
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 mt-2">
-    <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchScope())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchScope"
-      />
-    </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
-      <ExportPdf />
-      <PermissionBuilder
-        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.SCOPE_CREATE]"
-      >
-        <router-link
-          :to="
-            user?.type === OrganizationTypeEnum.ADMIN
-              ? '/admin/scope/add'
-              : '/organization/scope/add'
-          "
-          class="btn btn-primary"
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 mt-2">
+      <div class="input-search col-span-1">
+        <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
+        <span class="icon-remove" @click="((word = ''), searchScope())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchScope"
+        />
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <!-- <ExportExcel :data="state.data" /> -->
+        <ExportPdf />
+        <PermissionBuilder
+          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.SCOPE_CREATE]"
         >
-          {{ $t('add_scope') }}
-        </router-link>
-      </PermissionBuilder>
+          <router-link
+            :to="
+              user?.type === OrganizationTypeEnum.ADMIN
+                ? '/admin/scope/add'
+                : '/organization/scope/add'
+            "
+            class="btn btn-primary"
+          >
+            {{ $t('add_scope') }}
+          </router-link>
+        </PermissionBuilder>
+      </div>
     </div>
-  </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.SCOPE_ALL,
-      PermissionsEnum.SCOPE_UPDATE,
-      PermissionsEnum.SCOPE_CREATE,
-      PermissionsEnum.SCOPE_DETAILS,
-      PermissionsEnum.SCOPE_DELETE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('scope') }}</th>
-                <!-- <th scope="col">{{ $t('actions') }}</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link :to="`/organization/scope/${item.id}`">{{ index + 1 }} </router-link>
-                </td>
-                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
-                <td :data-label="$t('Actions')">
-                  <DropList
-                    :actionList="actionList(item.id, deleteScope)"
-                    @delete="deleteScope(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.SCOPE_ALL,
+        PermissionsEnum.SCOPE_UPDATE,
+        PermissionsEnum.SCOPE_CREATE,
+        PermissionsEnum.SCOPE_DETAILS,
+        PermissionsEnum.SCOPE_DELETE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('scope') }}</th>
+                  <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    <router-link :to="`/organization/scope/${item.id}`"
+                      >{{ index + 1 }}
+                    </router-link>
+                  </td>
+                  <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                  <td :data-label="$t('Actions')">
+                    <DropList
+                      :actionList="actionList(item.id, deleteScope)"
+                      @delete="deleteScope(item.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #empty>
+          <PermissionBuilder
+            :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.SCOPE_CREATE]"
+          >
+            <DataEmpty
+              :link="
+                user?.type === OrganizationTypeEnum.ADMIN
+                  ? '/admin/scope/add'
+                  : '/organization/scope/add'
+              "
+              :addText="$t('add_scope')"
+              :description="
+                $t(
+                  'You have no Scope .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Scope')"
+            />
+          </PermissionBuilder>
+        </template>
+        <template #failed>
+          <PermissionBuilder
+            :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.SCOPE_CREATE]"
+          >
+            <DataFailed
+              :link="
+                user?.type === OrganizationTypeEnum.ADMIN
+                  ? '/admin/scope/add'
+                  : '/organization/scope/add'
+              "
+              :addText="$t('add_scope')"
+              :description="
+                $t(
+                  'You have no Scope .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Scope')"
+            />
+          </PermissionBuilder>
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
+        <DataFailed
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no Scope .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          link=""
         />
       </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
-        <PermissionBuilder
-          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.SCOPE_CREATE]"
-        >
-          <DataEmpty
-            :link="
-              user?.type === OrganizationTypeEnum.ADMIN
-                ? '/admin/scope/add'
-                : '/organization/scope/add'
-            "
-            :addText="$t('add_scope')"
-            :description="
-              $t(
-                'You have no Scope .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Scope')"
-          />
-        </PermissionBuilder>
-      </template>
-      <template #failed>
-        <PermissionBuilder
-          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.SCOPE_CREATE]"
-        >
-          <DataFailed
-            :link="
-              user?.type === OrganizationTypeEnum.ADMIN
-                ? '/admin/scope/add'
-                : '/organization/scope/add'
-            "
-            :addText="$t('add_scope')"
-            :description="
-              $t(
-                'You have no Scope .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Scope')"
-          />
-        </PermissionBuilder>
-      </template>
-    </DataStatus>
-
-    <template #notPermitted>
-      <DataFailed
-        :addText="$t('auditUi.you_do_not_have_permission')"
-        :description="
-          $t(
-            'You have no Scope .. All your joined customers will appear here when you add your customer data',
-          )
-        "
-        link=""
-      />
-    </template>
-  </PermissionBuilder>
+    </PermissionBuilder>
+  </RegisterPage>
 </template>
 
 <style scoped></style>

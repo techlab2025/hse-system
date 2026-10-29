@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { translate as localizeUi } from '@/localization/i18n'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -386,77 +388,78 @@ const IndexOrganizationEmployeectionList = () => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <!-- ... -->
-    <DataEmployee v-if="route.query.heirarchy_id" />
-    <div
-      v-if="route.query.certificate_id"
-      class="col-span-4 w-full md:col-span-4 mt-5 input-wrapper flex"
-    >
-      <!-- <button class="btn btn-primary" @click="isEmployeeTakeCertificate = EmployeeCertificateStatus.NotTake">Not Take
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <!-- ... -->
+      <DataEmployee v-if="route.query.heirarchy_id" />
+      <div
+        v-if="route.query.certificate_id"
+        class="col-span-4 w-full md:col-span-4 mt-5 input-wrapper flex"
+      >
+        <!-- <button class="btn btn-primary" @click="isEmployeeTakeCertificate = EmployeeCertificateStatus.NotTake">Not Take
         Certificate</button>
       <button class="btn btn-secondary" @click="isEmployeeTakeCertificate = EmployeeCertificateStatus.Take">Take
         Certificate</button> -->
-      <SelectButton v-model="value" :options="options" @change="setCertificateStatus" />
-    </div>
+        <SelectButton v-model="value" :options="options" @change="setCertificateStatus" />
+      </div>
 
-    <div
-      v-if="route.query.heirarchy_id"
-      class="w-full col-span-3 md:col-span-3 mt-5 gap-2 add-emplyee-hierarchy"
-    >
-      <div class="flex gap-2 input-wrapper" style="width: 80%; margin-block: 8px">
-        <CustomSelectInput
-          :modelValue="SelectedEmployees"
-          @update:modelValue="setSelectedEmployees"
-          :controller="indexEmployeeController"
-          :params="indexEmployeeParams"
-          :label="$t('employees')"
-          :type="2"
-          :placeholder="$t('select_employees')"
+      <div
+        v-if="route.query.heirarchy_id"
+        class="w-full col-span-3 md:col-span-3 mt-5 gap-2 add-emplyee-hierarchy"
+      >
+        <div class="flex gap-2 input-wrapper" style="width: 80%; margin-block: 8px">
+          <CustomSelectInput
+            :modelValue="SelectedEmployees"
+            @update:modelValue="setSelectedEmployees"
+            :controller="indexEmployeeController"
+            :params="indexEmployeeParams"
+            :label="$t('employees')"
+            :type="2"
+            :placeholder="$t('select_employees')"
+          />
+        </div>
+        <button
+          class="btn btn-primary"
+          style="width: 20%; height: fit-content; padding: 12px; margin-top: 35px"
+          @click="AddEmployees"
+        >
+          {{ $t('Add Employees') }}
+        </button>
+      </div>
+      <div
+        class="input-search col-span-1"
+        v-if="!route.query.heirarchy_id && !route.query.certificate_id"
+      >
+        <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
+        <span class="icon-remove" @click="((word = ''), searchOrganizatoinEmployee())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchOrganizatoinEmployee"
         />
       </div>
-      <button
-        class="btn btn-primary"
-        style="width: 20%; height: fit-content; padding: 12px; margin-top: 35px"
-        @click="AddEmployees"
+      <div
+        class="col-span-2 flex justify-end gap-2"
+        v-if="!route.query.heirarchy_id && !route.query.certificate_id"
       >
-        {{ $t('Add Employees') }}
-      </button>
-    </div>
-    <div
-      class="input-search col-span-1"
-      v-if="!route.query.heirarchy_id && !route.query.certificate_id"
-    >
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchOrganizatoinEmployee())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchOrganizatoinEmployee"
-      />
-    </div>
-    <div
-      class="col-span-2 flex justify-end gap-2"
-      v-if="!route.query.heirarchy_id && !route.query.certificate_id"
-    >
-      <IndexFilterDialog
-        :fields="filterFields"
-        :initial-values="{ hierarchyId: filterHierarchyId }"
-        @apply="applyFilters"
-        @reset="resetFilters"
-      />
-      <!-- <IndexActions @export:pdf="exportPDF" @export:excel="exportExcel"
+        <IndexFilterDialog
+          :fields="filterFields"
+          :initial-values="{ hierarchyId: filterHierarchyId }"
+          @apply="applyFilters"
+          @reset="resetFilters"
+        />
+        <!-- <IndexActions @export:pdf="exportPDF" @export:excel="exportExcel"
         :permissions="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]" ,
         :addLink="`/organization/organization-employee/add`"
         :ImportexcelLink="`/organization/organization-employee/upload`" :addText="`add_organizatoin_employee`"
         :addDescription="`add_employee`" :numberOfActions="4" /> -->
 
-      <!-- <ExportPdf />
+        <!-- <ExportPdf />
       <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
 
       <PermissionBuilder v-if="!route.query.heirarchy_id && !route.query.certificate_id"
@@ -471,155 +474,156 @@ const IndexOrganizationEmployeectionList = () => [
         to="/organization/organization-employee/upload" class="btn btn-primary">
         {{ $t('upload_excel') }}
       </router-link> -->
-      <ActionsList
-        feature-name="action_feature_employees"
-        :show-actions="true"
-        :actionList="IndexOrganizationEmployeectionList()"
-        :actionsNumber="5"
-      >
-        <template #custom>
-          <!-- <SystemWarehouseTypes :isHeaderTap="false" /> -->
-          <ExportPdf :isDropList="true" />
-        </template>
-      </ActionsList>
+        <ActionsList
+          feature-name="action_feature_employees"
+          :show-actions="true"
+          :actionList="IndexOrganizationEmployeectionList()"
+          :actionsNumber="5"
+        >
+          <template #custom>
+            <!-- <SystemWarehouseTypes :isHeaderTap="false" /> -->
+            <ExportPdf :isDropList="true" />
+          </template>
+        </ActionsList>
+      </div>
     </div>
-  </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORG_EMPLOYEE_ALL,
-      PermissionsEnum.ORG_EMPLOYEE_DELETE,
-      PermissionsEnum.ORG_EMPLOYEE_FETCH,
-      PermissionsEnum.ORG_EMPLOYEE_UPDATE,
-      PermissionsEnum.ORG_EMPLOYEE_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('image') }}</th>
-                <th scope="col">{{ $t('name') }}</th>
-                <th scope="col">{{ $t('position') }}</th>
-                <th scope="col">{{ $t('email') }}</th>
-                <th scope="col">{{ $t('phone') }}</th>
-                <!-- <th scope="col">{{ $t('actions') }}</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <span :to="`/organization/organization-employee/${item.id}`"
-                    >{{ index + 1 }}
-                  </span>
-                </td>
-                <td :data-label="$t('image')">
-                  <img
-                    class="employee-table-avatar"
-                    :src="item.image || employeeAvatarFallback"
-                    :alt="item.name || $t('employee')"
-                    width="44"
-                    height="44"
-                    loading="lazy"
-                    @error="handleEmployeeImageError"
-                  />
-                </td>
-                <td :data-label="$t('Name')">{{ item.name }}</td>
-                <td :data-label="$t('Hierarchy')" class="table-Hierarchy">
-                  {{ item.hierarchy.map((el) => el.title).join(' - ') || 'N/A' }}
-                </td>
-                <td :data-label="$t('Email')">{{ item.email }}</td>
-                <td :data-label="$t('Phone')">{{ item.phone }}</td>
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORG_EMPLOYEE_ALL,
+        PermissionsEnum.ORG_EMPLOYEE_DELETE,
+        PermissionsEnum.ORG_EMPLOYEE_FETCH,
+        PermissionsEnum.ORG_EMPLOYEE_UPDATE,
+        PermissionsEnum.ORG_EMPLOYEE_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('image') }}</th>
+                  <th scope="col">{{ $t('name') }}</th>
+                  <th scope="col">{{ $t('position') }}</th>
+                  <th scope="col">{{ $t('email') }}</th>
+                  <th scope="col">{{ $t('phone') }}</th>
+                  <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    <span :to="`/organization/organization-employee/${item.id}`"
+                      >{{ index + 1 }}
+                    </span>
+                  </td>
+                  <td :data-label="$t('image')">
+                    <img
+                      class="employee-table-avatar"
+                      :src="item.image || employeeAvatarFallback"
+                      :alt="item.name || $t('employee')"
+                      width="44"
+                      height="44"
+                      loading="lazy"
+                      @error="handleEmployeeImageError"
+                    />
+                  </td>
+                  <td :data-label="$t('Name')">{{ item.name }}</td>
+                  <td :data-label="$t('Hierarchy')" class="table-Hierarchy">
+                    {{ item.hierarchy.map((el) => el.title).join(' - ') || 'N/A' }}
+                  </td>
+                  <td :data-label="$t('Email')">{{ item.email }}</td>
+                  <td :data-label="$t('Phone')">{{ item.phone }}</td>
 
-                <td :data-label="$t('Actions')">
-                  <DropList
-                    :actionList="
-                      actionList(item.id, deleteOrganizatoinEmployee, item.hasAllPermission)
-                    "
-                    @delete="deleteOrganizatoinEmployee(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
+                  <td :data-label="$t('Actions')">
+                    <DropList
+                      :actionList="
+                        actionList(item.id, deleteOrganizatoinEmployee, item.hasAllPermission)
+                      "
+                      @delete="deleteOrganizatoinEmployee(item.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="7" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="7" :rows="10" />
+        </template>
+        <template #empty>
+          <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
+            <DataEmpty
+              :link="`/organization/organization-employee/add`"
+              :addText="$t('Add Employee')"
+              :description="
+                $t(
+                  'You have no Employee .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Employee')"
+            />
+          </PermissionBuilder>
+        </template>
+        <template #failed>
+          <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
+            <DataFailed
+              :link="`/organization/organization-employee/add`"
+              :addText="$t('Add Employee')"
+              :description="
+                $t(
+                  'You have no Employee .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Employee')"
+            />
+          </PermissionBuilder>
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
+        <DataFailed
+          link="/organization"
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no Employee .. All your joined customers will appear here when you add your customer data',
+            )
+          "
         />
       </template>
-      <template #loader>
-        <TableLoader :cols="7" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="7" :rows="10" />
-      </template>
-      <template #empty>
-        <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
-          <DataEmpty
-            :link="`/organization/organization-employee/add`"
-            :addText="$t('Add Employee')"
-            :description="
-              $t(
-                'You have no Employee .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Employee')"
-          />
-        </PermissionBuilder>
-      </template>
-      <template #failed>
-        <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
-          <DataFailed
-            :link="`/organization/organization-employee/add`"
-            :addText="$t('Add Employee')"
-            :description="
-              $t(
-                'You have no Employee .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Employee')"
-          />
-        </PermissionBuilder>
-      </template>
-    </DataStatus>
+    </PermissionBuilder>
 
-    <template #notPermitted>
-      <DataFailed
-        link="/organization"
-        :addText="$t('auditUi.you_do_not_have_permission')"
-        :description="
-          $t(
-            'You have no Employee .. All your joined customers will appear here when you add your customer data',
-          )
-        "
-      />
-    </template>
-  </PermissionBuilder>
+    <Dialog
+      v-model:visible="showUploadDialog"
+      modal
+      :dismissable-mask="true"
+      :header="$t('upload_excel')"
+      :style="{ width: '80vw', maxWidth: '900px' }"
+    >
+      <UploadOrganizationEmployee :initial-file="pendingFile" @uploaded="handleUploadComplete" />
+    </Dialog>
 
-  <Dialog
-    v-model:visible="showUploadDialog"
-    modal
-    :dismissable-mask="true"
-    :header="$t('upload_excel')"
-    :style="{ width: '80vw', maxWidth: '900px' }"
-  >
-    <UploadOrganizationEmployee :initial-file="pendingFile" @uploaded="handleUploadComplete" />
-  </Dialog>
-
-  <input
-    ref="fileInputRef"
-    type="file"
-    accept=".xls,.xlsx"
-    style="display: none"
-    @change="onFileSelected"
-  />
+    <input
+      ref="fileInputRef"
+      type="file"
+      accept=".xls,.xlsx"
+      style="display: none"
+      @change="onFileSelected"
+    />
+  </RegisterPage>
 </template>
 
 <style scoped>

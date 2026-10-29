@@ -1,0 +1,1028 @@
+{
+  "files": 204,
+  "tables": 208,
+  "registers": 90,
+  "featureScriptsVerifiedUnchanged": 204,
+  "inventory": [
+    {
+      "file": "src/components/Tables/DataTable.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Home/presentation/Components/Dashboard/DashboardCategoryChart.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Home/presentation/Components/Dashboard/DashboardCustomChart.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Home/presentation/Components/Dashboard/DashboardProjects.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/AuditActivity/Presentation/components/IndexAuditActivity.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/AuditActivity/Presentation/components/UploadAuditActivityExcelSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/AuditStandard/Presentation/components/IndexAuditStandard.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/AuditStandard/Presentation/components/UploadAuditStandardExcelSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/CheckList/Presentation/components/IndexCheckList.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/DocumentCategory/Presentation/components/IndexDocumentCategory.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/DocumentCategory/Presentation/components/UploadDocumentCategoryExcelSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/DocumentRefrence/Presentation/components/IndexDocumentRefrence.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/DrillType/Presentation/components/IndexDrillType.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/DrillType/Presentation/components/UploadDrillTypeExcelSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/EmployeesCertificates/Presentation/components/IndexEmployeeCertificate.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/ForgetPassword/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Herikaly/Presentation/components/UploadHierarachyExeclSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Herikaly/Presentation/supcomponents/HierarchyMatrix.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Injury/Presentation/components/IndexInjury.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/Injury/Presentation/components/UploadInjuryExeclSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Inspection/Presentation/components/InspectionPages/InspectionResultPage.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/InternalAudit/Presentation/components/attendance/InternalAuditAttendanceTab.vue",
+      "tables": 2,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/InternalAudit/Presentation/components/my/IndexMyInternalAudit.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/InternalAudit/Presentation/components/ncrs/InternalAuditNcrIndex.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/InternalAudit/Presentation/components/plan/IndexInternalAuditPlan.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/InternalAudit/Presentation/components/reports/InternalAuditReportDocument.vue",
+      "tables": 3,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingTable.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/MangementChangeTopicType/Presentation/components/IndexMangementChangeTopicType.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/MangementChangeTopicType/Presentation/components/UploadMangementChangeTopicTypeExcelSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/MangementOfChange/Presentation/components/MangementOfChanges.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/MeetingType/Presentation/components/IndexMeetingType.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/MeetingType/Presentation/components/UploadMeetingTypeExcelSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/ObservationFactory/Presentation/components/Incedant/IncidentReport.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/ObservationFactory/Presentation/components/Ovservation/IndexObservation.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/OrganizationEmployee/Presentation/components/IndexOrganizatoinEmployee.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/OrganizationEmployee/Presentation/components/UploadOrganizationEmployee.vue",
+      "tables": 2,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/OrganizationLocation/Presentation/components/IndexOrganizationLocation.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/OrganizationLocation/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/PPEActivity/Presentation/components/IndexPPEActivity.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/PPEActivity/Presentation/components/UploadPPEActivityExcelSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/PPETool/Presentation/components/IndexPPETool.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/PPETool/Presentation/components/UploadPPEToolExcelSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/PTWType/Presentation/components/IndexPTWType.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/PTWType/Presentation/components/UploadPTWTypeExcelSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Partner/Presentation/components/IndexPartner.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/Partner/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Project/Presentation/components/Details/LossTime/LossTimeMatrix.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Project/Presentation/components/Induction/IndexInduction.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Project/Presentation/components/Induction/ShowInduction.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Project/Presentation/components/Leadership/Leadership.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Project/Presentation/components/Leadership/LeadershipVisits.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Project/Presentation/components/RiskAssessment/RiskAssessment.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Project/Presentation/components/ppematrix/PPEActivityToolMatrix.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Project/Presentation/components/ppematrix/PPEMatrixDeliveriesTable.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Project/Presentation/components/ppematrix/PPEMatrixDelivery.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Project/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/ProjectZone/Presentation/components/IndexProjectZone.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/ProjectZone/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Role/Presentation/components/IndexRole.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/Role/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Scope/Presentation/components/IndexScope.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/Scope/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/Shifts/Presentation/components/IndexShift.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/TaskReports/Presentation/components/LessonsLearntReportPage.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/TaskReports/Presentation/components/TaskReportPage.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/TicketType/Presentation/components/IndexTicketType.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/TraningTopic/Presentation/components/IndexTraningTopic.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/VisitActivity/Presentation/components/IndexVisitActivity.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/VisitCategory/Presentation/components/IndexVisitCategory.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/VisitTheme/Presentation/components/IndexVisitTheme.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/WhereHouse/Presentation/components/IndexWhereHouse.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/WhereHouse/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/WhereHouseType/Presentation/components/IndexWhereHouseType.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/WhereHouseType/Presentation/components/UploadWarehouseExeclSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/notificationPlan/presentation/components/IndexNotificationPlan.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/objectives/ObjectiveProgress/Presentation/components/ObjectiveProgressHistory.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/objectives/Presentation/components/IndexObjectives.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/objectives/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/Organization/ppeItem/Presentation/components/IndexPpeItem.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/Organization/ppeItem/Presentation/components/UploadPpeItemExcelSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/_templateFeature/Presentation/components/IndexEquipment.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/_templateFeature/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/employee/Presentation/components/IndexEmployee.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/employee/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/notification/Presentation/components/IndexPartner.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/permission/Presentation/components/IndexPermission.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/AccidentsTypes/Presentation/components/IndexAccidentsType.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/AccidentsTypes/Presentation/components/UploadIncidantTypeExeclSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/Catalog/Presentation/components/IndexCatalog.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/Catalog/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/CatalogItems/Presentation/components/IndexCatalogItems.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/CatalogItems/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/CatalogItemsDetails/Presentation/components/IndexCatalogItemsDetails.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/CatalogItemsDetails/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/Certificate/Presentation/components/IndexCertificate.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/Certificate/Presentation/components/UploadCertificateExeclSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/Equipment/Presentation/components/UploadEquipmentExeclSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/EquipmentType/Presentation/components/IndexEquipmentType.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/EquipmentType/Presentation/components/UploadEquipmentTypeExeclSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/Factory/Presentation/components/IndexFactory.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/Factory/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/FactoryItem/Presentation/components/IndexFactoryItem.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/FactoryItem/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/HazardType/Presentation/components/IndexHazardType.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/HazardType/Presentation/components/UploadHazardTypeExeclSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/HealthConditions/Presentation/components/IndexHealthConditions.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/HealthConditions/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/IncidentCategories/Presentation/components/IndexIncidentCategory.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/IncidentCategories/Presentation/components/UploadIncidentCategoryExeclSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/Industries/Presentation/components/IndexIndustry.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/Location/Presentation/components/Area/IndexLocationArea.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/Location/Presentation/components/City/IndexLocationCity.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/Location/Presentation/components/Country/IndexLocationCountry.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/Location/Presentation/components/State/IndexLocationState.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/Location/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/Methods/Presentation/components/IndexMethods.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/Methods/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/ObserverationType/Presentation/components/IndexObserverationType.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/ObserverationType/Presentation/components/UploadObservationTypeExeclSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/Organization/Presentation/components/IndexOrganization.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/Organization/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/OrganizationCertificate/Presentation/components/IndexOrganizationCertificate.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/OrganizationCertificate/Presentation/components/UploadOrganizationCertificateExeclSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/OrganizationDocuments/Presentation/components/IndexOrganizationDocuments.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/OrganizationDocuments/Presentation/components/UploadOrganizationDocumentsExeclSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/ProjectType/Presentation/components/IndexProjectType.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/ProjectType/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/RootCauses/Presentation/components/IndexRootCauses.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/RootCauses/Presentation/components/UploadRootCausesExeclSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/SubHazard/Presentation/components/IndexHazard.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/SubHazard/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/Subscription/Presentation/components/IndexSubscription.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/Subscription/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/SubscriptionApplication/Presentation/components/IndexSubscriptionApplication.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/SubscriptionApplication/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/SubscriptionType/Presentation/components/IndexSubscriptionType.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/SubscriptionType/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/Teams/Presentation/components/IndexTeam.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/Teams/Presentation/components/UploadTeamExcelSheet.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/Teams/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/Template/Presentation/components/IndexTemplate.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/Template/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/TemplateItem/Presentation/components/IndexTemplateItem.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/TemplateItem/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/contractor/Presentation/components/IndexContractor.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/contractor/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/setting/languages/Presentation/components/IndexLang.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/setting/languages/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/users/Admin/presentation/components/IndexAdmin.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/AboutUsCore/Presentation/components/IndexAboutUsCore.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/AboutUsCore/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/AboutUsFeature/Presentation/components/IndexAboutUsFeature.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/AboutUsFeature/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/Blog/Presentation/components/IndexBlog.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/Blog/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/Category/Presentation/components/IndexCategory.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/Category/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/ClientOpinion/Presentation/components/IndexClientOpinion.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/ClientOpinion/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/Faq/Presentation/components/IndexFaq.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/Faq/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/Hashtag/Presentation/components/IndexHashtag.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/Hashtag/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/Header/Presentation/components/IndexHeader.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/Header/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/HomeAboutUs/Presentation/components/IndexHomeAboutUs.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/HomeAboutUs/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/HomeContactUs/Presentation/components/IndexHomeContactUs.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/HomeContactUs/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/HomeViewPricing/Presentation/components/IndexHomeViewPricing.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/HomeViewPricing/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/OurSystemStep/Presentation/components/IndexOurSystemStep.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/OurSystemStep/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/PowerFull/Presentation/components/IndexPowerFull.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/PowerFull/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/Privacy/Presentation/components/IndexHashtag.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/Privacy/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/Service/Presentation/components/IndexService.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/Service/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/ServiceFeature/Presentation/components/IndexServiceFeature.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/ServiceFeature/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/ServiceLog/Presentation/components/IndexServiceLog.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/ServiceLog/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/ServiceSection/Presentation/components/IndexServiceSection.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/ServiceSection/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/SystemBanner/Presentation/components/IndexSystemBanner.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/SystemBanner/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/SystemComponents/Presentation/components/IndexSystemComponent.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/SystemComponents/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/SystemFeature/Presentation/components/IndexSystemFeature.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/SystemFeature/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/SystemRiskManagement/Presentation/components/IndexSystemRiskManagement.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/SystemRiskManagement/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/SystemRiskType/Presentation/components/IndexSystemRiskType.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/SystemRiskType/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/SystemWork/Presentation/components/IndexSystemWork.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/SystemWork/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/features/website/Term/Presentation/components/IndexHashtag.vue",
+      "tables": 1,
+      "register": true
+    },
+    {
+      "file": "src/features/website/Term/Presentation/supcomponents/ShowClientSecondsec.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/shared/DataStatues/TableLoader.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/shared/HelpersComponents/DynamicReportTable.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/shared/HelpersComponents/ExcelRowsImport.vue",
+      "tables": 1,
+      "register": false
+    },
+    {
+      "file": "src/shared/HelpersComponents/TitleExcelImport.vue",
+      "tables": 1,
+      "register": false
+    }
+  ]
+}

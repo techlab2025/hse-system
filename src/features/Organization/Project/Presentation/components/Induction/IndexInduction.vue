@@ -4,6 +4,7 @@ import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { formatDisplayDate, formatDisplayNumber } from '@/localization/formatters'
 import { useRoute } from 'vue-router'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -13,20 +14,70 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
-import Search from '@/shared/icons/Search.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import ActionsTableView from '@/shared/icons/ActionsTableView.vue'
-import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import IndexInductionController from '../../controllers/Induction/indexInductionController'
 import DeleteInductionController from '../../controllers/Induction/deleteInductionController'
 import IndexInductionParams from '../../../Core/params/induction/indexInductionParams'
 import DeleteInductionParams from '../../../Core/params/induction/deleteInductionToolParams'
-import wordSlice from '@/base/Presentation/utils/word_slice'
 import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 
 const { t } = useI18n()
+// Experimental copy is local to this page; existing application translations stay intact.
+const { t: inductionCopy } = useI18n({
+  useScope: 'local',
+  messages: {
+    en: {
+      register: 'Induction register',
+      records: 'records',
+      subtitle: 'Manage induction sessions, instructors and site records.',
+      noMatches: 'No matching inductions',
+      searchHint: 'Try different keywords or clear your search to see all inductions.',
+    },
+    ar: {
+      register: 'سجل التدريبات التعريفية',
+      records: 'سجلات',
+      subtitle: 'إدارة التدريبات التعريفية والمدربين وسجلات المواقع.',
+      noMatches: 'لا توجد نتائج مطابقة للتهيئة',
+      searchHint: 'جرّب كلمات بحث أخرى أو امسح البحث لعرض جميع سجلات التهيئة.',
+    },
+  },
+})
 const route = useRoute()
+const initials = (name?: string) =>
+  name
+    ?.trim()
+    .split(/\s+/u)
+    .slice(0, 2)
+    .map((part) => Array.from(part)[0])
+    .join('')
+    .toLocaleUpperCase() || '—'
+// Format the calendar date without interpreting the API's timezone-free values as UTC.
+const calendarDate = (value?: string | null) => {
+  if (!value) return '—'
+  const parts = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value)
+  if (!parts) return value
+  const [, year, month, day] = parts
+  const date = new Date(Number(year), Number(month) - 1, Number(day))
+  if (
+    date.getFullYear() !== Number(year) ||
+    date.getMonth() !== Number(month) - 1 ||
+    date.getDate() !== Number(day)
+  )
+    return value
+  return formatDisplayDate(date, { day: '2-digit', month: 'short', year: 'numeric' })
+}
+const createdDate = (value?: string | null) =>
+  value && /^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(?::\d{2})?$/.test(value)
+    ? calendarDate(value.slice(0, 10))
+    : value || '—'
+const createdTime = (value?: string | null) =>
+  value && /^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(?::\d{2})?$/.test(value) ? value.slice(11) : ''
+const openRowActions = (event: KeyboardEvent) => {
+  const target = event.currentTarget as HTMLElement
+  target.querySelector<HTMLElement>('.list-trigger')?.click()
+}
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
@@ -86,6 +137,10 @@ const fetchInductions = async (query: string = '', page: number = 1, limit: numb
 }
 
 const searchInductions = debounce(() => fetchInductions(word.value))
+const clearSearch = () => {
+  word.value = ''
+  searchInductions()
+}
 const changePage = (page: number) => {
   currentPage.value = page
   fetchInductions(word.value, page, countPerPage.value)
@@ -136,95 +191,227 @@ watch(
 
 <template>
   <PermissionBuilder :code="fetchPermissions">
-    <div
-      data-hse-project
-      v-project-panels
-      class="hse-project-root hse-project-page grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 input_search_btn"
-    >
-      <div class="input-search col-span-1">
-        <span class="icon-remove" @click="((word = ''), searchInductions())"><Search /></span>
-        <input
-          dir="auto"
-          v-model="word"
-          :placeholder="$t('search')"
-          class="hse-project-input input"
-          @input="searchInductions"
-        />
-      </div>
-      <div class="col-span-2 flex justify-end gap-2">
+    <section data-hse-project v-project-panels class="hse-project-root induction-register">
+      <header class="induction-header">
+        <div class="induction-heading">
+          <h1>{{ $t('Inductions') }}</h1>
+          <p>{{ inductionCopy('subtitle') }}</p>
+        </div>
         <PermissionBuilder :code="createPermissions">
           <router-link
             :to="`${basePath}/induction/add${projectQuery}`"
-            class="hse-project-button hse-project-button--primary btn btn-primary induction-add-button"
+            class="induction-add hse-project-button--primary"
           >
-            <ActionsListAddIcon />
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M12 5v14M5 12h14"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+            </svg>
             <span>{{ $t('add_induction') }}</span>
           </router-link>
         </PermissionBuilder>
-      </div>
-    </div>
+      </header>
 
-    <DataStatus :controller="state">
-      <template #success>
-        <div
-          data-hse-project
-          v-project-panels
-          class="hse-project-root hse-project-page table-responsive"
-        >
-          <table class="hse-project-table main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('instractor') }}</th>
-                <th scope="col">{{ $t('project') }}</th>
-                <th scope="col">{{ $t('location') }}</th>
-                <th scope="col">{{ $t('zone') }}</th>
-                <th scope="col">{{ $t('date') }}</th>
-                <th scope="col">{{ $t('created_at') }}</th>
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
-                <td>{{ wordSlice(item.instructorName, 20) || '-' }}</td>
-                <td>{{ item.projectTitle || '-' }}</td>
-                <td>{{ wordSlice(item.projectLocationTitle, 20) || '-' }}</td>
-                <td>{{ wordSlice(item.projectZoneTitle, 20) || '-' }}</td>
-                <td>{{ item.date || '-' }}</td>
-                <td>{{ item.createdAt || '-' }}</td>
-                <td><DropList :action-list="rowActions(item.id)" /></td>
-              </tr>
-            </tbody>
-          </table>
+      <div class="induction-panel">
+        <div class="induction-toolbar">
+          <div class="induction-toolbar-title">
+            <!-- <h2 h2>{{ inductionCopy('register') }}</h2> -->
+            <!-- <span v-if="state.pagination" class="induction-count"
+              >{{ formatDisplayNumber(state.pagination.total ?? 0) }}
+              {{inductionCopy('records') }}</span
+            > -->
+          </div>
+          <div class="induction-search">
+            <span aria-hidden="true"
+              ><svg viewBox="0 0 24 24" fill="none">
+                <circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.7" />
+                <path
+                  d="m16 16 4 4"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                /></svg
+            ></span>
+            <input
+              v-model="word"
+              dir="auto"
+              type="text"
+              :aria-label="$t('search')"
+              :placeholder="$t('search')"
+              @input="searchInductions"
+            />
+            <button
+              v-if="word"
+              class="induction-search-clear"
+              type="button"
+              :aria-label="$t('report_clear_search')"
+              @click="clearSearch"
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="m7 7 10 10M7 17 17 7"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
-        <Pagination
-          :pagination="state.pagination"
-          @change-page="changePage"
-          @count-per-page="changePageSize"
-        />
-      </template>
-      <template #loader><TableLoader :cols="6" :rows="10" /></template>
-      <template #initial><TableLoader :cols="6" :rows="10" /></template>
-      <template #empty>
-        <DataEmpty
-          :link="`${basePath}/induction/add${projectQuery}`"
-          :add-text="$t('add_induction')"
-          :description="$t('no_inductions_description')"
-          :title="$t('no_inductions')"
-          :withbtn="canCreate"
-        />
-      </template>
-      <template #failed>
-        <DataFailed
-          :link="`${basePath}/induction/add${projectQuery}`"
-          :add-text="$t('add_induction')"
-          :description="$t('unable_to_load_inductions')"
-          :title="$t('no_inductions')"
-          :withbtn="canCreate"
-        />
-      </template>
-    </DataStatus>
+
+        <DataStatus :controller="state">
+          <template #success>
+            <div
+              class="induction-table-scroll hse-table-scroll"
+              role="region"
+              :aria-label="$t('Inductions')"
+              tabindex="0"
+            >
+              <table v-table-identity class="induction-table hse-data-table">
+                <colgroup>
+                  <col style="width: 4%" />
+                  <col style="width: 23%" />
+                  <col style="width: 15%" />
+                  <col style="width: 12%" />
+                  <col style="width: 10%" />
+                  <col style="width: 13%" />
+                  <col style="width: 16%" />
+                  <col style="width: 7%" />
+                </colgroup>
+                <caption class="induction-sr-only">
+                  {{
+                    $t('Inductions')
+                  }}
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">{{ $t('instractor') }}</th>
+                    <th scope="col">{{ $t('project') }}</th>
+                    <th scope="col">{{ $t('location') }}</th>
+                    <th scope="col">{{ $t('zone') }}</th>
+                    <th scope="col">{{ $t('date') }}</th>
+                    <th scope="col">{{ $t('created_at') }}</th>
+                    <th scope="col">
+                      <span class="induction-sr-only">{{ $t('Actions') }}</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in state.data" :key="item.id">
+                    <td class="induction-number">
+                      {{ (currentPage - 1) * countPerPage + index + 1 }}
+                    </td>
+                    <td>
+                      <div class="induction-person">
+                        <span class="induction-avatar" aria-hidden="true">{{
+                          initials(item.instructorName)
+                        }}</span>
+                        <span class="induction-name">{{ item.instructorName || '—' }}</span>
+                      </div>
+                    </td>
+                    <td :class="{ 'induction-missing': !item.projectTitle }">
+                      {{ item.projectTitle || '—' }}
+                    </td>
+                    <td :class="{ 'induction-missing': !item.projectLocationTitle }">
+                      {{ item.projectLocationTitle || '—' }}
+                    </td>
+                    <td :class="{ 'induction-missing': !item.projectZoneTitle }">
+                      {{ item.projectZoneTitle || '—' }}
+                    </td>
+                    <td class="induction-date" :title="item.date || undefined">
+                      <span class="induction-date-main">{{ calendarDate(item.date) }}</span>
+                    </td>
+                    <td
+                      class="induction-date induction-created"
+                      :title="item.createdAt || undefined"
+                    >
+                      <span class="induction-date-main">{{ createdDate(item.createdAt) }}</span
+                      ><span v-if="createdTime(item.createdAt)" class="induction-date-time">{{
+                        createdTime(item.createdAt)
+                      }}</span>
+                    </td>
+                    <td class="induction-actions">
+                      <div
+                        class="induction-action-trigger"
+                        @keydown.enter.prevent="openRowActions"
+                        @keydown.space.prevent="openRowActions"
+                      >
+                        <DropList
+                          :action-list="rowActions(item.id)"
+                          :action-label="`${$t('Actions')}: ${item.instructorName || '—'}`"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <footer class="induction-footer">
+              <Pagination
+                v-if="state.pagination && state?.pagination?.last > 1"
+                :pagination="state.pagination"
+                @change-page="changePage"
+                @count-per-page="changePageSize"
+              />
+              <span v-else-if="state.pagination" class="induction-results">
+                {{
+                  $t('pagination_results', {
+                    from: formatDisplayNumber(state.pagination.prev ?? 0),
+                    to: formatDisplayNumber(state.pagination.next ?? 0),
+                    total: formatDisplayNumber(state.pagination.total ?? 0),
+                  })
+                }}
+              </span>
+            </footer>
+          </template>
+          <template #loader
+            ><div
+              class="induction-loading"
+              role="status"
+              aria-busy="true"
+              :aria-label="$t('loading')"
+            >
+              <span class="induction-sr-only">{{ $t('loading') }}</span
+              ><TableLoader :cols="8" :rows="10" aria-hidden="true" /></div
+          ></template>
+          <template #initial
+            ><div
+              class="induction-loading"
+              role="status"
+              aria-busy="true"
+              :aria-label="$t('loading')"
+            >
+              <span class="induction-sr-only">{{ $t('loading') }}</span
+              ><TableLoader :cols="8" :rows="10" aria-hidden="true" /></div
+          ></template>
+          <template #empty>
+            <DataEmpty
+              :link="`${basePath}/induction/add${projectQuery}`"
+              :add-text="$t('add_induction')"
+              :description="word ? inductionCopy('searchHint') : $t('no_inductions_description')"
+              :title="word ? inductionCopy('noMatches') : $t('no_inductions')"
+              :withbtn="canCreate && !word"
+            />
+            <button v-if="word" class="induction-empty-clear" type="button" @click="clearSearch">
+              {{ $t('report_clear_search') }}
+            </button>
+          </template>
+          <template #failed>
+            <DataFailed
+              :link="`${basePath}/induction/add${projectQuery}`"
+              :add-text="$t('add_induction')"
+              :description="$t('unable_to_load_inductions')"
+              :title="$t('Failed to load data')"
+              :withbtn="canCreate"
+            />
+          </template>
+        </DataStatus>
+      </div>
+    </section>
     <template #notPermitted>
       <DataFailed
         :title="$t('have_not_permission')"
@@ -236,18 +423,4 @@ watch(
   </PermissionBuilder>
 </template>
 
-<style scoped>
-.induction-add-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.induction-add-button :deep(svg) {
-  flex-shrink: 0;
-}
-
-.input_search_btn {
-  align-items: center;
-}
-</style>
+<style scoped src="./inductions-register.css"></style>

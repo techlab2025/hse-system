@@ -85,8 +85,13 @@ const isImage = (file: ProgressMedia) =>
       </button>
     </div>
     <p v-else-if="!rows.length" class="op-empty">{{ $t('op.noHistory') }}</p>
-    <div v-else class="op-table-scroll" tabindex="0" :aria-label="$t('op.history')">
-      <table class="main-table op-table">
+    <div
+      v-else
+      class="op-table-scroll hse-table-scroll"
+      tabindex="0"
+      :aria-label="$t('op.history')"
+    >
+      <table v-table-identity class="main-table op-table hse-data-table">
         <thead>
           <tr>
             <th

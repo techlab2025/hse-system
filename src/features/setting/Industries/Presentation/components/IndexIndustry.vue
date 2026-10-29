@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -108,111 +110,113 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchLang())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchLang"
-      />
-    </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
-      <ExportPdf />
-      <router-link to="/admin/industry/add" class="btn btn-primary">
-        {{ $t('Add_Industry') }}
-      </router-link>
-    </div>
-  </div>
-
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.LANGUAGE_ALL,
-      PermissionsEnum.LANGUAGE_FETCH,
-      PermissionsEnum.LANGUAGE_UPDATE,
-      PermissionsEnum.LANGUAGE_DELETE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-
-                <!-- <th scope="col">Actions</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <span :to="`/users/Lang/edit/${item.id}`">{{ index + 1 }} </span>
-                </td>
-                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
-
-                <td :data-label="$t('Actions')">
-                  <!--                <DialogChangeStatusLang-->
-                  <!--                  v-if="item.LangStatus === LangStatusEnum.Draft"-->
-                  <!--                  :LangId="item.id"-->
-                  <!--                  @LangChangeStatus="fetchLang"-->
-                  <!--                />-->
-
-                  <DropList
-                    :actionList="actionList(item.id, deleteLang)"
-                    @delete="deleteLang(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
+        <span class="icon-remove" @click="((word = ''), searchLang())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchLang"
         />
-      </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
-        <DataEmpty
-          :link="`/industry/add`"
-          :addText="$t('Add_Lang')"
-          :description="$t('auditUi.industries_will_appear_here_after_you_add_them')"
-          :title="$t('auditUi.no_industries_yet')"
-        />
-      </template>
-      <template #failed>
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <!-- <ExportExcel :data="state.data" /> -->
+        <ExportPdf />
+        <router-link to="/admin/industry/add" class="btn btn-primary">
+          {{ $t('Add_Industry') }}
+        </router-link>
+      </div>
+    </div>
+
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.LANGUAGE_ALL,
+        PermissionsEnum.LANGUAGE_FETCH,
+        PermissionsEnum.LANGUAGE_UPDATE,
+        PermissionsEnum.LANGUAGE_DELETE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('title') }}</th>
+
+                  <!-- <th scope="col">Actions</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    <span :to="`/users/Lang/edit/${item.id}`">{{ index + 1 }} </span>
+                  </td>
+                  <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+
+                  <td :data-label="$t('Actions')">
+                    <!--                <DialogChangeStatusLang-->
+                    <!--                  v-if="item.LangStatus === LangStatusEnum.Draft"-->
+                    <!--                  :LangId="item.id"-->
+                    <!--                  @LangChangeStatus="fetchLang"-->
+                    <!--                />-->
+
+                    <DropList
+                      :actionList="actionList(item.id, deleteLang)"
+                      @delete="deleteLang(item.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #empty>
+          <DataEmpty
+            :link="`/industry/add`"
+            :addText="$t('Add_Lang')"
+            :description="$t('auditUi.industries_will_appear_here_after_you_add_them')"
+            :title="$t('auditUi.no_industries_yet')"
+          />
+        </template>
+        <template #failed>
+          <DataFailed
+            :link="`/industry/add`"
+            :addText="$t('Add_Lang')"
+            :description="$t('auditUi.industries_will_appear_here_after_you_add_them')"
+            :title="$t('auditUi.no_industries_yet')"
+          />
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
         <DataFailed
-          :link="`/industry/add`"
-          :addText="$t('Add_Lang')"
+          :addText="$t('auditUi.you_do_not_have_permission')"
           :description="$t('auditUi.industries_will_appear_here_after_you_add_them')"
-          :title="$t('auditUi.no_industries_yet')"
         />
       </template>
-    </DataStatus>
-
-    <template #notPermitted>
-      <DataFailed
-        :addText="$t('auditUi.you_do_not_have_permission')"
-        :description="$t('auditUi.industries_will_appear_here_after_you_add_them')"
-      />
-    </template>
-  </PermissionBuilder>
+    </PermissionBuilder>
+  </RegisterPage>
 </template>
 <style scoped></style>

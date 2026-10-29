@@ -37,8 +37,8 @@ const ReverseTable = () => {
 </script>
 
 <template>
-  <div class="table-responsive">
-    <table class="main-table w-full">
+  <div class="table-responsive hse-table-scroll">
+    <table v-table-identity class="main-table w-full hse-data-table">
       <thead>
         <tr>
           <th scope="col" class="cursor-pointer flex align-center grp-[6px]" @click="ReverseTable">

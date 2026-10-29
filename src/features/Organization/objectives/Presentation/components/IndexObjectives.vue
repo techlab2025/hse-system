@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 // import IndexObjectivesTypeParams from '@/features/setting/ObjectivesType/Core/params/indexObjectivesTypeParams'
 // import IndexObjectivesTypeController from '@/features/setting/ObjectivesType/Presentation/controllers/indexObjectivesTypeController'
 
@@ -143,155 +145,159 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
 </script>
 
 <template>
-  <div class="op-page op-index">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-      <div class="input-search col-span-1">
-        <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-        <span class="icon-remove" @click="((word = ''), searchObjectivesType())">
-          <Search />
-        </span>
-        <input
-          dir="auto"
-          v-model="word"
-          :placeholder="$t('search')"
-          class="input"
-          type="text"
-          @input="searchObjectivesType"
-        />
-      </div>
-      <div class="col-span-1 md:col-span-1 lg:col-span-2 flex justify-end gap-2">
-        <!-- <ExportExcel :data="state.data" /> -->
-        <!-- <ExportPdf /> -->
-        <permission-builder
-          :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.OBJECTIVE_ORG_CREATE]"
-        >
-          <router-link :to="addObjectivesLink" class="btn btn-primary">
-            {{ $t('Add_Objectives') }}
-          </router-link>
-        </permission-builder>
-      </div>
-    </div>
-
-    <permission-builder
-      :code="[
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.OBJECTIVE_ORG_ALL,
-        PermissionsEnum.OBJECTIVE_ORG_DELETE,
-        PermissionsEnum.OBJECTIVE_ORG_FETCH,
-        PermissionsEnum.OBJECTIVE_ORG_UPDATE,
-        PermissionsEnum.OBJECTIVE_ORG_CREATE,
-      ]"
-    >
-      <DataStatus :controller="state">
-        <template #success>
-          <div
-            class="table-responsive table-responsive--scroll"
-            tabindex="0"
-            :aria-label="$t('Objectives')"
+  <RegisterPage>
+    <div class="op-page op-index">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+        <div class="input-search col-span-1">
+          <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
+          <span class="icon-remove" @click="((word = ''), searchObjectivesType())">
+            <Search />
+          </span>
+          <input
+            dir="auto"
+            v-model="word"
+            :placeholder="$t('search')"
+            class="input"
+            type="text"
+            @input="searchObjectivesType"
+          />
+        </div>
+        <div class="col-span-1 md:col-span-1 lg:col-span-2 flex justify-end gap-2">
+          <!-- <ExportExcel :data="state.data" /> -->
+          <!-- <ExportPdf /> -->
+          <permission-builder
+            :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.OBJECTIVE_ORG_CREATE]"
           >
-            <table class="main-table">
-              <thead>
-                <tr>
-                  <th scope="col">{{ $t('op.number') }}</th>
-                  <th scope="col">{{ $t('Objective') }}</th>
-                  <th scope="col">{{ $t('Project') }}</th>
-                  <th scope="col">{{ $t('Year') }}</th>
-                  <th scope="col">{{ $t('Target Type') }}</th>
-                  <th scope="col">{{ $t('Direction') }}</th>
+            <router-link :to="addObjectivesLink" class="btn btn-primary">
+              {{ $t('Add_Objectives') }}
+            </router-link>
+          </permission-builder>
+        </div>
+      </div>
 
-                  <th scope="col">{{ $t('op.target') }}</th>
-                  <!-- <th scope="col">{{ $t('op.department') }}</th> -->
-                  <!-- <th scope="col">{{ $t('op.followUp') }}</th> -->
-                  <!-- <th scope="col">{{ $t('op.latestActual') }}</th> -->
-                  <!-- <th scope="col">{{ $t('op.indicator') }}</th> -->
-                  <!-- <th scope="col">{{ $t('op.latestPeriod') }}</th> -->
-                  <th class="empty"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in state.data" :key="item.id">
-                  <td data-label="#">
-                    <router-link :to="`/organization/objectives/${item.id}`"
-                      >{{ item.id }}
-                    </router-link>
-                  </td>
-                  <td :data-label="$t('Objective')">{{ item.objective }}</td>
-                  <td :data-label="$t('Project')">{{ item.projectTitle || $t('Company-wide') }}</td>
-                  <td :data-label="$t('Year')">{{ item.year }}</td>
-                  <td :data-label="$t('Target Type')">{{ $t(item.targetTypeTitle || '-') }}</td>
-                  <td :data-label="$t('Direction')">
-                    {{
-                      item.directionTitle || item.frequencyTitle
-                        ? $t(item.directionTitle || item.frequencyTitle)
-                        : '-'
-                    }}
-                  </td>
+      <permission-builder
+        :code="[
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.OBJECTIVE_ORG_ALL,
+          PermissionsEnum.OBJECTIVE_ORG_DELETE,
+          PermissionsEnum.OBJECTIVE_ORG_FETCH,
+          PermissionsEnum.OBJECTIVE_ORG_UPDATE,
+          PermissionsEnum.OBJECTIVE_ORG_CREATE,
+        ]"
+      >
+        <DataStatus :controller="state">
+          <template #success>
+            <div
+              class="table-responsive table-responsive--scroll hse-table-scroll"
+              tabindex="0"
+              :aria-label="$t('Objectives')"
+            >
+              <table v-table-identity class="main-table hse-data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">{{ $t('op.number') }}</th>
+                    <th scope="col">{{ $t('Objective') }}</th>
+                    <th scope="col">{{ $t('Project') }}</th>
+                    <th scope="col">{{ $t('Year') }}</th>
+                    <th scope="col">{{ $t('Target Type') }}</th>
+                    <th scope="col">{{ $t('Direction') }}</th>
 
-                  <!-- <td :data-label="$t('op.target')">{{ targetValue(item) }}</td>
+                    <th scope="col">{{ $t('op.target') }}</th>
+                    <!-- <th scope="col">{{ $t('op.department') }}</th> -->
+                    <!-- <th scope="col">{{ $t('op.followUp') }}</th> -->
+                    <!-- <th scope="col">{{ $t('op.latestActual') }}</th> -->
+                    <!-- <th scope="col">{{ $t('op.indicator') }}</th> -->
+                    <!-- <th scope="col">{{ $t('op.latestPeriod') }}</th> -->
+                    <th class="empty"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in state.data" :key="item.id">
+                    <td data-label="#">
+                      <router-link :to="`/organization/objectives/${item.id}`"
+                        >{{ item.id }}
+                      </router-link>
+                    </td>
+                    <td :data-label="$t('Objective')">{{ item.objective }}</td>
+                    <td :data-label="$t('Project')">
+                      {{ item.projectTitle || $t('Company-wide') }}
+                    </td>
+                    <td :data-label="$t('Year')">{{ item.year }}</td>
+                    <td :data-label="$t('Target Type')">{{ $t(item.targetTypeTitle || '-') }}</td>
+                    <td :data-label="$t('Direction')">
+                      {{
+                        item.directionTitle || item.frequencyTitle
+                          ? $t(item.directionTitle || item.frequencyTitle)
+                          : '-'
+                      }}
+                    </td>
+
+                    <!-- <td :data-label="$t('op.target')">{{ targetValue(item) }}</td>
                   <td :data-label="$t('op.department')">{{ item.department?.title || '—' }}</td>
                   <td :data-label="$t('op.followUp')">{{ item.followUpEmployee?.title || '—' }}</td>
                   <td :data-label="$t('op.latestActual')">
                     {{ item.progressSummary?.actualResult ?? '—' }}
                     {{ item.progressSummary?.actualResult != null ? actualUnit(item) : '' }}
                   </td> -->
-                  <!-- <td :data-label="$t('op.indicator')">
+                    <!-- <td :data-label="$t('op.indicator')">
                     <ObjectiveProgressIndicator
                       :objective="item"
                       :actual="item.progressSummary?.actualResult ?? null"
                       :backend-indicator="item.progressSummary?.indicator"
                     />
                   </td> -->
-                  <td :data-label="$t('op.latestPeriod')">
-                    {{ item.target }}
-                  </td>
-                  <td :data-label="$t('actions')">
-                    <DropList
-                      :actionList="actionList(item.id, deleteObjectives)"
-                      @delete="deleteObjectives(item.id)"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <Pagination
-            :pagination="state.pagination"
-            @changePage="handleChangePage"
-            @countPerPage="handleCountPerPage"
-          />
-        </template>
-        <template #loader>
-          <TableLoader :cols="13" :rows="10" />
-        </template>
-        <template #initial>
-          <TableLoader :cols="13" :rows="10" />
-        </template>
-        <template #empty>
-          <DataEmpty
-            :link="createObjectiveLink"
-            :add-text="$t('Add_Objectives')"
-            :description="$t('no_objectives_description')"
-            :title="$t('no_objectives')"
-          />
-        </template>
-        <template #failed>
-          <DataFailed
-            :link="createObjectiveLink"
-            :add-text="$t('Add_Objectives')"
-            :description="$t('unable_to_load_objectives')"
-            :title="$t('no_objectives')"
-          />
-        </template>
-      </DataStatus>
+                    <td :data-label="$t('op.latestPeriod')">
+                      {{ item.target }}
+                    </td>
+                    <td :data-label="$t('actions')">
+                      <DropList
+                        :actionList="actionList(item.id, deleteObjectives)"
+                        @delete="deleteObjectives(item.id)"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <Pagination
+              :pagination="state.pagination"
+              @changePage="handleChangePage"
+              @countPerPage="handleCountPerPage"
+            />
+          </template>
+          <template #loader>
+            <TableLoader :cols="13" :rows="10" />
+          </template>
+          <template #initial>
+            <TableLoader :cols="13" :rows="10" />
+          </template>
+          <template #empty>
+            <DataEmpty
+              :link="createObjectiveLink"
+              :add-text="$t('Add_Objectives')"
+              :description="$t('no_objectives_description')"
+              :title="$t('no_objectives')"
+            />
+          </template>
+          <template #failed>
+            <DataFailed
+              :link="createObjectiveLink"
+              :add-text="$t('Add_Objectives')"
+              :description="$t('unable_to_load_objectives')"
+              :title="$t('no_objectives')"
+            />
+          </template>
+        </DataStatus>
 
-      <template #notPermitted>
-        <DataFailed
-          :add-text="$t('have_not_permission')"
-          :description="$t('no_objectives_description')"
-        />
-      </template>
-    </permission-builder>
-  </div>
+        <template #notPermitted>
+          <DataFailed
+            :add-text="$t('have_not_permission')"
+            :description="$t('no_objectives_description')"
+          />
+        </template>
+      </permission-builder>
+    </div>
+  </RegisterPage>
 </template>
 
 <style scoped>

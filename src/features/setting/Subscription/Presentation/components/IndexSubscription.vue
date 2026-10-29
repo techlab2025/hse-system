@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 // import IndexSubscriptionParams from '@/features/setting/Subscription/Core/params/indexSubscriptionParams'
 // import IndexSubscriptionController from '@/features/setting/Subscription/Presentation/controllers/indexSubscriptionController'
 
@@ -136,94 +138,25 @@ watch(
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchSubscription())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchSubscription"
-      />
-    </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
-      <ExportPdf />
-      <permission-builder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.SUBSCRIPTION_CREATE,
-        ]"
-      >
-        <router-link :to="`/admin/subscription/add`" class="btn btn-primary">
-          {{ $t('Add_subscription') }}
-        </router-link>
-      </permission-builder>
-    </div>
-  </div>
-
-  <permission-builder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.SUBSCRIPTION_ALL,
-      PermissionsEnum.SUBSCRIPTION_DELETE,
-      PermissionsEnum.SUBSCRIPTION_FETCH,
-      PermissionsEnum.SUBSCRIPTION_UPDATE,
-      PermissionsEnum.SUBSCRIPTION_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('organization_name') }}</th>
-                <!-- <th scope="col">Actions</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link :to="`/admin/subscription-type/edit/${item.id}`">{{
-                    index + 1
-                  }}</router-link>
-                </td>
-                <td :data-label="$t('organization_name')">
-                  {{ wordSlice(item?.organization?.name) }}
-                </td>
-                <td :data-label="$t('Actions')">
-                  <DropList
-                    :actionList="actionList(item.id, deleteSubscription)"
-                    @delete="deleteSubscription(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
+        <span class="icon-remove" @click="((word = ''), searchSubscription())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchSubscription"
         />
-      </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <!-- <ExportExcel :data="state.data" /> -->
+        <ExportPdf />
         <permission-builder
           :code="[
             PermissionsEnum.ADMIN,
@@ -231,19 +164,111 @@ watch(
             PermissionsEnum.SUBSCRIPTION_CREATE,
           ]"
         >
-          <DataEmpty
-            :link="`/admin/subscription/add`"
-            :addText="$t('Add Subscription')"
-            :description="
-              $t(
-                'You have no Subscription .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Subscription')"
-          />
+          <router-link :to="`/admin/subscription/add`" class="btn btn-primary">
+            {{ $t('Add_subscription') }}
+          </router-link>
         </permission-builder>
-      </template>
-      <template #failed>
+      </div>
+    </div>
+
+    <permission-builder
+      :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.SUBSCRIPTION_ALL,
+        PermissionsEnum.SUBSCRIPTION_DELETE,
+        PermissionsEnum.SUBSCRIPTION_FETCH,
+        PermissionsEnum.SUBSCRIPTION_UPDATE,
+        PermissionsEnum.SUBSCRIPTION_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('organization_name') }}</th>
+                  <!-- <th scope="col">Actions</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    <router-link :to="`/admin/subscription-type/edit/${item.id}`">{{
+                      index + 1
+                    }}</router-link>
+                  </td>
+                  <td :data-label="$t('organization_name')">
+                    {{ wordSlice(item?.organization?.name) }}
+                  </td>
+                  <td :data-label="$t('Actions')">
+                    <DropList
+                      :actionList="actionList(item.id, deleteSubscription)"
+                      @delete="deleteSubscription(item.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #empty>
+          <permission-builder
+            :code="[
+              PermissionsEnum.ADMIN,
+              PermissionsEnum.ORGANIZATION_EMPLOYEE,
+              PermissionsEnum.SUBSCRIPTION_CREATE,
+            ]"
+          >
+            <DataEmpty
+              :link="`/admin/subscription/add`"
+              :addText="$t('Add Subscription')"
+              :description="
+                $t(
+                  'You have no Subscription .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Subscription')"
+            />
+          </permission-builder>
+        </template>
+        <template #failed>
+          <permission-builder
+            :code="[
+              PermissionsEnum.ADMIN,
+              PermissionsEnum.ORGANIZATION_EMPLOYEE,
+              PermissionsEnum.SUBSCRIPTION_CREATE,
+            ]"
+          >
+            <DataFailed
+              :link="`/admin/subscription/add`"
+              :addText="$t('Add Subscription')"
+              :description="
+                $t(
+                  'You have no Subscription .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Subscription')"
+            />
+          </permission-builder>
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
         <permission-builder
           :code="[
             PermissionsEnum.ADMIN,
@@ -252,38 +277,17 @@ watch(
           ]"
         >
           <DataFailed
-            :link="`/admin/subscription/add`"
-            :addText="$t('Add Subscription')"
+            :addText="$t('auditUi.you_do_not_have_permission')"
             :description="
               $t(
                 'You have no Subscription .. All your joined customers will appear here when you add your customer data',
               )
             "
-            :title="$t('You have No Subscription')"
           />
         </permission-builder>
       </template>
-    </DataStatus>
-
-    <template #notPermitted>
-      <permission-builder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.SUBSCRIPTION_CREATE,
-        ]"
-      >
-        <DataFailed
-          :addText="$t('auditUi.you_do_not_have_permission')"
-          :description="
-            $t(
-              'You have no Subscription .. All your joined customers will appear here when you add your customer data',
-            )
-          "
-        />
-      </permission-builder>
-    </template>
-  </permission-builder>
+    </permission-builder>
+  </RegisterPage>
 </template>
 
 <style scoped></style>

@@ -584,10 +584,14 @@ const canCreateRecord = computed(() =>
         <DataStatus :controller="state">
           <template #success>
             <div
-              class="table-responsive report-board"
+              class="table-responsive report-board hse-table-scroll"
               :class="{ 'observation-report-board': isReportView }"
             >
-              <table v-if="isReportView" class="main-table observation-report-table">
+              <table
+                v-table-identity
+                v-if="isReportView"
+                class="main-table observation-report-table hse-data-table"
+              >
                 <thead>
                   <tr>
                     <th scope="col">#</th>

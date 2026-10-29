@@ -3,10 +3,11 @@
 @import './foundations.css';
 @import './components.css';
 @import './forms.css';
-@import './tables.css';
 @import './overlays.css';
 @import './navigation.css';
 @import './states.css';
 @import './operations.css';
 @import './responsive.css';
 @import './modern-forms.css';
+
+@import './tables.css';

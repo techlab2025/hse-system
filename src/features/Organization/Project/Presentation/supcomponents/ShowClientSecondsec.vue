@@ -103,8 +103,8 @@ watch(
   <div data-hse-project v-project-panels class="hse-project-root mt-4">
     <DataStatus :status="state">
       <template #success>
-        <div class="table-responsive">
-          <table class="hse-project-table main-table project-table">
+        <div class="table-responsive hse-table-scroll">
+          <table v-table-identity class="hse-project-table main-table project-table hse-data-table">
             <thead>
               <tr>
                 <th scope="col">#</th>

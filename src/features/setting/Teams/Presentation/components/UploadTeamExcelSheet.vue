@@ -149,8 +149,8 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
         <span>{{ mappedRows.length - 1 }} {{ $t('rows') }}</span>
       </div>
 
-      <div class="table-responsive">
-        <table class="main-table">
+      <div class="table-responsive hse-table-scroll">
+        <table v-table-identity class="main-table hse-data-table">
           <thead>
             <tr>
               <th>{{ mappedRows[0][0] }}</th>

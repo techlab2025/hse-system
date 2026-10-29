@@ -203,8 +203,8 @@ onBeforeUnmount(() => {
     </nav>
     <details class="command-chart-table">
       <summary>{{ t('command.viewChartData') }}</summary>
-      <div class="command-table-wrap">
-        <table>
+      <div class="command-table-wrap hse-table-scroll">
+        <table v-table-identity class="hse-data-table">
           <thead>
             <tr>
               <th scope="col">{{ t('command.locationsAxis') }}</th>

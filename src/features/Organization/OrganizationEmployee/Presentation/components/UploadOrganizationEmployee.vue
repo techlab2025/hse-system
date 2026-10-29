@@ -444,9 +444,9 @@ const onMappingClose = () => {
             </h3>
             <span class="table-badge">{{ mappedData.length - 1 }} {{ $t('rows') }}</span>
           </div>
-          <div class="table-responsive">
+          <div class="table-responsive hse-table-scroll">
             <!-- ── Validation results (returned after submitting) ──────── -->
-            <table v-if="Datastate.data" class="main-table">
+            <table v-table-identity v-if="Datastate.data" class="main-table hse-data-table">
               <thead>
                 <tr>
                   <th>{{ $t('employee_name') }}</th>
@@ -492,7 +492,7 @@ const onMappingClose = () => {
             </table>
 
             <!-- ── Raw mapped-data preview (before submitting) ─────────── -->
-            <table v-else class="main-table">
+            <table v-table-identity v-else class="main-table hse-data-table">
               <thead>
                 <tr>
                   <th v-for="(item, i) in mappedData[0]" :key="i">{{ item }}</th>

@@ -286,7 +286,7 @@ const onMappingClose = () => {
 
     <!-- <div class="rule-group">
         <div class="field-tags">
-          <span class="field-tag">Certificate title</span>
+          <span class="field-tag">Training title</span>
           <span class="field-tag">has Expiry date</span>
         </div>
       </div> -->
@@ -326,8 +326,8 @@ const onMappingClose = () => {
             <h3 class="table-title">{{ $t('Mapped Data Preview') }}</h3>
             <span class="table-badge">{{ mappedData.length - 1 }} {{ $t('rows') }}</span>
           </div>
-          <div class="table-responsive">
-            <table class="main-table">
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
               <thead>
                 <tr>
                   <th v-for="(item, i) in mappedData[0]" :key="i">

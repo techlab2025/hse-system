@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Inductions — visual comparison</title>
+  <style>
+    body {
+      margin: 0;
+      background: #f4f7fb;
+      color: #10243f;
+      font:
+        14px system-ui,
+        sans-serif;
+    }
+    header {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid #dce5ef;
+      background: white;
+    }
+    h1 {
+      font-size: 22px;
+      margin: 0 0 6px;
+    }
+    p {
+      margin: 0;
+      color: #53667c;
+    }
+    select {
+      padding: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      background: white;
+      color: #10243f;
+    }
+    main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      padding: 24px;
+    }
+    figure {
+      margin: 0;
+      min-width: 0;
+    }
+    figcaption {
+      font-weight: 650;
+      margin: 0 0 12px;
+    }
+    img {
+      display: block;
+      width: 100%;
+      border: 1px solid #dce5ef;
+      background: white;
+    }
+    main.mobile img {
+      max-width: 390px;
+      margin-inline: auto;
+    }
+    main.mobile figcaption {
+      text-align: center;
+    }
+    @media (max-width: 700px) {
+      header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <header>
+    <div>
+      <h1>Inductions: new register alternative</h1>
+      <p>Actual Chrome DevTools MCP captures. Existing real API records and table columns.</p>
+    </div>
+    <label
+      >Viewport
+      <select id="size">
+        <option value="1440">1440px desktop</option>
+        <option value="1024">1024px laptop</option>
+        <option value="768">768px tablet</option>
+        <option value="390">390px mobile</option>
+      </select></label
+    >
+  </header>
+  <main id="comparison">
+    <figure>
+      <figcaption>Previous — v4</figcaption>
+      <a id="oldLink" href="screenshots/v4-1440.png"
+        ><img id="old" src="screenshots/v4-1440.png" alt="Previous Inductions design"
+      /></a>
+    </figure>
+    <figure>
+      <figcaption>Selected candidate — v6</figcaption>
+      <a id="newLink" href="screenshots/v6-1440.png"
+        ><img id="new" src="screenshots/v6-1440.png" alt="New unified Inductions register"
+      /></a>
+    </figure>
+  </main>
+  <script>
+    document.querySelector('#size').addEventListener('change', (e) => {
+      const width = e.target.value
+      for (const [id, version] of [
+        ['old', 'v4'],
+        ['new', 'v6'],
+      ]) {
+        const src = `screenshots/${version}-${width}.png`
+        document.getElementById(id).src = src
+        document.getElementById(id + 'Link').href = src
+      }
+      document.getElementById('comparison').classList.toggle('mobile', width === '390')
+    })
+  </script>
+</html>

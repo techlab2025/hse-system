@@ -191,8 +191,8 @@ onMounted(fetchAll)
           ><small>{{ $t('Preparing the safety register…') }}</small>
         </div>
       </div>
-      <div v-else-if="items.length" class="table-scroll">
-        <table class="hse-project-table">
+      <div v-else-if="items.length" class="table-scroll hse-table-scroll">
+        <table v-table-identity class="hse-project-table hse-data-table">
           <thead>
             <tr>
               <th>{{ $t('Activity') }}</th>

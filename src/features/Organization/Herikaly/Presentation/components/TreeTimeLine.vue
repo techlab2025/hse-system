@@ -173,16 +173,180 @@ const deleteHierarchy = async (Id: number) => {
 
 <style lang="scss" scoped>
 .timeline-card-header {
+  position: relative;
+  overflow: hidden;
+  min-height: 88px;
+  padding: 16px 18px !important;
+  gap: 18px !important;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 15%, var(--surface-1)) !important;
+  border-radius: 18px !important;
+  background:
+    radial-gradient(circle at 94% 8%, color-mix(in srgb, var(--brand-primary-500) 10%, transparent) 0 72px, transparent 73px),
+    linear-gradient(135deg, var(--surface-1), color-mix(in srgb, var(--brand-primary-50) 42%, var(--surface-1))) !important;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--brand-primary-500) 38%, var(--surface-1)) !important;
+    background:
+      radial-gradient(circle at 94% 8%, color-mix(in srgb, var(--brand-primary-500) 13%, transparent) 0 72px, transparent 73px),
+      linear-gradient(135deg, var(--surface-1), color-mix(in srgb, var(--brand-primary-50) 55%, var(--surface-1))) !important;
+    box-shadow: 0 14px 32px color-mix(in srgb, var(--brand-primary-900) 12%, transparent);
+    transform: translateY(-2px);
+  }
+
+  > a,
+  > div:not(.actions) {
+    min-width: 0;
+    flex: 1 1 auto;
+    text-decoration: none;
+  }
+
+  .heirarchy-container,
+  .heirarchy-header {
+    min-width: 0;
+  }
+
+  .heirarchy-header {
+    gap: 13px;
+  }
+
+  .heirarchy-header .icon {
+    box-sizing: border-box;
+    width: 42px !important;
+    height: 42px !important;
+    padding: 9px;
+    border: 1px solid color-mix(in srgb, var(--brand-primary-500) 15%, transparent);
+    border-radius: 13px;
+    background: color-mix(in srgb, var(--brand-primary-500) 9%, var(--surface-1));
+    object-fit: contain;
+    flex: 0 0 auto;
+  }
+
+  .heirarchy-title {
+    margin: 0 !important;
+    color: var(--text-strong) !important;
+    font-size: clamp(15px, 1.4vw, 18px) !important;
+    font-weight: 700;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .actions {
+    flex: 0 1 auto;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 8px !important;
+    position: relative;
+    z-index: 1;
+
+    :deep(.btn) {
+      min-height: 34px;
+      padding: 7px 11px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1.1;
+      transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 12px color-mix(in srgb, var(--brand-primary-900) 12%, transparent);
+      }
+    }
+
+    :deep(.add-btn) {
+      background: color-mix(in srgb, var(--brand-primary-500) 8%, var(--surface-1));
+      border: 1px solid color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
+      color: var(--brand-primary-700);
+    }
+  }
+
   @media (max-width: 1000px) {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px !important;
+
+    .actions {
+      justify-content: flex-start;
+    }
   }
+
   .actions {
     @media (max-width: 1000px) {
       width: 100%;
-      justify-content: flex-end;
       flex-wrap: wrap;
     }
+  }
+}
+
+.timeline-card-header-2 {
+  margin-top: 12px;
+  margin-inline-start: 28px !important;
+  border-radius: 14px !important;
+  background: color-mix(in srgb, var(--surface-1) 88%, var(--brand-primary-50)) !important;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--brand-primary-900) 5%, transparent);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -13px;
+    inset-inline-start: -19px;
+    width: 11px;
+    height: 25px;
+    border-inline-start: 2px solid color-mix(in srgb, var(--brand-primary-500) 48%, transparent);
+    border-bottom: 2px solid color-mix(in srgb, var(--brand-primary-500) 48%, transparent);
+    border-bottom-inline-start-radius: 8px;
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset-inline-start: -22px;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    border: 2px solid var(--surface-1);
+    border-radius: 50%;
+    background: var(--brand-primary-500);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .timeline-card-header {
+    padding: 13px !important;
+    border-radius: 15px !important;
+
+    .actions :deep(.btn) {
+      min-height: 32px;
+      padding: 6px 9px;
+    }
+  }
+
+  .timeline-card-header-2 {
+    margin-inline-start: 16px !important;
+
+    &::before {
+      inset-inline-start: -12px;
+      width: 7px;
+    }
+
+    &::after {
+      inset-inline-start: -15px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-card-header,
+  .timeline-card-header :deep(.btn) {
+    transition: none;
   }
 }
 </style>

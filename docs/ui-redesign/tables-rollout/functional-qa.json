@@ -1,0 +1,18 @@
+{
+  "keyboardMenu": {
+    "show": true,
+    "delete": true
+  },
+  "nextPage": true,
+  "previousPage": true,
+  "pageSizeRestored": true,
+  "hiddenTable": true,
+  "hiddenRow": true,
+  "filterDialog": true,
+  "theme": {
+    "surface": "#10233f",
+    "primary": "#7c3aed",
+    "actionTarget": 36
+  },
+  "noRecordMutations": true
+}

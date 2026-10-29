@@ -508,8 +508,8 @@ onMounted(() => fetchReport())
       <DataStatus :controller="state">
         <template #success>
           <section v-if="visibleTasks.length" class="report-board">
-            <div class="report-table-scroll">
-              <table class="report-table">
+            <div class="report-table-scroll hse-table-scroll">
+              <table v-table-identity class="report-table hse-data-table">
                 <thead>
                   <tr>
                     <th class="number-column">#</th>

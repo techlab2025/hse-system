@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { translate as localizeUi } from '@/localization/i18n'
 import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import IndexRootCausesParams from '@/features/setting/RootCauses/Core/params/indexRootCausesParams'
@@ -246,25 +248,26 @@ const IndexRootCausesactionList = () => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click=";((word = ''), searchRootCauses())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchRootCauses"
-      />
-    </div>
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
+        <span class="icon-remove" @click=";((word = ''), searchRootCauses())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchRootCauses"
+        />
+      </div>
 
-    <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
-      <!-- <ExportPdf />
+      <div class="col-span-2 flex justify-end gap-2">
+        <!-- <ExportExcel :data="state.data" /> -->
+        <!-- <ExportPdf />
       <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
 
       <PermissionBuilder :code="[
@@ -290,187 +293,188 @@ const IndexRootCausesactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
         <SystemRootCausesTypes />
       </PermissionBuilder> -->
-      <ActionsList
-        feature-name="action_feature_root_causes"
-        :show-actions="true"
-        :actionList="IndexRootCausesactionList()"
-        :actionsNumber="5"
-      >
-        <template #custom>
-          <!-- <SystemRootCausesTypes /> -->
-          <ExportPdf :isDropList="true" />
-        </template>
-      </ActionsList>
+        <ActionsList
+          feature-name="action_feature_root_causes"
+          :show-actions="true"
+          :actionList="IndexRootCausesactionList()"
+          :actionsNumber="5"
+        >
+          <template #custom>
+            <!-- <SystemRootCausesTypes /> -->
+            <ExportPdf :isDropList="true" />
+          </template>
+        </ActionsList>
+      </div>
+      <SystemRootCausesTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
     </div>
-    <SystemRootCausesTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
-  </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.ROOT_CAUSES_ALL,
-      PermissionsEnum.ROOT_CAUSES_DELETE,
-      PermissionsEnum.ROOT_CAUSES_FETCH,
-      PermissionsEnum.ROOT_CAUSES_UPDATE,
-      PermissionsEnum.ROOT_CAUSES_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.ROOT_CAUSES_ALL,
+        PermissionsEnum.ROOT_CAUSES_DELETE,
+        PermissionsEnum.ROOT_CAUSES_FETCH,
+        PermissionsEnum.ROOT_CAUSES_UPDATE,
+        PermissionsEnum.ROOT_CAUSES_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('title') }}</th>
 
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
-                  {{ $t('all_industries') }}
-                </th>
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
-                  {{ $t('industries') }}
-                </th>
+                  <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                    {{ $t('all_industries') }}
+                  </th>
+                  <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                    {{ $t('industries') }}
+                  </th>
 
-                <!-- <th scope="col">{{ $t('actions') }}</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  {{ index + 1 }}
-                </td>
-                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
-                <td
-                  :data-label="$t('all_industries')"
-                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
-                >
-                  {{ item.allIndustries ? $t('yes') : $t('no') }}
-                </td>
-                <td
-                  :data-label="$t('all_industries')"
-                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
-                >
-                  {{
-                    item.industries.length > 0
-                      ? item.industries.map((industry) => industry.title).join(', ')
-                      : $t('no')
-                  }}
-                </td>
+                  <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    {{ index + 1 }}
+                  </td>
+                  <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                  <td
+                    :data-label="$t('all_industries')"
+                    v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                  >
+                    {{ item.allIndustries ? $t('yes') : $t('no') }}
+                  </td>
+                  <td
+                    :data-label="$t('all_industries')"
+                    v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                  >
+                    {{
+                      item.industries.length > 0
+                        ? item.industries.map((industry) => industry.title).join(', ')
+                        : $t('no')
+                    }}
+                  </td>
 
-                <td :data-label="$t('Actions')">
-                  <!--                <DialogChangeStatusRootCauses-->
-                  <!--                  v-if="item.RootCausesStatus === RootCausesStatusEnum.Draft"-->
-                  <!--                  :RootCausesId="item.id"-->
-                  <!--                  @RootCausesChangeStatus="fetchRootCauses"-->
-                  <!--                />-->
+                  <td :data-label="$t('Actions')">
+                    <!--                <DialogChangeStatusRootCauses-->
+                    <!--                  v-if="item.RootCausesStatus === RootCausesStatusEnum.Draft"-->
+                    <!--                  :RootCausesId="item.id"-->
+                    <!--                  @RootCausesChangeStatus="fetchRootCauses"-->
+                    <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteRootCauses)"
-                    @delete="deleteRootCauses(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
+                    <DropList
+                      :actionList="actionList(item.id, deleteRootCauses)"
+                      @delete="deleteRootCauses(item.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #empty>
+          <PermissionBuilder
+            :code="[
+              PermissionsEnum.ADMIN,
+              PermissionsEnum.ORGANIZATION_EMPLOYEE,
+              PermissionsEnum.ROOT_CAUSES_CREATE,
+            ]"
+          >
+            <DataEmpty
+              :link="`/${
+                user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+              }/root-causes/add`"
+              :addText="$t('auditUi.add_root_cause')"
+              :description="
+                $t(
+                  'You have no Root Causess .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Root Causess')"
+            />
+          </PermissionBuilder>
+        </template>
+        <template #failed>
+          <PermissionBuilder
+            :code="[
+              PermissionsEnum.ADMIN,
+              PermissionsEnum.ORGANIZATION_EMPLOYEE,
+              PermissionsEnum.ROOT_CAUSES_CREATE,
+            ]"
+          >
+            <DataFailed
+              :link="`/${
+                user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+              }/root-causes/add`"
+              :addText="$t('auditUi.add_root_cause')"
+              :description="
+                $t(
+                  'You have no RootCauses .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Root Causess')"
+            />
+          </PermissionBuilder>
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
+        <DataFailed
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no RootCauses .. All your joined customers will appear here when you add your customer data',
+            )
+          "
         />
       </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
-        <PermissionBuilder
-          :code="[
-            PermissionsEnum.ADMIN,
-            PermissionsEnum.ORGANIZATION_EMPLOYEE,
-            PermissionsEnum.ROOT_CAUSES_CREATE,
-          ]"
-        >
-          <DataEmpty
-            :link="`/${
-              user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/root-causes/add`"
-            :addText="$t('auditUi.add_root_cause')"
-            :description="
-              $t(
-                'You have no Root Causess .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Root Causess')"
-          />
-        </PermissionBuilder>
-      </template>
-      <template #failed>
-        <PermissionBuilder
-          :code="[
-            PermissionsEnum.ADMIN,
-            PermissionsEnum.ORGANIZATION_EMPLOYEE,
-            PermissionsEnum.ROOT_CAUSES_CREATE,
-          ]"
-        >
-          <DataFailed
-            :link="`/${
-              user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/root-causes/add`"
-            :addText="$t('auditUi.add_root_cause')"
-            :description="
-              $t(
-                'You have no RootCauses .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Root Causess')"
-          />
-        </PermissionBuilder>
-      </template>
-    </DataStatus>
+    </PermissionBuilder>
 
-    <template #notPermitted>
-      <DataFailed
-        :addText="$t('auditUi.you_do_not_have_permission')"
-        :description="
-          $t(
-            'You have no RootCauses .. All your joined customers will appear here when you add your customer data',
-          )
+    <Dialog
+      v-model:visible="showUploadDialog"
+      modal
+      :dismissable-mask="true"
+      :header="$t('import_root_causes')"
+      :style="{ width: '80vw', maxWidth: '900px' }"
+    >
+      <UploadRootCausesExeclSheet
+        :initial-file="pendingFile"
+        @uploaded="
+          () => {
+            showUploadDialog = false
+            pendingFile = null
+            fetchRootCauses()
+          }
         "
       />
-    </template>
-  </PermissionBuilder>
+    </Dialog>
 
-  <Dialog
-    v-model:visible="showUploadDialog"
-    modal
-    :dismissable-mask="true"
-    :header="$t('import_root_causes')"
-    :style="{ width: '80vw', maxWidth: '900px' }"
-  >
-    <UploadRootCausesExeclSheet
-      :initial-file="pendingFile"
-      @uploaded="
-        () => {
-          showUploadDialog = false
-          pendingFile = null
-          fetchRootCauses()
-        }
-      "
+    <input
+      ref="fileInputRef"
+      type="file"
+      accept=".xls,.xlsx"
+      style="display: none"
+      @change="onFileSelected"
     />
-  </Dialog>
-
-  <input
-    ref="fileInputRef"
-    type="file"
-    accept=".xls,.xlsx"
-    style="display: none"
-    @change="onFileSelected"
-  />
+  </RegisterPage>
 </template>
 
 <style scoped></style>

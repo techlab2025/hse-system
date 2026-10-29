@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -92,119 +94,121 @@ watch(
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 mt-2">
-    <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchShift())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchShift"
-      />
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 mt-2">
+      <div class="input-search col-span-1">
+        <span class="icon-remove" @click="((word = ''), searchShift())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchShift"
+        />
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <router-link class="btn btn-primary" to="/organization/shifts/add">
+          {{ $t('add_shift') }}
+        </router-link>
+      </div>
     </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <router-link class="btn btn-primary" to="/organization/shifts/add">
-        {{ $t('add_shift') }}
-      </router-link>
-    </div>
-  </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ORG_SHIFT_ALL,
-      PermissionsEnum.ORG_SHIFT_DELETE,
-      PermissionsEnum.ORG_SHIFT_FETCH,
-      PermissionsEnum.ORG_SHIFT_UPDATE,
-      PermissionsEnum.ORG_SHIFT_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <th scope="col">{{ $t('start_time') }}</th>
-                <th scope="col">{{ $t('end_time') }}</th>
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link :to="`/organization/shifts/${item.id}`"
-                    >{{ index + 1 }}
-                  </router-link>
-                </td>
-                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
-                <td :data-label="$t('start_time')">{{ item.startTime }}</td>
-                <td :data-label="$t('end_time')">{{ item.endTime }}</td>
-                <td :data-label="$t('Actions')">
-                  <DropList
-                    :actionList="actionList(item.id, deleteShift)"
-                    @delete="deleteShift(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.ORG_SHIFT_ALL,
+        PermissionsEnum.ORG_SHIFT_DELETE,
+        PermissionsEnum.ORG_SHIFT_FETCH,
+        PermissionsEnum.ORG_SHIFT_UPDATE,
+        PermissionsEnum.ORG_SHIFT_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('title') }}</th>
+                  <th scope="col">{{ $t('start_time') }}</th>
+                  <th scope="col">{{ $t('end_time') }}</th>
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    <router-link :to="`/organization/shifts/${item.id}`"
+                      >{{ index + 1 }}
+                    </router-link>
+                  </td>
+                  <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                  <td :data-label="$t('start_time')">{{ item.startTime }}</td>
+                  <td :data-label="$t('end_time')">{{ item.endTime }}</td>
+                  <td :data-label="$t('Actions')">
+                    <DropList
+                      :actionList="actionList(item.id, deleteShift)"
+                      @delete="deleteShift(item.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="5" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="5" :rows="10" />
+        </template>
+        <template #empty>
+          <PermissionBuilder :code="[PermissionsEnum?.ORG_SHIFT_CREATE]">
+            <DataEmpty
+              :link="`/organization/shifts/add`"
+              :addText="$t('auditUi.add_shift')"
+              :description="
+                $t(
+                  'You have no Shifts .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Shifts')"
+            />
+          </PermissionBuilder>
+        </template>
+        <template #failed>
+          <PermissionBuilder :code="[PermissionsEnum?.ORG_SHIFT_CREATE]">
+            <DataFailed
+              :link="`/organization/shifts/add`"
+              :addText="$t('auditUi.add_shift')"
+              :description="
+                $t(
+                  'You have no Shifts .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Shifts')"
+            />
+          </PermissionBuilder>
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
+        <DataFailed
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="$t('You have no Shifts permission.')"
+          link=""
         />
       </template>
-      <template #loader>
-        <TableLoader :cols="5" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="5" :rows="10" />
-      </template>
-      <template #empty>
-        <PermissionBuilder :code="[PermissionsEnum?.ORG_SHIFT_CREATE]">
-          <DataEmpty
-            :link="`/organization/shifts/add`"
-            :addText="$t('auditUi.add_shift')"
-            :description="
-              $t(
-                'You have no Shifts .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Shifts')"
-          />
-        </PermissionBuilder>
-      </template>
-      <template #failed>
-        <PermissionBuilder :code="[PermissionsEnum?.ORG_SHIFT_CREATE]">
-          <DataFailed
-            :link="`/organization/shifts/add`"
-            :addText="$t('auditUi.add_shift')"
-            :description="
-              $t(
-                'You have no Shifts .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Shifts')"
-          />
-        </PermissionBuilder>
-      </template>
-    </DataStatus>
-
-    <template #notPermitted>
-      <DataFailed
-        :addText="$t('auditUi.you_do_not_have_permission')"
-        :description="$t('You have no Shifts permission.')"
-        link=""
-      />
-    </template>
-  </PermissionBuilder>
+    </PermissionBuilder>
+  </RegisterPage>
 </template>
 
 <style scoped></style>

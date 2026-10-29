@@ -24,8 +24,8 @@ const formatValue = (value: number) => new Intl.NumberFormat(getCurrentLocale())
       </div>
     </header>
 
-    <div class="matrix-scroll">
-      <table class="hse-project-table">
+    <div class="matrix-scroll hse-table-scroll">
+      <table v-table-identity class="hse-project-table hse-data-table">
         <thead>
           <tr>
             <th scope="col">{{ $t('Accident type') }}</th>

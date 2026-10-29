@@ -44,12 +44,12 @@ const projects = computed(() =>
     @retry="$emit('retry')"
   >
     <div
-      class="command-table-wrap"
+      class="command-table-wrap hse-table-scroll"
       tabindex="0"
       role="region"
       :aria-label="$t('command.projectsTitle')"
     >
-      <table class="command-project-table">
+      <table v-table-identity class="command-project-table hse-data-table">
         <thead>
           <tr>
             <th scope="col">{{ $t('command.project') }}</th>

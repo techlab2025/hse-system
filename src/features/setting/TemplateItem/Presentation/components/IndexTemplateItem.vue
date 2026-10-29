@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 // import IndexTemplateItemTypeParams from '@/features/setting/TemplateItemType/Core/params/indexTemplateItemTypeParams'
 // import IndexTemplateItemTypeController from '@/features/setting/TemplateItemType/Presentation/controllers/indexTemplateItemTypeController'
 
@@ -149,153 +151,155 @@ watch(
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchTemplateItemType())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchTemplateItemType"
-      />
-    </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
-      <ExportPdf />
-      <permission-builder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.TEMPLATE_ITEM_ALL,
-          PermissionsEnum.TEMPLATE_ITEM_CREATE,
-          PermissionsEnum.TEMPLATE_ITEM_DELETE,
-          PermissionsEnum.TEMPLATE_ITEM_FETCH,
-          PermissionsEnum.TEMPLATE_ITEM_UPDATE,
-        ]"
-      >
-        <!-- <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template-item/add`"
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
+        <span class="icon-remove" @click="((word = ''), searchTemplateItemType())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchTemplateItemType"
+        />
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <!-- <ExportExcel :data="state.data" /> -->
+        <ExportPdf />
+        <permission-builder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.TEMPLATE_ITEM_ALL,
+            PermissionsEnum.TEMPLATE_ITEM_CREATE,
+            PermissionsEnum.TEMPLATE_ITEM_DELETE,
+            PermissionsEnum.TEMPLATE_ITEM_FETCH,
+            PermissionsEnum.TEMPLATE_ITEM_UPDATE,
+          ]"
+        >
+          <!-- <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template-item/add`"
           class="btn btn-primary">
           {{ $t('Add_TemplateItem') }}
         </router-link> -->
-      </permission-builder>
+        </permission-builder>
+      </div>
     </div>
-  </div>
 
-  <permission-builder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.TEMPLATE_ITEM_ALL,
-      PermissionsEnum.TEMPLATE_ITEM_CREATE,
-      PermissionsEnum.TEMPLATE_ITEM_DELETE,
-      PermissionsEnum.TEMPLATE_ITEM_FETCH,
-      PermissionsEnum.TEMPLATE_ITEM_UPDATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col">{{ $t('all_industries') }}</th>
-                <th scope="col">{{ $t('industries') }}</th>
+    <permission-builder
+      :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.TEMPLATE_ITEM_ALL,
+        PermissionsEnum.TEMPLATE_ITEM_CREATE,
+        PermissionsEnum.TEMPLATE_ITEM_DELETE,
+        PermissionsEnum.TEMPLATE_ITEM_FETCH,
+        PermissionsEnum.TEMPLATE_ITEM_UPDATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('title') }}</th>
+                  <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
+                  <th scope="col">{{ $t('all_industries') }}</th>
+                  <th scope="col">{{ $t('industries') }}</th>
 
-                <!-- <th scope="col">Actions</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/edit/${item.id}`"
-                    >{{ index + 1 }}
-                  </router-link>
-                </td>
-                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
-                <td :data-label="$t('all_industries')">
-                  {{ item.allIndustries ? $t('yes') : $t('no') }}
-                </td>
-                <td :data-label="$t('industries')">
-                  {{
-                    item.industries.length > 0
-                      ? item.industries.map((industry) => industry.title).join(', ')
-                      : $t('no')
-                  }}
-                </td>
+                  <!-- <th scope="col">Actions</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    <router-link
+                      :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/edit/${item.id}`"
+                      >{{ index + 1 }}
+                    </router-link>
+                  </td>
+                  <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                  <td :data-label="$t('all_industries')">
+                    {{ item.allIndustries ? $t('yes') : $t('no') }}
+                  </td>
+                  <td :data-label="$t('industries')">
+                    {{
+                      item.industries.length > 0
+                        ? item.industries.map((industry) => industry.title).join(', ')
+                        : $t('no')
+                    }}
+                  </td>
 
-                <td :data-label="$t('Actions')">
-                  <!--                <DialogChangeStatusTemplateItemType-->
-                  <!--                  v-if="item.TemplateItemTypeStatus === TemplateItemTypeStatusEnum.Draft"-->
-                  <!--                  :TemplateItemTypeId="item.id"-->
-                  <!--                  @TemplateItemTypeChangeStatus="fetchTemplateItemType"-->
-                  <!--                />-->
+                  <td :data-label="$t('Actions')">
+                    <!--                <DialogChangeStatusTemplateItemType-->
+                    <!--                  v-if="item.TemplateItemTypeStatus === TemplateItemTypeStatusEnum.Draft"-->
+                    <!--                  :TemplateItemTypeId="item.id"-->
+                    <!--                  @TemplateItemTypeChangeStatus="fetchTemplateItemType"-->
+                    <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteTemplateItem)"
-                    @delete="deleteTemplateItem(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
-      </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
-        <DataEmpty
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/TemplateItemType`"
-          :addText="$t('auditUi.add_template_item_type')"
-          :description="
-            $t(
-              'You have no TemplateItemTypes .. All your joined customers will appear here when you add your customer data',
-            )
-          "
-          :title="$t('You have No TemplateItemTypes')"
-        />
-      </template>
-      <template #failed>
+                    <DropList
+                      :actionList="actionList(item.id, deleteTemplateItem)"
+                      @delete="deleteTemplateItem(item.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #empty>
+          <DataEmpty
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/TemplateItemType`"
+            :addText="$t('auditUi.add_template_item_type')"
+            :description="
+              $t(
+                'You have no TemplateItemTypes .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No TemplateItemTypes')"
+          />
+        </template>
+        <template #failed>
+          <DataFailed
+            :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/TemplateItemType`"
+            :addText="$t('auditUi.add_template_item_type')"
+            :description="
+              $t(
+                'You have no TemplateItemType .. All your joined customers will appear here when you add your customer data',
+              )
+            "
+            :title="$t('You have No TemplateItemTypes')"
+          />
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
         <DataFailed
-          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/TemplateItemType`"
-          :addText="$t('auditUi.add_template_item_type')"
+          :addText="$t('auditUi.you_do_not_have_permission')"
           :description="
             $t(
               'You have no TemplateItemType .. All your joined customers will appear here when you add your customer data',
             )
           "
-          :title="$t('You have No TemplateItemTypes')"
         />
       </template>
-    </DataStatus>
-
-    <template #notPermitted>
-      <DataFailed
-        :addText="$t('auditUi.you_do_not_have_permission')"
-        :description="
-          $t(
-            'You have no TemplateItemType .. All your joined customers will appear here when you add your customer data',
-          )
-        "
-      />
-    </template>
-  </permission-builder>
+    </permission-builder>
+  </RegisterPage>
 </template>
 
 <style scoped></style>

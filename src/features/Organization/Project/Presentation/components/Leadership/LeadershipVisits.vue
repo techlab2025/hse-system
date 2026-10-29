@@ -188,8 +188,8 @@ const DateUpdate = (date: unknown) => {
       </div>
       <DataStatus :controller="state">
         <template #success>
-          <div v-if="visits.length" class="table-responsive visits-table">
-            <table class="hse-project-table main-table">
+          <div v-if="visits.length" class="table-responsive visits-table hse-table-scroll">
+            <table v-table-identity class="hse-project-table main-table hse-data-table">
               <thead>
                 <tr>
                   <th>{{ $t('Visit Date') }}</th>

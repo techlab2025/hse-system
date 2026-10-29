@@ -203,8 +203,8 @@ const getEmployeeInitial = (name?: string) => name?.trim().charAt(0).toUpperCase
             </span>
           </div>
 
-          <div class="results-table-scroll">
-            <table class="results-table">
+          <div class="results-table-scroll hse-table-scroll">
+            <table v-table-identity class="results-table hse-data-table">
               <thead>
                 <tr>
                   <th>{{ $t('serial') }}</th>

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -130,95 +132,97 @@ const downloadTemplate = () =>
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchTraningTopics())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchTraningTopics"
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <span class="icon-remove" @click="((word = ''), searchTraningTopics())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchTraningTopics"
+        />
+      </div>
+
+      <div class="col-span-2 flex justify-end gap-2">
+        <TraningTopicActionsButtons
+          @export="exportExcel"
+          @download-template="downloadTemplate"
+          @uploaded="fetchTraningTopics(word, currentPage, countPerPage)"
+        />
+      </div>
+      <SystemTraningTopics
+        v-if="user?.type !== OrganizationTypeEnum.ADMIN"
+        :is-header-tap="true"
+        @confirmed="fetchTraningTopics(word, currentPage, countPerPage)"
       />
     </div>
 
-    <div class="col-span-2 flex justify-end gap-2">
-      <TraningTopicActionsButtons
-        @export="exportExcel"
-        @download-template="downloadTemplate"
-        @uploaded="fetchTraningTopics(word, currentPage, countPerPage)"
-      />
-    </div>
-    <SystemTraningTopics
-      v-if="user?.type !== OrganizationTypeEnum.ADMIN"
-      :is-header-tap="true"
-      @confirmed="fetchTraningTopics(word, currentPage, countPerPage)"
-    />
-  </div>
+    <PermissionBuilder :code="fetchPermissions">
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive mt-2 hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('title') }}</th>
+                  <th scope="col">{{ $t('actions') }}</th>
+                </tr>
+              </thead>
 
-  <PermissionBuilder :code="fetchPermissions">
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive mt-2">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <th scope="col">{{ $t('actions') }}</th>
-              </tr>
-            </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
+                  <td>{{ item.title }}</td>
+                  <td>
+                    <DropList :action-list="rowActions(item.id)" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
-                <td>{{ item.title }}</td>
-                <td>
-                  <DropList :action-list="rowActions(item.id)" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
 
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
+        <template #loader>
+          <TraningTopicTableSkeleton />
+        </template>
+
+        <template #initial>
+          <TraningTopicTableSkeleton />
+        </template>
+
+        <template #empty>
+          <DataEmpty
+            :title="$t('no_traning_topics')"
+            :description="$t('no_traning_topics_description')"
+            :addText="$t('add_traning_topic')"
+            :link="`/${user?.type === OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/traning-topics/add`"
+          />
+        </template>
+
+        <template #failed>
+          <DataFailed
+            :title="$t('no_traning_topics')"
+            :description="$t('no_traning_topics_description')"
+            :link="`/${user?.type === OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/traning-topics/add`"
+          />
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
+        <DataFailed :add-text="$t('permission_denied')" description="" link="" />
       </template>
-
-      <template #loader>
-        <TraningTopicTableSkeleton />
-      </template>
-
-      <template #initial>
-        <TraningTopicTableSkeleton />
-      </template>
-
-      <template #empty>
-        <DataEmpty
-          :title="$t('no_traning_topics')"
-          :description="$t('no_traning_topics_description')"
-          :addText="$t('add_traning_topic')"
-          :link="`/${user?.type === OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/traning-topics/add`"
-        />
-      </template>
-
-      <template #failed>
-        <DataFailed
-          :title="$t('no_traning_topics')"
-          :description="$t('no_traning_topics_description')"
-          :link="`/${user?.type === OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/traning-topics/add`"
-        />
-      </template>
-    </DataStatus>
-
-    <template #notPermitted>
-      <DataFailed :add-text="$t('permission_denied')" description="" link="" />
-    </template>
-  </PermissionBuilder>
+    </PermissionBuilder>
+  </RegisterPage>
 </template>

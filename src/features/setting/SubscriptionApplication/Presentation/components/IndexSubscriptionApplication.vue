@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 // import IndexSubscriptionApplicationParams from '@/features/setting/SubscriptionApplication/Core/params/indexSubscriptionApplicationParams'
 // import IndexSubscriptionApplicationController from '@/features/setting/SubscriptionApplication/Presentation/controllers/indexSubscriptionApplicationController'
 
@@ -130,22 +132,23 @@ const displayValue = (value: unknown) => {
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchSubscriptionApplication())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchSubscriptionApplication"
-      />
-    </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" />
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <span class="icon-remove" @click="((word = ''), searchSubscriptionApplication())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchSubscriptionApplication"
+        />
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <!-- <ExportExcel :data="state.data" />
       <ExportPdf />
       <permission-builder :code="[
         PermissionsEnum.ADMIN,
@@ -156,130 +159,155 @@ const displayValue = (value: unknown) => {
           {{ $t('Add_SubscriptionApplication') }}
         </router-link>
       </permission-builder> -->
+      </div>
     </div>
-  </div>
 
-  <permission-builder
-    :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.SUBSCRIPTION_APPLICATION_ALL,
-      PermissionsEnum.SUBSCRIPTION_APPLICATION_DELETE,
-      PermissionsEnum.SUBSCRIPTION_APPLICATION_FETCH,
-      PermissionsEnum.SUBSCRIPTION_APPLICATION_UPDATE,
-      PermissionsEnum.SUBSCRIPTION_APPLICATION_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div
-          class="table-responsive table-responsive--scroll subscription-applications-table"
-          tabindex="0"
-          :aria-label="$t('Subscription applications')"
-        >
-          <table class="main-table subscription-applications-grid">
-            <thead>
-              <tr>
-                <th scope="col">{{ $t('id') }}</th>
-                <!-- <th scope="col">{{ $t('subscription_application_id') }}</th> -->
-                <th scope="col">{{ $t('request_date') }}</th>
-                <!-- <th scope="col">{{ $t('request_status') }}</th> -->
-                <th scope="col">{{ $t('organization_name') }}</th>
-                <th scope="col">{{ $t('industry') }}</th>
-                <th scope="col">{{ $t('phone') }}</th>
-                <th scope="col">{{ $t('email') }}</th>
-                <th scope="col">{{ $t('address') }}</th>
-                <th scope="col">{{ $t('admin_name') }}</th>
-                <th scope="col">{{ $t('admin_phone') }}</th>
-                <th scope="col">{{ $t('admin_email') }}</th>
-                <th scope="col">{{ $t('status_name') }}</th>
-                <th scope="col">{{ $t('actions') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in state.data" :key="item.id">
-                <td :data-label="$t('id')">{{ displayValue(item?.id) }}</td>
-                <!-- <td :data-label="$t('subscription_application_id')">
+    <permission-builder
+      :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.SUBSCRIPTION_APPLICATION_ALL,
+        PermissionsEnum.SUBSCRIPTION_APPLICATION_DELETE,
+        PermissionsEnum.SUBSCRIPTION_APPLICATION_FETCH,
+        PermissionsEnum.SUBSCRIPTION_APPLICATION_UPDATE,
+        PermissionsEnum.SUBSCRIPTION_APPLICATION_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div
+            class="table-responsive table-responsive--scroll subscription-applications-table hse-table-scroll"
+            tabindex="0"
+            :aria-label="$t('Subscription applications')"
+          >
+            <table
+              v-table-identity
+              class="main-table subscription-applications-grid hse-data-table"
+            >
+              <thead>
+                <tr>
+                  <th scope="col">{{ $t('id') }}</th>
+                  <!-- <th scope="col">{{ $t('subscription_application_id') }}</th> -->
+                  <th scope="col">{{ $t('request_date') }}</th>
+                  <!-- <th scope="col">{{ $t('request_status') }}</th> -->
+                  <th scope="col">{{ $t('organization_name') }}</th>
+                  <th scope="col">{{ $t('industry') }}</th>
+                  <th scope="col">{{ $t('phone') }}</th>
+                  <th scope="col">{{ $t('email') }}</th>
+                  <th scope="col">{{ $t('address') }}</th>
+                  <th scope="col">{{ $t('admin_name') }}</th>
+                  <th scope="col">{{ $t('admin_phone') }}</th>
+                  <th scope="col">{{ $t('admin_email') }}</th>
+                  <th scope="col">{{ $t('status_name') }}</th>
+                  <th scope="col">{{ $t('actions') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in state.data" :key="item.id">
+                  <td :data-label="$t('id')">{{ displayValue(item?.id) }}</td>
+                  <!-- <td :data-label="$t('subscription_application_id')">
                   {{ displayValue(item?.subscription_application_id) }}
                 </td> -->
-                <td :data-label="$t('request_date')">{{ displayValue(item?.request_date) }}</td>
-                <!-- <td :data-label="$t('request_status')">
+                  <td :data-label="$t('request_date')">{{ displayValue(item?.request_date) }}</td>
+                  <!-- <td :data-label="$t('request_status')">
                   {{ displayValue(item?.request_status) }}
                 </td> -->
-                <td :data-label="$t('organization_name')">{{ displayValue(item?.name) }}</td>
-                <td :data-label="$t('industry')">
-                  {{ displayValue(item?.industry?.title ?? item?.industry?.titile) }}
-                </td>
-                <td :data-label="$t('phone')">{{ displayValue(item?.phone) }}</td>
-                <td :data-label="$t('email')">{{ displayValue(item?.email) }}</td>
-                <td :data-label="$t('address')">{{ displayValue(item?.address) }}</td>
-                <td :data-label="$t('admin_name')">{{ displayValue(item?.admin_name) }}</td>
-                <td :data-label="$t('admin_phone')">{{ displayValue(item?.admin_phone) }}</td>
-                <td :data-label="$t('admin_email')">{{ displayValue(item?.admin_email) }}</td>
-                <td
-                  class="status"
-                  :class="GetProjectStatus(item?.request_status)"
-                  :data-label="$t('status_name')"
-                >
-                  {{ displayValue(item?.status_name) }}
-                </td>
-                <td :data-label="$t('actions')">
-                  <div
-                    v-if="item?.request_status === SubscriptionStatusEnum.PENDING"
-                    class="flex gap-2"
+                  <td :data-label="$t('organization_name')">{{ displayValue(item?.name) }}</td>
+                  <td :data-label="$t('industry')">
+                    {{ displayValue(item?.industry?.title ?? item?.industry?.titile) }}
+                  </td>
+                  <td :data-label="$t('phone')">{{ displayValue(item?.phone) }}</td>
+                  <td :data-label="$t('email')">{{ displayValue(item?.email) }}</td>
+                  <td :data-label="$t('address')">{{ displayValue(item?.address) }}</td>
+                  <td :data-label="$t('admin_name')">{{ displayValue(item?.admin_name) }}</td>
+                  <td :data-label="$t('admin_phone')">{{ displayValue(item?.admin_phone) }}</td>
+                  <td :data-label="$t('admin_email')">{{ displayValue(item?.admin_email) }}</td>
+                  <td
+                    class="status"
+                    :class="GetProjectStatus(item?.request_status)"
+                    :data-label="$t('status_name')"
                   >
-                    <button
-                      class="btn btn-primary"
-                      @click="approveSubscriptionApplication(item.id)"
+                    {{ displayValue(item?.status_name) }}
+                  </td>
+                  <td :data-label="$t('actions')">
+                    <div
+                      v-if="item?.request_status === SubscriptionStatusEnum.PENDING"
+                      class="flex gap-2"
                     >
-                      {{ $t('approved') }}
-                    </button>
-                    <button
-                      class="btn btn-secondary"
-                      @click="rejectSubscriptionApplication(item.id)"
-                    >
-                      {{ $t('reject') }}
-                    </button>
-                  </div>
-                  <span v-else>—</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
-        />
-      </template>
-      <template #loader>
-        <TableLoader :cols="14" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="14" :rows="10" />
-      </template>
-      <template #empty>
-        <permission-builder
-          :code="[
-            PermissionsEnum.ADMIN,
-            PermissionsEnum.ORGANIZATION_EMPLOYEE,
-            PermissionsEnum.SUBSCRIPTION_APPLICATION_CREATE,
-          ]"
-        >
-          <DataEmpty
-            :link="`/admin/subscription-application/add`"
-            :addText="$t('auditUi.add_subscription_application')"
-            :description="
-              $t(
-                'You have no SubscriptionApplication .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No SubscriptionApplication')"
+                      <button
+                        class="btn btn-primary"
+                        @click="approveSubscriptionApplication(item.id)"
+                      >
+                        {{ $t('approved') }}
+                      </button>
+                      <button
+                        class="btn btn-secondary"
+                        @click="rejectSubscriptionApplication(item.id)"
+                      >
+                        {{ $t('reject') }}
+                      </button>
+                    </div>
+                    <span v-else>—</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
           />
-        </permission-builder>
-      </template>
-      <template #failed>
+        </template>
+        <template #loader>
+          <TableLoader :cols="14" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="14" :rows="10" />
+        </template>
+        <template #empty>
+          <permission-builder
+            :code="[
+              PermissionsEnum.ADMIN,
+              PermissionsEnum.ORGANIZATION_EMPLOYEE,
+              PermissionsEnum.SUBSCRIPTION_APPLICATION_CREATE,
+            ]"
+          >
+            <DataEmpty
+              :link="`/admin/subscription-application/add`"
+              :addText="$t('auditUi.add_subscription_application')"
+              :description="
+                $t(
+                  'You have no SubscriptionApplication .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No SubscriptionApplication')"
+            />
+          </permission-builder>
+        </template>
+        <template #failed>
+          <permission-builder
+            :code="[
+              PermissionsEnum.ADMIN,
+              PermissionsEnum.ORGANIZATION_EMPLOYEE,
+              PermissionsEnum.SUBSCRIPTION_APPLICATION_CREATE,
+            ]"
+          >
+            <DataFailed
+              :link="`/admin/subscription-application/add`"
+              :addText="$t('auditUi.add_subscription_application')"
+              :description="
+                $t(
+                  'You have no SubscriptionApplication .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No SubscriptionApplication')"
+            />
+          </permission-builder>
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
         <permission-builder
           :code="[
             PermissionsEnum.ADMIN,
@@ -288,38 +316,17 @@ const displayValue = (value: unknown) => {
           ]"
         >
           <DataFailed
-            :link="`/admin/subscription-application/add`"
-            :addText="$t('auditUi.add_subscription_application')"
+            :addText="$t('auditUi.you_do_not_have_permission')"
             :description="
               $t(
                 'You have no SubscriptionApplication .. All your joined customers will appear here when you add your customer data',
               )
             "
-            :title="$t('You have No SubscriptionApplication')"
           />
         </permission-builder>
       </template>
-    </DataStatus>
-
-    <template #notPermitted>
-      <permission-builder
-        :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.SUBSCRIPTION_APPLICATION_CREATE,
-        ]"
-      >
-        <DataFailed
-          :addText="$t('auditUi.you_do_not_have_permission')"
-          :description="
-            $t(
-              'You have no SubscriptionApplication .. All your joined customers will appear here when you add your customer data',
-            )
-          "
-        />
-      </permission-builder>
-    </template>
-  </permission-builder>
+    </permission-builder>
+  </RegisterPage>
 </template>
 
 <style scoped>

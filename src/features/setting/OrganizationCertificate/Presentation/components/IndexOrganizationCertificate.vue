@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { translate as localizeUi } from '@/localization/i18n'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
@@ -282,29 +284,30 @@ const organizationCertificateActionList = () => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 certificate_index">
-    <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchOrganizationCertificate())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search_organization_certificate')"
-        class="input"
-        type="text"
-        @input="searchOrganizationCertificate"
-      />
-    </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <IndexFilterDialog
-        show-date
-        :initial-date="filterDate"
-        @apply="applyFilters"
-        @reset="resetFilters"
-      />
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 certificate_index">
+      <div class="input-search col-span-1">
+        <span class="icon-remove" @click="((word = ''), searchOrganizationCertificate())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search_organization_certificate')"
+          class="input"
+          type="text"
+          @input="searchOrganizationCertificate"
+        />
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <IndexFilterDialog
+          show-date
+          :initial-date="filterDate"
+          @apply="applyFilters"
+          @reset="resetFilters"
+        />
 
-      <!-- <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE]">
+        <!-- <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE]">
         <router-link
           :to="`/${
             user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
@@ -314,175 +317,176 @@ const organizationCertificateActionList = () => [
           {{ $t('import_certificate') }}
         </router-link>
       </PermissionBuilder> -->
-      <!-- <a href="/ExcelForm.xlsx" class="btn btn-secondary" download>
+        <!-- <a href="/ExcelForm.xlsx" class="btn btn-secondary" download>
         <ExcelSheetIcon class="icon" />
         <span class="download-title">Excel Sheet</span>
       </a> -->
-      <ActionsList
-        feature-name="action_feature_certificate"
-        :show-actions="true"
-        :actionList="organizationCertificateActionList()"
-        :actionsNumber="5"
-      >
-        <template #custom>
-          <ExportPdf :isDropList="true" />
-        </template>
-      </ActionsList>
-      <!-- <DropList :actionList="actionList"  /> -->
+        <ActionsList
+          feature-name="action_feature_certificate"
+          :show-actions="true"
+          :actionList="organizationCertificateActionList()"
+          :actionsNumber="5"
+        >
+          <template #custom>
+            <ExportPdf :isDropList="true" />
+          </template>
+        </ActionsList>
+        <!-- <DropList :actionList="actionList"  /> -->
+      </div>
     </div>
-  </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ORGANIZATION_CERTIFICATE_ALL,
-      PermissionsEnum.ORGANIZATION_CERTIFICATE_DELETE,
-      PermissionsEnum.ORGANIZATION_CERTIFICATE_FETCH,
-      PermissionsEnum.ORGANIZATION_CERTIFICATE_UPDATE,
-      PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive mt-2">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('organization_certificate_title') }}</th>
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
-                  {{ $t('all_industries') }}
-                </th>
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
-                  {{ $t('industries') }}
-                </th>
-                <th scope="col">{{ $t('organization_certificate_type') }}</th>
-                <th scope="col">{{ $t('expiry_date_required') }}</th>
-                <th scope="col">{{ $t('has_require_data') }}</th>
-                <!-- <th scope="col">{{ $t('image') }}</th> -->
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.ORGANIZATION_CERTIFICATE_ALL,
+        PermissionsEnum.ORGANIZATION_CERTIFICATE_DELETE,
+        PermissionsEnum.ORGANIZATION_CERTIFICATE_FETCH,
+        PermissionsEnum.ORGANIZATION_CERTIFICATE_UPDATE,
+        PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive mt-2 hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('organization_certificate_title') }}</th>
+                  <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                    {{ $t('all_industries') }}
+                  </th>
+                  <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                    {{ $t('industries') }}
+                  </th>
+                  <th scope="col">{{ $t('organization_certificate_type') }}</th>
+                  <th scope="col">{{ $t('expiry_date_required') }}</th>
+                  <th scope="col">{{ $t('has_require_data') }}</th>
+                  <!-- <th scope="col">{{ $t('image') }}</th> -->
 
-                <!-- <th scope="col">{{ $t('actions') }}</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link :to="`${organizationCertificateRoute}/${item.id}`"
-                    >{{ index + 1 }}
-                  </router-link>
-                </td>
-                <td :data-label="$t('Name')">{{ wordSlice(item?.title ?? '') }}</td>
-                <td
-                  :data-label="$t('all_industries')"
-                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
-                >
-                  {{ item.allIndustries ? $t('yes') : $t('no') }}
-                </td>
-                <td
-                  :data-label="$t('all_industries')"
-                  v-if="user?.type === OrganizationTypeEnum?.ADMIN"
-                >
-                  {{
-                    item.industries.length > 0
-                      ? item.industries.map((industry) => industry.title).join(', ')
-                      : $t('no')
-                  }}
-                </td>
-                <td :data-label="$t('organization_certificate_type')">
-                  {{ getOrganizationCertificateTypeLabel(item.certificateType) }}
-                </td>
-                <td :data-label="$t('require_expired_date')">
-                  {{ item.requireExpiredDate ? $t('yes') : $t('no') }}
-                </td>
-                <td :data-label="$t('has_require_data')">
-                  {{ item.hasrequiredata ? $t('yes') : $t('no') }}
-                </td>
-                <!-- <td data-label="image">
+                  <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    <router-link :to="`${organizationCertificateRoute}/${item.id}`"
+                      >{{ index + 1 }}
+                    </router-link>
+                  </td>
+                  <td :data-label="$t('Name')">{{ wordSlice(item?.title ?? '') }}</td>
+                  <td
+                    :data-label="$t('all_industries')"
+                    v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                  >
+                    {{ item.allIndustries ? $t('yes') : $t('no') }}
+                  </td>
+                  <td
+                    :data-label="$t('all_industries')"
+                    v-if="user?.type === OrganizationTypeEnum?.ADMIN"
+                  >
+                    {{
+                      item.industries.length > 0
+                        ? item.industries.map((industry) => industry.title).join(', ')
+                        : $t('no')
+                    }}
+                  </td>
+                  <td :data-label="$t('organization_certificate_type')">
+                    {{ getOrganizationCertificateTypeLabel(item.certificateType) }}
+                  </td>
+                  <td :data-label="$t('require_expired_date')">
+                    {{ item.requireExpiredDate ? $t('yes') : $t('no') }}
+                  </td>
+                  <td :data-label="$t('has_require_data')">
+                    {{ item.hasrequiredata ? $t('yes') : $t('no') }}
+                  </td>
+                  <!-- <td data-label="image">
                   <div class="image_certificate_container">
                     <Image v-if="item.image" :src="item.image" alt="Image" preview />
                     <span v-else>---</span>
                   </div>
                 </td> -->
 
-                <td :data-label="$t('Actions')">
-                  <DropList
-                    :actionList="actionList(item.id, deleteOrganizationCertificate)"
-                    @delete="deleteOrganizationCertificate(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <!-- <div class="index-certificate-container">
+                  <td :data-label="$t('Actions')">
+                    <DropList
+                      :actionList="actionList(item.id, deleteOrganizationCertificate)"
+                      @delete="deleteOrganizationCertificate(item.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- <div class="index-certificate-container">
           <OrganizationCertificateCard v-for="(certificate, index) in state.data" :key="index" :cerificate="certificate" />
         </div> -->
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #empty>
+          <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE]">
+            <DataEmpty
+              :link="`${organizationCertificateRoute}/add`"
+              :addText="$t('add_organization_certificate')"
+              :description="$t('organization_certificate_empty_description')"
+              :title="$t('organization_certificate_empty_title')"
+            />
+          </PermissionBuilder>
+        </template>
+        <template #failed>
+          <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE]">
+            <DataFailed
+              :link="`${organizationCertificateRoute}/add`"
+              :addText="$t('add_organization_certificate')"
+              :description="$t('organization_certificate_empty_description')"
+              :title="$t('organization_certificate_empty_title')"
+            />
+          </PermissionBuilder>
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
+        <DataFailed
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data',
+            )
+          "
         />
       </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
-        <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE]">
-          <DataEmpty
-            :link="`${organizationCertificateRoute}/add`"
-            :addText="$t('add_organization_certificate')"
-            :description="$t('organization_certificate_empty_description')"
-            :title="$t('organization_certificate_empty_title')"
-          />
-        </PermissionBuilder>
-      </template>
-      <template #failed>
-        <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE]">
-          <DataFailed
-            :link="`${organizationCertificateRoute}/add`"
-            :addText="$t('add_organization_certificate')"
-            :description="$t('organization_certificate_empty_description')"
-            :title="$t('organization_certificate_empty_title')"
-          />
-        </PermissionBuilder>
-      </template>
-    </DataStatus>
+    </PermissionBuilder>
 
-    <template #notPermitted>
-      <DataFailed
-        :addText="$t('auditUi.you_do_not_have_permission')"
-        :description="
-          $t(
-            'You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data',
-          )
-        "
+    <Dialog
+      v-model:visible="showUploadDialog"
+      modal
+      :dismissable-mask="true"
+      :header="$t('upload_organization_certificate_sheet')"
+      :style="{ width: '80vw', maxWidth: '900px' }"
+    >
+      <UploadOrganizationCertificateExeclSheet
+        :initial-file="pendingFile"
+        @uploaded="handleUploadComplete"
       />
-    </template>
-  </PermissionBuilder>
+    </Dialog>
 
-  <Dialog
-    v-model:visible="showUploadDialog"
-    modal
-    :dismissable-mask="true"
-    :header="$t('upload_organization_certificate_sheet')"
-    :style="{ width: '80vw', maxWidth: '900px' }"
-  >
-    <UploadOrganizationCertificateExeclSheet
-      :initial-file="pendingFile"
-      @uploaded="handleUploadComplete"
+    <input
+      ref="fileInputRef"
+      type="file"
+      accept=".xls,.xlsx"
+      style="display: none"
+      @change="onFileSelected"
     />
-  </Dialog>
-
-  <input
-    ref="fileInputRef"
-    type="file"
-    accept=".xls,.xlsx"
-    style="display: none"
-    @change="onFileSelected"
-  />
+  </RegisterPage>
 </template>
 
 <style scoped>

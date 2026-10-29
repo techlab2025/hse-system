@@ -94,8 +94,11 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
             </div> -->
           </dl>
 
-          <div class="delivery-table-wrap">
-            <table class="hse-project-table main-table delivery-table">
+          <div class="delivery-table-wrap hse-table-scroll">
+            <table
+              v-table-identity
+              class="hse-project-table main-table delivery-table hse-data-table"
+            >
               <thead>
                 <tr>
                   <th scope="col">{{ $t('Recipient') }}</th>

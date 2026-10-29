@@ -16,6 +16,7 @@ import App from './App.vue'
 import router from './router'
 import { i18n } from './localization/i18n'
 import { syncLocale } from './localization/syncLocale'
+import { installTableIdentity } from '@/shared/Tables/tableIdentity'
 import { installIdentityFormStyling } from './plugins/identityForm'
 import './localization/direction.css'
 // import * as Sentry from '@sentry/vue'
@@ -23,6 +24,7 @@ document.documentElement.classList.add('hse-cloud-identity')
 
 const app = createApp(App)
 installIdentityFormStyling(app)
+installTableIdentity(app)
 // if (process.env.NODE_ENV !== 'development') {
 //   Sentry.init({
 //     app,

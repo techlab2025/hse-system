@@ -136,8 +136,8 @@ const submit = () => {
           <h3 class="table-title">{{ t('mapped_data_preview') }}</h3>
           <span class="table-badge">{{ t('row_count', { count: rows.length }) }}</span>
         </div>
-        <div class="table-responsive">
-          <table class="main-table">
+        <div class="table-responsive hse-table-scroll">
+          <table v-table-identity class="main-table hse-data-table">
             <thead>
               <tr>
                 <th v-for="column in columns" :key="column.key">{{ column.label }}</th>

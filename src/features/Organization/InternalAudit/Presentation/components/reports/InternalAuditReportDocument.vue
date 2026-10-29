@@ -159,8 +159,8 @@ const contextFields = computed(() => [
       <h2>{{ $t('Audit schedule') }}</h2>
       <div v-for="[day, rows] in scheduleGroups" :key="day">
         <h3>{{ day }}</h3>
-        <div class="document-table-wrap">
-          <table>
+        <div class="document-table-wrap hse-table-scroll">
+          <table v-table-identity class="hse-data-table">
             <thead>
               <tr>
                 <th>{{ $t('Time') }}</th>
@@ -198,8 +198,8 @@ const contextFields = computed(() => [
       <h2>{{ $t('Audit Attendance') }}</h2>
       <div v-for="group in attendanceGroups" :key="group.title">
         <h3>{{ group.title }}</h3>
-        <div class="document-table-wrap">
-          <table class="attendance-table">
+        <div class="document-table-wrap hse-table-scroll">
+          <table v-table-identity class="attendance-table hse-data-table">
             <thead>
               <tr>
                 <th>{{ $t('Name') }}</th>
@@ -227,8 +227,8 @@ const contextFields = computed(() => [
     </section>
     <section>
       <h2>{{ $t('Non-conformity') }}</h2>
-      <div class="document-table-wrap">
-        <table>
+      <div class="document-table-wrap hse-table-scroll">
+        <table v-table-identity class="hse-data-table">
           <thead>
             <tr>
               <th>{{ $t('NCR') }}</th>

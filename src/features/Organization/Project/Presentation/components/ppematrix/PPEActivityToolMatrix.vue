@@ -95,8 +95,8 @@ onMounted(async () => {
     </p>
     <DataStatus :controller="toolController.state.value">
       <template #success>
-        <div class="matrix-scroll">
-          <table class="hse-project-table main-table matrix-table">
+        <div class="matrix-scroll hse-table-scroll">
+          <table v-table-identity class="hse-project-table main-table matrix-table hse-data-table">
             <thead>
               <tr>
                 <th scope="col">{{ $t('PPE activity') }}</th>

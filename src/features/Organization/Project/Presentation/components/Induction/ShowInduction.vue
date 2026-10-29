@@ -372,22 +372,27 @@ onMounted(() => {
                     <span>03</span>
                     <h2>{{ $t('attendees') }}</h2>
                   </div>
-                  <table v-if="attendeeCount">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>{{ $t('attendees') }}</th>
-                        <th>{{ $t('Details') }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(employee, index) in induction.organisationEmployee" :key="index">
-                        <td>{{ index + 1 }}</td>
-                        <td>{{ employee.displayTitle }}</td>
-                        <td>{{ employee.displaySubtitle || $t('external_attendee') }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div v-if="attendeeCount" class="hse-table-scroll">
+                    <table v-table-identity class="hse-data-table">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>{{ $t('attendees') }}</th>
+                          <th>{{ $t('Details') }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="(employee, index) in induction.organisationEmployee"
+                          :key="index"
+                        >
+                          <td>{{ index + 1 }}</td>
+                          <td>{{ employee.displayTitle }}</td>
+                          <td>{{ employee.displaySubtitle || $t('external_attendee') }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                   <p v-else class="report-empty">{{ $t('No attendees selected') }}</p>
                 </section>
                 <section class="report-section">

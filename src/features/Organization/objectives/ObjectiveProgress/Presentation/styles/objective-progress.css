@@ -4,6 +4,7 @@
   min-width: 0;
   color: var(--text-strong);
   font-family: inherit;
+  padding: 12px;
 }
 .op-page .op-header {
   display: flex;
@@ -198,7 +199,9 @@
   gap: 8px;
   min-width: 0;
 }
-.op-page .op-field :is(.p-select, .p-inputnumber, .p-textarea, .p-inputnumber-input, .op-number-input) {
+.op-page
+  .op-field
+  :is(.p-select, .p-inputnumber, .p-textarea, .p-inputnumber-input, .op-number-input) {
   width: 100%;
   min-width: 0;
 }

@@ -1,0 +1,23 @@
+{
+  "initialRows": 2,
+  "next": {
+    "rowNumber": "2",
+    "nextDisabled": true
+  },
+  "previous": {
+    "rowNumber": "1"
+  },
+  "pageSize10Restored": true,
+  "keyboardActions": {
+    "show": true,
+    "delete": true
+  },
+  "showNavigation": true,
+  "addNavigation": true,
+  "productionMutationsPerformed": false,
+  "notes": [
+    "Page size 1 was a temporary in-memory QA setting through the existing handler so the two real records could exercise pagination. Normal page size 10 restored through actual popover.",
+    "No record creation, edit or deletion submitted. Existing commented-out Edit action remains disabled.",
+    "Search response behavior and controlled transport faults are documented separately."
+  ]
+}

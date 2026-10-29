@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -206,31 +208,32 @@ onMounted(fetchDocuments)
 </script>
 
 <template>
-  <div class="flex flex-wrap justify-between gap-4 mb-4">
-    <div class="input-search">
-      <span class="icon-remove" @click="((word = ''), searchDocuments())"><Search /></span>
-      <input
-        dir="auto"
-        v-model="word"
-        class="input"
-        :placeholder="$t('search_organization_documents')"
-        @input="searchDocuments"
-      />
-    </div>
-    <div class="flex flex-wrap gap-2">
-      <IndexFilterDialog
-        show-date
-        :initial-date="filterDate"
-        @apply="applyFilters"
-        @reset="resetFilters"
-      />
-      <PermissionBuilder :code="createPermissions">
-        <router-link :to="`${baseRoute}/add`" class="btn btn-primary">
-          <ActionsListAddIcon />
-          <span>{{ $t('add_organization_documents') }}</span>
-        </router-link>
-      </PermissionBuilder>
-      <!-- Actions are temporarily hidden.
+  <RegisterPage>
+    <div class="flex flex-wrap justify-between gap-4 mb-4">
+      <div class="input-search">
+        <span class="icon-remove" @click="((word = ''), searchDocuments())"><Search /></span>
+        <input
+          dir="auto"
+          v-model="word"
+          class="input"
+          :placeholder="$t('search_organization_documents')"
+          @input="searchDocuments"
+        />
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <IndexFilterDialog
+          show-date
+          :initial-date="filterDate"
+          @apply="applyFilters"
+          @reset="resetFilters"
+        />
+        <PermissionBuilder :code="createPermissions">
+          <router-link :to="`${baseRoute}/add`" class="btn btn-primary">
+            <ActionsListAddIcon />
+            <span>{{ $t('add_organization_documents') }}</span>
+          </router-link>
+        </PermissionBuilder>
+        <!-- Actions are temporarily hidden.
       <ActionsList
         feature-name="organization_documents"
         :show-actions="true"
@@ -241,98 +244,98 @@ onMounted(fetchDocuments)
           <ExportPdf :is-drop-list="true" />
         </template>
       </ActionsList>
-      -->
+      --></div>
     </div>
-  </div>
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
-      PermissionsEnum.ORGANIZATION_DOCUMENTS_FETCH,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive mt-2">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>{{ $t('document_title') }}</th>
-                <th>{{ $t('document_ref') }}</th>
-                <th>{{ $t('document_version') }}</th>
-                <th>{{ $t('document_category') }}</th>
-                <th>{{ $t('issue_date') }}</th>
-                <th>{{ $t('nex_review_date') }}</th>
-                <th>{{ $t('notes') }}</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
-                <td>{{ item.document_title }}</td>
-                <td>{{ item.document_ref }}</td>
-                <td>{{ item.document_version }}</td>
-                <td>{{ item.documentCategory?.title ?? '---' }}</td>
-                <td>{{ item.issue_date }}</td>
-                <td>{{ item.nex_review_date }}</td>
-                <td>{{ item.notes || '---' }}</td>
-                <td><DropList :action-list="actionList(item.id)" /></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @change-page="changePage"
-          @count-per-page="changePerPage"
-        />
-      </template>
-      <template #loader><TableLoader :cols="9" :rows="10" /></template>
-      <template #initial><TableLoader :cols="9" :rows="10" /></template>
-      <template #empty>
-        <PermissionBuilder
-          :code="[
-            PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
-            PermissionsEnum.ORGANIZATION_DOCUMENTS_CREATE,
-          ]"
-        >
-          <DataEmpty
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
+        PermissionsEnum.ORGANIZATION_DOCUMENTS_FETCH,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive mt-2 hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>{{ $t('document_title') }}</th>
+                  <th>{{ $t('document_ref') }}</th>
+                  <th>{{ $t('document_version') }}</th>
+                  <th>{{ $t('document_category') }}</th>
+                  <th>{{ $t('issue_date') }}</th>
+                  <th>{{ $t('nex_review_date') }}</th>
+                  <th>{{ $t('notes') }}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
+                  <td>{{ item.document_title }}</td>
+                  <td>{{ item.document_ref }}</td>
+                  <td>{{ item.document_version }}</td>
+                  <td>{{ item.documentCategory?.title ?? '---' }}</td>
+                  <td>{{ item.issue_date }}</td>
+                  <td>{{ item.nex_review_date }}</td>
+                  <td>{{ item.notes || '---' }}</td>
+                  <td><DropList :action-list="actionList(item.id)" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @change-page="changePage"
+            @count-per-page="changePerPage"
+          />
+        </template>
+        <template #loader><TableLoader :cols="9" :rows="10" /></template>
+        <template #initial><TableLoader :cols="9" :rows="10" /></template>
+        <template #empty>
+          <PermissionBuilder
+            :code="[
+              PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
+              PermissionsEnum.ORGANIZATION_DOCUMENTS_CREATE,
+            ]"
+          >
+            <DataEmpty
+              :link="`${baseRoute}/add`"
+              :add-text="$t('add_organization_documents')"
+              :description="$t('organization_documents_empty_description')"
+              :title="$t('organization_documents_empty_title')"
+            />
+          </PermissionBuilder>
+        </template>
+        <template #failed>
+          <DataFailed
             :link="`${baseRoute}/add`"
             :add-text="$t('add_organization_documents')"
-            :description="$t('organization_documents_empty_description')"
-            :title="$t('organization_documents_empty_title')"
+            :title="$t('organization_documents')"
+            :description="$t('organization_documents_load_failed')"
           />
-        </PermissionBuilder>
-      </template>
-      <template #failed>
-        <DataFailed
-          :link="`${baseRoute}/add`"
-          :add-text="$t('add_organization_documents')"
-          :title="$t('organization_documents')"
-          :description="$t('organization_documents_load_failed')"
-        />
-      </template>
-    </DataStatus>
-  </PermissionBuilder>
-  <Dialog
-    v-model:visible="showUploadDialog"
-    modal
-    :dismissable-mask="true"
-    :header="$t('upload_excel')"
-    :style="{ width: '80vw', maxWidth: '900px' }"
-  >
-    <UploadOrganizationDocumentsExeclSheet
-      v-if="showUploadDialog"
-      :initial-file="pendingFile"
-      @uploaded="onUploaded"
+        </template>
+      </DataStatus>
+    </PermissionBuilder>
+    <Dialog
+      v-model:visible="showUploadDialog"
+      modal
+      :dismissable-mask="true"
+      :header="$t('upload_excel')"
+      :style="{ width: '80vw', maxWidth: '900px' }"
+    >
+      <UploadOrganizationDocumentsExeclSheet
+        v-if="showUploadDialog"
+        :initial-file="pendingFile"
+        @uploaded="onUploaded"
+      />
+    </Dialog>
+    <input
+      ref="fileInputRef"
+      type="file"
+      accept=".xls,.xlsx"
+      style="display: none"
+      @change="onFileSelected"
     />
-  </Dialog>
-  <input
-    ref="fileInputRef"
-    type="file"
-    accept=".xls,.xlsx"
-    style="display: none"
-    @change="onFileSelected"
-  />
+  </RegisterPage>
 </template>

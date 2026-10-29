@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { translate as localizeUi } from '@/localization/i18n'
 import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import { onMounted, ref, watch } from 'vue'
@@ -215,24 +217,25 @@ const IndexInjuryactionList = () => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 mt-2">
-    <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchInjury())">
-        <Search />
-      </span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchInjury"
-      />
-    </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
-      <!-- <ExportPdf />
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 mt-2">
+      <div class="input-search col-span-1">
+        <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
+        <span class="icon-remove" @click="((word = ''), searchInjury())">
+          <Search />
+        </span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchInjury"
+        />
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <!-- <ExportExcel :data="state.data" /> -->
+        <!-- <ExportPdf />
       <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
 
       <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
@@ -250,161 +253,162 @@ const IndexInjuryactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
         <SysteminjuryTypes />
       </PermissionBuilder> -->
-      <ActionsList
-        feature-name="action_feature_injuries"
-        :show-actions="true"
-        :actionList="IndexInjuryactionList()"
-        :actionsNumber="5"
-      >
-        <template #custom>
-          <!-- <SysteminjuryTypes /> -->
-          <ExportPdf :isDropList="true" />
-        </template>
-      </ActionsList>
+        <ActionsList
+          feature-name="action_feature_injuries"
+          :show-actions="true"
+          :actionList="IndexInjuryactionList()"
+          :actionsNumber="5"
+        >
+          <template #custom>
+            <!-- <SysteminjuryTypes /> -->
+            <ExportPdf :isDropList="true" />
+          </template>
+        </ActionsList>
+      </div>
+      <SysteminjuryTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
     </div>
-    <SysteminjuryTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
-  </div>
 
-  <PermissionBuilder
-    :code="[
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.INJURY_ALL,
-      PermissionsEnum.INJURY_DELETE,
-      PermissionsEnum.INJURY_FETCH,
-      PermissionsEnum.INJURY_UPDATE,
-      PermissionsEnum.INJURY_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.INJURY_ALL,
+        PermissionsEnum.INJURY_DELETE,
+        PermissionsEnum.INJURY_FETCH,
+        PermissionsEnum.INJURY_UPDATE,
+        PermissionsEnum.INJURY_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('title') }}</th>
 
-                <!-- <th scope="col">{{ $t('phone') }}</th> -->
-                <!-- <th scope="col">{{ $t('status') }}</th> -->
+                  <!-- <th scope="col">{{ $t('phone') }}</th> -->
+                  <!-- <th scope="col">{{ $t('status') }}</th> -->
 
-                <!-- <th scope="col">{{ $t('actions') }}</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link :to="`/organization/injury/${item.id}`"
-                    >{{ index + 1 }}
-                  </router-link>
-                </td>
-                <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
+                  <!-- <th scope="col">{{ $t('actions') }}</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td data-label="#">
+                    <router-link :to="`/organization/injury/${item.id}`"
+                      >{{ index + 1 }}
+                    </router-link>
+                  </td>
+                  <td :data-label="$t('Name')">{{ wordSlice(item.title) }}</td>
 
-                <!-- <td data-label="phone">
+                  <!-- <td data-label="phone">
                   {{ item.phone }}
                 </td> -->
 
-                <td :data-label="$t('Actions')">
-                  <!--                <DialogChangeStatusInjury-->
-                  <!--                  v-if="item.InjuryStatus === InjuryStatusEnum.Draft"-->
-                  <!--                  :InjuryId="item.id"-->
-                  <!--                  @InjuryChangeStatus="fetchInjury"-->
-                  <!--                />-->
+                  <td :data-label="$t('Actions')">
+                    <!--                <DialogChangeStatusInjury-->
+                    <!--                  v-if="item.InjuryStatus === InjuryStatusEnum.Draft"-->
+                    <!--                  :InjuryId="item.id"-->
+                    <!--                  @InjuryChangeStatus="fetchInjury"-->
+                    <!--                />-->
 
-                  <DropList
-                    :actionList="actionList(item.id, deleteInjury)"
-                    @delete="deleteInjury(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
+                    <DropList
+                      :actionList="actionList(item.id, deleteInjury)"
+                      @delete="deleteInjury(item.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="3" :rows="10" />
+        </template>
+        <template #empty>
+          <PermissionBuilder
+            :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]"
+          >
+            <DataEmpty
+              :link="`/organization/Injury/add`"
+              :addText="$t('Add_Injury')"
+              :description="
+                $t(
+                  'You have no Injury .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Injury')"
+            />
+          </PermissionBuilder>
+        </template>
+        <template #failed>
+          <PermissionBuilder
+            :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]"
+          >
+            <DataFailed
+              :link="`/organization/Injury/add`"
+              :addText="$t('Add_Injury')"
+              :description="
+                $t(
+                  'You have no Injury .. All your joined customers will appear here when you add your customer data',
+                )
+              "
+              :title="$t('You have No Injury')"
+            />
+          </PermissionBuilder>
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
+        <DataFailed
+          :addText="$t('auditUi.you_do_not_have_permission')"
+          :description="
+            $t(
+              'You have no Injury .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          link=""
         />
       </template>
-      <template #loader>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="3" :rows="10" />
-      </template>
-      <template #empty>
-        <PermissionBuilder
-          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]"
-        >
-          <DataEmpty
-            :link="`/organization/Injury/add`"
-            :addText="$t('Add_Injury')"
-            :description="
-              $t(
-                'You have no Injury .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Injury')"
-          />
-        </PermissionBuilder>
-      </template>
-      <template #failed>
-        <PermissionBuilder
-          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]"
-        >
-          <DataFailed
-            :link="`/organization/Injury/add`"
-            :addText="$t('Add_Injury')"
-            :description="
-              $t(
-                'You have no Injury .. All your joined customers will appear here when you add your customer data',
-              )
-            "
-            :title="$t('You have No Injury')"
-          />
-        </PermissionBuilder>
-      </template>
-    </DataStatus>
+    </PermissionBuilder>
 
-    <template #notPermitted>
-      <DataFailed
-        :addText="$t('auditUi.you_do_not_have_permission')"
-        :description="
-          $t(
-            'You have no Injury .. All your joined customers will appear here when you add your customer data',
-          )
+    <Dialog
+      v-model:visible="showUploadDialog"
+      modal
+      :dismissable-mask="true"
+      :header="$t('import_injury')"
+      :style="{ width: '80vw', maxWidth: '900px' }"
+    >
+      <UploadInjuryExeclSheet
+        :initial-file="pendingFile"
+        @uploaded="
+          () => {
+            showUploadDialog = false
+            pendingFile = null
+            fetchInjury()
+          }
         "
-        link=""
       />
-    </template>
-  </PermissionBuilder>
+    </Dialog>
 
-  <Dialog
-    v-model:visible="showUploadDialog"
-    modal
-    :dismissable-mask="true"
-    :header="$t('import_injury')"
-    :style="{ width: '80vw', maxWidth: '900px' }"
-  >
-    <UploadInjuryExeclSheet
-      :initial-file="pendingFile"
-      @uploaded="
-        () => {
-          showUploadDialog = false
-          pendingFile = null
-          fetchInjury()
-        }
-      "
+    <input
+      ref="fileInputRef"
+      type="file"
+      accept=".xls,.xlsx"
+      style="display: none"
+      @change="onFileSelected"
     />
-  </Dialog>
-
-  <input
-    ref="fileInputRef"
-    type="file"
-    accept=".xls,.xlsx"
-    style="display: none"
-    @change="onFileSelected"
-  />
+  </RegisterPage>
 </template>
 
 <style scoped></style>

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import RegisterPage from '@/shared/Tables/RegisterPage.vue'
+
 import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -196,102 +198,107 @@ const headerActions = () => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchmanagementChangeTopicTypes())"
-        ><Search
-      /></span>
-      <input
-        dir="auto"
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        @input="searchmanagementChangeTopicTypes"
+  <RegisterPage>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <span class="icon-remove" @click="((word = ''), searchmanagementChangeTopicTypes())"
+          ><Search
+        /></span>
+        <input
+          dir="auto"
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          @input="searchmanagementChangeTopicTypes"
+        />
+      </div>
+      <div class="col-span-2 flex justify-end gap-2 items-center">
+        <ActionsList
+          feature-name="action management types"
+          :show-actions="true"
+          :action-list="headerActions()"
+          :actions-number="5"
+        >
+          <template #custom><ExportPdf :is-drop-list="true" /></template>
+        </ActionsList>
+      </div>
+      <SystemMangementChangeTopicType
+        v-if="user?.type !== OrganizationTypeEnum.ADMIN"
+        :is-header-tap="true"
       />
     </div>
-    <div class="col-span-2 flex justify-end gap-2 items-center">
-      <ActionsList
-        feature-name="action management types"
-        :show-actions="true"
-        :action-list="headerActions()"
-        :actions-number="5"
-      >
-        <template #custom><ExportPdf :is-drop-list="true" /></template>
-      </ActionsList>
-    </div>
-    <SystemMangementChangeTopicType
-      v-if="user?.type !== OrganizationTypeEnum.ADMIN"
-      :is-header-tap="true"
+
+    <PermissionBuilder :code="featurePermissions">
+      <DataStatus :controller="state">
+        <template #success>
+          <div class="table-responsive hse-table-scroll">
+            <table v-table-identity class="main-table hse-data-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">{{ $t('title') }}</th>
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in state.data" :key="item.id">
+                  <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
+                  <td>{{ item.title }}</td>
+                  <td><DropList :action-list="rowActions(item.id)" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @change-page="changePage"
+            @count-per-page="changePageSize"
+          />
+        </template>
+        <template #loader><TableLoader :cols="3" :rows="10" /></template>
+        <template #initial><TableLoader :cols="3" :rows="10" /></template>
+        <template #empty>
+          <DataEmpty
+            :link="`${basePath}/management-change-topic-type/add`"
+            :add-text="$t('add_management_change_topic_type')"
+            :description="$t('no_management_change_topic_types_description')"
+            :title="$t('no_management_change_topic_types')"
+          />
+        </template>
+        <template #failed>
+          <DataFailed
+            :link="`${basePath}/management-change-topic-type/add`"
+            :add-text="$t('add_management_change_topic_type')"
+            :description="$t('no_management_change_topic_types_description')"
+            :title="$t('no_management_change_topic_types')"
+          />
+        </template>
+      </DataStatus>
+      <template #notPermitted>
+        <DataFailed :add-text="$t('auditUi.you_do_not_have_permission')" description="" link="" />
+      </template>
+    </PermissionBuilder>
+
+    <Dialog
+      v-model:visible="showUploadDialog"
+      modal
+      :dismissable-mask="true"
+      :header="$t('import management change topic types')"
+      :style="{ width: '80vw', maxWidth: '900px' }"
+    >
+      <UploadMangementChangeTopicTypeExcelSheet
+        :initial-file="pendingFile"
+        @uploaded="onUploaded"
+      />
+    </Dialog>
+    <input
+      ref="fileInputRef"
+      type="file"
+      accept=".xls,.xlsx"
+      style="display: none"
+      @change="onFileSelected"
     />
-  </div>
-
-  <PermissionBuilder :code="featurePermissions">
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
-                <td>{{ item.title }}</td>
-                <td><DropList :action-list="rowActions(item.id)" /></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @change-page="changePage"
-          @count-per-page="changePageSize"
-        />
-      </template>
-      <template #loader><TableLoader :cols="3" :rows="10" /></template>
-      <template #initial><TableLoader :cols="3" :rows="10" /></template>
-      <template #empty>
-        <DataEmpty
-          :link="`${basePath}/management-change-topic-type/add`"
-          :add-text="$t('add_management_change_topic_type')"
-          :description="$t('no_management_change_topic_types_description')"
-          :title="$t('no_management_change_topic_types')"
-        />
-      </template>
-      <template #failed>
-        <DataFailed
-          :link="`${basePath}/management-change-topic-type/add`"
-          :add-text="$t('add_management_change_topic_type')"
-          :description="$t('no_management_change_topic_types_description')"
-          :title="$t('no_management_change_topic_types')"
-        />
-      </template>
-    </DataStatus>
-    <template #notPermitted>
-      <DataFailed :add-text="$t('auditUi.you_do_not_have_permission')" description="" link="" />
-    </template>
-  </PermissionBuilder>
-
-  <Dialog
-    v-model:visible="showUploadDialog"
-    modal
-    :dismissable-mask="true"
-    :header="$t('import management change topic types')"
-    :style="{ width: '80vw', maxWidth: '900px' }"
-  >
-    <UploadMangementChangeTopicTypeExcelSheet :initial-file="pendingFile" @uploaded="onUploaded" />
-  </Dialog>
-  <input
-    ref="fileInputRef"
-    type="file"
-    accept=".xls,.xlsx"
-    style="display: none"
-    @change="onFileSelected"
-  />
+  </RegisterPage>
 </template>
 
 <style scoped></style>
